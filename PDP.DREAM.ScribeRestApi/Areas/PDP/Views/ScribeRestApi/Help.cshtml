@@ -1,0 +1,93 @@
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/ScribeRestApi/Help"))
+
+<!--
+<p>
+  Help on the NPDS web service API available at this site 
+  can also be obtained by appending the querystring key "help" to any URL derived from the site base
+  address. Additional URL routing information can be obtained by appending the querystring key "debug"
+  to the URL. These keys can be used independently or in combination as shown in the following examples:
+</p>
+<ul>
+  <li><a href="@ViewBag.PRC.HelpUrl">@ViewBag.PRC.HelpUrl</a></li>
+  <li><a href="@ViewBag.PRC.DebugUrl">@ViewBag.PRC.DebugUrl</a></li>
+  <li><a href="@ViewBag.PRC.HelpDebugUrl">@ViewBag.PRC.HelpDebugUrl</a></li>
+</ul>
+<p>
+  Help information displayed by use of the "help" querystring key provides the syntax for all URLs together
+  with live examples that demonstrate each URL. Debug diagnostics displayed by use of the "debug" querystring
+  key provide the defaults and constraints for all routes together with a live matching test of the requested
+  URL against all routes that shows whether each route is "found", "matched", or "unmatched". Note that
+  the "found" route is the first "matched" route.
+</p>
+-->
+
+<p>
+  Querystring key-value pairs valid for all NPDS web service URLs include:
+</p>
+<ul>
+  <li>
+    Logical switches
+    <ul>
+      <li>
+        "ef": echo format with ef={1|0} or ef={true|false} turns on/off response that includes a copy of the
+        request URL
+      </li>
+      <li>
+        "qf": query format with qf={1|0} or qf={true|false} turns on/off case-sensitive find
+        intended for unique exact match instead of case-insensitive search for multiple partial matches
+      </li>
+      <li>"tf": test format with tf={1|0} or tf={true|false} turns on/off response with schema validation</li>
+      <li>"vf": verbose format with ef={1|0} or ef={true|false} turns on/off response with more detailed information</li>
+    </ul>
+  </li>
+  <li>
+    Integer values
+    <ul>
+      <li>"lc": list count with lc={value} sets maximum number of records returned in the response</li>
+    </ul>
+  </li>
+  <li>
+    String switches
+    <ul>
+      <li>
+        "rf": resrep format with rf={nexus|portal|doors|core} sets the resource representation format for the
+        records returned in the response if supported by the server accessed; see pages 180-181 of the
+         <a href="~/pub/docs/FutInt2010v2n2p156-189Taswell.pdf" target="_blank">Metadata about Metadata article</a> 
+         in Future Internet.
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>
+  Querystring keys valid for NPDS query URLs include:
+</p>
+<ul>
+  <li>"enam": enam={value} filters records on the EntityName field</li>
+  <li>"enat": enat={value} filters records on the EntityNature field</li>
+  <li>"etag": etag={value} filters records on the EntityPrincipalTag field</li>
+  <li>"etyp": etyp={value} filters records on the EntityType field</li>
+  <li>
+    "tagany": tagany={value} filters records on the EntityTag fields (either the EntityPrincipalTag or EntityAliasTags)
+  </li>
+  <li>
+    "tagsup": tagsup={value} filters records on the EntitySupportingTag fields
+  </li>
+  <li>
+    "labany": labany={value} filters records on the EntityLabel fields (either the EntityCanonicalLabel or
+    EntityAliasLabels)
+  </li>
+  <li>
+    "labsup": labsup={value} filters records on the EntitySupportingLabel fields
+  </li>
+  <li>
+    "labcan": labcan={value} filters records on the EntityCanonicalLabel field
+  </li>
+  <li>
+    "labals": labals={value} filters records on the EntityAliasLabel fields
+  </li>
+</ul>
+<p>A future version of this web service will enable additional filters on other fields.</p>

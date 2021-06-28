@@ -1,0 +1,133 @@
+﻿@model PdpRestContext
+@* retain PdpRestContext model for use in forms and for Model vs ViewBag tests *@
+
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/SiaaTestLib/Auth"))
+
+
+<p>Guids from webapp cookies, keys from request querystring.</p>
+
+<h4>AspNetCore ViewModel Test</h4>
+<p>User: Guid = @Model.UserGuid, Key = @Model.UserKey</p>
+<p>Agent: Guid = @Model.AgentGuid, Key = @Model.AgentKey</p>
+<p>Agent Infoset: Guid = @Model.AgentInfosetGuid, Key = @Model.AgentInfosetKey</p>
+<p>Agent Session: Guid = @Model.SessionGuid, Key = @Model.SessionKey</p>
+
+<h4>AspNetCore ViewBag Test</h4>
+<p>User: Guid = @ViewBag.PRC.UserGuid, Key = @ViewBag.PRC.UserKey</p>
+<p>Agent: Guid = @ViewBag.PRC.AgentGuid, Key = @ViewBag.PRC.AgentKey</p>
+<p>Agent Infoset: Guid = @ViewBag.PRC.AgentInfosetGuid, Key = @ViewBag.PRC.AgentInfosetKey</p>
+<p>Agent Session: Guid = @ViewBag.PRC.SessionGuid, Key = @ViewBag.PRC.SessionKey</p>
+
+<p>Forwarding/caching only partially implemented at <a href="http://www.portaldoors.org/" target="PDPO">www.portaldoors.org</a>, not yet implemented at other sites, so currently not all requests should return records on all sites.</p>
+
+
+<h4>BioPORT Nexus Diristry (GTG)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/BioPORT?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "BioPORT", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELLITRON?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELLITRON", ef = "1", vf = "1" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELLITRON?ef=1&vf=1&ram=Agent", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELLITRON", ef = "1", vf = "1" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELLITRON?ef=1&vf=1&ram=Author", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELLITRON", ef = "1", vf = "1", agk = Model.AgentGuid, sgk = Model.SessionGuid, ram = "Agent" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELLITRON?ef=1&vf=1&ram=Editor", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELLITRON", ef = "1", vf = "1", agk = Model.AgentGuid, sgk = Model.SessionGuid, ram = "Author" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELLITRON?ef=1&vf=1&ram=Admin", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELLITRON", ef = "1", vf = "1", agk = Model.AgentGuid, sgk = Model.SessionGuid, ram = "Editor" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELLITRON?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELLITRON", ef = "1", vf = "1", agk = Model.AgentGuid, sgk = Model.SessionGuid, ram = "Admin" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ELIDA?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BioPORT", entityTag = "ELIDA", ef = "1", vf = "1" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/ComputingTool/Valid?lc=11", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "BioPORT", entityType = "ComputingTool", infosetStatus = "Valid", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/BioPORT/Publication/Valid?lc=11", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "BioPORT", entityType = "Publication", infosetStatus = "Valid", ef = "1", vf = "1", lc = "11" })</li>
+</ul>
+
+<h4>BrainWatch Nexus Diristry (BHA)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/BrainWatch?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "BrainWatch", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/BrainWatch/ABA?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "BrainWatch", entityTag = "ABA", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>CTGaming Nexus Diristry (GTG)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/CTGaming?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "CTGaming", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/CTGaming/wattgaming?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "CTGaming", entityTag = "wattgaming", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>DaVinci Nexus Diristry (PDP)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/DaVinci?ef=0&vf=0&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "DaVinci", ef = "0", vf = "0", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "DaVinci", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=0&vf=0", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "ARSW", ef = "0", vf = "0" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "ARSW", ef = "1", vf = "1" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/Publication/Valid?ef=0&vf=0&lc=11", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "DaVinci", entityType = "Publication", infosetStatus = "Valid", ef = "0", vf = "0", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/Publication/Valid?ef=1&vf=1&lc=11", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "DaVinci", entityType = "Publication", infosetStatus = "Valid", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci?ef=1&vf=1&lc=11 author", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "DaVinci", ef = "1", vf = "1", lc = "11", ram = "author", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci?ef=1&vf=1&lc=11 admin", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "DaVinci", ef = "1", vf = "1", lc = "11", ram = "admin", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "XC7DBAFC3D0", ef = "1", vf = "1" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1&ram=Agent", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "XC7DBAFC3D0", ef = "1", vf = "1", ram = "Agent", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1&ram=Author", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "XC7DBAFC3D0", ef = "1", vf = "1", ram = "Author", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1&ram=Editor", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "XC7DBAFC3D0", ef = "1", vf = "1", ram = "Editor", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1&ram=Admin", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "XC7DBAFC3D0", ef = "1", vf = "1", ram = "Admin", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "ARSW", ef = "1", vf = "1" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1 author", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "ARSW", ef = "1", vf = "1", ram = "author", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/ARSW?ef=1&vf=1 admin", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "DaVinci", entityTag = "ARSW", ef = "1", vf = "1", ram = "admin", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/Publication/Valid?lc=11", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "DaVinci", entityType = "Publication", infosetStatus = "Valid", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/Publication/Valid?lc=11 auth", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "DaVinci", entityType = "Publication", infosetStatus = "Valid", ef = "1", vf = "1", lc = "11", ram = "author", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+  <li>@Html.RouteLink("~/Nexus/DaVinci/Publication/Valid?lc=11 admin", "ResrepsByEntityType", new { serverType = "Nexus", serviceTag = "DaVinci", entityType = "Publication", infosetStatus = "Valid", ef = "1", vf = "1", lc = "11", ram = "admin", agk = Model.AgentGuid, sgk = Model.SessionGuid })</li>
+</ul>
+
+<h4>Eywa Nexus Diristry (BHA)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/Eywa?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "Eywa", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/Eywa/ibc-et?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "Eywa", entityTag = "ibc-et", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>Gaia Nexus Diristry (BHA)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/Gaia?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "Gaia", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/Gaia/TNC?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "Gaia", entityTag = "TNC", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>GeneScene Nexus Diristry (GTG)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/GeneScene?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "GeneScene", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/GeneScene/ACMG?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "GeneScene", entityTag = "ACMG", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>HELPME Nexus Diristry (BHA)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/HELPME?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "HELPME", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/HELPME/AHRQ?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "HELPME", entityTag = "AHRQ", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>ManRay Nexus Diristry (GTG)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/ManRay?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "ManRay", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/ManRay/ABNM?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "ManRay", entityTag = "ABNM", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>Osler Nexus Diristry (GTG)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/Osler?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "Osler", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/Osler/AHIC?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "Osler", entityTag = "AHIC", ef = "1", vf = "1" })</li>
+</ul>
+
+<h4>SOLOMON Nexus Diristry (BHA)</h4>
+<ul>
+  <li>@Html.RouteLink("~/Nexus/SOLOMON?ef=1&vf=1&lc=11", "ResrepsByQuerystr", new { serverType = "Nexus", serviceTag = "SOLOMON", ef = "1", vf = "1", lc = "11" })</li>
+  <li>@Html.RouteLink("~/Nexus/SOLOMON/NIF?ef=1&vf=1", "ResrepsByEntityTag", new { serverType = "Nexus", serviceTag = "SOLOMON", entityTag = "NIF", ef = "1", vf = "1" })</li>
+</ul>
+
+<partial name="@prc.PageMenu" />
+
+<h4>PDP Agent/Session</h4>
+@using (Html.BeginForm("Auth", "ScribeTestApi", new { area = "PDP"}, FormMethod.Post ))
+{
+  <div class="form-group">
+    @Html.LabelFor(m => m.AgentGuid, new { @class = "control-label col-md-2" })
+    @Html.TextBoxFor(m => m.AgentGuid, new { @class = "form-control col-md-6" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.SessionGuid, new { @class = "control-label col-md-2" })
+    @Html.TextBoxFor(m => m.SessionGuid, new { @class = "form-control col-md-6" })
+  </div>
+}
+

@@ -1,0 +1,8 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/NexusRestApi/Index"))
+
+<partial name="_MenuPdpNexusRestApi" />
+

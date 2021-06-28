@@ -1,0 +1,18 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/Agent/Index"))
+
+<p>
+  You are registered as a site user. You may access the following services:
+</p>
+<ul>
+  <li>@Html.ActionLink("Change User Email", "ChangeEmail", "Auth", new { area = "PDP" })</li>
+  <li>@Html.ActionLink("Change User Password", "ChangePassword", "Auth", new { area = "PDP" })</li>
+  <li>@Html.ActionLink("Change User Profile", "ChangeProfile", "Auth", new { area = "PDP" })</li>
+  <li>@Html.ActionLink("Add Author Role", "AddRoleAuthor", "Agent", new { area = "PDP" })</li>
+  <li>@Html.ActionLink("Add Editor Role", "AddRoleEditor", "Agent", new { area = "PDP" })</li>
+  <li>@Html.ActionLink("Check Agent Session", "CheckSession", "Agent", new { area = "PDP" })</li>
+  <li>@Html.ActionLink("Agent Role Help", "Help", "Agent", new { area = "PDP" })</li>
+</ul>

@@ -1,0 +1,11 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/Admin/Index"))
+
+<p>PDP/Admin/Index web page paragraph.</p>
+
+<h4>PDP SIAA Menus</h4>
+
+<partial name="_MenuSiaaDataLib" />

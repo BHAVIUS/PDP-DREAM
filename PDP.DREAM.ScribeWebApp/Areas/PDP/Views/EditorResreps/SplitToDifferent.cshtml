@@ -1,0 +1,28 @@
+﻿@using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase
+@model ResrepSplitToDifferentModel
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle())
+
+
+<section id="DreamPrincipleForm">
+  @using (Html.BeginForm("SplitToDifferent", "EditorResreps", new { area = "PDP" }, FormMethod.Post))
+  {
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.RecordHandleToSplit, new { @class = "control-label col-md-4" })
+      @Html.TextBoxFor(m => m.RecordHandleToSplit, new { @class = "form-control col-md-4" })
+      @Html.ValidationMessageFor(m => m.RecordHandleToSplit, null, new { @class = "control-label col-md-3 text-danger" })
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default col-md-2">Split To Different</button>
+    </div>
+  }
+</section>
+
+<partial name="_ValidationScripts" />

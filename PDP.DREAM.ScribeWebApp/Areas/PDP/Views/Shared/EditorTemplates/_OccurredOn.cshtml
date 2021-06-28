@@ -1,0 +1,3 @@
+@model DateTime?
+
+@(Html.Kendo().DateTimePickerFor(m => m).Min(new DateTime(2016, 6, 1)).Max(DateTime.Now).Value(DateTime.Now))

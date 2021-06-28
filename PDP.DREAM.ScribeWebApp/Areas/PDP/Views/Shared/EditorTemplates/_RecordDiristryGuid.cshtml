@@ -1,0 +1,7 @@
+﻿@model Guid?
+
+@(Html.Kendo().DropDownListFor(p => p)
+  .DataValueField("RecordDiristryGuid").DataTextField("RecordDiristryName").OptionLabel("Select Diristry")
+  .BindTo((System.Collections.IEnumerable)ViewData["DiristryList"])
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select Nexus Diristry" })
+)

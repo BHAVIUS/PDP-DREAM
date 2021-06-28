@@ -1,0 +1,9 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout; 
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/Anon/EmailReset"))
+
+<p>
+  Your email address has been reset.
+</p>

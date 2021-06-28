@@ -1,0 +1,8 @@
+﻿@model Guid?
+
+@(
+  Html.Kendo().DropDownListFor(m => m)
+  .DataValueField("RecordDirectoryGuid").DataTextField("RecordDirectoryName")
+  .BindTo((System.Collections.IEnumerable)ViewData["DirectoryList"])
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select Record Directory." })
+)  

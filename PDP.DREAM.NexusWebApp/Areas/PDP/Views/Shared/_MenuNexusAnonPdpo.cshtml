@@ -1,0 +1,40 @@
+﻿@(
+Html.Kendo().Menu().Name("MenuNexusAnonPdpo")
+.HtmlAttributes(new {style = "float: left"}).Items(m => {
+m.Add().Text("Home").Items(s => {
+s.Add().Text("PDP Info").Url("~/PDP/Site/Info");
+s.Add().Text("PDP Design").Url("~/PDP/Site/Design");
+s.Add().Text("PDP Papers").Url("~/PDP/Site/Papers");
+s.Add().Text("BHA Home").Url("http://www.brainhealthalliance.org/").LinkHtmlAttributes(new {target = "BHAO"});
+s.Add().Text("BHA Registrar").Url("https://www.brainhealthalliance.net/").LinkHtmlAttributes(new {target = "BHAN"});
+s.Add().Text("GTG Home").Url("http://www.telegenetics.com/").LinkHtmlAttributes(new {target = "GTGC"});
+s.Add().Text("GTG Registrar").Url("https://www.telegenetics.net/").LinkHtmlAttributes(new {target = "GTGN"});
+s.Add().Text("PDP Home").Url("http://www.portaldoors.org/").LinkHtmlAttributes(new {target = "PDPO"});
+s.Add().Text("PDP Registrar").Url("https://www.portaldoors.net/").LinkHtmlAttributes(new {target = "PDPN"});
+}); // end s items
+m.Add().Text("Records").Items(s => {
+s.Add().Text("Index").Url("~/PDP/AnonResreps/Index");
+s.Add().Text("PDP-Nexus").Url("~/PDP/AnonResreps/NpdsView/Nexus/PDP-Nexus");
+s.Add().Text("PDP-PORTAL").Url("~/PDP/AnonResreps/NpdsView/PORTAL/PDP-PORTAL");
+s.Add().Text("PDP-DOORS").Url("~/PDP/AnonResreps/NpdsView/DOORS/PDP-DOORS");
+s.Add().Text("PDP-Scribe").Url("~/PDP/AnonResreps/NpdsView/Scribe/PDP-Scribe");
+s.Add().Text("Avicenna").Url("~/PDP/AnonResreps/NpdsView/Nexus/Avicenna");
+s.Add().Text("Beacon").Url("~/PDP/AnonResreps/NpdsView/Nexus/Beacon");
+s.Add().Text("BioPORT").Url("~/PDP/AnonResreps/NpdsView/Nexus/BioPORT");
+s.Add().Text("BrainWatch").Url("~/PDP/AnonResreps/NpdsView/Nexus/BrainWatch");
+s.Add().Text("CTGaming").Url("~/PDP/AnonResreps/NpdsView/Nexus/CTGaming");
+s.Add().Text("DaVinci").Url("~/PDP/AnonResreps/NpdsView/Nexus/DaVinci");
+s.Add().Text("Eywa").Url("~/PDP/AnonResreps/NpdsView/Nexus/Eywa");
+s.Add().Text("Fidentinus").Url("~/PDP/AnonResreps/NpdsView/Nexus/Fidentinus");
+s.Add().Text("Gaia").Url("~/PDP/AnonResreps/NpdsView/Nexus/Gaia");
+s.Add().Text("GeneScene").Url("~/PDP/AnonResreps/NpdsView/Nexus/GeneScene");
+s.Add().Text("HELPME").Url("~/PDP/AnonResreps/NpdsView/Nexus/HELPME");
+s.Add().Text("Knuth").Url("~/PDP/AnonResreps/NpdsView/Nexus/Knuth");
+s.Add().Text("ManRay").Url("~/PDP/AnonResreps/NpdsView/Nexus/ManRay");
+s.Add().Text("Martialis").Url("~/PDP/AnonResreps/NpdsView/Nexus/Martialis");
+s.Add().Text("Osler").Url("~/PDP/AnonResreps/NpdsView/Nexus/Osler");
+s.Add().Text("Socrates").Url("~/PDP/AnonResreps/NpdsView/Nexus/Socrates");
+s.Add().Text("SOLOMON").Url("~/PDP/AnonResreps/NpdsView/Nexus/SOLOMON");
+}); // end s items
+}) // end m items
+)

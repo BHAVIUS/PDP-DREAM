@@ -1,0 +1,89 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+  var NpdsArea = "PDP"; var NpdsController = "EditorScribeTkgr"; // var NpdsViewRole = "EditorEdit";
+  var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
+}
+
+@Html.Raw(prc.FormatPageTitle())
+
+<div id="NpdsGrid">
+  @(Html.Kendo().Grid<ResrepAuthorRequestEditModel>()
+  .Name("ResrepAuthorRequestGrid").HtmlAttributes(new { style = "float:left;" })
+  .DataSource(ds => ds.Ajax().PageSize(15)
+  .Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  }) // end Model
+  .Read(select => select.Action("SelectScribeResrepAuthorRequestsForEdit", NpdsController, new { area = NpdsArea }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleErrors"))
+  ) // end DataSource
+  .Columns(col => {
+  col.Bound(row => row.HasIndex).Title("Index")
+  .HeaderHtmlAttributes(new { title = "Request has Index in integer range [0,1,...,255]" });
+  col.Bound(row => row.RRFgroupGuid).Title("RRFgroupGuid").Hidden(true);
+  col.Bound(row => row.RRRecordGuid).Title("RRRecordGuid").Hidden(true);
+  col.Bound(row => row.ResrepRecordHandle).Title("RecordHandle")
+  .HeaderHtmlAttributes(new { title = "Resource RecordHandle" });
+  col.Bound(row => row.ResrepEntityName).Title("EntityName")
+  .HeaderHtmlAttributes(new { title = "Resource EntityName" });
+  col.Bound(row => row.ManagedByAgentName).Title("Managing Agent")
+  .HeaderHtmlAttributes(new { title = "Username of Managing Agent" });
+  col.Bound(row => row.AccessRequestedForAgentName).Title("Requesting Agent")
+  .HeaderHtmlAttributes(new { title = "Username of Requesting Agent" });
+  col.Bound(row => row.RequestIsApproved).Title("Approved?")
+  .HeaderHtmlAttributes(new { title = "Request is Approved?" });
+  col.Bound(row => row.RequestIsDenied).Title("Denied?")
+  .HeaderHtmlAttributes(new { title = "Request is Denied?" });
+  col.Bound(row => row.AuthorHasResrepAccess).Title("Author?")
+  .HeaderHtmlAttributes(new { title = "Author has resrep access" });
+  col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+  .HeaderHtmlAttributes(new { title = "Date that Editor or Admin approved or denied transfer" });
+  col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+  .HeaderHtmlAttributes(new { title = "Username of Updating Agent" });
+  }) // end Columns
+  .ToolBar(tb => tb.ClientTemplateId("ResrepRecordToolBar"))
+  .Events(ce => ce.Page("HideStatus"))
+  .Pageable(pg => pg.Info(true).ButtonCount(3).PageSizes(new[] { 15, 25, 50, 100 }).Refresh(true).Responsive(false))
+  .Sortable().Filterable().Resizable(rs => rs.Columns(true))
+  )
+</div>
+
+<script id="ResrepRecordToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="ResrepRootStatus" class="pdpResrepStatus"></span>
+  <span id="ResrepStemStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script type="text/javascript">
+  function OnChangeRecord(e) {
+    if (e.type === "create" || e.type === "update" || e.type === "destroy") {
+      var data = e.response.Data[0];
+      $("span#ResrepRootStatus").html(data.PdpStatusMessage).show();
+    }
+  }
+  function HideStatus(e) {
+    $("span#ResrepRootStatus").hide();
+  }
+  function ResizeGrid(e) {
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    grid.ResizeGrid();
+  }
+  function RefreshGrid(e) {
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    // grid.dataSource.read();
+    grid.RefreshGrid();
+  }
+  function HandleErrors(e) {
+    if (e.errors) {
+      var message = "Errors:\n";
+      $.each(e.errors, function (key, value) {
+        if ('errors' in value) {
+          $.each(value.errors, function () {
+            message += this + "\n";
+          });
+        }
+      });
+      alert(message);
+    }
+  }
+</script>

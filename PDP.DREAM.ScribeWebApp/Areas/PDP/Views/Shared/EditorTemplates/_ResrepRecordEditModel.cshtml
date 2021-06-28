@@ -1,0 +1,37 @@
+﻿@model NexusResrepEditModel
+
+<fieldset>
+    <legend>Edit NEXUS Resource</legend>
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(n => n.RRRecordGuid)
+    <div class="editor-label">
+        @Html.LabelFor(n => n.InfosetPortalStatusCode)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(n => n.InfosetPortalStatusCode)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(n => n.InfosetDoorsStatusCode)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(n => n.InfosetDoorsStatusCode)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(n => n.EntityTypeCode)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(n => n.EntityTypeCode)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(n => n.EntityName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(n => n.EntityName)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(n => n.EntityNature)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(n => n.EntityNature)
+    </div>
+</fieldset>

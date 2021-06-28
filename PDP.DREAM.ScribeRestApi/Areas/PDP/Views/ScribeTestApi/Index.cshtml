@@ -1,0 +1,10 @@
+﻿@model PdpRestContext
+@* retain PdpRestContext model for use in forms and for Model vs ViewBag tests *@
+
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/ScribeTestApi/Index"))
+
+<partial name="_MenuPdpScribeTestApi" />

@@ -1,0 +1,1095 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+  var NpdsArea = "PDP"; var NpdsController = "EditorScribeTkgr"; // var NpdsViewRole = "EditorEdit";
+  var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; var FairFormat = "{0:n3}";
+}
+
+@Html.Raw(prc.FormatPageTitle())
+
+<div id="NpdsGrid">
+  @(Html.Kendo().Grid<NexusResrepEditModel>()
+  .Name("ResrepRecordGrid").HtmlAttributes(new { style = "float:left;" })
+  .DataSource(ds => ds.Ajax().PageSize(5)
+  .Model(m => {
+  m.Id(p => p.RRRecordGuid);
+  m.Field(p => p.RecordHandle).Editable(false);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRInfosetGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.EntityTypeCode).Editable(true).DefaultValue(NpdsConst.DefaultEntityTypeCode);
+  m.Field(p => p.EntityTypeName).Editable(false);
+  m.Field(p => p.EntityName).Editable(true);
+  m.Field(p => p.EntityNature).Editable(true);
+  m.Field(p => p.InfosetIsAuthorPrivate).Editable(true).DefaultValue(false);
+  m.Field(p => p.InfosetIsAgentShared).Editable(true).DefaultValue(false);
+  m.Field(p => p.InfosetIsUpdaterLimited).Editable(true).DefaultValue(false);
+  m.Field(p => p.InfosetIsManagerReleased).Editable(true).DefaultValue(false);
+  m.Field(p => p.UpdatedOn).Editable(false);
+  m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeResrepRootsForEdit", NpdsController,
+  new { area = NpdsArea, serviceType = prc.ServiceType.ToString(),
+  serviceTag = prc.ServiceTag, entityType = prc.EntityType.ToString() }))
+  .Create(post => post.Action("EditScribeResrepRoot", NpdsController,
+  new { area = NpdsArea, serviceType = prc.ServiceType.ToString(),
+  serviceTag = prc.ServiceTag, entityType = prc.EntityType.ToString() }))
+  .Update(put => put.Action("EditScribeResrepRoot", NpdsController,
+  new { area = NpdsArea, serviceType = prc.ServiceType.ToString(),
+  serviceTag = prc.ServiceTag, entityType = prc.EntityType.ToString() }))
+  .Destroy(delete => delete.Action("DeleteScribeResrepRoot", NpdsController,
+  new { area = NpdsArea, serviceType = prc.ServiceType.ToString(),
+  serviceTag = prc.ServiceTag, entityType = prc.EntityType.ToString() }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+  col.Bound(row => row.RecordHandle).Title("Handle")
+  .HeaderHtmlAttributes(new { title = "Resource Record Handle" });
+  col.Bound(row => row.RRRecordGuid).Title("RRRecordGuid").Hidden(true)
+  .HeaderHtmlAttributes(new { title = "Resource Representation RRRecordGuid" })
+  ;
+  col.Bound(row => row.RRInfosetGuid).Title("RRInfosetGuid").Hidden(true)
+  .HeaderHtmlAttributes(new { title = "Resource Representation RRInfosetGuid" })
+  ;
+  col.Command(com =>
+  {
+  com.Edit();
+  com.Custom("ValidateRecord").Click("OnValidateRecord").Text("Validate")
+  .HtmlAttributes(new { @class = "scribeValidateRecord", title = "Validate Resource Metadata Record" });
+  }).Title(""); // end Command
+  col.Bound(row => row.EntityTypeCode).Title("Type")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Type" })
+  .HtmlAttributes(new { title = "#=EntityTypeCode#" })
+  .ClientTemplate("#=EntityTypeName#")
+  .EditorTemplateName("_EntityTypeCode")
+  .Filterable(false);
+  col.Bound(row => row.EntityName).Title("Name")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Name" })
+  .HtmlAttributes(new { title = "#=EntityName#" })
+  .ClientTemplate("#=EntityName64#");
+  col.Bound(row => row.EntityNature).Title("Nature")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
+  .HtmlAttributes(new { title = "#=EntityNature#" })
+  .ClientTemplate("#=EntityNature128#");
+  col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Hidden(false).Sortable(false)
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
+  .Filterable(false);
+  col.Bound(row => row.InfosetIsAgentShared).Title("Shared?").Hidden(false).Sortable(false)
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
+  .Filterable(false);
+  col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?").Hidden(false).Sortable(false)
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
+  .Filterable(false);
+  col.Bound(row => row.InfosetIsManagerReleased).Title("Released?").Hidden(false).Sortable(false)
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
+  .Filterable(false);
+  col.Command(com => {
+  com.Custom("RefreshRecord").Click("OnRefreshRecord").Text("Refresh")
+  .HtmlAttributes(new { @class = "scribeRefreshRecord", title = "Refresh Resource Metadata Record" });
+  com.Destroy();
+  }).Title(""); // end Command
+  col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+  .HeaderHtmlAttributes(new { title = "Updated on date" })
+  .Filterable(false);
+  }) // end Columns
+  .ToolBar(tb => tb.ClientTemplateId("ResrepRecordToolBar"))
+  .ClientDetailTemplateId("ResrepRecordTabStrip")
+  .Editable(ed => ed.Mode(GridEditMode.InLine))
+  .Events(ce => ce.Edit("HideStatus").Page("HideStatus").DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
+  .Pageable(pg => pg.AlwaysVisible(true).Responsive(true).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
+  .Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+  .Filterable().Resizable(rs => rs.Columns(true))
+  )
+</div>
+
+<script id="ResrepRecordToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="ResrepRootStatus" class="pdpResrepStatus"></span>
+  <span id="ResrepStemStatus" class="pdpResrepStatus"></span>
+  <span id="ResrepLeafStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="ServiceDefaultToolBar" type="text/x-kendo-template">
+  <span id="ServiceDefaultStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="EntityLabelToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="EntityLabelStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="SupportingTagToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="SupportingTagStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="SupportingLabelToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="SupportingLabelStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="CrossReferenceToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="CrossReferenceStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="OtherTextToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="OtherTextStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="LocationToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="LocationStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="DescriptionToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="DescriptionStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="ProvenanceToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="ProvenanceStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="DistributionToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="DistributionStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="FairMetricToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="FairMetricStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="ResrepSnapshotToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+  <span id="ResrepSnapshotStatus" class="pdpResrepStatus"></span>
+</script>
+
+<script id="ResrepRecordTabStrip" type="text/x-kendo-template">
+  @(Html.Kendo().TabStrip().Name("TabStrip#=RRRecordGuid#").Items(itm => {
+
+  itm.Add().Text("Services").Content(@<text>
+  @(Html.Kendo().Grid<ServiceDefaultEditModel>()
+  .Name("ServiceDefaults#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeServiceDefaultsForEdit", NpdsController,
+    new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "ServiceDefault has Index in integer range [0,1,...,255]" })
+    ;
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "ServiceDefault has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "ServiceDefault is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "ServiceDefault is Principal?" });
+    col.Bound(row => row.DiristryGuid).Title("Diristry")
+    .HeaderHtmlAttributes(new { title = "Nexus Diristry" })
+    .HtmlAttributes(new { title = "\\#=DiristryGuid\\#" })
+    .ClientTemplate("\\#=DiristryName\\#")
+    .EditorTemplateName("_RecordDiristryGuid");
+    col.Bound(row => row.RegistryGuid).Title("Registry")
+    .HeaderHtmlAttributes(new { title = "PORTAL Registry" })
+    .HtmlAttributes(new { title = "\\#=RegistryGuid\\#" })
+    .ClientTemplate("\\#=RegistryName\\#")
+    .EditorTemplateName("_RecordRegistryGuid");
+    col.Bound(row => row.DirectoryGuid).Title("Directory")
+    .HeaderHtmlAttributes(new { title = "DOORS Directory" })
+    .HtmlAttributes(new { title = "\\#=DirectoryGuid\\#" })
+    .ClientTemplate("\\#=DirectoryName\\#")
+    .EditorTemplateName("_RecordDirectoryGuid");
+    col.Bound(row => row.RegistrarGuid).Title("Registrar")
+    .HeaderHtmlAttributes(new { title = "Scribe Registrar" })
+    .HtmlAttributes(new { title = "\\#=RegistrarGuid\\#" })
+    .ClientTemplate("\\#=RegistrarName\\#")
+    .EditorTemplateName("_RecordRegistrarGuid");
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .ToolBar(tb => tb.ClientTemplateId("ServiceDefaultToolBar"))
+  .Events(ce => ce.Page("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("EntityLabels").Content(@<text>
+  @(Html.Kendo().Grid<EntityLabelEditModel>()
+  .Name("EntityLabels#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsGenerating).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsResolvable).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrivate).Editable(true).DefaultValue(false);
+    m.Field(p => p.ServiceTypeCode).Editable(true).DefaultValue(2);
+    m.Field(p => p.TagToken).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.LabelUri).Editable(false).DefaultValue(string.Empty);
+    m.Field(p => p.EntityLabel).Editable(false).DefaultValue(string.Empty);
+    m.Field(p => p.EntityLabelHtml).Editable(false).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeEntityLabelsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeEntityLabel", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeEntityLabel", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeEntityLabel", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "EntityLabel has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckEntityLabel").Click("OnCheckEntityLabel").Text("Check").HtmlAttributes(new { title = "Check EntityLabel" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "EntityLabel has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "EntityLabel is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "EntityLabel is Principal (Canonical)?" });
+    col.Bound(row => row.EntityLabelHtml).Title("EntityLabel").Encoded(false)
+    .HeaderHtmlAttributes(new { title = "Entity Label derived from LabelUri or from TagToken concatenated with Registry Label" });
+    col.Bound(row => row.IsResolvable).Title("Resolvable")
+    .HeaderHtmlAttributes(new { title = "EntityLabel is Resolvable? (URI is also URL?)" });
+    col.Bound(row => row.IsPrivate).Title("Private")
+    .HeaderHtmlAttributes(new { title = "EntityLabel is Private?" });
+    col.Bound(row => row.TagToken).Title("TagToken")
+    .HeaderHtmlAttributes(new { title = "EntityLabel TagToken" });
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("EntityLabelToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("SupportingTags").Content(@<text>
+  @(Html.Kendo().Grid<SupportingTagEditModel>()
+  .Name("SupportingTags#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.SupportingTag).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeSupportingTagsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeSupportingTag", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeSupportingTag", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeSupportingTag", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "SupportingTag has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckSupportingTag").Click("OnCheckSupportingTag").Text("Check").HtmlAttributes(new { title = "Check SupportingTag" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "SupportingTag has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "SupportingTag is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "SupportingTag is Principal?" });
+    col.Bound(row => row.SupportingTag).Title("SupportingTag");
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("SupportingTagToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("SupportingLabels").Content(@<text>
+  @(Html.Kendo().Grid<SupportingLabelEditModel>()
+  .Name("SupportingLabels#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.SupportingLabel).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeSupportingLabelsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeSupportingLabel", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeSupportingLabel", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeSupportingLabel", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "SupportingLabel has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckSupportingLabel").Click("OnCheckSupportingLabel").Text("Check").HtmlAttributes(new { title = "Check SupportingLabel" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "SupportingLabel has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "SupportingLabel is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "SupportingLabel is Principal?" });
+    col.Bound(row => row.SupportingLabel).Title("SupportingLabel").Encoded(false);
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("SupportingLabelToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("CrossReferences").Content(@<text>
+  @(Html.Kendo().Grid<CrossReferenceEditModel>()
+  .Name("CrossReferences#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.CrossReference).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeCrossReferencesForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeCrossReference", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeCrossReference", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeCrossReference", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // Datasource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "CrossReference has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckCrossReference").Click("OnCheckCrossReference").Text("Check").HtmlAttributes(new { title = "Check CrossReference" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "CrossReference has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "CrossReference is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "CrossReference is Principal?" });
+    col.Bound(row => row.CrossReference).Title("CrossReference").Encoded(false);
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("CrossReferenceToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("OtherTexts").Content(@<text>
+  @(Html.Kendo().Grid<OtherTextEditModel>()
+  .Name("OtherTexts#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.OtherText).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeOtherTextsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeOtherText", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeOtherText", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeOtherText", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "OtherText has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckOtherText").Click("OnCheckOtherText").Text("Check").HtmlAttributes(new { title = "Check OtherText" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "OtherText has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "OtherText is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "OtherText is Principal?" });
+    col.Bound(row => row.OtherText).Title("OtherText")
+    .HeaderHtmlAttributes(new { title = "OtherText in valid XML format" });
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("OtherTextToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("Locations").Content(@<text>
+  @(Html.Kendo().Grid<LocationEditModel>()
+  .Name("Locations#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.Telephone).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.EmailAddress).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.UrlWebAddress).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.StreetAddress).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.CityLocality).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.StateRegion).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.Country).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.PostalCode).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.Location).Editable(false).DefaultValue(String.Empty);
+    m.Field(p => p.GeocodeType).Editable(false).DefaultValue(String.Empty);
+    m.Field(p => p.GeocodeConfidence).Editable(false).DefaultValue(String.Empty);
+    m.Field(p => p.FormattedAddress).Editable(false).DefaultValue(String.Empty);
+    m.Field(p => p.Latitude).Editable(false).DefaultValue(0);
+    m.Field(p => p.Longitude).Editable(false).DefaultValue(0);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeLocationsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeLocation", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeLocation", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeLocation", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "Location has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckLocation").Click("OnCheckLocation").Text("Check").HtmlAttributes(new { title = "Check Location" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "Location has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "Location is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "Location is Principal?" });
+    col.Bound(row => row.Telephone).Title("Phone Number");
+    col.Bound(row => row.EmailAddress).Title("Email Address");
+    col.Bound(row => row.UrlWebAddress).Title("Web Address")
+    .ClientTemplate("\\#=UrlWebAddressHtml\\#");
+    col.Bound(row => row.StreetAddress).Title("Street Address");
+    col.Bound(row => row.CityLocality).Title("City / Locality");
+    col.Bound(row => row.StateRegion).Title("State / Region");
+    col.Bound(row => row.Country).Title("Country");
+    col.Bound(row => row.PostalCode).Title("Postal Code");
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("LocationToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("Descriptions").Content(@<text>
+  @(Html.Kendo().Grid<DescriptionEditModel>()
+  .Name("Descriptions#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.Description).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeDescriptionsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeDescription", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeDescription", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeDescription", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "Description has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckDescription").Click("OnCheckDescription").Text("Check").HtmlAttributes(new { title = "Check Description" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "Description has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "Description is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "Description is Principal?" });
+    col.Bound(row => row.Description).Title("Description")
+    .HeaderHtmlAttributes(new { title = "Description in full format" });
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("DescriptionToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("Provenances").Content(@<text>
+  @(Html.Kendo().Grid<ProvenanceEditModel>()
+  .Name("Provenances#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.Provenance).Editable(true).DefaultValue(String.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeProvenancesForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeProvenance", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeProvenance", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeProvenance", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "Provenance has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckProvenance").Click("OnCheckProvenance").Text("Check").HtmlAttributes(new { title = "Check Provenance" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "Provenance has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "Provenance is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "Provenance is Principal?" });
+    col.Bound(row => row.Provenance).Title("Provenance")
+    .HeaderHtmlAttributes(new { title = "Provenance in valid XML format" });
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("ProvenanceToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("Distributions").Content(@<text>
+  @(Html.Kendo().Grid<DistributionEditModel>()
+  .Name("Distributions#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.Distribution).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeDistributionsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeDistribution", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeDistribution", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeDistribution", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "Distribution has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckDistribution").Click("OnCheckDistribution").Text("Check").HtmlAttributes(new { title = "Check Distribution" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "Distribution has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.IsMarked).Title("Marked")
+    .HeaderHtmlAttributes(new { title = "Distribution is Marked?" });
+    col.Bound(row => row.IsPrincipal).Title("Principal")
+    .HeaderHtmlAttributes(new { title = "Distribution is Principal?" });
+    col.Bound(row => row.Distribution).Title("Distribution")
+    .HeaderHtmlAttributes(new { title = "Distribution in valid XML format" });
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("DistributionToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("FairMetrics").Content(@<text>
+  @(Html.Kendo().Grid<FairMetricEditModel>()
+  .Name("FairMetrics#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.MInvalidOldClaim).Editable(true).DefaultValue(0);
+    m.Field(p => p.QValidOldClaim).Editable(true).DefaultValue(0);
+    m.Field(p => p.PInvalidNewClaim).Editable(true).DefaultValue(0);
+    m.Field(p => p.NValidNewClaim).Editable(true).DefaultValue(0);
+    m.Field(p => p.FAIR1).Editable(false).DefaultValue(0);
+    m.Field(p => p.FAIR2).Editable(false).DefaultValue(0);
+    m.Field(p => p.FAIR3).Editable(false).DefaultValue(0);
+    m.Field(p => p.FAIR4).Editable(false).DefaultValue(0);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeFairMetricsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeFairMetric", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Update(put => put.Action("EditScribeFairMetric", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Destroy(delete => delete.Action("DeleteScribeFairMetric", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "FairMetric has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckFairMetric").Click("OnCheckFairMetric").Text("Check").HtmlAttributes(new { title = "Check FairMetric" });
+    }).Title("");  // end Command
+    col.Bound(row => row.HasPriority).Title("Priority")
+    .HeaderHtmlAttributes(new { title = "FairMetric has Priority in integer range [0,1,...,255]" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.MInvalidOldClaim).Title("M = Misquoted")
+    .HeaderHtmlAttributes(new { title = "Invalid Old Claims" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.QValidOldClaim).Title("Q = Quoted")
+    .HeaderHtmlAttributes(new { title = "Valid Old Claims" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.PInvalidNewClaim).Title("P = Plagiarized")
+    .HeaderHtmlAttributes(new { title = "Invalid New Claims" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.NValidNewClaim).Title("N = Novel")
+    .HeaderHtmlAttributes(new { title = "Valid New Claims" })
+    .EditorTemplateName("_PriorityInteger");
+    col.Bound(row => row.FAIR1).Title("F1").Format(FairFormat)
+    .HeaderHtmlAttributes(new { title = "FAIR 1 Metric" });
+    col.Bound(row => row.FAIR2).Title("F2").Format(FairFormat)
+    .HeaderHtmlAttributes(new { title = "FAIR 2 Metric" });
+    col.Bound(row => row.FAIR3).Title("F3").Format(FairFormat)
+    .HeaderHtmlAttributes(new { title = "FAIR 3 Metric" });
+    col.Bound(row => row.FAIR4).Title("F4").Format(FairFormat)
+    .HeaderHtmlAttributes(new { title = "FAIR 4 Metric" });
+    col.Command(com =>
+    {
+      com.Destroy();
+    }).Title(""); // end Command
+    col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
+    col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+    .HeaderHtmlAttributes(new { title = "Updated by agent" });
+  }) // end Columns
+  .Editable(edit => edit.Mode(GridEditMode.InLine))
+  .ToolBar(tb => tb.ClientTemplateId("FairMetricToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("Snapshots").Content(@<text>
+  @(Html.Kendo().Grid<NexusSnapshotEditModel>()
+  .Name("Snapshots#=RRRecordGuid#")
+  .DataSource(ds => ds.Ajax()
+  .Model(m => {
+    m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.NexusSnapshot).Editable(false);
+    m.Field(p => p.CreatedOn).Editable(false);
+    m.Field(p => p.CreatedByAgentName).Editable(false);
+  }) // end Model
+  .Read(get => get.Action("SelectScribeSnapshotsForEdit", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Create(post => post.Action("EditScribeSnapshot", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+  .Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+    col.Bound(row => row.RRFgroupGuid).Hidden(true);
+    col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.NexusSnapshot).Title("Snapshot");
+    col.Bound(row => row.CreatedOn).Title("ArchivedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Archived on date" });
+    col.Bound(row => row.CreatedByAgentName).Title("ArchivedBy")
+    .HeaderHtmlAttributes(new { title = "Archived by agent" });
+  }) // end Columns
+  .ToolBar(tb => tb.ClientTemplateId("ResrepSnapshotToolBar"))
+  .Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+  .Pageable(pg => pg.Refresh(true)).Sortable()
+  .ToClientTemplate()) </text>);
+
+  itm.Add().Text("Status").LoadContentFrom("SummarizeScribeResrepLeaf", NpdsController,
+  new { area = NpdsArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" });
+
+  }).SelectedIndex(0).ToClientTemplate()
+  )
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#NpdsGrid").show();
+    $("#ResrepRecordGrid").data("kendoGrid").resize();
+  })
+  function OnChangeRecord(e) {
+    if (e.type === "create" || e.type === "update" || e.type === "destroy") {
+      // alert(JSON.stringify(e));
+      var data = e.response.Data[0];
+      // alert(JSON.stringify(data));
+      // var emsg = data.PdpStatusName + " = " + data.PdpStatusMessage;
+      // alert(emsg);
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }
+  }
+  function OnRefreshRecord(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/RefreshScribeResrepStatus/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0]; // alert(JSON.stringify(data));
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnValidateRecord(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/ValidateScribeResrepStatus/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckEntityLabel(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeEntityLabel/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckSupportingTag(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeSupportingTag/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckSupportingLabel(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeSupportingLabel/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckCrossReference(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeCrossReference/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckOtherText(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeOtherText/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckLocation(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeLocation/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckDescription(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeDescription/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckProvenance(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeProvenance/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckDistribution(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeDistribution/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+  function OnCheckFairMetric(e) {
+    var tr = $(e.currentTarget).closest("tr");
+    var id = this.dataItem(tr).id;
+    var url = "/PDP/EditorScribeTkgr/CheckScribeFairMetric/" + id;
+    $.post(url, null, function (result) {
+      var data = result.Data[0];
+      $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+    }, "json");
+  }
+
+  function HideStatus(e) {
+    $("span#ResrepRootStatus").hide();
+    $("span#ResrepStemStatus").hide();
+    $("span#ResrepLeafStatus").hide();
+    $("span#ServiceDefaultStatus").hide();
+    $("span#EntityLabelStatus").hide();
+    $("span#SupportingTagStatus").hide();
+    $("span#SupportingLabelStatus").hide();
+    $("span#CrossReferenceStatus").hide();
+    $("span#OtherTextStatus").hide();
+    $("span#LocationStatus").hide();
+    $("span#DescriptionStatus").hide();
+    $("span#ProvenanceStatus").hide();
+    $("span#DistributionStatus").hide();
+    $("span#FairMetricStatus").hide();
+    $("span#ResrepSnapshotStatus").hide();
+  }
+  function ResizeGrid(e) {
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    grid.resize();
+  }
+  function RefreshGrid(e) {
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    grid.dataSource.read();
+  }
+  function HandleJsonErrors(e) {
+    // alert(e.xhr.responseText);
+    var msg = $.parseJSON(e.xhr.responseText);
+    if (msg) {
+      alert("Errors:\n" + msg.join("\n"));
+    }
+  }
+  function HandleAjaxErrors(e) {
+    if (e.errors) {
+      var message = "Errors:\n";
+      $.each(e.errors, function (key, value) {
+        if ('errors' in value) {
+          $.each(value.errors, function () {
+            message += this + "\n";
+          });
+        }
+      });
+      alert(message);
+    }
+  }
+</script>

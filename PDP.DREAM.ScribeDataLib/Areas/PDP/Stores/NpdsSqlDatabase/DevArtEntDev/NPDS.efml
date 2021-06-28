@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<efcore context-namespace="PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase" namespace="PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase" p1:name="ScribeDbsqlContext" p1:Guid="9b64ffd1-c35c-4f35-bdab-3febf7b505a6" p1:ContextBase="PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase.NexusDbsqlContext" p1:DoNotGenerateConstructorWithDbContextOptionsArgument="True" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+  <method name="ScribeSupportingTagDelete" p1:procedure="dbo.ScribeSupportingTagDelete" p1:Guid="031034fb-31d3-40e0-985c-2f02def291fa">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeSupportingLabelDelete" p1:procedure="dbo.ScribeSupportingLabelDelete" p1:Guid="d98c685c-5076-4589-a130-7e36c13452ad">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeCrossReferenceDelete" p1:procedure="dbo.ScribeCrossReferenceDelete" p1:Guid="9c9b5f0b-f5e0-4495-9a74-1bdc67b1afd0">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeOtherTextDelete" p1:procedure="dbo.ScribeOtherTextDelete" p1:Guid="98693fa9-7d43-4a4c-99fa-fdd0d2130498">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeDescriptionDelete" p1:procedure="dbo.ScribeDescriptionDelete" p1:Guid="54e9d0bf-0aa3-46d4-beb3-6030341da8d6">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeDistributionDelete" p1:procedure="dbo.ScribeDistributionDelete" p1:Guid="df566fa3-0f37-4b4d-912a-5f78cba77a43">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeProvenanceDelete" p1:procedure="dbo.ScribeProvenanceDelete" p1:Guid="d4dee8e8-1b7b-47f8-a92d-ba5c836f1cfe">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeFairMetricDelete" p1:procedure="dbo.ScribeFairMetricDelete" p1:Guid="bfc5319b-44a2-48fa-8c0b-3e356c6e6fe8">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeLocationDelete" p1:procedure="dbo.ScribeLocationDelete" p1:Guid="6403ec09-d648-4398-b17b-3f22e6f61e6e">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepStatusCountsUpdate" p1:procedure="dbo.ScribeResrepStatusCountsUpdate" p1:Guid="c1459132-7c61-4dd6-aa25-c63913947b41">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="ResrepEntityStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="ResrepRecordStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="ResrepInfosetStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="EntityLabelsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="SupportingTagsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="SupportingLabelsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="CrossReferencesStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="OtherTextsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="LocationsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="DescriptionsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="ProvenancesStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="DistributionsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="FairMetricsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="NexusSnapshotsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="InfosetPortalStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="InfosetDoorsStatusCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+  </method>
+  <method name="ScribeEntityLabelDelete" p1:procedure="dbo.ScribeEntityLabelDelete" p1:Guid="d838af09-5b44-4628-a797-e70d67761aed">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepSnapshotDelete" p1:procedure="dbo.ScribeResrepSnapshotDelete" p1:Guid="bdf97d7d-83a6-4c2e-b13e-741be9b5a6a9">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepStemDelete" p1:procedure="dbo.ScribeResrepStemDelete" p1:Guid="c3e45f5f-72b6-488e-a33c-457d638702cb">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepRootDelete" p1:procedure="dbo.ScribeResrepRootDelete" p1:Guid="cb58cf9e-1023-4b3b-a53e-fc49c3064578">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepAuthorRequestDelete" p1:procedure="dbo.ScribeResrepAuthorRequestDelete" p1:Guid="90ef45d9-d9a2-4dee-be35-326dbf4db8a4">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceRestrictionAndDelete" p1:procedure="dbo.ScribeServiceRestrictionAndDelete" p1:Guid="4ae7b4c9-32bc-4053-87e2-7dcecef7ee40">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionAndGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceRestrictionOrDelete" p1:procedure="dbo.ScribeServiceRestrictionOrDelete" p1:Guid="cfd6784a-6176-40d2-9f57-693a9c492c3b">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="ResourceGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionAndGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionOrGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceEditorRequestDelete" p1:procedure="dbo.ScribeServiceEditorRequestDelete" p1:Guid="7bef94bb-7ac0-41c8-9e52-ae5642348aa3">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceNpdsDefaultDelete" p1:procedure="dbo.ScribeServiceNpdsDefaultDelete" p1:Guid="9c25a476-a06b-4c20-b0d9-2175e46a0884">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceEditorRequestEdit" p1:procedure="dbo.ScribeServiceEditorRequestEdit" p1:Guid="186661a5-04d8-4a15-a75c-0f16a0740fae">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AccessRequestedForAgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AccessRequestedByAgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RequestIsApproved" type="Boolean" sql-type="bit" />
+    <parameter name="RequestIsDenied" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceNpdsDefaultEdit" p1:procedure="dbo.ScribeServiceNpdsDefaultEdit" p1:Guid="0565d615-3e39-4a99-88da-542376ec69f8">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="DiristryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DirectoryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistrarIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="ScribeResrepAuthorRequestEdit" p1:procedure="dbo.ScribeResrepAuthorRequestEdit" p1:Guid="7cf9ef85-5166-412f-9e61-c5ce4befaad2">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AccessRequestedForAgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AccessRequestedByAgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RequestIsApproved" type="Boolean" sql-type="bit" />
+    <parameter name="RequestIsDenied" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceRestrictionAndEdit" p1:procedure="dbo.ScribeServiceRestrictionAndEdit" p1:Guid="71d65c9d-d472-4628-a930-03ea2910a567">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionAndGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionAndPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="RestrictionName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="IsSufficient" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepRootEdit" p1:procedure="dbo.ScribeResrepRootEdit" p1:Guid="917f3915-0cc5-4b16-8b4d-5ef7424b3b44">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="EntityTypeCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="EntityInitialTag" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="EntityName" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="EntityNature" type="String" sql-type="nvarchar" length="1024" />
+    <parameter name="RecordDiristryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordRegistryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordDirectoryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordRegistrarGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetIsAuthorPrivate" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsAgentShared" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsUpdaterLimited" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsManagerReleased" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepStemEdit" p1:procedure="dbo.ScribeResrepStemEdit" p1:Guid="f6b1e6e9-c0f3-46dc-9993-9cc68e8e7825">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="EntityTypeCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="EntityInitialTag" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="EntityName" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="EntityNature" type="String" sql-type="nvarchar" length="1024" />
+    <parameter name="RecordDiristryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordRegistryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordDirectoryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordRegistrarGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetIsAuthorPrivate" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsAgentShared" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsUpdaterLimited" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsManagerReleased" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeDescriptionEdit" p1:procedure="dbo.ScribeDescriptionEdit" p1:Guid="05d0f938-f473-4290-928d-00a0f2eec30e">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="Description" type="String" sql-type="nvarchar" />
+  </method>
+  <method name="ScribeDistributionEdit" p1:procedure="dbo.ScribeDistributionEdit" p1:Guid="352a02e9-cba9-4c65-b51b-bb1212047c40">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="Distribution" type="String" sql-type="nvarchar" />
+  </method>
+  <method name="ScribeFairMetricEdit" p1:procedure="dbo.ScribeFairMetricEdit" p1:Guid="880f5f1b-3df6-4b64-8f7c-2f6d3dc7483d">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="Mcount" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="Qcount" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="Pcount" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="Ncount" type="Int16" sql-type="smallint" precision="5" scale="0" />
+  </method>
+  <method name="ScribeLocationEdit" p1:procedure="dbo.ScribeLocationEdit" p1:Guid="c81b23ba-5330-453f-913b-25df2e5b0aee">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="Location" type="String" sql-type="nvarchar" />
+    <parameter name="DisplayText" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DisplayImageUrl" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="UrlWebAddress" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="UrlWebAddressValidated" type="DateTime" sql-type="datetime2" />
+    <parameter name="EmailAddress" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="EmailAddressValidated" type="DateTime" sql-type="datetime2" />
+    <parameter name="StreetAddress" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="StreetAddressValidated" type="DateTime" sql-type="datetime2" />
+    <parameter name="ExtendedAddress" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="FormattedAddress" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="CityLocality" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="StateRegion" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="Country" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="PostalCode" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="Telephone" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="GeocodeType" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="GeocodeConfidence" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="Latitude" type="Double" sql-type="float" precision="53" />
+    <parameter name="Longitude" type="Double" sql-type="float" precision="53" />
+  </method>
+  <method name="ScribeProvenanceEdit" p1:procedure="dbo.ScribeProvenanceEdit" p1:Guid="ff09bf79-f913-48da-99d8-6e021bbe89b5">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="Provenance" type="String" sql-type="nvarchar" />
+  </method>
+  <method name="ScribeResrepSnapshotEdit" p1:procedure="dbo.ScribeResrepSnapshotEdit" p1:Guid="cbfeabd9-cdd0-407d-87ec-a3bfb032d3ec">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="ResrepSnapshotXml" type="String" sql-type="nvarchar" />
+  </method>
+  <method name="ScribeCrossReferenceEdit" p1:procedure="dbo.ScribeCrossReferenceEdit" p1:Guid="598ad75f-e5ae-46c4-997d-9fd596fc9337">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="CrossReference" type="String" sql-type="nvarchar" length="256" />
+  </method>
+  <method name="ScribeOtherTextEdit" p1:procedure="dbo.ScribeOtherTextEdit" p1:Guid="b3cd937a-637c-4238-b32b-23ca825b4db8">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="OtherText" type="String" sql-type="nvarchar" />
+  </method>
+  <method name="ScribeSupportingLabelEdit" p1:procedure="dbo.ScribeSupportingLabelEdit" p1:Guid="e41d3ea4-0384-42f5-bef1-7443db640b39">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="SupportingLabel" type="String" sql-type="nvarchar" length="256" />
+  </method>
+  <method name="ScribeSupportingTagEdit" p1:procedure="dbo.ScribeSupportingTagEdit" p1:Guid="2def7e69-f5e4-4c16-a874-8fca8ab90710">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="SupportingTag" type="String" sql-type="nvarchar" length="256" />
+  </method>
+  <method name="ScribeEntityLabelEdit" p1:procedure="dbo.ScribeEntityLabelEdit" p1:Guid="ec88112d-f8ab-442f-8485-f8893c1b55d7">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DiristryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DirectoryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistrarGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="ServiceTypeCode" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="TagToken" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="LabelUri" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="HasPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="IsResolvable" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrivate" type="Boolean" sql-type="bit" />
+    <parameter name="IsGenerating" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeServiceRestrictionOrEdit" p1:procedure="dbo.ScribeServiceRestrictionOrEdit" p1:Guid="2acc437f-22fa-4756-81e4-7372eed7b08f">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionAndGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionOrGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RestrictionOrPriority" type="Byte" sql-type="tinyint" precision="3" scale="0" />
+    <parameter name="RestrictionValue" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="IsWordPhrase" type="Boolean" sql-type="bit" />
+    <parameter name="IsConceptLabel" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepLeafDelete" p1:procedure="dbo.ScribeResrepLeafDelete" p1:Guid="42aa9b3b-ef2d-4268-aa62-cab034a77866">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepLeafEdit" p1:procedure="dbo.ScribeResrepLeafEdit" p1:Guid="36fdf247-edc4-4d09-a81a-4d0cea0f49b5">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="EntityTypeCode" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="EntityName" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="EntityNature" type="String" sql-type="nvarchar" length="1024" />
+    <parameter name="RecordDiristryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordRegistryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordDirectoryGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordRegistrarGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetIsAuthorPrivate" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsAgentShared" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsUpdaterLimited" type="Boolean" sql-type="bit" />
+    <parameter name="InfosetIsManagerReleased" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeResrepEditMergeToSame" p1:procedure="dbo.ScribeResrepEditMergeToSame" p1:Guid="2f208fe4-09aa-40c8-b38c-14e8ed270e20">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordHandleToRetain" type="String" sql-type="char" length="9" />
+    <parameter name="RecordHandleToDelete" type="String" sql-type="char" length="9" />
+  </method>
+  <method name="ScribeResrepEditSplitToDifferent" p1:procedure="dbo.ScribeResrepEditSplitToDifferent" p1:Guid="a2b974e5-d5f9-45e4-8cc3-ecf99775987a">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordHandleToSplit" type="String" sql-type="char" length="9" />
+  </method>
+  <method name="ScribeGenerateExamplesDocument" p1:procedure="dbo.ScribeGenerateExamplesDocument" p1:Guid="b3cd2b25-d0ee-42be-9216-6cef848f566f">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DiristryTag" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="ExampleCount" p1:parameter-direction="InOut" type="Int32" sql-type="int" precision="10" scale="0" />
+  </method>
+  <method name="ScribeGeneratePrinciplesOntology" p1:procedure="dbo.ScribeGeneratePrinciplesOntology" p1:Guid="c18ff6e5-90a4-418f-85f8-4898f3a771cd">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DiristryTag" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="PrincipleCount" p1:parameter-direction="InOut" type="Int32" sql-type="int" precision="10" scale="0" />
+  </method>
+  <method name="ScribeAgentSessionEdit" p1:procedure="dbo.ScribeAgentSessionEdit" p1:Guid="9df21950-ac8a-456e-9baa-1e2c4f3ce23e" p1:GenerateAsync="False">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="IdentityAppGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IdentityUserGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IdentityUserNameDisp" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="AgentGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="SessionGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="ScribeCrossReferenceCheck" p1:procedure="dbo.ScribeCrossReferenceCheck" p1:Guid="a3dd837e-00af-4215-b3dd-05288cfba4a8">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="ScribeAgentSessionCheck" p1:procedure="dbo.ScribeAgentSessionCheck" p1:Guid="da829b8f-e4fc-4d51-b160-d51e0bb9226b" p1:GenerateAsync="False">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="IdentityAppGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="SessionValueIsRequired" type="Boolean" sql-type="bit" />
+    <parameter name="SessionGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AgentGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AgentInfosetGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AgentUserNameDisp" p1:parameter-direction="InOut" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="AgentIsAuthor" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsEditor" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsAdmin" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+  </method>
+</efcore>

@@ -1,0 +1,31 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/EditorResreps/Index"))
+
+<p>
+  You are registered as an NPDS Record Editor
+  and may edit resource metadata records on this server for any services
+  for which you have been granted Editor privileges.
+</p>
+
+<h3>NPDS Editor Import Records</h3>
+
+<ul>
+  <li> @Html.ActionLink("Import BibTexRef List", "ImportBibtexList", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import BibTexRef Item", "ImportBibtexItem", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import BibTexRef by DOI", "ImportBibtexByDoi", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import Principle for PDP-DREAM", "ImportPrinciple", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import Example for PDP-DREAM", "ImportExample", "EditorResreps", new { area = "PDP" }) </li>
+</ul>
+
+<h3>NPDS Editor Manage Records</h3>
+
+<ul>
+  <li> @Html.ActionLink("Request Editor Access to Service", "ServiceEditorRequests", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Merge To Same for PDP-DREAM", "MergeToSame", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Split To Different for PDP-DREAM", "SplitToDifferent", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Generate PDP-DREAM ontology from principles", "GenerateOntology", "EditorResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Generate PDP-DREAM document from examples", "GenerateDocument", "EditorResreps", new { area = "PDP" }) </li>
+</ul>

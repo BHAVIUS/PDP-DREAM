@@ -1,0 +1,6 @@
+@model String
+
+@(Html.Kendo().EditorFor(te => te)
+  .Resizable(rs => rs.Content(true))
+  .HtmlAttributes(new { style = "max-width: 100%", title = "Copy paste and/or edit your text here." })
+)

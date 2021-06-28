@@ -1,0 +1,6 @@
+@model string
+
+@(
+  Html.TextAreaFor(m => m, 4, 64, 
+    new { style = "max-width: 100%", title = "Copy and paste your text here." })
+)

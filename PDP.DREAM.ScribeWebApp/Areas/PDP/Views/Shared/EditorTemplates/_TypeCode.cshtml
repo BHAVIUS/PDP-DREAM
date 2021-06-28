@@ -1,0 +1,7 @@
+@model Int16?
+
+@(Html.Kendo().DropDownList()
+  .Name("TypeCode").DataTextField("Text").DataValueField("Value")
+  .AutoBind(true).BindTo((SelectList)ViewData["TypeCodeList"]).ValuePrimitive(true)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate Daylog Entry Type." })
+)

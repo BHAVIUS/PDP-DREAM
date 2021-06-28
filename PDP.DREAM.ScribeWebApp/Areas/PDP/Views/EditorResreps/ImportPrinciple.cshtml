@@ -1,0 +1,76 @@
+﻿@using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase
+@model DreamPrincipleEditModel
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("Editor Import Principle for PDP-DREAM"))
+
+<p>
+  This form intended for import and creation of PDP-DREAM diristry records 
+  for PDP-DREAM principles.
+  The source reference for the principle may be entered as an NPDS CrossReference 
+  (with identifying EntityLabel) to the NPDS metadata record 
+  about the source reference, and also as an NPDS Location 
+  (with URL and page number querystring <q>?page=123</q>) to 
+  an e-copy of the source reference.
+  A pseudo-XML/RDF summary of Subject-Verb-Object for the principle
+  may be entered as an NPDS Description initially formatted simply as
+<q>@Html.Raw(Html.Encode(@"<desc><sub>the subject</sub><vrb>the verb</vrb><obj> the object</obj></desc>"))</q>
+  (or as more formal valid XML/RDF).
+</p>
+
+<section id="DreamPrincipleForm">
+  @using (Html.BeginForm("ImportPrinciple", "EditorResreps", new { area = "PDP" }, FormMethod.Post))
+  {
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.EntityTag, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.EntityTag, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.EntityTag, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.EntityName, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.EntityName, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.EntityName, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.EntityNature, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.EntityNature, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.EntityNature, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.SupportingTag, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.SupportingTag, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.SupportingTag, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.CrossReference, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.CrossReference, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.CrossReference, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.OtherText, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.OtherText, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.OtherText, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.Location, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.Location, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.Location, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.Description, new { @class = "control-label col-md-6" })
+      @Html.TextBoxFor(m => m.Description, new { @class = "form-control col-md-6" })
+      @Html.ValidationMessageFor(m => m.Description, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default col-md-offset-2 col-md-2">Import Metadata Record</button>
+    </div>
+  }
+</section>
+
+<partial name="_ValidationScripts" />

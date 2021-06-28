@@ -1,0 +1,21 @@
+﻿@(
+Html.Kendo().Menu().Name("MenuNexusAnonGsn")
+.HtmlAttributes(new { style = "float: left" }).Items(m => {
+m.Add().Text("Home").Items(s => {
+s.Add().Text("PDP Info").Url("~/PDP/Site/Info");
+s.Add().Text("PDP Design").Url("~/PDP/Site/Design");
+s.Add().Text("PDP Papers").Url("~/PDP/Site/Papers");
+s.Add().Text("BHA Home").Url("http://www.brainhealthalliance.org/").LinkHtmlAttributes(new { target = "BHAO" });
+s.Add().Text("BHA Registrar").Url("https://www.brainhealthalliance.net/").LinkHtmlAttributes(new { target = "BHAN" });
+s.Add().Text("GTG Home").Url("http://www.telegenetics.com/").LinkHtmlAttributes(new { target = "GTGC" });
+s.Add().Text("GTG Registrar").Url("https://www.telegenetics.net/").LinkHtmlAttributes(new { target = "GTGN" });
+s.Add().Text("PDP Home").Url("http://www.portaldoors.org/").LinkHtmlAttributes(new { target = "PDPO" });
+s.Add().Text("PDP Registrar").Url("https://www.portaldoors.net/").LinkHtmlAttributes(new { target = "PDPN" });
+}); // end s items
+m.Add().Text("Records").Items(s => {
+s.Add().Text("Index").Url("~/PDP/AnonResreps/Index");
+s.Add().Text("GeneScene").Url("~/PDP/AnonResreps/NpdsView/Nexus/GeneScene");
+s.Add().Text("Osler").Url("~/PDP/AnonResreps/NpdsView/Nexus/Osler");
+}); // end s items
+}) // end m items
+)

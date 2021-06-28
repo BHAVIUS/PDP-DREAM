@@ -1,0 +1,33 @@
+﻿@using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase
+@model ResrepMergeToSameModel
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle())
+
+
+<section id="DreamPrincipleForm">
+  @using (Html.BeginForm("MergeToSame", "EditorResreps", new { area = "PDP" }, FormMethod.Post))
+  {
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.RecordHandleToRetain, new { @class = "control-label col-md-4" })
+      @Html.TextBoxFor(m => m.RecordHandleToRetain, new { @class = "form-control col-md-4" })
+      @Html.ValidationMessageFor(m => m.RecordHandleToRetain, null, new { @class = "control-label col-md-3 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.RecordHandleToDelete, new { @class = "control-label col-md-4" })
+      @Html.TextBoxFor(m => m.RecordHandleToDelete, new { @class = "form-control col-md-4" })
+      @Html.ValidationMessageFor(m => m.RecordHandleToDelete, null, new { @class = "control-label col-md-3 text-danger" })
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default col-md-2">Merge To Same</button>
+    </div>
+  }
+</section>
+
+<partial name="_ValidationScripts" />

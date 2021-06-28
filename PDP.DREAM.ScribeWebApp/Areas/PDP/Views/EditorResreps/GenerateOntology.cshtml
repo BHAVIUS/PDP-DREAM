@@ -1,0 +1,11 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle())
+
+<p>
+  Edit PDP-DREAM ontology principles at
+  @Html.ActionLink("PDP-DREAM diristry records", "NpdsEdit", "EditorResreps",
+  new { area = "PDP", serviceType = "Nexus", serviceTag = "PDP-DREAM", entityType = "Principle" })
+</p>

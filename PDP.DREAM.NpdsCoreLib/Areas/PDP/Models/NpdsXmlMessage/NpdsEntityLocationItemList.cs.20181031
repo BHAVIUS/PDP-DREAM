@@ -1,0 +1,104 @@
+﻿using System;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+
+namespace PDP.DREAM.NpdsCoreLib.Models
+{
+  [KnownType(typeof(NpdsEntityLocationItem)), XmlSchemaProvider(null, IsAny = true)]
+  public class NpdsEntityLocationItem : ANpdsXsgBaseItem<Uri>
+  {
+    public NpdsEntityLocationItem() : base() { this.Initialize(); }
+    public NpdsEntityLocationItem(NpdsConstants.FieldRule rul) : base() { this.Initialize(rul); }
+    public NpdsEntityLocationItem(NpdsConstants.FieldRule rul, Uri val) : base(val) { this.Initialize(rul); }
+
+    private void Initialize(NpdsConstants.FieldRule rul = default(NpdsConstants.FieldRule))
+    { base.InitNpdsItem(rul, NpdsConstants.LocationItemXnam, NpdsConstants.LocationListXnam); }
+
+    public Uri LocationUrl
+    {
+      get { return NpdsItemValue; }
+      set { NpdsItemValue = value; }
+    }
+
+    public void ParseLocationUrl(string value)
+    { NpdsItemValue = NpdsParsers.ParseUrl(value); }
+
+    private XElement locXml;
+    public XElement LocationXml
+    {
+      get { return locXml; }
+      set { locXml = value; }
+    }
+
+    public override void WriteXml(XmlWriter xWriter)
+    {
+      var writer = (PdpXmlWrappingWriter)xWriter;
+      writer.WriteStartElement(NpdsItemXnam);
+      if (writer.PRC.ItemCanBeAccessed)
+      {
+        if (NpdsItemPriorityKeys.Priority.HasValue && writer.PRC.ItemDoesVerbose)
+        {
+          writer.WriteAttributeString(NpdsConstants.ItemPriorityXnam, NpdsItemPriorityKeys.Priority.ToString());
+        }
+        if (NpdsItemPriorityKeys.IntForeignKey.HasValue && writer.PRC.ItemDoesArchive)
+        {
+          writer.WriteAttributeString(NpdsConstants.ItemForeignKeyXnam, NpdsItemPriorityKeys.IntForeignKey.ToString());
+        }
+        if (NpdsItemPriorityKeys.IntPrimaryKey.HasValue && writer.PRC.ItemDoesArchive)
+        {
+          writer.WriteAttributeString(NpdsConstants.ItemPrimaryKeyXnam, NpdsItemPriorityKeys.IntPrimaryKey.ToString());
+        }
+        WriteItemPropAsElem(LocationUrl, NpdsConstants.LocationUrlXnam, writer);
+        WriteItemPropAsElem(LocationXml, NpdsConstants.LocationXmlXnam, writer);
+        WriteItemPropAsElem(DisplayText, NpdsConstants.DisplayTextXnam, writer);
+        WriteItemPropAsElem(DisplayImageUrl, NpdsConstants.DisplayImageUrlXnam, writer);
+      }
+      writer.WriteEndElement();
+    }
+
+    public override void ReadXml(XmlReader xReader)
+    {
+      var reader = (PdpXmlWrappingReader)xReader;
+      reader.MoveToContent();
+      if (reader.IsStartElement(NpdsItemXnam))
+      {
+        if (reader.HasAttributes)
+        {
+          while (reader.MoveToNextAttribute())
+          {
+            string attrNam = reader.LocalName;
+            string attrVal = reader.GetAttribute(attrNam);
+            if (attrNam == NpdsConstants.ItemPriorityXnam)
+            {
+              NpdsItemPriorityKeys.Priority = Convert.ToInt16(attrVal);
+            }
+            else if (attrNam == NpdsConstants.ItemPrimaryKeyXnam)
+            {
+              NpdsItemPriorityKeys.IntPrimaryKey = Convert.ToInt32(attrVal);
+            }
+            else if (attrNam == NpdsConstants.ItemForeignKeyXnam)
+            {
+              NpdsItemPriorityKeys.IntForeignKey = Convert.ToInt32(attrVal);
+            }
+          }
+        }
+        reader.Read();
+        LocationUrl = ReadItemPropAsUri(NpdsConstants.LocationUrlXnam, reader);
+        LocationXml = ReadItemPropAsXElement(NpdsConstants.LocationXmlXnam, reader);
+        DisplayText = ReadItemPropAsString(NpdsConstants.DisplayTextXnam, reader);
+        DisplayImageUrl = ReadItemPropAsUri(NpdsConstants.DisplayImageUrlXnam, reader);
+        reader.Read();
+      }
+    }
+  }
+
+  [KnownType(typeof(NpdsEntityLocationList)), XmlSchemaProvider(null, IsAny = true)]
+  public class NpdsEntityLocationList : ANpdsXsgItemList<NpdsEntityLocationItem>
+  {
+    public NpdsEntityLocationList() : base() { }
+    public NpdsEntityLocationList(NpdsConstants.FieldRule rul) : base(rul) { }
+  }
+
+}

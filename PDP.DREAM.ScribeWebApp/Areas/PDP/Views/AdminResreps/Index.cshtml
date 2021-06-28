@@ -1,0 +1,42 @@
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/AminResreps/Index"))
+
+<p>
+  You are registered as an NPDS Record Administrator 
+  and may edit resource metadata records on this server for any services
+  for which you have been granted Administrator privileges.
+</p>
+
+<h3>NPDS Admin Import Records</h3>
+
+<ul>
+  <li> @Html.ActionLink("Import BibTexRef List", "ImportBibtexList", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import BibTexRef Item", "ImportBibtexItem", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import BibTexRef by DOI", "ImportBibtexByDoi", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import Principle for PDP-DREAM", "ImportPrinciple", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Import Example for PDP-DREAM", "ImportExample", "AdminResreps", new { area = "PDP" }) </li>
+</ul>
+
+<h3>NPDS Admin Manage Records</h3>
+
+<ul>
+  <li> @Html.ActionLink("Request Editor Access to Service", "ServiceEditorRequests", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Merge To Same for PDP-DREAM", "MergeToSame", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Split To Different for PDP-DREAM", "SplitToDifferent", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Generate PDP-DREAM ontology from principles", "GenerateOntology", "AdminResreps", new { area = "PDP" }) </li>
+  <li> @Html.ActionLink("Generate PDP-DREAM document from examples", "GenerateDocument", "AdminResreps", new { area = "PDP" }) </li>
+</ul>
+
+<h3>PDP Admin Manage Users and Roles</h3>
+
+<div>
+  PDP Admin Controller Actions:
+  <a asp-area="PDP" asp-controller="Admin" asp-action="Index">Index</a> |
+  <a asp-area="PDP" asp-controller="Admin" asp-action="ViewRoles">View Roles</a> |
+  <a asp-area="PDP" asp-controller="Admin" asp-action="EditRoles">Edit Roles</a> |
+  <a asp-area="PDP" asp-controller="Admin" asp-action="ViewUsers">View Users</a> |
+  <a asp-area="PDP" asp-controller="Admin" asp-action="EditUsers">Edit Users</a>
+</div>
