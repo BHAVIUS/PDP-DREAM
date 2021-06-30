@@ -49,19 +49,19 @@ Solution Stack of Projects with Assemblies for ScribeWebApp
 </p>
 <ul>
   <li>
-    <a href="https://www.brainhealthalliance.net/" target="Scribe">BHA Registrar</a> for BrainWatch, Eywa,
+    <a href="https://www.brainhealthalliance.net/" target="_blank">BHA Registrar</a> for BrainWatch, Eywa,
     Gaia, HELPME, and SOLOMON diristries supported by Brain Health Alliance
   </li>
   <li>
-    <a href="https://www.telegenetics.net/" target="Scribe">GTG Registrar</a> for BioPORT, CTGaming, GeneScene,
+    <a href="https://www.telegenetics.net/" target="_blank">GTG Registrar</a> for BioPORT, CTGaming, GeneScene,
     ManRay, and Osler diristries supported by Global TeleGenetics
   </li>
   <li>
-    <a href="https://www.portaldoors.net/" target="Scribe">PDP Registrar</a> for Avicenna, Beacon, DaVinci, Knuth, and Socrates diristries
+    <a href="https://www.portaldoors.net/" target="_blank">PDP Registrar</a> for Avicenna, Beacon, DaVinci, Knuth, and Socrates diristries
      supported by the PORTAL-DOORS Project
   </li>
   <li>
-    <a href="https://www.npdslinks.net/" target="Scribe">NPDS Registrar</a> for the NPDS network system root supported by the PORTAL-DOORS Project
+    <a href="https://www.npdslinks.net/" target="_blank">NPDS Registrar</a> for the NPDS network system root supported by the PORTAL-DOORS Project
   </li>
 </ul>
 <p>
@@ -71,15 +71,15 @@ Solution Stack of Projects with Assemblies for ScribeWebApp
 </p>
 <p>
   For comprehensive reports on NPDS, please refer to
-  <a href="~/pub/docs/IEEETITB2008v12n2p191-204Taswell.pdf" target="_blank">
+  <a href="https://www.portaldoors.org/pub/docs/IEEETITB2008v12n2p191-204Taswell.pdf" target="_blank">
   DOORS to the Semantic Web and Grid With a PORTAL for Biomedical Computing</a>
   published online 3 August 2007 in the journal IEEE Transactions on Information Technology in Biomedicine
   and
-  <a href="http://www.mdpi.com/1999-5903/2/2/156/" target="_blank">
+  <a href="https://www.portaldoors.org/pub/docs/FutInt2010v2n2p156-189Taswell.pdf" target="_blank">
   A Distributed Infrastructure for Metadata about Metadata: The HDMM Architectural Style and PORTAL-DOORS System</a>
   published online 1 June 2010 in the journal Future Internet.
   More recent information can be found in the documents available at
-  @Html.ActionLink("PDP Papers", "Papers", "Site", new { area = "PDP" }).
+  <a href="https://www.portaldoors.org/PDP/Site/Papers" target="_blank">https://www.portaldoors.org/PDP/Site/Papers</a>.
   These reports contain explanations of the principles, concepts, models, schemas,
   URL and querystring designs used by PDP for NPDS.
 </p>
@@ -87,20 +87,20 @@ Solution Stack of Projects with Assemblies for ScribeWebApp
 <h4>Nexus Sites (anonymous)</h4>
 
 <ul>
-  <li><a href="http://www.bhaconservation.net/" target="Nexus">www.BHAConservation.net</a></li>
-  <li><a href="http://www.bhahealth.net/" target="Nexus">www.BHAHealth.net</a></li>
-  <li><a href="http://www.biomedicalcomputing.net/" target="Nexus">www.BioMedicalComputing.net</a></li>
-  <li><a href="http://www.brainwatch.net/" target="Nexus">www.BrainWatch.net</a></li>
-  <li><a href="http://www.clinicaltelegaming.net/" target="Nexus">www.ClinicalTeleGaming.net</a></li>
-  <li><a href="http://www.genescene.net/" target="Nexus">www.GeneScene.net</a></li>
-  <li><a href="http://www.nucmedlib.net/" target="Nexus">www.NucMedLib.net</a></li>
+  <li><a href="http://www.bhaconservation.net/" target="_blank">www.BHAConservation.net</a></li>
+  <li><a href="http://www.bhahealth.net/" target="_blank">www.BHAHealth.net</a></li>
+  <li><a href="http://www.biomedicalcomputing.net/" target="_blank">www.BioMedicalComputing.net</a></li>
+  <li><a href="http://www.brainwatch.net/" target="_blank">www.BrainWatch.net</a></li>
+  <li><a href="http://www.clinicaltelegaming.net/" target="_blank">www.ClinicalTeleGaming.net</a></li>
+  <li><a href="http://www.genescene.net/" target="_blank">www.GeneScene.net</a></li>
+  <li><a href="http://www.nucmedlib.net/" target="_blank">www.NucMedLib.net</a></li>
 </ul>
 
 <h4>Scribe Sites (authenticated)</h4>
 
 <ul>
-  <li><a href="https://www.brainhealthalliance.net/" target="Scribe">www.BrainHealthAlliance.net</a></li>
-  <li><a href="https://www.npdslinks.net/" target="Scribe">www.NPDSLINKS.net</a></li>
-  <li><a href="http://www.portaldoors.net/" target="Scribe">www.PORTALDOORS.net</a></li>
-  <li><a href="https://www.telegenetics.net/" target="Scribe">www.TeleGenetics.net</a></li>
+  <li><a href="https://www.brainhealthalliance.net/" target="_blank">www.BrainHealthAlliance.net</a></li>
+  <li><a href="https://www.npdslinks.net/" target="_blank">www.NPDSLINKS.net</a></li>
+  <li><a href="https://www.portaldoors.net/" target="_blank">www.PORTALDOORS.net</a></li>
+  <li><a href="https://www.telegenetics.net/" target="_blank">www.TeleGenetics.net</a></li>
 </ul>
