@@ -6,7 +6,7 @@ using PDP.DREAM.SiaaDataLib.Models.PdpIdentity;
 
 namespace PDP.DREAM.SiaaDataLib.Controllers
 {
-  // authorized
+  // Authorized
   public partial class AuthController
   {
     // Anonymous ResetPassword when forgotten, Authorized ChangePassword when known
@@ -26,7 +26,8 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       if ((ModelState.IsValid) && (OnlineUserIsAuthenticated))
       {
         uxm.UserGuid = QebUserGuid;
-        ChangePasswordWithOld(uxm);
+        uxm.UserName = QebUserName;
+        uxm = ChangePasswordWithOld(uxm);
         if (uxm.PasswordChanged) { return View("PasswordChanged"); }
         PdpPrcMvcAddErrors(uxm.Message);
       }

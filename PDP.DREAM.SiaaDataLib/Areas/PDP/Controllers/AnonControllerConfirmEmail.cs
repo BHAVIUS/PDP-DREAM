@@ -24,14 +24,12 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
         uxm = ChangeEmailWithToken(uxm);
         if (uxm.TokenConfirmed && uxm.EmailChanged)
         {
-          uxm.UpdateRestContext(PRC);
           ViewBag.PRC = PRC;
           return View("EmailConfirmed");
         }
         else { ModelState.AddModelError("", "The security token was not validated."); }
       }
       else { ModelState.AddModelError("", "The submitted form is not valid."); }
-      uxm.UpdateRestContext(PRC);
       ViewBag.PRC = PRC;
       return View(uxm);
     }

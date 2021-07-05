@@ -1,6 +1,6 @@
 # PDP-Aoraki
 
-### PORTAL-DOORS Project Aoraki Private Repository for C# Software
+### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
 Current Version: Aoraki 9.3.2  
 Current DotNet Target: 6.0.0-preview5 with Visual Studio 17 preview 1  

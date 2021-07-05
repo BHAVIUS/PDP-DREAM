@@ -187,8 +187,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     }
 
     // PROPERTIES
-    // TODO: migrate to interface typed version common to both PdpUser and QebUser
-    // using System.Security.Claims.IPrincipal;
+    // TODO: migrate to interface typed version using System.Security.Claims.IPrincipal;
     // private IPrincipal pdpPrincipal; // with readonly Identity (type IIdentity) and IsInRole (type bool) for current user
     // using System.Security.Principal.IIdentity;
     // private IIdentity pdpIdentity; // with readonly AuthenticationType (string), IsAuthenticated (bool), Name (string) for current user
@@ -372,6 +371,12 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     {
       var result = await SiaaUserExtensions.SigninUserAsync(HttpContext, userName, userGuid, agentGuid, sessionGuid, userRoles);
       return result;
+    }
+
+    public void QebUserSignout()
+    {
+      QebUserSignoutAsync();
+      return;
     }
     public async void QebUserSignoutAsync()
     {

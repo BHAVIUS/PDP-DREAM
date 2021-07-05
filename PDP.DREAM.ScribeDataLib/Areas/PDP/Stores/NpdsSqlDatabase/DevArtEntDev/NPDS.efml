@@ -462,4 +462,12 @@
     <parameter name="AgentIsEditor" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
     <parameter name="AgentIsAdmin" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
   </method>
+  <method name="ScribeAgentSessionAddRole" p1:procedure="dbo.ScribeAgentSessionAddRole" p1:Guid="55f5729b-839c-4e12-a47b-f7c5cab5d622">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="UserGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AgentGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsAuthor" type="Boolean" sql-type="bit" />
+    <parameter name="IsEditor" type="Boolean" sql-type="bit" />
+    <parameter name="IsAdmin" type="Boolean" sql-type="bit" />
+  </method>
 </efcore>

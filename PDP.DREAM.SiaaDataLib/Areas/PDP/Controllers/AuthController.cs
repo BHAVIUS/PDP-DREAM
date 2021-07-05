@@ -21,7 +21,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     {
       pdpHttpCntxt = oaeCntxt.HttpContext;
       pdpHttpReqst = pdpHttpCntxt.Request;
-      pdpRestCntxt = new PdpRestContext(pdpHttpReqst)
+      pdpRestCntxt = new PdpRestContext(pdpHttpReqst)  // calls ParseQueryCollection on new()
       {
         DatabaseType = NpdsConst.DatabaseType.Scribe,
         DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,

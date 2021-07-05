@@ -150,7 +150,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
       else
       {
         if (isNewRecord) { this.NexusDistributions.Add(storObj); }
-        errMsg = ExecuteChanges();
+        errMsg = StoreChanges();
       }
       // refresh the edit object
       editObj = GetEditableDistributionByKey(internalGuid);
@@ -191,7 +191,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
         {
           this.NexusDistributions.Attach(storObj);
           this.NexusDistributions.Remove(storObj);
-          errMsg = ExecuteChanges();
+          errMsg = StoreChanges();
         }
         // refresh the edit object
         editObj = GetEditableDistributionByKey(internalGuid);

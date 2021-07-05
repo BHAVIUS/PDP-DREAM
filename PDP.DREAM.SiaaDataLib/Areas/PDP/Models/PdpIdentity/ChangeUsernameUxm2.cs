@@ -9,6 +9,8 @@ namespace PDP.DREAM.SiaaDataLib.Models.PdpIdentity
     public ChangeUsernameUxm2(string password) { PassWord = password; }
 
     public Guid? UserGuid { get; set; }
+
+    [StringLength(32, ErrorMessage = "String must be <=32 characters.", MinimumLength = 6)]
     public string? PassWord { get; set; }
 
     [Display(Name = "Security Question")]

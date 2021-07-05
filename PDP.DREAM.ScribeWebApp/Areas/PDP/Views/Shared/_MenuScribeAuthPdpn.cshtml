@@ -137,13 +137,6 @@ if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAuthor.ToString()))
       i.Add().Text("Martialis").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Martialis");
       i.Add().Text("Socrates").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Socrates");
     });
-    s.Add().Text("Import Records").Items(i =>
-    {
-      i.Add().Text("Import BibTexRef List").Url("~/PDP/AuthorResreps/ImportBibtexList");
-      i.Add().Text("Import BibTexRef Item").Url("~/PDP/AuthorResreps/ImportBibtexItem");
-      i.Add().Text("Import BibTexRef by DOI").Url("~/PDP/AuthorResreps/ImportBibtexByDoi");
-      i.Add().Text("Import Principle for PDP-DREAM").Url("~/PDP/AuthorResreps/ImportPrinciple");
-    });
   });
 }
 
@@ -184,14 +177,6 @@ if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsEditor.ToString()))
       i.Add().Text("Knuth").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Knuth");
       i.Add().Text("Martialis").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Martialis");
       i.Add().Text("Socrates").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Socrates");
-    });
-    s.Add().Text("Import Records").Items(i =>
-    {
-      i.Add().Text("Import BibTexRef List").Url("~/PDP/EditorResreps/ImportBibtexList");
-      i.Add().Text("Import BibTexRef Item").Url("~/PDP/EditorResreps/ImportBibtexItem");
-      i.Add().Text("Import BibTexRef by DOI").Url("~/PDP/EditorResreps/ImportBibtexByDoi");
-      i.Add().Text("Import Principle for PDP-DREAM").Url("~/PDP/EditorResreps/ImportPrinciple");
-      i.Add().Text("Import Example for PDP-DREAM").Url("~/PDP/EditorResreps/ImportExample");
     });
     s.Add().Text("Manage Records").Items(i =>
     {
@@ -263,14 +248,6 @@ if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAdmin.ToString()))
       i.Add().Text("Osler").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Osler");
       i.Add().Text("Socrates").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Socrates");
       i.Add().Text("SOLOMON").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/SOLOMON");
-    });
-    s.Add().Text("Import Records").Items(i =>
-    {
-      i.Add().Text("Import BibTexRef List").Url("~/PDP/AdminResreps/ImportBibtexList");
-      i.Add().Text("Import BibTexRef Item").Url("~/PDP/AdminResreps/ImportBibtexItem");
-      i.Add().Text("Import BibTexRef by DOI").Url("~/PDP/AdminResreps/ImportBibtexByDoi");
-      i.Add().Text("Import Principle for PDP-DREAM").Url("~/PDP/AdminResreps/ImportPrinciple");
-      i.Add().Text("Import Example for PDP-DREAM").Url("~/PDP/AdminResreps/ImportExample");
     });
     s.Add().Text("Manage Records").Items(i =>
     {

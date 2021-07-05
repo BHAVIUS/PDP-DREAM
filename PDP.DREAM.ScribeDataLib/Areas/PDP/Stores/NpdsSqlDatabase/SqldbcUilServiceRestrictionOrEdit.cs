@@ -143,7 +143,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
       else
       {
         if (isNewRecord) { this.NexusServiceRestrictionOrs.Add(storObj); }
-        errMsg = ExecuteChanges();
+        errMsg = StoreChanges();
       }
       // refresh the edit object
       editObj = GetEditableRestrictionOrByKey(internalGuid);
@@ -185,7 +185,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
         {
           this.NexusServiceRestrictionOrs.Attach(storObj);
           this.NexusServiceRestrictionOrs.Remove(storObj);
-          errMsg = ExecuteChanges();
+          errMsg = StoreChanges();
         }
         // refresh the edit object
         editObj = GetEditableRestrictionOrByKey(internalGuid);

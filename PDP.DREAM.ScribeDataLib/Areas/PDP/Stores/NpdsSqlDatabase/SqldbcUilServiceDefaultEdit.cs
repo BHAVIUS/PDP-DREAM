@@ -178,7 +178,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
       else
       {
         if (isNewRecord) { this.NexusServiceNpdsDefaults.Add(storObj); }
-        errMsg = ExecuteChanges();
+        errMsg = StoreChanges();
       }
       // refresh the edit object
       editObj = GetEditableServiceDefaultByKey(internalGuid);
@@ -219,7 +219,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
         {
           this.NexusServiceNpdsDefaults.Attach(storObj);
           this.NexusServiceNpdsDefaults.Remove(storObj);
-          errMsg = ExecuteChanges();
+          errMsg = StoreChanges();
         }
         // refresh the edit object
         editObj = GetEditableServiceDefaultByKey(internalGuid);

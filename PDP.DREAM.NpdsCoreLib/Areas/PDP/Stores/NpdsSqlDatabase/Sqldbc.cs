@@ -79,11 +79,11 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
       if (pdpDataCnctn != null) { pdpDataCnctn.Close(); }
     }
 
-    public string ExecuteChanges()
+    public string StoreChanges()
     {
       try
       {
-        SaveChanges();
+        this.SaveChanges();
         return string.Empty;
       }
       catch (Exception ex)

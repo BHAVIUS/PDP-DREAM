@@ -12,9 +12,6 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     // Anonymous ResetEmail when forgotten, Authorized ChangeEmail when known
 
     [HttpGet]
-    public IActionResult EmailRequested() { return View(); }
-
-    [HttpGet]
     public IActionResult ChangeEmail()
     {
       QUC.GetUserByPrincipal(User);
@@ -40,6 +37,9 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       }
       return View(uxm);
     }
+
+    [HttpGet]
+    public IActionResult EmailRequested() { return View(); }
 
   }
 

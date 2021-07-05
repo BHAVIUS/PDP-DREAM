@@ -8,8 +8,7 @@ namespace PDP.DREAM.SiaaDataLib.Models.PdpIdentity
     public ChangeUsernameUxm1() { } // required parameterless constructor
 
     [Display(Name = "Current password")]
-    [DataType(DataType.Text)]
-    [StringLength(32, ErrorMessage = "String must be <=32 characters.")]
+    [StringLength(32, ErrorMessage = "String must be <=32 characters.", MinimumLength = 6)]
     public string? PassWord { get; set; }
 
   }

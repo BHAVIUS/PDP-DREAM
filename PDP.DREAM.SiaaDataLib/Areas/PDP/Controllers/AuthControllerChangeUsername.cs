@@ -9,6 +9,8 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
   // Authorized
   public partial class AuthController
   {
+    // Anonymous ResetUsername when forgotten, Authorized ChangeUsername when known
+
     [HttpGet]
     public IActionResult ChangeUsername()
     {
@@ -20,12 +22,16 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ChangeUsername(ChangeUsernameUxm uxm)
     {
+      QUC.GetUserByPrincipal(User);
       if ((ModelState.IsValid) && (OnlineUserIsAuthenticated))
       {
-        QUC.GetUserByPrincipal(User);
         uxm.UserGuid = QebUserGuid;
         ChangeUsernameWithOld(uxm);
-        if (uxm.UsernameChanged) { return View("UsernameChanged"); }
+        if (uxm.UsernameChanged)
+        {
+          QebUserSignout();
+          return View("UsernameChanged");
+        }
         PdpPrcMvcAddErrors(uxm.Message);
       }
       return View(uxm);

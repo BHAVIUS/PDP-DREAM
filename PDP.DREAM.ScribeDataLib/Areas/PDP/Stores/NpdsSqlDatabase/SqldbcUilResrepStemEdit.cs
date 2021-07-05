@@ -396,7 +396,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
       else
       {
         if (isNewRecord) { this.NexusResrepStems.Add(storObj); }
-        errMsg = ExecuteChanges();
+        errMsg = StoreChanges();
       }
       // refresh the edit object
       editObj = GetEditableResrepStemByRKey(recordGuid);
@@ -439,7 +439,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
           {
             this.NexusResrepStems.Attach(storObj);
             this.NexusResrepStems.Remove(storObj);
-            errorMessage = ExecuteChanges();
+            errorMessage = StoreChanges();
           }
         }
         // refresh the edit object

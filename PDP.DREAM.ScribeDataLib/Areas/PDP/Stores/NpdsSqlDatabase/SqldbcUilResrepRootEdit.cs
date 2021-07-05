@@ -345,7 +345,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
       else
       {
         if (isNewRecord) { this.NexusResrepRoots.Add(storObj); }
-        errMsg = ExecuteChanges();
+        errMsg = StoreChanges();
       }
       // refresh the edit object
       editObj = GetEditableResrepRootByRKey(recordGuid);
@@ -388,7 +388,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
           {
             this.NexusResrepRoots.Attach(storObj);
             this.NexusResrepRoots.Remove(storObj);
-            errorMessage = ExecuteChanges();
+            errorMessage = StoreChanges();
           }
         }
         // refresh the edit object

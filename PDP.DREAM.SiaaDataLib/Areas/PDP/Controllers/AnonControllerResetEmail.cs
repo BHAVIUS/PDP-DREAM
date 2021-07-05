@@ -15,7 +15,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     {
       if (ModelState.IsValid)
       {
-        ChangeEmailWithToken(uxm);
+        uxm = ChangeEmailWithToken(uxm);
         if (uxm.TokenConfirmed && uxm.EmailChanged) { return View("EmailConfirmed"); }
         else { ModelState.AddModelError("", "The security token was not validated."); }
       }

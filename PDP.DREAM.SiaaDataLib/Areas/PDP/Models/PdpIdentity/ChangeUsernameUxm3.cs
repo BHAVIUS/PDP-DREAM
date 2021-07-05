@@ -12,7 +12,6 @@ namespace PDP.DREAM.SiaaDataLib.Models.PdpIdentity
     }
 
     [Display(Name = "Current password")]
-    [DataType(DataType.Text)]
     [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
     public string? PassWord { get; set; }
 
@@ -20,13 +19,11 @@ namespace PDP.DREAM.SiaaDataLib.Models.PdpIdentity
     public string? SecurityToken { get; set; }
 
     [Display(Name = "New username")]
-    [DataType(DataType.Text)]
     [StringLength(32, ErrorMessage = "String must be <=32 characters.")]
     public string? NewUsername { get; set; }
 
     [Display(Name = "Confirm new username")]
-    [DataType(DataType.Text)]
-    [Compare("NewPassword", ErrorMessage = "The new password and its confirmation do not match.")]
+    [Compare("NewUsername", ErrorMessage = "The new password and its confirmation do not match.")]
     public string? AltUsername { get; set; }
 
   }

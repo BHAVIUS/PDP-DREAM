@@ -41,12 +41,6 @@ namespace PDP.DREAM.SiaaDataLib.Models.PdpIdentity
     public bool UserLoginOk { get; set; } = false;
     public bool EmailConfirmed { get; set; } = false;
 
-    public override void UpdateRestContext(PdpRestContext prc)
-    {
-      prc.UserName = this.UserName;
-      prc.SecurityToken = this.SecurityToken;
-    }
-
-  }
+   }
 
 }

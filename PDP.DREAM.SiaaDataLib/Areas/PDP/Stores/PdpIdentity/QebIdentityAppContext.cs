@@ -25,7 +25,21 @@ namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
       OnCreated();
     }
 
-     public int CountUsersByUserName(string userName)
+    public string StoreChanges()
+    {
+      try
+      {
+        this.SaveChanges();
+        return string.Empty;
+      }
+      catch (Exception ex)
+      {
+        var inMessage = ex.InnerException.Message;
+        return ex.Message + inMessage;
+      }
+    }
+
+    public int CountUsersByUserName(string userName)
     {
       int count;
       count = this.QebIdentityAppUsers.Where(u =>
@@ -64,6 +78,23 @@ namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
       return qebUser;
     }
 
+    public QebIdentityAppUser GetUserByPassWordAndToken(string password, string token)
+    {
+      var qebUser = new QebIdentityAppUser();
+      try
+      {
+        qebUser = this.QebIdentityAppUsers.SingleOrDefault(u =>
+         ((u.AppGuidRef == PdpSiteSettings.GetValues.AppSecureUiaaGuid) &&
+         PdpCryptoService.VerifyHashedToken(u.PasswordHash, password) &&
+         PdpCryptoService.TokenEqualsToken(u.SecurityToken, token)));
+      }
+      catch (Exception exc)
+      {
+        qebUser.ConcurrencyStamp = "LINQ-Error: " + exc.Message;
+      }
+      return qebUser;
+    }
+
     public QebIdentityAppUser GetUserByUserName(string username)
     {
       var qebUser = new QebIdentityAppUser();
@@ -71,7 +102,23 @@ namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
       {
         qebUser = this.QebIdentityAppUsers.SingleOrDefault(u =>
          (u.AppGuidRef == PdpSiteSettings.GetValues.AppSecureUiaaGuid) &&
-        (u.UserName.ToUpper() == username.ToUpper()));
+         (u.UserName.ToUpper() == username.ToUpper()));
+      }
+      catch (Exception exc)
+      {
+        qebUser.ConcurrencyStamp = "LINQ-Error: " + exc.Message;
+      }
+      return qebUser;
+    }
+    public QebIdentityAppUser GetUserByUserNameAndToken(string username, string token)
+    {
+      var qebUser = new QebIdentityAppUser();
+      try
+      {
+        qebUser = this.QebIdentityAppUsers.SingleOrDefault(u =>
+          (u.AppGuidRef == PdpSiteSettings.GetValues.AppSecureUiaaGuid) &&
+          (u.UserName.ToUpper() == username.ToUpper() &&
+          PdpCryptoService.TokenEqualsToken(u.SecurityToken, token)));
       }
       catch (Exception exc)
       {
@@ -99,12 +146,12 @@ namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
     {
       return GetUserByUserGuid(PdpGuid.Parse(userguid));
     }
-    public QebIdentityAppUser GetUserByUserNameUserGuid(string username, Guid userguid)
+    public QebIdentityAppUser GetUserByUserNameAndUserGuid(string username, Guid userguid)
     {
       var qebUser = new QebIdentityAppUser();
       qebUser = this.QebIdentityAppUsers.SingleOrDefault(u =>
          (u.AppGuidRef == PdpSiteSettings.GetValues.AppSecureUiaaGuid) &&
-      (u.UserName.ToUpper() == username.ToUpper()) && (u.UserGuidKey == userguid));
+         (u.UserName.ToUpper() == username.ToUpper()) && (u.UserGuidKey == userguid));
       return qebUser;
     }
 

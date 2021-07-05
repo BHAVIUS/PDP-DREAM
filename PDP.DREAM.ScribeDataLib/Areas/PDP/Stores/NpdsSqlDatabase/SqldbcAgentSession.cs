@@ -13,7 +13,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
   {
     public bool EditPdpAgentSession(ref PdpRestContext prc)
     {
-      if (!PdpGuid.IsInvalidGuid(pdpSitSets.AppSecureUiaaGuid) || !PdpGuid.IsInvalidGuid(prc.UserGuid))
+      if (!PdpGuid.IsInvalidGuid(pdpSitSets.AppSecureUiaaGuid) && !PdpGuid.IsInvalidGuid(prc.UserGuid))
       {
         OpenSqlConnection();
         OpenSqlCommand("ScribeAgentSessionEdit");
@@ -38,7 +38,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
 
     public bool CheckPdpAgentSession(ref PdpRestContext prc)
     {
-      if (!PdpGuid.IsInvalidGuid(pdpSitSets.AppSecureUiaaGuid) || !PdpGuid.IsInvalidGuid(prc.UserGuid))
+      if (!PdpGuid.IsInvalidGuid(pdpSitSets.AppSecureUiaaGuid) && !PdpGuid.IsInvalidGuid(prc.UserGuid))
       {
         OpenSqlConnection();
         OpenSqlCommand("ScribeAgentSessionCheck");
@@ -59,7 +59,8 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
           prc.UserGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@UserGuid");
           prc.AgentGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@AgentGuid");
           prc.AgentInfosetGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@AgentInfosetGuid");
-          // next 3 properties implicit by existence of row in table (until or unless privilege revocation implemented)
+          // next 3 properties implicit by existence of row in table
+          // TODO: until or unless privilege revocation implemented
           prc.ClientIsAuthenticated = true;
           prc.ClientIsUser = true;
           prc.ClientIsAgent = true;
@@ -79,22 +80,27 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
     public bool PdpAgentSessionAddRole(PdpConst.IdentityRoleNames role)
     {
       var roleAdded = false;
-      var agentSession = this.NexusSessionAgents.Single(s => (s.AgentGuidKey == PRC.AgentGuid));
+      var nsa = this.NexusSessionAgents.Single(s => (s.AgentGuidKey == PRC.AgentGuid));
       switch (role)
       {
         case PdpConst.IdentityRoleNames.NpdsAuthor:
-          agentSession.AgentIsAuthor = true; // secure default with false
+          nsa.AgentIsAuthor = true; // secure default with false
           break;
         case PdpConst.IdentityRoleNames.NpdsEditor:
-          agentSession.AgentIsEditor = true; // secure default with false
+          nsa.AgentIsEditor = true; // secure default with false
           break;
         case PdpConst.IdentityRoleNames.NpdsAdmin:
-          agentSession.AgentIsAdmin = true; // secure default with false
+          nsa.AgentIsAdmin = true; // secure default with false
           break;
         default:
           throw new InvalidEnumArgumentException();
       }
-      try { this.SaveChanges(); roleAdded = true; } // TODO: convert to storproc
+      try
+      {
+        var errorCode = ScribeAgentSessionAddRole(nsa.IdentityUserGuidRef,
+          nsa.AgentGuidKey, nsa.AgentIsAuthor, nsa.AgentIsEditor, nsa.AgentIsAdmin);
+        roleAdded = true;
+      }
       catch (Exception ex) { var error = ex.Message; }
       return roleAdded;
     }

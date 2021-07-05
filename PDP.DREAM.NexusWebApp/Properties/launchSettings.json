@@ -15,6 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "use64Bit": true,
+      "sqlDebugging": true,
       "ancmHostingModel": "InProcess"
     },
     "PDP.DREAM.NexusWebApp": {

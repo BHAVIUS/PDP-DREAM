@@ -18,6 +18,20 @@ namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
       OnCreated();
     }
 
+    public string StoreChanges()
+    {
+      try
+      {
+        this.SaveChanges();
+        return string.Empty;
+      }
+      catch (Exception ex)
+      {
+        var inMessage = ex.InnerException.Message;
+        return ex.Message + inMessage;
+      }
+    }
+
   } // end class
 
 } // end namespace

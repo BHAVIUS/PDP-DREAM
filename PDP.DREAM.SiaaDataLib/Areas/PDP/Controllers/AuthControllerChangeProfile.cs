@@ -30,7 +30,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       var uxm = new ChangeProfileUxm();
       if (OnlineUserIsAuthenticated)
       {
-        var usr = QUC.GetUserByUserNameUserGuid(QebUserName, QebUserGuid);
+        var usr = QUC.GetUserByUserNameAndUserGuid(QebUserName, QebUserGuid);
         uxm = usr.GetChangeProfileModel();
       }
       return View(uxm);
@@ -48,7 +48,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
           if (tokenVerified)
           {
             usr.SetChangeProfileModel(uxm);
-            var errorCode = QUC.QebIdentityAppUserProfileUpdate(usr.AppGuidRef, usr.UserGuidKey,
+            var errorCode = QUC.QebIdentityAppUserUpdateProfile(usr.AppGuidRef, usr.UserGuidKey,
               usr.UserNameDisplayed, usr.FirstName, usr.LastName, usr.Organization, usr.PhoneNumber,
               usr.SecurityAnswer, usr.SecurityQuestion, usr.WebsiteAddress, usr.DateProfileChanged, usr.DateLastEdit);
 

@@ -18,7 +18,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     {
       pdpHttpCntxt = oaeCntxt.HttpContext;
       pdpHttpReqst = pdpHttpCntxt.Request;
-      PRC = new PdpRestContext(pdpHttpReqst)  // calls ParseQueryCollection on new()
+      pdpRestCntxt = new PdpRestContext(pdpHttpReqst)  // calls ParseQueryCollection on new()
       {
         DatabaseType = NpdsConst.DatabaseType.Scribe,
         DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,
@@ -26,9 +26,15 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
         ClientInUserModeIsRequired = true,
         SessionValueIsRequired = true
       };
+      pdpScribeDataCntxt.SetRestContext(ref pdpRestCntxt);
       // TODO: build analogous CheckClientUserSession
-      // var isVerified = CheckClientAgentSession();
-      // if (!isVerified) { oaeCntxt.Result = Redirect(PdpConst.PdpPathIdentRequired); }
+      // that calls OnlineUserIsAuthenticated 
+      if (OnlineUserIsAuthenticated)
+      {
+        // var isVerified = CheckClientAgentSession();
+        // if (!isVerified) { oaeCntxt.Result = Redirect(PdpConst.PdpPathIdentRequired); }
+      }
+
     }
 
     [HttpGet]
@@ -42,6 +48,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
     public IActionResult CheckSession()
     {
       bool agentSessionCreated = false, agentSessionIdentified = false;
+      var prc = PRC;
       agentSessionIdentified = PSDC.CheckPdpAgentSession(ref pdpRestCntxt);
       if (!agentSessionIdentified)
       {
@@ -52,7 +59,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
         }
       }
       // use both view model approaches for CheckSession View
-      return View(PRC);
+      return View(pdpRestCntxt);
     }
 
     private void AddRoleUser(Guid roleGuid)

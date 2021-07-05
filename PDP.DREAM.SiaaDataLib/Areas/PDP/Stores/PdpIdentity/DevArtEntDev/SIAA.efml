@@ -180,8 +180,8 @@
     <property name="RoleGuidRef" type="Guid" p1:ValidateRequired="true" p1:Guid="ad781cdb-7954-4049-90cb-15836a56818d">
       <column name="RoleGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
     </property>
-    <property name="AppGuidRef" type="Guid" p1:ValidateRequired="true" p1:Guid="a65aefc6-036b-4a2e-ac22-d68e95d0543c">
-      <column name="AppGuidRef" not-null="False" sql-type="uniqueidentifier" p1:unicode="False" />
+    <property name="AppGuidRef" type="Guid" p1:ValidateRequired="true" p1:Guid="69094287-c8f3-4978-9413-35f80dbbcea5">
+      <column name="AppGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
     </property>
     <property name="ConcurrencyStamp" type="String" p1:nullable="True" p1:ValidateMaxLength="64" p1:ValidateRequired="false" p1:Guid="e1bf8760-7f13-47c1-8d12-29ff60449079">
       <column name="ConcurrencyStamp" not-null="False" length="64" sql-type="nvarchar" p1:unicode="True" />
@@ -292,7 +292,14 @@
     <parameter name="DateUserCreated" type="DateTime" sql-type="datetime2" />
     <parameter name="DateTokenExpired" type="DateTime" sql-type="datetime2" />
   </method>
-  <method name="QebIdentityAppUserEmailUpdate" p1:procedure="dbo.QebIdentityAppUserEmailUpdate" p1:Guid="ffa49bb2-5634-45dc-9628-6257eb0e838d">
+  <method name="QebIdentityAppLinkEdit" p1:procedure="dbo.QebIdentityAppLinkEdit" p1:Guid="c4ce29cb-083f-446d-b676-221b0e3364d3">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="LinkGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RoleGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebIdentityAppUserUpdateEmail" p1:procedure="dbo.QebIdentityAppUserUpdateEmail" p1:Guid="b254a287-3372-4188-848a-b416e13e5638">
     <return-scalar column="return_value" type="Int32" />
     <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
@@ -304,7 +311,7 @@
     <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
     <parameter name="EmailConfirmed" type="Boolean" sql-type="bit" />
   </method>
-  <method name="QebIdentityAppUserPasswordUpdate" p1:procedure="dbo.QebIdentityAppUserPasswordUpdate" p1:Guid="f804e0d2-04bd-4878-84b8-f750c9503d52">
+  <method name="QebIdentityAppUserUpdatePassword" p1:procedure="dbo.QebIdentityAppUserUpdatePassword" p1:Guid="5625a3f9-24ad-460a-aae7-f2571542031f">
     <return-scalar column="return_value" type="Int32" />
     <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
@@ -314,7 +321,7 @@
     <parameter name="DatePasswordChanged" type="DateTime" sql-type="datetime2" />
     <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
   </method>
-  <method name="QebIdentityAppUserProfileUpdate" p1:procedure="dbo.QebIdentityAppUserProfileUpdate" p1:Guid="194a59a9-ac64-4c4a-9459-e8a9b2e464c9">
+  <method name="QebIdentityAppUserUpdateProfile" p1:procedure="dbo.QebIdentityAppUserUpdateProfile" p1:Guid="c7fed4fe-3562-466b-b816-2262e82f5eb1">
     <return-scalar column="return_value" type="Int32" />
     <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
@@ -329,16 +336,15 @@
     <parameter name="DateProfileChanged" type="DateTime" sql-type="datetime2" />
     <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
   </method>
-  <method name="QebIdentityAppLinkDelete" p1:procedure="dbo.QebIdentityAppLinkDelete" p1:Guid="58175c9a-26e3-4106-969b-83d5c5080c51">
+  <method name="QebIdentityAppUserUpdateUsername" p1:procedure="dbo.QebIdentityAppUserUpdateUsername" p1:Guid="8d850770-266b-44f3-aa3d-77c8ae4aa722">
     <return-scalar column="return_value" type="Int32" />
-    <parameter name="LinkGuidKey" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
-  </method>
-  <method name="QebIdentityAppLinkEdit" p1:procedure="dbo.QebIdentityAppLinkEdit" p1:Guid="bfd1229e-e9c9-45c7-8f21-da33f99be8ef">
-    <return-scalar column="return_value" type="Int32" />
-    <parameter name="LinkGuidKey" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="UserGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="RoleGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="UserNameDisplayed" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityToken" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DateTokenExpired" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateUserNameChanged" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
   </method>
 </efcore>
