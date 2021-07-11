@@ -1,4 +1,8 @@
-﻿using System;
+﻿// SqldbcAgentSession.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -80,7 +84,7 @@ namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
     public bool PdpAgentSessionAddRole(PdpConst.IdentityRoleNames role)
     {
       var roleAdded = false;
-      var nsa = this.NexusSessionAgents.Single(s => (s.AgentGuidKey == PRC.AgentGuid));
+      var nsa = this.CoreSessionAgents.Single(s => (s.AgentGuidKey == PRC.AgentGuid));
       switch (role)
       {
         case PdpConst.IdentityRoleNames.NpdsAuthor:

@@ -2,15 +2,17 @@
   var prc = ViewBag.PRC; Layout = prc.PageLayout;
 }
 
-<partial name="_ListDiristryApps" />
+@Html.Raw(prc.FormatPageTitle("PDP/AnonResreps/Index"))
 
-@Html.Raw(prc.FormatPageTitle("Entity Types"))
+<partial name="_HelpdocListDiristryApps" />
+
+<h4>Nexus Entity Types</h4>
 
 @(Html.Kendo().Grid<EntityTypeViewModel>()
     .Name("EntityTypes")
     .DataSource(ds => ds.Ajax()
       .Model(m => m.Id(p => p.CodeKey))
-      .Read(get => get.Action("SelectEntityTypesForView", "AnonScribeTkgr"))
+      .Read(get => get.Action("SelectNexusEntityTypesForView", "AnonScribeTkgr"))
     )
     .Columns(col =>
     {

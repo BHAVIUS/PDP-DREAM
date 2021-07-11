@@ -1,4 +1,8 @@
-﻿using System;
+﻿// ParseNpdsServTagEntity.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 
 namespace PDP.DREAM.NpdsCoreLib.Models
 {
@@ -6,7 +10,29 @@ namespace PDP.DREAM.NpdsCoreLib.Models
   {
     public void ParseNpdsServTagEntity(string serviceType, string serviceTag, string entityType, string action = "")
     {
-      if (string.IsNullOrWhiteSpace(serviceType) || string.IsNullOrWhiteSpace(serviceTag)) { throw new Exception("serviceType and serviceTag cannot be empty in ParseNpdsServTagEntity"); }
+      if (string.IsNullOrWhiteSpace(serviceType)) {
+        serviceType = SrvcDefs.NpdsDefaultServiceType.ToString(); 
+      }
+      if (string.IsNullOrWhiteSpace(serviceTag)) { 
+        switch (serviceType.ToLower())
+        {
+          case "nexus":
+            serviceTag = SrvcDefs.NpdsDefaultDiristryTag;
+            break;
+          case "portal":
+            serviceTag = SrvcDefs.NpdsDefaultRegistryTag;
+            break;
+          case "doors":
+            serviceTag = SrvcDefs.NpdsDefaultDirectoryTag;
+            break;
+          case "scribe":
+            serviceTag = SrvcDefs.NpdsDefaultRegistrarTag;
+            break;
+          default:
+            serviceTag = SrvcDefs.NpdsRootServiceTag;
+            break;
+        }
+      }
 
       PRC.ServiceTypeReqst = serviceType;
       PRC.ServiceTagReqst = serviceTag;

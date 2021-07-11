@@ -205,7 +205,7 @@
     .ClientTemplate("\\#=RegistrarName\\#")
     ;
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -246,7 +246,8 @@
     col.Bound(row => row.RRRecordGuid).Hidden(true);
     col.Bound(row => row.HasIndex).Title("Index")
     .HeaderHtmlAttributes(new { title = "EntityLabel has Index in integer range [0,1,...,255]" });
-    col.Command(com => {
+    col.Command(com =>
+    {
       com.Custom("CheckEntityLabel").Click("OnCheckEntityLabel").Text("Check").HtmlAttributes(new { title = "Check EntityLabel" });
     }).Title("");  // end Command
     col.Bound(row => row.HasPriority).Title("Priority")
@@ -265,7 +266,7 @@
     col.Bound(row => row.TagToken).Title("TagToken")
     .HeaderHtmlAttributes(new { title = "EntityLabel TagToken" });
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -383,7 +384,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -442,7 +443,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // Columns
@@ -502,7 +503,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -582,7 +583,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -605,6 +606,7 @@
     m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
     m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
     m.Field(p => p.Description).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.Description128).Editable(false).DefaultValue(string.Empty);
     m.Field(p => p.UpdatedOn).Editable(false);
     m.Field(p => p.UpdatedByAgentName).Editable(false);
   }) // end Model
@@ -635,14 +637,19 @@
     .HeaderHtmlAttributes(new { title = "Description is Marked?" });
     col.Bound(row => row.IsPrincipal).Title("Principal")
     .HeaderHtmlAttributes(new { title = "Description is Principal?" });
+    col.Bound(row => row.Description128).Title("Description128")
+    .HeaderHtmlAttributes(new { title = "Description128 in truncated format" })
+    .HtmlAttributes(new { title = "\\#=Description\\#" });
     col.Bound(row => row.Description).Title("Description")
-    .HeaderHtmlAttributes(new { title = "Description in valid XML format" });
+    .HeaderHtmlAttributes(new { title = "Description in full format" })
+    .EditorTemplateName("_TextAreaBox")
+    .ClientTemplate("");
     col.Command(com =>
     {
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -702,7 +709,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -762,7 +769,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns
@@ -841,7 +848,7 @@
       com.Destroy();
     }).Title(""); // end Command
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
   }) // end Columns

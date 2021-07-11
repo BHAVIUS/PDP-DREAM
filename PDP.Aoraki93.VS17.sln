@@ -5,6 +5,7 @@ VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2B36B78-A7F1-45C2-8AA1-6446E71A1C11}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 		Telerik\Telerik.UI.for.AspNet.Core.2021.2.616.nupkg = Telerik\Telerik.UI.for.AspNet.Core.2021.2.616.nupkg
@@ -25,6 +26,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDP.DREAM.ScribeDataLib", "PDP.DREAM.ScribeDataLib\PDP.DREAM.ScribeDataLib.csproj", "{D0CB2BA5-EB3D-40FF-8118-E08270698E8A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDP.DREAM.SiaaDataLib", "PDP.DREAM.SiaaDataLib\PDP.DREAM.SiaaDataLib.csproj", "{57E571B9-75AC-4EB1-AA11-D2011098B791}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PORTALDOORS.ScribeWebApp", "PORTALDOORS.ScribeWebApp\PORTALDOORS.ScribeWebApp.csproj", "{680F6674-179B-45E7-AF38-F68D4E9F9373}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PORTALDOORS.ScribeRestApi", "PORTALDOORS.ScribeRestApi\PORTALDOORS.ScribeRestApi.csproj", "{3D187006-6BD2-4089-A60E-25FD08B91992}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PORTALDOORS.NexusWebApp", "PORTALDOORS.NexusWebApp\PORTALDOORS.NexusWebApp.csproj", "{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PORTALDOORS.NexusRestApi", "PORTALDOORS.NexusRestApi\PORTALDOORS.NexusRestApi.csproj", "{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +91,30 @@ Global
 		{57E571B9-75AC-4EB1-AA11-D2011098B791}.Release|Any CPU.ActiveCfg = Release|x64
 		{57E571B9-75AC-4EB1-AA11-D2011098B791}.Release|x64.ActiveCfg = Release|x64
 		{57E571B9-75AC-4EB1-AA11-D2011098B791}.Release|x64.Build.0 = Release|x64
+		{680F6674-179B-45E7-AF38-F68D4E9F9373}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{680F6674-179B-45E7-AF38-F68D4E9F9373}.Debug|x64.ActiveCfg = Debug|x64
+		{680F6674-179B-45E7-AF38-F68D4E9F9373}.Debug|x64.Build.0 = Debug|x64
+		{680F6674-179B-45E7-AF38-F68D4E9F9373}.Release|Any CPU.ActiveCfg = Release|x64
+		{680F6674-179B-45E7-AF38-F68D4E9F9373}.Release|x64.ActiveCfg = Release|x64
+		{680F6674-179B-45E7-AF38-F68D4E9F9373}.Release|x64.Build.0 = Release|x64
+		{3D187006-6BD2-4089-A60E-25FD08B91992}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3D187006-6BD2-4089-A60E-25FD08B91992}.Debug|x64.ActiveCfg = Debug|x64
+		{3D187006-6BD2-4089-A60E-25FD08B91992}.Debug|x64.Build.0 = Debug|x64
+		{3D187006-6BD2-4089-A60E-25FD08B91992}.Release|Any CPU.ActiveCfg = Release|x64
+		{3D187006-6BD2-4089-A60E-25FD08B91992}.Release|x64.ActiveCfg = Release|x64
+		{3D187006-6BD2-4089-A60E-25FD08B91992}.Release|x64.Build.0 = Release|x64
+		{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}.Debug|x64.ActiveCfg = Debug|x64
+		{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}.Debug|x64.Build.0 = Debug|x64
+		{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}.Release|Any CPU.ActiveCfg = Release|x64
+		{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}.Release|x64.ActiveCfg = Release|x64
+		{873D4F2B-FEA1-48C1-B4D8-81A1D0888C64}.Release|x64.Build.0 = Release|x64
+		{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}.Debug|x64.ActiveCfg = Debug|x64
+		{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}.Debug|x64.Build.0 = Debug|x64
+		{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}.Release|Any CPU.ActiveCfg = Release|x64
+		{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}.Release|x64.ActiveCfg = Release|x64
+		{71A1E2A2-0B9B-4E7C-8023-C853D29476CB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

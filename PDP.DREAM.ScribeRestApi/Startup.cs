@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Startup.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
@@ -177,11 +181,10 @@ namespace PDP.DREAM.ScribeRestApi
       GetRoutes = (r =>
       {
         // first routes with constraints
-        // PdpEndpoints.RegisterForNexusReadOnlySvc(r);
+        PdpEndpoints.RegisterPdpArea(r);
         PdpEndpoints.RegisterForScribeReadWriteSvc(r);
-        PdpEndpoints.RegisterPdpArea(r, true);
         // then routes without constraints
-        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
+        // PdpEndpoints.RegisterPdpWebApp(r);
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

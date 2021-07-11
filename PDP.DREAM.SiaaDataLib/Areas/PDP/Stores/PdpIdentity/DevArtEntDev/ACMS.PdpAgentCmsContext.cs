@@ -1,22 +1,11 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿// ACMS.PdpAgentCmsContext.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
 namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
 {
 
-    public partial class PdpAgentCmsContext
+  public partial class PdpAgentCmsContext
     {
     }
 }

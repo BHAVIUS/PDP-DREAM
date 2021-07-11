@@ -1,4 +1,8 @@
-﻿using System;
+﻿// SiaaDataControllerBase.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -55,6 +59,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       pdpAgentContext = new PdpAgentCmsContext(npdsSrvcDefs.NpdsUserDbconstr);
       pdpScribeDataCntxt = new ScribeDbsqlContext(npdsSrvcDefs.NpdsRegistrarDbconstr);
     }
+
     public SiaaDataControllerBase(QebIdentityContext userCntxt)
     {
       qebUserContext = userCntxt;
@@ -75,6 +80,7 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       pdpAgentContext = new PdpAgentCmsContext(npdsSrvcDefs.NpdsUserDbconstr);
       pdpScribeDataCntxt = new ScribeDbsqlContext(npdsSrvcDefs.NpdsRegistrarDbconstr);
     }
+
     public SiaaDataControllerBase(PdpAgentCmsContext agentCntxt)
     {
       qebUserContext = new QebIdentityContext(npdsSrvcDefs.NpdsUserDbconstr);
@@ -87,9 +93,22 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       pdpAgentContext = agentCntxt;
       pdpScribeDataCntxt = dataCntxt;
     }
+
     public SiaaDataControllerBase(ScribeDbsqlContext dataCntxt)
     {
       qebUserContext = new QebIdentityContext(npdsSrvcDefs.NpdsUserDbconstr);
+      pdpAgentContext = new PdpAgentCmsContext(npdsSrvcDefs.NpdsUserDbconstr);
+      pdpScribeDataCntxt = dataCntxt;
+    }
+    public SiaaDataControllerBase(ScribeDbsqlContext dataCntxt, PdpAgentCmsContext agentCntxt)
+    {
+      qebUserContext = new QebIdentityContext(npdsSrvcDefs.NpdsUserDbconstr);
+      pdpAgentContext = agentCntxt;
+      pdpScribeDataCntxt = dataCntxt;
+    }
+    public SiaaDataControllerBase(ScribeDbsqlContext dataCntxt, QebIdentityContext userCntxt)
+    {
+      qebUserContext = userCntxt;
       pdpAgentContext = new PdpAgentCmsContext(npdsSrvcDefs.NpdsUserDbconstr);
       pdpScribeDataCntxt = dataCntxt;
     }

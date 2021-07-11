@@ -1,3 +1,7 @@
+// Startup.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
 using System;
 
 using Microsoft.AspNetCore.Builder;
@@ -101,9 +105,9 @@ namespace PDP.DREAM.ScribeDataLib
       GetRoutes = (r =>
       {
         // first routes with constraints
-        PdpEndpoints.RegisterPdpArea(r, true);
+        PdpEndpoints.RegisterPdpArea(r);
         // then routes without constraints
-        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "ScribeDataLib", "Index");
+        // PdpEndpoints.RegisterPdpWebApp(r);
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

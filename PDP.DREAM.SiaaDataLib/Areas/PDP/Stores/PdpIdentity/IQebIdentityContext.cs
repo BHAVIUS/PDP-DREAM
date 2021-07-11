@@ -1,8 +1,6 @@
-﻿using System;
-
-using PDP.DREAM.NpdsCoreLib.Models;
-using PDP.DREAM.NpdsCoreLib.Services;
-using PDP.DREAM.SiaaDataLib.Models.PdpIdentity;
+﻿// IQebIdentityContext.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
 namespace PDP.DREAM.SiaaDataLib.Stores.PdpIdentity
 {

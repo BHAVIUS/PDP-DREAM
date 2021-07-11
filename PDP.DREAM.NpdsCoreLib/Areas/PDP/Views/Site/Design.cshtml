@@ -1,10 +1,15 @@
-﻿@{
+﻿@*  
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+*@
+
+@{
   var prc = ViewBag.PRC; Layout = prc.PageLayout;
 }
 
 @Html.Raw(prc.FormatPageTitle("PDP/Site/Design"))
 
-<h3>PORTAL-DOORS Project NPDS Cyberinfrastructure System Design</h3>
+<h4>PORTAL-DOORS Project NPDS Cyberinfrastructure System Design</h4>
 
 <p>
   For comprehensive reports on NPDS, please refer to
@@ -22,9 +27,9 @@
   These reports contain explanations of the principles, concepts, models, schemas,
   URL and querystring designs used by PDP for NPDS.
 </p>
-<h4>
-  Page Contents<a name="pcon">&nbsp;</a>
-</h4>
+
+<h4>Page Contents<a name="pcon">&nbsp;</a></h4>
+
 <ul>
   <li>Abstract from 2006 <a href="#blueprint">Blueprint Paper</a> for the Nexus-PORTAL-DOORS System (NPDS)</li>
   <li>Hierarchically Distributed Mobile Metadata (<a href="#HDMM">HDMM</a>) as an Architectural Style</li>
@@ -37,9 +42,9 @@
 <p>
   See also other @Html.ActionLink("NPDS related papers and presentations", "Papers", "Site", new { area = "PDP" }).
 </p>
-<h4>
-  Abstract from the original 2006 Blueprint Paper for the PORTAL-DOORS System<a name="blueprint">&nbsp;</a>
-</h4>
+
+<h4>Abstract from the original 2006 Blueprint Paper for the PORTAL-DOORS System<a name="blueprint">&nbsp;</a></h4>
+
 <p>
   Title: <a href="http://www.portaldoors.org/Docs/IEEETITB2008v12n2p191-204Taswell_DOORS_to_the_Semantic_Web_and_Grid_with_a_PORTAL_for_Biomedical_Computing.pdf"
             target="other">DOORS to the Semantic Web and Grid with a PORTAL for Biomedical Computing</a>
@@ -66,9 +71,8 @@
   2 pages 191-204; manuscript received 31 October 2006, published online 3 August 2007.
 </p>
 
-<h4>
-  Hierarchically Distributed Mobile Metadata (HDMM) as an Architectural Style<a name="HDMM">&nbsp;</a>
-</h4>
+<h4>Hierarchically Distributed Mobile Metadata (HDMM) as an Architectural Style<a name="HDMM">&nbsp;</a></h4>
+
 <p>
   IRIS registries and DNS directories provide the model for the architectural style that inspired the
   design of PORTAL registries and DOORS directories. The most essential characteristics of this architectural
@@ -127,9 +131,8 @@
   stores can be used for both PORTAL and DOORS.
 </p>
 
-<h4>
-  Architectural Design of PORTAL-DOORS System Infrastructure<a name="ArchDes">&nbsp;</a>
-</h4>
+<h4>Architectural Design of PORTAL-DOORS System Infrastructure<a name="ArchDes">&nbsp;</a></h4>
+
 <p>
   In accordance with the <a href="#HDMM">HDMM</a> architectural style, PORTAL-DOORS has been designed
   to serve the semantic web and grid in a manner analogous to the way that IRIS-DNS has served the original
@@ -348,9 +351,9 @@
 <p>
   Return to <a href="#pcon">Page Contents</a>
 </p>
-<h4>
-  Infrastructure System versus Tools and Applications versus Content<a name="CTA">&nbsp;</a>
-</h4>
+
+<h4>Infrastructure System versus Tools and Applications versus Content<a name="CTA">&nbsp;</a></h4>
+
 <p>
   PORTAL-DOORS as a lower-level infrastructure system must be distinguished from higher-level tools and
   applications built on the foundation of the infrastructure. PORTAL-DOORS as a metadata management,
@@ -400,9 +403,9 @@
 <p>
   Return to <a href="#pcon">Page Contents</a>
 </p>
-<h4>
-  General Usage Scenarios for the PORTAL-DOORS System<a name="GUS">&nbsp;</a>
-</h4>
+
+<h4>General Usage Scenarios for the PORTAL-DOORS System<a name="GUS">&nbsp;</a></h4>
+
 <p>
   PORTAL-DOORS has been designed to be as flexible as possible with both backward and forward compatibility
   from Web 1.0 to Web 3.0. Given the partition with non-semantic services on the PORTAL side and semantic
@@ -440,9 +443,8 @@
   </li>
 </ul>
 
-<h4>
-  Specific Use Cases for the PORTAL-DOORS System<a name="SUC">&nbsp;</a>
-</h4>
+<h4>Specific Use Cases for the PORTAL-DOORS System<a name="SUC">&nbsp;</a></h4>
+
 <p>
   The original PORTAL-DOORS <a href="#blueprint">blueprint paper</a> discussed the following use cases:
 </p>
@@ -478,9 +480,9 @@
   of possible use cases for PORTAL-DOORS remains as universal as the diversity of possible use cases
   for IRIS-DNS.
 </p>
-<h4>
-  Development Roadmap for PORTAL-DOORS System<a name="RoadMap">&nbsp;</a>
-</h4>
+
+<h4>Development Roadmap for PORTAL-DOORS System<a name="RoadMap">&nbsp;</a></h4>
+
 <p>
   The PORTAL-DOORS Project maintains the following goals:
 </p>

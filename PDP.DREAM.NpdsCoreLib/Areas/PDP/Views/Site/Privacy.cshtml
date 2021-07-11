@@ -1,7 +1,12 @@
-﻿@{
-    var prc = ViewBag.PRC; Layout = prc.PageLayout;
+﻿@*  
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+*@
+
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
 }
 
-@Html.Raw(prc.FormatPageTitle("PDP/Site/Privacy"))
+@Html.Raw(prc.FormatSectionTitle("PDP/Site/Privacy"))
 
 <p>Use this page to document your site's privacy policy.</p>

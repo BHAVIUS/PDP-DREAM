@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿// PdpXml.Serializers.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 using PDP.DREAM.NpdsCoreLib.Models;

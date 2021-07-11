@@ -2,10 +2,6 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "https://localhost:443/",
-      "sslPort": 0
-    },
     "iisExpress": {
       "applicationUrl": "https://localhost:44390/",
       "sslPort": 44390
@@ -22,13 +18,12 @@
       "sqlDebugging": true,
       "ancmHostingModel": "InProcess"
     },
-    "IIS": {
-      "commandName": "IIS",
-      "launchBrowser": true
-    },
     "PDP.DREAM.ScribeWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }

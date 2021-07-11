@@ -1,13 +1,17 @@
-﻿using System;
+﻿// NexusRestApiController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 using PDP.DREAM.NexusDataLib.Controllers;
-using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 using PDP.DREAM.NpdsCoreLib.Models;
 using PDP.DREAM.NpdsCoreLib.Utilities;
+using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 
 namespace PDP.DREAM.NexusRestApi.Controllers
 {
@@ -20,8 +24,11 @@ namespace PDP.DREAM.NexusRestApi.Controllers
     {
       PRC = new PdpRestContext(oaeCntxt.HttpContext.Request)
       {
-        SessionValueIsRequired = false,
         DatabaseType = NpdsConst.DatabaseType.Nexus,
+        DatabaseAccess = NpdsConst.DatabaseAccess.AnonReadOnly,
+        RecordAccess = NpdsConst.RecordAccess.Client,
+        ClientInUserModeIsRequired = false,
+        SessionValueIsRequired = false
       };
       ResetNexusRepository();
     }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Startup.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +14,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 using PDP.DREAM.NpdsCoreLib.Controllers;
@@ -56,6 +59,7 @@ namespace PDP.DREAM.ScribeWebApp
         options.UseSqlServer(npdsSrvcDefs.NpdsUserDbconstr));
       services.AddDbContext<PdpAgentCmsContext>(options =>
         options.UseSqlServer(npdsSrvcDefs.NpdsAgentDbconstr));
+      services.AddDatabaseDeveloperPageExceptionFilter();
 
       // add cached settings 
       using (var dataCntxt = new CoreDbsqlContext(npdsSrvcDefs.NpdsCoreDbconstr))
@@ -177,11 +181,10 @@ namespace PDP.DREAM.ScribeWebApp
       GetRoutes = (r =>
       {
         // first routes with constraints
-        // PdpEndpoints.RegisterForNexusReadOnlySvc(r);
-        // PdpEndpoints.RegisterForScribeReadWriteSvc(r);
-        PdpEndpoints.RegisterPdpArea(r, true);
+        PdpEndpoints.RegisterPdpArea(r);
+        PdpEndpoints.RegisterForScribeReadWriteSvc(r);
         // then routes without constraints
-        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
+        // PdpEndpoints.RegisterPdpWebApp(r);
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

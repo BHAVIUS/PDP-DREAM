@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿// SqldbcUilDropdownlist.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 using PDP.DREAM.NpdsCoreLib.Models;
 
 namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase

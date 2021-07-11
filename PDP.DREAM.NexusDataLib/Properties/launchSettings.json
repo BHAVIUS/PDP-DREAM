@@ -14,8 +14,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "ancmHostingModel": "InProcess",
-      "use64Bit": true
+      "use64Bit": true,
+      "sqlDebugging": true,
+      "ancmHostingModel": "InProcess"
     },
     "PDP.DREAM.NexusDataLib": {
       "commandName": "Project",

@@ -1,9 +1,9 @@
-﻿using System;
+﻿// PdpPhrase.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Linq;
-
-using Microsoft.AspNetCore.Mvc.Formatters;
-
-using SendGrid.Helpers.Mail;
 
 namespace PDP.DREAM.NpdsCoreLib.Types
 {

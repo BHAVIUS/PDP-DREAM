@@ -119,7 +119,7 @@
 <partial name="@prc.PageMenu" />
 
 <h4>PDP Agent/Session</h4>
-@using (Html.BeginForm("Auth", "ScribeTestApi", new { area = "PDP"}, FormMethod.Post ))
+@using (Html.BeginForm("Auth", "SiaaTestLib", new { area = "PDP"}, FormMethod.Post ))
 {
   <div class="form-group">
     @Html.LabelFor(m => m.AgentGuid, new { @class = "control-label col-md-2" })

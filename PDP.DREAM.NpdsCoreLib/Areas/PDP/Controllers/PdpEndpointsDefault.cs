@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿// PdpEndpointsDefault.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
 using PDP.DREAM.NpdsCoreLib.Models;
@@ -7,10 +11,10 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
 {
   public static partial class PdpEndpoints
   {
-    public const string TKGAC = "AnonResreps|AnonNexus|AnonScribeTkgr|AgentResreps|AgentScribeTkgr|AuthorResreps|AuthorScribeTkgr|EditorResreps|EditorScribeTkgr|AdminResreps|AdminScribeTkgr";
+    public const string TKGAC = "NexusJsonTkgr|AnonResreps|AgentResreps|AgentScribeTkgr|AuthorResreps|AuthorScribeTkgr|EditorResreps|EditorScribeTkgr|AdminResreps|AdminScribeTkgr";
 
     // public static void RegisterPdpArea(IEndpointRouteBuilder routes, string namArea, string namController, string namAction, bool setAreaDefaults = false)
-    public static void RegisterPdpArea(IEndpointRouteBuilder routes, bool setAreaDefaults = false,
+    public static void RegisterPdpArea(IEndpointRouteBuilder routes, bool setAreaDefaults = true,
       string namController = PdpConst.PdpMvcController, string namAction = PdpConst.PdpMvcAction)
     {
       object? pdpAreaDefault = null;
@@ -18,8 +22,9 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       object? pdpAreaConstraint = null;
       if (setAreaDefaults)
       {
-        pdpAreaDefault = new { controller = namController, action = namAction };
-        pdpAreaCatchall = new { controller = namController, action = PdpConst.PdpMvcAltAction };
+        pdpAreaDefault = new { area = PdpConst.PdpMvcArea, controller = namController, action = namAction };
+        pdpAreaCatchall = new { area = PdpConst.PdpMvcArea, controller = namController, action = PdpConst.PdpMvcAltAction };
+        // do not use constraints on action or controller
         pdpAreaConstraint = new { area = PdpConst.PdpMvcArea };
       }
 
@@ -27,23 +32,18 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
         name: "PdpAreaNpdsResreps",
         areaName: PdpConst.PdpMvcArea,
         pattern: "PDP/{controller}/{action}/{serviceType}/{serviceTag}/{entityType?}",
-        // do not use default on area
-        defaults: new { controller = "AnonResreps", action = "NpdsView", serviceType = "Nexus", serviceTag = "PDP-Nexus" },
         // do not use constraint on action
         constraints: new { area = PdpConst.PdpMvcArea, controller = TKGAC, serviceType = NpdsConst.RegexReadWriteServiceTypeToken }
       );
       routes.MapAreaControllerRoute(
-        name: "PdpAreaDefaultWithId",
+        name: "PdpAreaGenericWithId",
         areaName: PdpConst.PdpMvcArea,
         pattern: "PDP/{controller}/{action}/{id}",
-        // do not use default on area
         defaults: pdpAreaDefault,
-        // do not use constraints on action or controller
         constraints: pdpAreaConstraint
       );
-
       routes.MapAreaControllerRoute(
-        name: "PdpAreaDefault",
+        name: "PdpAreaGenericWithoutId",
         areaName: PdpConst.PdpMvcArea,
         pattern: "PDP/{controller}/{action}",
         defaults: pdpAreaDefault,
@@ -66,27 +66,21 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
           examples = string.Empty
         }
       );
+      routes.MapFallbackToAreaController("{*:nonfile}",
+        PdpConst.PdpMvcAction, PdpConst.PdpMvcController, PdpConst.PdpMvcArea);
     }
 
-    public static void RegisterPdpWebApp(IEndpointRouteBuilder routes,
-     string defArea = "", string defController = "", string defAction = "", bool mapAttribRoutes = false)
+    public static void RegisterPdpWebApp(IEndpointRouteBuilder routes, string defArea = "",
+      string defController = "", string defAction = "", bool mapAttribRoutes = false)
     {
-      if (string.IsNullOrEmpty(defArea))
-      {
-        routes.MapControllerRoute(
-          name: "PdpWebAppDefault",
-          pattern: "{controller}/{action}/{id?}",
-          defaults: new { controller = defController, action = defAction }
-          );
-      }
-      else
-      {
-        routes.MapControllerRoute(
-          name: "PdpWebAppDefault",
-          pattern: "{area}/{controller}/{action}/{id?}",
-          defaults: new { area = defArea, controller = defController, action = defAction }
-          );
-      }
+      defArea ??= string.Empty;
+      defController ??= string.Empty;
+      defAction ??= string.Empty;
+      routes.MapControllerRoute(
+        name: "PdpWebAppDefault",
+        pattern: "{area}/{controller}/{action}/{id?}",
+        defaults: new { area = defArea, controller = defController, action = defAction }
+        );
       if (mapAttribRoutes) { routes.MapControllers(); }
     }
 

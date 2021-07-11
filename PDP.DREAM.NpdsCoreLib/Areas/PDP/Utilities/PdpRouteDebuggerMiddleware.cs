@@ -1,13 +1,6 @@
-// Copyright (c) 2011-2019 Carl Taswell and Akeakamai
-// file created 2/1/2011, last updated 9/1/2019
-// file renamed for different versions from ASP.Net MVC to ASP.Net Core
-//
-// Credits: ideas for portions of code adapted from
-//    Microsoft ASP.NET MVC 3 source,
-//    Chapter 24 by Palermo et al in Aspnet MVC 2 In Action,
-//    http://haacked.com/archive/2010/11/28/getting-the-route-name-for-a-route.aspx,
-//    http://stevesmithblog.com/blog/use-httpapplication-completerequest-instead-of-response-end/
-//    https://github.com/Haacked/RouteMagic
+// PdpRouteDebuggerMiddleware.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
 // 2019 info on AspNetCore Routing
 // https://www.tektutorialshub.com/asp-net-core/asp-net-core-routing/
@@ -17,13 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Options;
 
 using PDP.DREAM.NpdsCoreLib.Models;
 using PDP.DREAM.NpdsCoreLib.Types;
@@ -40,7 +31,6 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
     private RouteData prdRouteData;
     private IList<IRouter> prdRouters;
     private List<RouteEndpoint> prdEndpoints;
-    private PdpRouteDebuggerOptions prdOptions; // TBD
 
     public PdpRouteDebuggerMiddleware(RequestDelegate theDelegate, IHttpContextAccessor theAccessor, EndpointDataSource theSource)
     {
@@ -51,29 +41,10 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
       if (theSource == null) { throw new ArgumentNullException(nameof(theSource)); }
       endpointSource = theSource;
 
-      // TBD
-      // prdOptions = new PdpRouteDebuggerOptions();
-    }
-
-    // TBD
-    public PdpRouteDebuggerMiddleware(RequestDelegate theDelegate, IOptions<PdpRouteDebuggerOptions> theOptions)
-    {
-      if (theDelegate == null) { throw new ArgumentNullException(nameof(theDelegate)); }
-      if (theOptions == null) { throw new ArgumentNullException(nameof(theOptions)); }
-      nextDelegate = theDelegate;
-      prdOptions = theOptions.Value;
     }
 
     public async Task Invoke(HttpContext theContext)
     {
-      //HttpRequest request = context.Request;
-      //if (!_options.Path.HasValue || _options.Path == request.Path)
-      //{
-      //  var welcomePage = new WelcomePage();
-      //  return welcomePage.ExecuteAsync(context);
-      //}
-      //return _next(context);
-
       // PRD HttpContext
       if (theContext == null) { theContext = contextAccessor.HttpContext; }
       prdContext = theContext;
@@ -109,12 +80,6 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
 
     public string GetKqriHtmlBodyText()
     {
-      // var prdRouteData = reqContext.GetRouteData();
-      //if (prdRouters.Count == 0) { prdRouters = prdRouteData.Routers; }
-      // var prdRouters = prdRouteData.Routers; // returns type IList(IRouter)
-      // var prdRouters = prdOptions.PdpRouters; // returns type IList(IRouter)
-
-
       // kqri is Keyed Query Route Information
       string kqriQuery = prdContext.Request.QueryString.ToString();
       bool doHelp = IsKeyedQueryRoute(kqriQuery, PdpConst.PdpHelpRouteQueryKey);

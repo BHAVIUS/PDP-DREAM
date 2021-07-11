@@ -1,13 +1,8 @@
-﻿using System.Net;
+﻿// TkgrControllerUxmSelectList.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.NpdsCoreLib.Utilities;
 using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase;
-using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 
 namespace PDP.DREAM.ScribeRestApi.Controllers
 {

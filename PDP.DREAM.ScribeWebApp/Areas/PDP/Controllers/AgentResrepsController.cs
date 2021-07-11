@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// AgentResrepsController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -10,21 +14,24 @@ using PDP.DREAM.SiaaDataLib.Stores.PdpIdentity;
 namespace PDP.DREAM.ScribeWebApp.Controllers
 {
   [Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSAGENT)]
-  public class AgentResrepsController : TkgrControllerBase
+  public class AgentResrepsController : AgentScribeTkgrController
   {
-    public AgentResrepsController(PdpAgentCmsContext userCntxt, ScribeDbsqlContext dataCntxt) : base(userCntxt, dataCntxt) { }
+    public AgentResrepsController(ScribeDbsqlContext npdsCntxt, PdpAgentCmsContext userCntxt) : base(npdsCntxt, userCntxt) { }
 
-    public override void OnActionExecuting(ActionExecutingContext oaeCtxt)
+    public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
     {
-      pdpRestCntxt = new PdpRestContext(oaeCtxt.HttpContext.Request)
+      PRC = new PdpRestContext(oaeCntxt.HttpContext.Request)
       {
         DatabaseType = NpdsConst.DatabaseType.Nexus,
         DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,
-        RecordAccess = NpdsConst.RecordAccess.Agent
+        RecordAccess = NpdsConst.RecordAccess.Agent,
+        ClientInAgentModeIsRequired = true,
+        SessionValueIsRequired = true
       };
+      ResetScribeRepository();
       CheckClientAgentSession();
     }
 
-  }
+  } // class
 
-}
+} // namespace

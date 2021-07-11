@@ -1,0 +1,21 @@
+﻿@*  
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+*@
+
+@{
+  PdpRestContext prc = ViewBag.PRC; Layout = prc.PageLayout;
+  var propList = prc.GetType().GetProperties().OrderBy(p => p.Name);
+}
+
+@Html.Raw(prc.FormatSectionTitle())
+
+<p>PDP REST Context (PRC) table of names, values, types for PRC object properties.</p>
+
+<table>
+  <tr><td>Name</td><td>Value</td><td>Type</td></tr>
+  @foreach (PropertyInfo item in propList)
+  {
+    <tr><td>@item?.Name</td><td>@item?.GetValue(prc)?.ToString()</td><td>@item?.PropertyType</td></tr>
+  }
+</table>

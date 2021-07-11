@@ -1,18 +1,17 @@
-﻿using System;
+﻿// SqldbcUilResrepStemView.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Kendo.Mvc;
 using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
 
 using Microsoft.EntityFrameworkCore;
 
 using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase;
-using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
-
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
 {

@@ -1,76 +1,87 @@
-﻿namespace PDP.DREAM.NpdsCoreLib.Models
+﻿// PrcContentForService.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+namespace PDP.DREAM.NpdsCoreLib.Models
 {
   // options for NPDS service
   public partial class PdpRestContext
   {
     // service related
+
+    public NpdsServiceDefaults SrvcDefs { get { return npdsSrvcDefs; } }
+    private NpdsServiceDefaults npdsSrvcDefs = NpdsServiceDefaults.GetValues;
+
     public string? ServiceError { set; get; }
 
     public string? ServiceNote { set; get; }
 
     // site related
 
-    public string SiteAppNameVersion
+    public PdpSiteSettings SiteSets { get { return pdpSitSets; } }
+    private PdpSiteSettings pdpSitSets = PdpSiteSettings.GetValues;
+
+    public string? SiteAppNameVersion
     {
       set { nameVersion = value; }
       get
       {
         if (string.IsNullOrEmpty(nameVersion))
-        { nameVersion = PdpSiteSettings.GetValues.AppNameVersion; }
+        { nameVersion = SiteSets.AppNameVersion; }
         return nameVersion;
       }
     }
-    private string nameVersion = PdpSiteSettings.GetValues.AppNameVersion;
+    private string? nameVersion = null;
 
-    public string SiteOwnerAcronym
+    public string? SiteOwnerAcronym
     {
       set { ownerAcronym = value; }
       get
       {
         if (string.IsNullOrEmpty(ownerAcronym))
-        { ownerAcronym = PdpSiteSettings.GetValues.AppOwnerAcronym; }
+        { ownerAcronym = SiteSets.AppOwnerAcronym; }
         return ownerAcronym;
       }
     }
-    private string ownerAcronym = PdpSiteSettings.GetValues.AppOwnerAcronym;
+    private string? ownerAcronym = null;
 
-    public string SiteOwnerEmail
+    public string? SiteOwnerEmail
     {
       set { ownerEmail = value; }
       get
       {
         if (string.IsNullOrEmpty(ownerEmail))
-        { ownerEmail = PdpSiteSettings.GetValues.AppOwnerEmail; }
+        { ownerEmail = SiteSets.AppOwnerEmail; }
         return ownerEmail;
       }
     }
-    private string ownerEmail = PdpSiteSettings.GetValues.AppOwnerEmail;
+    private string? ownerEmail = null;
 
-    public string SiteOwnerName
+    public string? SiteOwnerName
     {
       set { ownerName = value; }
       get
       {
         if (string.IsNullOrEmpty(ownerName))
-        { ownerName = PdpSiteSettings.GetValues.AppOwnerName; }
+        { ownerName = SiteSets.AppOwnerName; }
         return ownerName;
       }
     }
-    private string ownerName = PdpSiteSettings.GetValues.AppOwnerName;
+    private string? ownerName = null;
 
-    public string SiteTitle
+    public string? SiteTitle
     {
       set { siteTitle = value; }
       get
       {
         if (string.IsNullOrEmpty(siteTitle))
-        { siteTitle = PdpSiteSettings.GetValues.AppSiteTitle; }
+        { siteTitle = SiteSets.AppSiteTitle; }
         return siteTitle;
       }
     }
-    private string siteTitle = PdpSiteSettings.GetValues.AppSiteTitle;
+    private string? siteTitle = null;
 
-    public string SiteDescription
+    public string? SiteDescription
     {
       set { siteDesc = value; }
       get
@@ -80,64 +91,73 @@
         return siteDesc;
       }
     }
-    private string siteDesc = string.Empty;
+    private string? siteDesc = string.Empty;
 
     // page related
 
-    public string PageLayout
+    public string? PageLayout
     {
       set { pageLayout = value; }
       get
       {
         if (string.IsNullOrEmpty(pageLayout))
-        { pageLayout = PdpSiteSettings.GetValues.AppPageLayout; }
+        { pageLayout = SiteSets.AppPageLayout; }
         return pageLayout;
       }
     }
-    private string pageLayout = PdpSiteSettings.GetValues.AppPageLayout;
+    private string? pageLayout = null;
 
-    public string PageMenu
+    public string? PageMenu
     {
       set { pageMenu = value; }
       get
       {
         if (string.IsNullOrEmpty(pageMenu))
-        { pageMenu = PdpSiteSettings.GetValues.AppPageMenu; }
+        { pageMenu = SiteSets.AppPageMenu; }
         return pageMenu;
       }
     }
-    private string pageMenu = PdpSiteSettings.GetValues.AppPageMenu;
+    private string? pageMenu = null;
 
-    public string PageTitle
+    public string? PageTitle
     {
       set { pageTitle = value; }
       get
       {
         if (string.IsNullOrEmpty(pageTitle))
-        { pageTitle = PdpSiteSettings.GetValues.AppPageTitle; }
+        { pageTitle = SiteSets.AppPageTitle; }
         return pageTitle;
       }
     }
-    private string pageTitle = PdpSiteSettings.GetValues.AppPageTitle;
+    private string? pageTitle = null;
 
-    public string? ViewName { get; set; }
+    public string SectionTitle { get; set; } = string.Empty;
+    public string ViewName { get; set; } = string.Empty;
 
     // methods
 
-    public string FormatPageTitle()
-    { return "<h3>" + PageTitle + "</h3>"; }
-    public string FormatPageTitle(string pt = "")
+    public string FormatSiteTitle()
+    { return $"<h1>{SiteTitle}</h1>"; }
+    public string FormatSiteTitle(string title = "")
     {
-      if (!string.IsNullOrEmpty(pt)) { PageTitle = pt; }
+      if (!string.IsNullOrEmpty(title)) { SiteTitle = title; }
+      return FormatSiteTitle();
+    }
+
+    public string FormatPageTitle()
+    { return $"<h2>{PageTitle}</h2>"; }
+    public string FormatPageTitle(string title = "")
+    {
+      if (!string.IsNullOrEmpty(title)) { PageTitle = title; }
       return FormatPageTitle();
     }
 
-    public string FormatSiteTitle()
-    { return "<h1>" + SiteTitle + "</h1>"; }
-    public string FormatSiteTitle(string st = "")
+    public string FormatSectionTitle()
+    { return $"<h4>{SectionTitle}</h4>"; }
+    public string FormatSectionTitle(string title = "")
     {
-      if (!string.IsNullOrEmpty(st)) { SiteTitle = st; }
-      return FormatSiteTitle();
+      if (!string.IsNullOrEmpty(title)) { SectionTitle = title; }
+      return FormatSectionTitle();
     }
 
   }

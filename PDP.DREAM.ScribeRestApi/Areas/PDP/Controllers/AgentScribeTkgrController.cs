@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// AgentScribeTkgrController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,7 +15,7 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
   [Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSAGENT)]
   public class AgentScribeTkgrController : TkgrControllerBase
   {
-    public AgentScribeTkgrController(PdpAgentCmsContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+    public AgentScribeTkgrController(ScribeDbsqlContext npdsCntxt, PdpAgentCmsContext userCntxt) : base(npdsCntxt, userCntxt) { }
 
     public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
     {
@@ -23,10 +27,11 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
         ClientInAgentModeIsRequired = true,
         SessionValueIsRequired = true
       };
+      ResetScribeRepository();
       var isVerified = CheckClientAgentSession();
       if (!isVerified) { oaeCntxt.Result = Redirect(PdpConst.PdpPathIdentRequired); }
     }
 
-  }
+  } // class
 
-}
+} // namespace

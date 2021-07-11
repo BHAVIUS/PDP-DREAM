@@ -1,12 +1,14 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿// TkgrControllerDistribution.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
-using PDP.DREAM.NpdsCoreLib.Models;
 using PDP.DREAM.NpdsCoreLib.Types;
 using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase;
 

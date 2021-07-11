@@ -1,7 +1,9 @@
-﻿using System;
-using System.Reflection;
+﻿// PrcServiceTag.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
-using PDP.DREAM.NpdsCoreLib.Types;
+using System;
+using System.Reflection;
 
 namespace PDP.DREAM.NpdsCoreLib.Models
 {
@@ -82,6 +84,7 @@ namespace PDP.DREAM.NpdsCoreLib.Models
 
     private string ValidateServiceTag(string reqTag)
     {
+      // TODO: this method must be converted/migrated to generalized dynamic database lookup
       string tag = reqTag;
       if (!string.IsNullOrEmpty(reqTag))
       {

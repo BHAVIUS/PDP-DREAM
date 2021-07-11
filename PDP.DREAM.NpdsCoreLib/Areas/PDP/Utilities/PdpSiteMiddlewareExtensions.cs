@@ -1,23 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿// PdpSiteMiddlewareExtensions.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 
-using PDP.DREAM.NpdsCoreLib.Controllers;
 using PDP.DREAM.NpdsCoreLib.Models;
-using PDP.DREAM.NpdsCoreLib.Services;
-using PDP.DREAM.NpdsCoreLib.Utilities;
-using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 
 namespace PDP.DREAM.NpdsCoreLib.Utilities
 {

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// SiteController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using PDP.DREAM.NpdsCoreLib.Models;
@@ -8,6 +12,7 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
   [Area(PdpConst.PdpMvcArea), AllowAnonymous]
   public class SiteController : NpdsCoreControllerBase
   {
+    [HttpGet]
     public IActionResult Info()
     {
       string npdsTag = string.Empty;
@@ -44,6 +49,7 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       return View();
     }
 
+    [HttpGet]
     public override IActionResult Help()
     {
       // TODO 2018/6/5: move these property definitions to PdpRestContext or to PrcOptionsForRequest
@@ -52,8 +58,11 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       PRC.HelpDebugUrl = PRC.PdpReqstHost + "?" + PdpConst.PdpHelpRouteQueryKey + "&" + PdpConst.PdpDebugRouteQueryKey;
       return View();
     }
-   
+
+    [HttpGet]
     public IActionResult Design() { return View(); }
+
+    [HttpGet]
     public IActionResult Papers() { return View(); }
 
   }

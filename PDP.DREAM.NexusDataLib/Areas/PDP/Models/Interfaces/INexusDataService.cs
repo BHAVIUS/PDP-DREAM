@@ -1,4 +1,8 @@
-﻿using System;
+﻿// INexusDataService.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 using System.Collections.Generic;
 
 using PDP.DREAM.NpdsDataLib.Models.NpdsSqlDatabase;

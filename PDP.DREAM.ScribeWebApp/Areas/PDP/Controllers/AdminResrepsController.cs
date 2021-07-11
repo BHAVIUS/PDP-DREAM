@@ -1,4 +1,8 @@
-﻿using System;
+﻿// AdminResrepsController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +18,21 @@ using PDP.DREAM.SiaaDataLib.Stores.PdpIdentity;
 namespace PDP.DREAM.ScribeWebApp.Controllers
 {
   [Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSADMIN)]
-  public class AdminResrepsController : TkgrControllerBase
+  public class AdminResrepsController : AdminScribeTkgrController
   {
-    public AdminResrepsController(PdpAgentCmsContext userCntxt, ScribeDbsqlContext dataCntxt) : base(userCntxt, dataCntxt) { }
+    public AdminResrepsController(ScribeDbsqlContext npdsCntxt, PdpAgentCmsContext userCntxt) : base(npdsCntxt, userCntxt) { }
 
-    public override void OnActionExecuting(ActionExecutingContext oaeCtxt)
+    public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
     {
-      pdpRestCntxt = new PdpRestContext(oaeCtxt.HttpContext.Request)
+      PRC = new PdpRestContext(oaeCntxt.HttpContext.Request)
       {
         DatabaseType = NpdsConst.DatabaseType.Nexus,
         DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,
-        RecordAccess = NpdsConst.RecordAccess.Admin
+        RecordAccess = NpdsConst.RecordAccess.Admin,
+        ClientInAdminModeIsRequired = true,
+        SessionValueIsRequired = true
       };
+      ResetScribeRepository();
       CheckClientAgentSession();
     }
 

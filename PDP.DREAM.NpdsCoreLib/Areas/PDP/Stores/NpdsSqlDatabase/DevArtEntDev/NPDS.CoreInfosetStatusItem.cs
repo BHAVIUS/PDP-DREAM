@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text.Json.Serialization;
+﻿// NPDS.CoreInfosetStatusItem.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
 namespace PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase
 {
 
-    public partial class CoreInfosetStatusItem
+  public partial class CoreInfosetStatusItem
     {
     }
 }

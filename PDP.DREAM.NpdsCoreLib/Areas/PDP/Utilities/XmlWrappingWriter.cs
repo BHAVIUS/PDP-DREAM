@@ -1,10 +1,10 @@
+// XmlWrappingWriter.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.XPath;
 
 // see assembly System.Xml.ReaderWriter class XmlWriter
 // TODO: needs updating for current version of XmlWriter

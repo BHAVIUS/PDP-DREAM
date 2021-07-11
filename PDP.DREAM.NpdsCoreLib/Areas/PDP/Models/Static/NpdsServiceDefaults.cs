@@ -1,4 +1,8 @@
-﻿using System;
+﻿// NpdsServiceDefaults.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 
 using PDP.DREAM.NpdsCoreLib.Types;
 using PDP.DREAM.NpdsCoreLib.Utilities;
@@ -177,6 +181,9 @@ namespace PDP.DREAM.NpdsCoreLib.Models
     { get { return defNewEntityType; } }
     private NpdsConst.EntityType defNewEntityType;
 
+    // NPDS cyberinfrastructure root service tag
+    public string NpdsRootServiceTag { get { return npdsRoot; } }
+    private const string npdsRoot = "NPDS-Root";
 
     // cache for tag-guid conversion
     public PdpTagGuidDictionary NpdsServiceCache { set; get; } = new PdpTagGuidDictionary();

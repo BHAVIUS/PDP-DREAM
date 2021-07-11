@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// ScribeTestApiController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 using PDP.DREAM.NpdsCoreLib.Models;
@@ -11,7 +15,7 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
   [Area(PdpConst.PdpMvcArea), RequireHttps]
   public class ScribeTestApiController : SiaaDataControllerBase
   {
-    public ScribeTestApiController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+    public ScribeTestApiController(ScribeDbsqlContext npdsCntxt, PdpAgentCmsContext userCntxt) : base(npdsCntxt, userCntxt) { }
 
     public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
     {
@@ -23,12 +27,26 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
         ClientInUserModeIsRequired = true,
         SessionValueIsRequired = true
       };
+      ResetScribeRepository();
       var isVerified = CheckClientAgentSession();
       if (!isVerified) { oaeCntxt.Result = Redirect(PdpConst.PdpPathIdentRequired); }
     }
 
     [HttpGet]
-    public override IActionResult Index() { return View(); }
+    public IActionResult PrcTest()
+    {
+      PRC.SectionTitle = "PDP/ScribeTestApi/PrcTest";
+      return View();
+    }
+
+
+    [HttpGet]
+    public IActionResult MvcRoutes()
+    {
+      PRC.SectionTitle = "PDP/ScribeTestApi/MvcRoutes";
+      return View();
+    }
+
     [HttpGet]
     public IActionResult RestUser() { return View(PRC); }
     [HttpGet]
@@ -39,10 +57,6 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
     public IActionResult RestEditor() { return View(PRC); }
     [HttpGet]
     public IActionResult RestAdmin() { return View(PRC); }
-    [HttpGet]
-    public IActionResult Routes() { return View(); }
-    [HttpGet]
-    public IActionResult Examples() { return View(); }
 
   } // class
 

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// ScribeRestApiController.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +19,7 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
   [Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSAUTHOR)]
   public class ScribeRestApiController : SiaaDataControllerBase
   {
-    public ScribeRestApiController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+    public ScribeRestApiController(ScribeDbsqlContext npdsCntxt, PdpAgentCmsContext userCntxt) : base(npdsCntxt, userCntxt) { }
 
     public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
     {
@@ -23,10 +27,11 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
       {
         DatabaseType = NpdsConst.DatabaseType.Scribe,
         DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,
-        RecordAccess = NpdsConst.RecordAccess.User,
-        ClientInUserModeIsRequired = true,
+        RecordAccess = NpdsConst.RecordAccess.Author,
+        ClientInAuthorModeIsRequired = true,
         SessionValueIsRequired = true
       };
+      ResetScribeRepository();
       var isVerified = CheckClientAgentSession();
       if (!isVerified) { oaeCntxt.Result = Redirect(PdpConst.PdpPathIdentRequired); }
     }

@@ -1,11 +1,14 @@
-﻿using System.Net;
+﻿// TkgrControllerBase.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+
+using System.Net;
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
-using PDP.DREAM.NpdsCoreLib.Utilities;
 using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 using PDP.DREAM.SiaaDataLib.Controllers;
 using PDP.DREAM.SiaaDataLib.Stores.PdpIdentity;
@@ -16,6 +19,7 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
   {
     public TkgrControllerBase() { }
     public TkgrControllerBase(ScribeDbsqlContext npdsCntxt) : base(npdsCntxt) { }
+    public TkgrControllerBase(ScribeDbsqlContext npdsCntxt, PdpAgentCmsContext userCntxt) : base(npdsCntxt, userCntxt) { }
     public TkgrControllerBase(PdpAgentCmsContext userCntxt) : base(userCntxt) { }
     public TkgrControllerBase(PdpAgentCmsContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
 
@@ -36,7 +40,6 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
     [HttpGet]
     public virtual IActionResult NpdsView(string serviceType, string serviceTag, string entityType = "")
     {
-      ArgumentChecker.CatchNullOrWhite(serviceType); ArgumentChecker.CatchNullOrWhite(serviceTag);
       PRC.ParseNpdsServTagEntity(serviceType, serviceTag, entityType, "View");
       return View(PRC.ViewName);
     }
@@ -44,7 +47,6 @@ namespace PDP.DREAM.ScribeRestApi.Controllers
     [HttpGet]
     public virtual IActionResult NpdsEdit(string serviceType, string serviceTag, string entityType = "")
     {
-      ArgumentChecker.CatchNullOrWhite(serviceType); ArgumentChecker.CatchNullOrWhite(serviceTag);
       PRC.ParseNpdsServTagEntity(serviceType, serviceTag, entityType, "Edit");
       BuildDropDownListsForResrepStem();
       return View(PRC.ViewName);

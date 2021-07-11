@@ -1,0 +1,17 @@
+@*  
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
+*@
+
+@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
+
+@Html.Raw(prc.FormatSectionTitle("PDP/ScribeTestLib/Help"))
+
+<partial name="_MenuAcavScribeTestLib" />
+
+@Html.Raw(prc.FormatSectionTitle("ScribeDataLib Project Menus"))
+
+<partial name="_ScribeDataLibDefaultList" />
+

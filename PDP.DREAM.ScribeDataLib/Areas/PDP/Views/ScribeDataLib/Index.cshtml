@@ -1,4 +1,7 @@
-﻿@{ var prc = ViewBag.PRC; Layout = prc.PageLayout; }
-@Html.Raw(prc.FormatPageTitle("PDP/ScribeDataLib/Index"))
+﻿@{
+  var prc = ViewBag.PRC; Layout = prc.PageLayout;
+}
 
-<p>PDP/ScribeDataLib/Index web page paragraph.</p>
+@Html.Raw(prc.FormatSectionTitle("PDP/ScribeDataLib/Index"))
+
+<partial name="_MenuAcavScribeDataLib" />
