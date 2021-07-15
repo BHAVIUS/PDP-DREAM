@@ -52,6 +52,8 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
           uxm.DbtestPassed = true;
           uxm.TokenConfirmed = true;
 
+          usr.UserName = uxm.NewUsername;
+          usr.UserNameDisplayed = uxm.PersonName;
           usr.DateUserNameChanged = DateTime.UtcNow;
           usr.DateLastEdit = usr.DatePasswordChanged;
           usr.SecurityToken = string.Empty;

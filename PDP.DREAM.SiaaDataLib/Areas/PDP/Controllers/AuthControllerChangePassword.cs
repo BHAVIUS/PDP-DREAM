@@ -30,7 +30,10 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
         uxm.UserGuid = QebUserGuid;
         uxm.UserName = QebUserName;
         uxm = ChangePasswordWithOld(uxm);
-        if (uxm.PasswordChanged) { return View("PasswordChanged"); }
+        if (uxm.PasswordChanged)
+        {
+          return View("PasswordChanged");
+        }
         PdpPrcMvcAddErrors(uxm.Message);
       }
       return View(uxm);

@@ -28,7 +28,8 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       if ((ModelState.IsValid) && (OnlineUserIsAuthenticated))
       {
         uxm.UserGuid = QebUserGuid;
-        ChangeUsernameWithOld(uxm);
+        uxm.UserName = QebUserName;
+        uxm = ChangeUsernameWithOld(uxm);
         if (uxm.UsernameChanged)
         {
           QebUserSignout();

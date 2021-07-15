@@ -18,34 +18,31 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       string namController = PdpConst.PdpMvcController, string namAction = PdpConst.PdpMvcAction)
     {
       object? pdpAreaDefault = null;
-      object? pdpAreaCatchall = null;
       object? pdpAreaConstraint = null;
       if (setAreaDefaults)
       {
         pdpAreaDefault = new { area = PdpConst.PdpMvcArea, controller = namController, action = namAction };
-        pdpAreaCatchall = new { area = PdpConst.PdpMvcArea, controller = namController, action = PdpConst.PdpMvcAltAction };
-        // do not use constraints on action or controller
-        pdpAreaConstraint = new { area = PdpConst.PdpMvcArea };
+        pdpAreaConstraint = new { area = PdpConst.PdpMvcArea }; // do not use constraints on action or controller
       }
 
       routes.MapAreaControllerRoute(
         name: "PdpAreaNpdsResreps",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "PDP/{controller}/{action}/{serviceType}/{serviceTag}/{entityType?}",
+        pattern: "{area:exists}/{controller}/{action}/{serviceType}/{serviceTag}/{entityType?}",
         // do not use constraint on action
         constraints: new { area = PdpConst.PdpMvcArea, controller = TKGAC, serviceType = NpdsConst.RegexReadWriteServiceTypeToken }
       );
       routes.MapAreaControllerRoute(
         name: "PdpAreaGenericWithId",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "PDP/{controller}/{action}/{id}",
+        pattern: "{area:exists}/{controller}/{action}/{id}",
         defaults: pdpAreaDefault,
         constraints: pdpAreaConstraint
       );
       routes.MapAreaControllerRoute(
         name: "PdpAreaGenericWithoutId",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "PDP/{controller}/{action}",
+        pattern: "{area:exists}/{controller}/{action}",
         defaults: pdpAreaDefault,
         constraints: pdpAreaConstraint,
         dataTokens: new
@@ -57,8 +54,8 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       routes.MapAreaControllerRoute(
         name: "PdpAreaCatchall",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "PDP/{*catchall}",
-        defaults: pdpAreaCatchall,
+        pattern: "{area:exists}/{*catchall}",
+        defaults: new { area = PdpConst.PdpMvcArea, controller = PdpConst.PdpMvcAltController, action = PdpConst.PdpMvcAltAction },
         constraints: pdpAreaConstraint,
         dataTokens: new
         {

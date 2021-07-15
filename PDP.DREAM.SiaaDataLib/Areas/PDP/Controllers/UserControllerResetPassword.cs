@@ -17,7 +17,8 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
       var uxm = new ChangePasswordUxm();
       uxm.UserName = username;
       uxm.SecurityAnswer = securityanswer;
-      return ResetPasswordWithToken(uxm);
+      uxm = ResetPasswordWithToken(uxm);
+      return uxm;
     }
 
     // requires known current UserName and Security Q&A to reset forgotten PassWord

@@ -115,7 +115,6 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
 
     protected ChangePasswordUxm StorePassword(ChangePasswordUxm uxm, QebIdentityAppUser usr)
     {
-
       var errorCode = QUC.QebIdentityAppUserUpdatePassword(usr.AppGuidRef,
         usr.UserGuidKey, usr.PasswordHash, usr.SecurityToken,
         usr.DateTokenExpired, usr.DatePasswordChanged, usr.DateLastEdit);

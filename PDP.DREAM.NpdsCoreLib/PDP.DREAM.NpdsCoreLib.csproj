@@ -7,9 +7,9 @@
     <RootNamespace>PDP.DREAM.NpdsCoreLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
-    <AssemblyVersion>9.3.2</AssemblyVersion>
-    <FileVersion>9.3.2</FileVersion>
-    <Version>9.3.2</Version>
+    <AssemblyVersion>9.3.3</AssemblyVersion>
+    <FileVersion>9.3.3</FileVersion>
+    <Version>9.3.3</Version>
     <Platforms>x64</Platforms>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -33,12 +33,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0-preview.5.21301.17" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0-preview.5.21301.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0-preview.6.21355.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0-preview.6.21355.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.5.21301.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.5.21301.9" />
-    <PackageReference Include="Sendgrid" Version="9.24.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.6.21352.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0-preview.6.21352.1" />
+    <PackageReference Include="Sendgrid" Version="9.24.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2021.2.616" />
   </ItemGroup>

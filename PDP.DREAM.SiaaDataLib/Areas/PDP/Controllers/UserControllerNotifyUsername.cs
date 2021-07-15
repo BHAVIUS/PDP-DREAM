@@ -53,7 +53,8 @@ namespace PDP.DREAM.SiaaDataLib.Controllers
         body.AppendLine("   " + uxm.SecurityToken);
         body.AppendLine();
 
-        var sent = NotifyService.SendEmail(uxm.EmailAddress, subj, body.ToString());
+        var mail = uxm.EmailAddress ?? PdpSiteSettings.GetValues.AppHostEmail;
+        var sent = NotifyService.SendEmail(mail, subj, body.ToString());
         uxm.NoticeSent = sent;
         if (!uxm.NoticeSent)
         {

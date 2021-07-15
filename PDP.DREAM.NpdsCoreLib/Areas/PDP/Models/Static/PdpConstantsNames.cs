@@ -61,7 +61,7 @@ namespace PDP.DREAM.NpdsCoreLib.Models
     //PDP area MVC default constants
     public const string PdpMvcArea = "PDP";
     public const string PdpMvcController = "Site";
-    public const string PdpMvcAltController = "AnonResreps";
+    public const string PdpMvcAltController = "DREAM";
     public const string PdpMvcAction = "Info";
     public const string PdpMvcAltAction = "Help";
     public const string PdpMvcUser = "User";
