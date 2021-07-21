@@ -8,31 +8,31 @@ using System.ComponentModel;
 
 using Microsoft.AspNetCore.Routing;
 
-#nullable disable
-
 namespace PDP.DREAM.NpdsCoreLib.Types
 {
   public class PdpBiDictionary<TLeft, TRight>
+    where TLeft : notnull
+    where TRight : notnull
   {
     IDictionary<TLeft, TRight> leftToRight;
     IDictionary<TRight, TLeft> rightToLeft;
 
     public PdpBiDictionary()
     {
-      if ((typeof(TLeft) == typeof(String)) && (typeof(TRight) == typeof(String)))
+      if ((typeof(TLeft) == typeof(string)) && (typeof(TRight) == typeof(string)))
       {
-        leftToRight = (IDictionary<TLeft, TRight>)new Dictionary<String, String>(StringComparer.OrdinalIgnoreCase);
-        rightToLeft = (IDictionary<TRight, TLeft>)new Dictionary<String, String>(StringComparer.OrdinalIgnoreCase);
+        leftToRight = (IDictionary<TLeft, TRight>)new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        rightToLeft = (IDictionary<TRight, TLeft>)new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
       }
-      else if (typeof(TLeft) == typeof(String))
+      else if (typeof(TLeft) == typeof(string))
       {
-        leftToRight = (IDictionary<TLeft, TRight>)new Dictionary<String, TRight>(StringComparer.OrdinalIgnoreCase);
-        rightToLeft = (IDictionary<TRight, TLeft>)new Dictionary<TRight, String>();
+        leftToRight = (IDictionary<TLeft, TRight>)new Dictionary<string, TRight>(StringComparer.OrdinalIgnoreCase);
+        rightToLeft = (IDictionary<TRight, TLeft>)new Dictionary<TRight, string>();
       }
-      else if (typeof(TRight) == typeof(String))
+      else if (typeof(TRight) == typeof(string))
       {
-        leftToRight = (IDictionary<TLeft, TRight>)new Dictionary<TLeft, String>();
-        rightToLeft = (IDictionary<TRight, TLeft>)new Dictionary<String, TLeft>(StringComparer.OrdinalIgnoreCase);
+        leftToRight = (IDictionary<TLeft, TRight>)new Dictionary<TLeft, string>();
+        rightToLeft = (IDictionary<TRight, TLeft>)new Dictionary<string, TLeft>(StringComparer.OrdinalIgnoreCase);
       }
       else
       {
@@ -60,28 +60,25 @@ namespace PDP.DREAM.NpdsCoreLib.Types
 
     public TRight GetByLeft(TLeft left)
     {
-      //if (left == null) return default(TRight);
-      //else if (typeof(TLeft) == typeof(string) && string.IsNullOrEmpty((string)left)) return string.Empty;
-      //else return leftToRight[left];
-      return leftToRight[left];
+      if (left == null) return default(TRight);
+      else return leftToRight[left];
     }
 
     public TLeft GetByRight(TRight right)
     {
-      //if (right == null) return default(TLeft);
-      //else if (typeof(TRight) == typeof(string) && string.IsNullOrEmpty((string)right)) return string.Empty;
-      //else return rightToLeft[right];
-      return rightToLeft[right];
+      if (right == null) return default(TLeft);
+      else return rightToLeft[right];
     }
-  }
+
+  } // class
 
   public static class PdpDictionaryExtensions
   {
-    public static IDictionary<string,string> ToDictionary<T>(this IDictionary<string,T> source)
+    public static IDictionary<string, string> ToDictionary<T>(this IDictionary<string, T> source)
     {
       if (source == null) { throw new ArgumentNullException(nameof(source)); }
       var dictionary = new Dictionary<string, string>();
-      foreach (KeyValuePair<string,T> item in source)
+      foreach (KeyValuePair<string, T> item in source)
       {
         dictionary.Add(item.Key, item.Value.ToString());
       }
@@ -118,7 +115,7 @@ namespace PDP.DREAM.NpdsCoreLib.Types
       return dictionary;
     }
 
-    private static void AddPropertyToDictionary<T>(PropertyDescriptor property, object source,  Dictionary<string, T> dictionary)
+    private static void AddPropertyToDictionary<T>(PropertyDescriptor property, object source, Dictionary<string, T> dictionary)
     {
       object value = property.GetValue(source);
       if (value is DateTime)
@@ -132,6 +129,6 @@ namespace PDP.DREAM.NpdsCoreLib.Types
       }
     }
 
-  }
+  } // class
 
-}
+} // namespace

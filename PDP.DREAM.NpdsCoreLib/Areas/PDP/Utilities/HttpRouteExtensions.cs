@@ -6,16 +6,11 @@ using System;
 
 using Microsoft.AspNetCore.Routing;
 
-#nullable disable
-
-// Copyright (c) 2011 Carl Taswell and Akeakamai
-//
 // Credits: portions of code and/or ideas for code adapted from
 //    Microsoft ASP.NET MVC 3 source,
 //    http://haacked.com/archive/2008/07/14/make-routing-ignore-requests-for-a-file-extension.aspx
 //    http://haacked.com/archive/2010/11/28/getting-the-route-name-for-a-route.aspx,
 //    Chapter 24 by Palermo et al in Aspnet MVC 2 In Action.
-//
 
 namespace PDP.DREAM.NpdsCoreLib.Utilities
 {

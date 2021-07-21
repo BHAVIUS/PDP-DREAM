@@ -28,25 +28,24 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       routes.MapAreaControllerRoute(
         name: "PdpAreaNpdsResreps",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "{area:exists}/{controller}/{action}/{serviceType}/{serviceTag}/{entityType?}",
+        pattern: PdpConst.PdpMvcArea + "/{controller}/{action}/{serviceType}/{serviceTag}/{entityType?}",
         // do not use constraint on action
         constraints: new { area = PdpConst.PdpMvcArea, controller = TKGAC, serviceType = NpdsConst.RegexReadWriteServiceTypeToken }
       );
       routes.MapAreaControllerRoute(
         name: "PdpAreaGenericWithId",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "{area:exists}/{controller}/{action}/{id}",
+        pattern: PdpConst.PdpMvcArea + "/{controller}/{action}/{id}",
         defaults: pdpAreaDefault,
         constraints: pdpAreaConstraint
       );
       routes.MapAreaControllerRoute(
         name: "PdpAreaGenericWithoutId",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "{area:exists}/{controller}/{action}",
+        pattern: PdpConst.PdpMvcArea + "/{controller}/{action}",
         defaults: pdpAreaDefault,
         constraints: pdpAreaConstraint,
-        dataTokens: new
-        {
+        dataTokens: new {
           help = "Area default route for PDP area",
           examples = "'PDP', 'PDP/Site', 'PDP/Site/Info'"
         }
@@ -54,17 +53,14 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       routes.MapAreaControllerRoute(
         name: "PdpAreaCatchall",
         areaName: PdpConst.PdpMvcArea,
-        pattern: "{area:exists}/{*catchall}",
+        pattern: PdpConst.PdpMvcArea + "/{*catchall}",
         defaults: new { area = PdpConst.PdpMvcArea, controller = PdpConst.PdpMvcAltController, action = PdpConst.PdpMvcAltAction },
         constraints: pdpAreaConstraint,
-        dataTokens: new
-        {
+        dataTokens: new {
           help = string.Empty,
           examples = string.Empty
         }
       );
-      routes.MapFallbackToAreaController("{*:nonfile}",
-        PdpConst.PdpMvcAction, PdpConst.PdpMvcController, PdpConst.PdpMvcArea);
     }
 
     public static void RegisterPdpWebApp(IEndpointRouteBuilder routes, string defArea = "",
@@ -73,11 +69,22 @@ namespace PDP.DREAM.NpdsCoreLib.Controllers
       defArea ??= string.Empty;
       defController ??= string.Empty;
       defAction ??= string.Empty;
-      routes.MapControllerRoute(
-        name: "PdpWebAppDefault",
-        pattern: "{area}/{controller}/{action}/{id?}",
-        defaults: new { area = defArea, controller = defController, action = defAction }
-        );
+      if (string.IsNullOrEmpty(defArea))
+      {
+        routes.MapControllerRoute(
+          name: "PdpWebAppDefault",
+          pattern: "{controller}/{action}/{id?}",
+          defaults: new { controller = defController, action = defAction }
+          );
+      }
+      else
+      {
+        routes.MapControllerRoute(
+          name: "PdpWebAppDefault",
+          pattern: "{area}/{controller}/{action}/{id?}",
+          defaults: new { area = defArea, controller = defController, action = defAction }
+          );
+      }
       if (mapAttribRoutes) { routes.MapControllers(); }
     }
 

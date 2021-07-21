@@ -23,20 +23,17 @@ using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 
 namespace PDP.DREAM.NexusRestApi
 {
-  public class Startup
+  public class StartNexusRestApi
   {
     private PdpSiteSettings? pdpSitSets = null;
     private NpdsServiceDefaults? npdsSrvcDefs = null;
 
-    public IConfiguration Configuration { get; private set; }
     public IWebHostEnvironment Environment { get; private set; }
-    // public IServiceProvider ServiceProvider { get; private set; }
 
-    public Startup(IConfiguration config, IWebHostEnvironment envir)
+    public StartNexusRestApi(IConfiguration config, IWebHostEnvironment envir)
     {
       // from PDP.DREAM.NpdsRootLib.Utilities
       ConfigManager.Initialize(config);
-      Configuration = config;
       Environment = envir;
     }
 
@@ -67,7 +64,6 @@ namespace PDP.DREAM.NexusRestApi
       services.AddHttpContextAccessor();
 
       // add utility services
-      services.AddSingleton<IConfiguration>(Configuration);
       services.AddSingleton<ISmsSender, TwilioSmsender>();
       services.AddSingleton<IEmailSender, MailKitEmailer>();
       services.AddHttpClient<BingMapsService>();
@@ -168,7 +164,7 @@ namespace PDP.DREAM.NexusRestApi
         PdpEndpoints.RegisterPdpArea(r);
         PdpEndpoints.RegisterForNexusReadOnlySvc(r);
         // then routes without constraints
-        // PdpEndpoints.RegisterPdpWebApp(r);
+        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

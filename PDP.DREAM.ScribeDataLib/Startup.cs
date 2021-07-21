@@ -19,20 +19,17 @@ using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 
 namespace PDP.DREAM.ScribeDataLib
 {
-  public class Startup
+  public class StartScribeDataLib
   {
     private PdpSiteSettings? pdpSitSets = null;
     private NpdsServiceDefaults? npdsSrvcDefs = null;
 
-    public IConfiguration Configuration { get; private set; }
     public IWebHostEnvironment Environment { get; private set; }
-    // public IServiceProvider ServiceProvider { get; private set; }
 
-    public Startup(IConfiguration config, IWebHostEnvironment envir)
+    public StartScribeDataLib(IConfiguration config, IWebHostEnvironment envir)
     {
       // from PDP.DREAM.NpdsRootLib.Utilities
       ConfigManager.Initialize(config);
-      Configuration = config;
       Environment = envir;
     }
 
@@ -107,7 +104,7 @@ namespace PDP.DREAM.ScribeDataLib
         // first routes with constraints
         PdpEndpoints.RegisterPdpArea(r);
         // then routes without constraints
-        // PdpEndpoints.RegisterPdpWebApp(r);
+        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

@@ -1,0 +1,217 @@
+﻿@(Html.Kendo().Menu().Name("MenuScribeAuthBhan")
+.HtmlAttributes(new { style = "float: left" }).Items(m => {
+m.Add().Text("Home").Items(s =>
+{
+  if (User?.Identity?.IsAuthenticated ?? false)
+  {
+    s.Add().Text("Logout").Url("~/PDP/Auth/LogoutUser");
+  }
+  else
+  {
+    s.Add().Text("Register").Url("~/PDP/Anon/RegisterUser");
+    s.Add().Text("Login").Url("~/PDP/Anon/LoginUser");
+  }
+  s.Add().Text("PDP Info").Url("~/PDP/Site/Info");
+  s.Add().Text("PDP Design").Url("~/PDP/Site/Design");
+  s.Add().Text("PDP Papers").Url("~/PDP/Site/Papers");
+  s.Add().Text("PDP Home").Url("http://www.portaldoors.org/").LinkHtmlAttributes(new { target = "PDPO" });
+  s.Add().Text("PDP Registrar").Url("https://www.portaldoors.net/").LinkHtmlAttributes(new { target = "PDPN" });
+  s.Add().Text("BHA Home").Url("http://www.brainhealthalliance.org/").LinkHtmlAttributes(new { target = "BHAO" });
+  s.Add().Text("BHA Registrar").Url("https://www.brainhealthalliance.net/").LinkHtmlAttributes(new { target = "BHAN" });
+  s.Add().Text("GTG Home").Url("http://www.telegenetics.com/").LinkHtmlAttributes(new { target = "GTGC" });
+  s.Add().Text("GTG Registrar").Url("https://www.telegenetics.net/").LinkHtmlAttributes(new { target = "GTGN" });
+  s.Add().Text("NPDS Home").Url("http://www.npdslinks.org/").LinkHtmlAttributes(new { target = "NLSO" });
+  s.Add().Text("NPDS Registrar").Url("https://www.npdslinks.net/").LinkHtmlAttributes(new { target = "NLSN" });
+}); // end s items
+
+m.Add().Text("Records").Items(s =>
+{
+  s.Add().Text("Index").Url("~/PDP/AnonResreps/Index");
+  s.Add().Text("BHA-Nexus").Url("~/PDP/AnonResreps/NpdsView/Nexus/BHA-Nexus");
+  s.Add().Text("BHA-PORTAL").Url("~/PDP/AnonResreps/NpdsView/PORTAL/BHA-PORTAL");
+  s.Add().Text("BHA-DOORS").Url("~/PDP/AnonResreps/NpdsView/DOORS/BHA-DOORS");
+  s.Add().Text("BHA-Scribe").Url("~/PDP/AnonResreps/NpdsView/Scribe/BHA-Scribe");
+  s.Add().Text("BrainWatch").Url("~/PDP/AnonResreps/NpdsView/Nexus/BrainWatch");
+  s.Add().Text("Eywa").Url("~/PDP/AnonResreps/NpdsView/Nexus/Eywa");
+  s.Add().Text("Gaia").Url("~/PDP/AnonResreps/NpdsView/Nexus/Gaia");
+  s.Add().Text("HELPME").Url("~/PDP/AnonResreps/NpdsView/Nexus/HELPME");
+  s.Add().Text("SOLOMON").Url("~/PDP/AnonResreps/NpdsView/Nexus/SOLOMON");
+}); // end s items
+
+if (User?.Identity?.IsAuthenticated ?? false)
+{
+  m.Add().Text(User.Identity.Name).Items(s =>
+  {
+    s.Add().Text("Display Profile").Url("~/PDP/Auth/DisplayProfile");
+    s.Add().Text("Change Profile").Url("~/PDP/Auth/ChangeProfile");
+    s.Add().Text("Change Email").Url("~/PDP/Auth/ChangeEmail");
+    s.Add().Text("Change Password").Url("~/PDP/Auth/ChangePassword");
+    s.Add().Text("Change Username").Url("~/PDP/Auth/ChangeUsername");
+    s.Add().Text("View Agent Index").Url("~/PDP/Agent/Index");
+    s.Add().Text("View Agent Help").Url("~/PDP/Agent/Help");
+    s.Add().Text("Add Agent Author Role").Url("~/PDP/Agent/AddRoleAuthor");
+    s.Add().Text("Add Agent Editor Role").Url("~/PDP/Agent/AddRoleEditor");
+    s.Add().Text("Check Agent Session").Url("~/PDP/Agent/CheckSession");
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAgent.ToString()))
+{
+  m.Add().Text("Agent").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AgentResreps/Index");
+    s.Add().Text("Agent Help").Url("~/PDP/AgentResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/AgentResreps/NpdsView/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/AgentResreps/NpdsView/Nexus/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/AgentResreps/NpdsView/Nexus/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/AgentResreps/NpdsView/Nexus/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/AgentResreps/NpdsView/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/AgentResreps/NpdsView/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/AgentResreps/NpdsView/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/AgentResreps/NpdsView/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/AgentResreps/NpdsView/Nexus/HELPME");
+      i.Add().Text("SOLOMON").Url("~/PDP/AgentResreps/NpdsView/Nexus/SOLOMON");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/HELPME");
+      i.Add().Text("SOLOMON").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/SOLOMON");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAuthor.ToString()))
+{
+  m.Add().Text("Author").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AuthorResreps/Index");
+    s.Add().Text("Author Help").Url("~/PDP/AuthorResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/AuthorResreps/NpdsView/Nexus/HELPME");
+      i.Add().Text("Jubatus").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Jubatus");
+      i.Add().Text("SOLOMON").Url("~/PDP/AuthorResreps/NpdsView/Nexus/SOLOMON");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/HELPME");
+      i.Add().Text("Jubatus").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Jubatus");
+      i.Add().Text("SOLOMON").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/SOLOMON");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsEditor.ToString()))
+{
+  m.Add().Text("Editor").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/EditorResreps/Index");
+    s.Add().Text("Editor Help").Url("~/PDP/EditorResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/EditorResreps/NpdsView/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/EditorResreps/NpdsView/PORTAL/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/EditorResreps/NpdsView/DOORS/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/EditorResreps/NpdsView/Scribe/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/EditorResreps/NpdsView/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/EditorResreps/NpdsView/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/EditorResreps/NpdsView/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/EditorResreps/NpdsView/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/EditorResreps/NpdsView/Nexus/HELPME");
+      i.Add().Text("Jubatus").Url("~/PDP/EditorResreps/NpdsView/Nexus/Jubatus");
+      i.Add().Text("SOLOMON").Url("~/PDP/EditorResreps/NpdsView/Nexus/SOLOMON");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/EditorResreps/NpdsEdit/PORTAL/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/EditorResreps/NpdsEdit/DOORS/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/EditorResreps/NpdsEdit/Scribe/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/HELPME");
+      i.Add().Text("Jubatus").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Jubatus");
+      i.Add().Text("SOLOMON").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/SOLOMON");
+    });
+    s.Add().Text("Manage Records").Items(i =>
+    {
+      i.Add().Text("Resrep Author Requests").Url("~/PDP/EditorResreps/ResrepAuthorRequests");
+      i.Add().Text("Service Editor Requests").Url("~/PDP/EditorResreps/ServiceEditorRequests");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAdmin.ToString()))
+{
+  m.Add().Text("Admin").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AdminResreps/Index");
+    s.Add().Text("Admin Help").Url("~/PDP/AdminResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("NPDS-Root").Url("~/PDP/AdminResreps/NpdsView/Scribe/NPDS-Root");
+      i.Add().Text("BHA-Nexus").Url("~/PDP/AdminResreps/NpdsView/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/AdminResreps/NpdsView/PORTAL/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/AdminResreps/NpdsView/DOORS/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/AdminResreps/NpdsView/Scribe/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/AdminResreps/NpdsView/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/AdminResreps/NpdsView/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/AdminResreps/NpdsView/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/AdminResreps/NpdsView/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/AdminResreps/NpdsView/Nexus/HELPME");
+      i.Add().Text("Jubatus").Url("~/PDP/AdminResreps/NpdsView/Nexus/Jubatus");
+      i.Add().Text("SOLOMON").Url("~/PDP/AdminResreps/NpdsView/Nexus/SOLOMON");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("BHA-Nexus").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BHA-Nexus");
+      i.Add().Text("BHA-PORTAL").Url("~/PDP/AdminResreps/NpdsEdit/PORTAL/BHA-PORTAL");
+      i.Add().Text("BHA-DOORS").Url("~/PDP/AdminResreps/NpdsEdit/DOORS/BHA-DOORS");
+      i.Add().Text("BHA-Scribe").Url("~/PDP/AdminResreps/NpdsEdit/Scribe/BHA-Scribe");
+      i.Add().Text("BrainIACS").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BrainIACS");
+      i.Add().Text("BrainWatch").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BrainWatch");
+      i.Add().Text("Eywa").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Eywa");
+      i.Add().Text("Gaia").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Gaia");
+      i.Add().Text("HELPME").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/HELPME");
+      i.Add().Text("Jubatus").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Jubatus");
+      i.Add().Text("SOLOMON").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/SOLOMON");
+    });
+    s.Add().Text("Manage Records").Items(i =>
+    {
+      i.Add().Text("NPDS Service Defaults").Url("~/PDP/AdminResreps/NpdsServiceDefaults");
+      i.Add().Text("NPDS Service Restrictions").Url("~/PDP/AdminResreps/NpdsServiceRestrictions");
+      i.Add().Text("Resrep Author Requests").Url("~/PDP/AdminResreps/ResrepAuthorRequests");
+      i.Add().Text("Service Editor Requests").Url("~/PDP/AdminResreps/ServiceEditorRequests");
+    });
+  });
+}
+}) // end m items
+)

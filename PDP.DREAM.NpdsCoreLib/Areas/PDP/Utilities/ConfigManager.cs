@@ -12,13 +12,13 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
   public static class ConfigManager
   {
 
-    private static IConfiguration? webAppConfig;
+    public static IConfiguration? Current;
 
     public static void Initialize(IConfiguration? config)
     {
       if (config == null)
       { throw new ArgumentNullException(nameof(config), "config cannot be null in ConfigManager"); }
-      webAppConfig = config;
+      Current = config;
     }
 
     public const string WebAppSectionName = "ApplicationSettings";
@@ -30,7 +30,7 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
 
     public static string ParseAppStringSetting(string keynam)
     {
-      var keyval = webAppConfig?.GetSection(WebAppSectionName)[keynam];
+      var keyval = Current?.GetSection(WebAppSectionName)[keynam];
       keyval = (keyval ?? string.Empty);
       return keyval;
     }
@@ -42,7 +42,7 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
     {
       string? keyval = null;
       if (!string.IsNullOrWhiteSpace(keynam))
-      { keyval = webAppConfig?.GetSection(WebAppSectionName)[keynam].ToLower(); }
+      { keyval = Current?.GetSection(WebAppSectionName)[keynam].ToLower(); }
       if ((keyval == null) || string.IsNullOrWhiteSpace(keyval)) { keyval = defval.ToString().ToLower(); }
       if ((keyval != "true") && (keyval != "false")) { keyval = defval.ToString().ToLower(); }
       bool value;
@@ -56,7 +56,7 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
 
     public static string ParseAppDBConnString(string keynam)
     {
-      var keyval = webAppConfig?.GetSection(DBConnSectionName)[keynam]; ;
+      var keyval = Current?.GetSection(DBConnSectionName)[keynam]; ;
       if (!string.IsNullOrWhiteSpace(keyval))
       {
         // TODO: parsing here assumes a SQL Server connection string

@@ -1,9 +1,8 @@
-﻿// Startup.cs 
+// Startup.cs 
 // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
 // Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
 using System;
-using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -19,24 +18,27 @@ using Microsoft.Extensions.Hosting;
 using PDP.DREAM.NpdsCoreLib.Controllers;
 using PDP.DREAM.NpdsCoreLib.Models;
 using PDP.DREAM.NpdsCoreLib.Services;
-using PDP.DREAM.NpdsCoreLib.Utilities;
 using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
-using PDP.DREAM.SiaaDataLib.Stores.PdpIdentity;
 
-namespace PDP.DREAM.ScribeWebApp
+namespace PDP.DREAM.NpdsCoreLib.Utilities
 {
-  public class StartScribeWebApp
+  public class StartPdpSite
   {
+    public StartPdpSite AppWebSite { get { return this; } }
+    public IConfiguration AppConfiguration { get; private set; }
+    public IWebHostEnvironment AppEnvironment { get; private set; }
+    public IServiceCollection AppServices { get; private set; }
+    public PdpSiteSettings PdpSiteSettings { get { return pdpSitSets; } }
     private PdpSiteSettings? pdpSitSets = null;
+    public NpdsServiceDefaults NpdsServiceDefaults { get { return npdsSrvcDefs; } }
     private NpdsServiceDefaults? npdsSrvcDefs = null;
 
-    public IWebHostEnvironment Environment { get; private set; }
-
-    public StartScribeWebApp(IConfiguration config, IWebHostEnvironment envir)
+    public StartPdpSite(IConfiguration config, IWebHostEnvironment envir)
     {
-      // from PDP.DREAM.NpdsRootLib.Utilities
+      // ConfigManager in PDP.DREAM.NpdsRootLib.Utilities
       ConfigManager.Initialize(config);
-      Environment = envir;
+      AppConfiguration = config; 
+      AppEnvironment = envir;
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -48,25 +50,12 @@ namespace PDP.DREAM.ScribeWebApp
       // add database contexts
       services.AddDbContext<CoreDbsqlContext>(options =>
         options.UseSqlServer(npdsSrvcDefs.NpdsCoreDbconstr));
-      services.AddDbContext<NexusDbsqlContext>(options =>
-        options.UseSqlServer(npdsSrvcDefs.NpdsDiristryDbconstr));
-      services.AddDbContext<ScribeDbsqlContext>(options =>
-        options.UseSqlServer(npdsSrvcDefs.NpdsRegistrarDbconstr));
-      services.AddDbContext<QebIdentityContext>(options =>
-        options.UseSqlServer(npdsSrvcDefs.NpdsUserDbconstr));
-      services.AddDbContext<PdpAgentCmsContext>(options =>
-        options.UseSqlServer(npdsSrvcDefs.NpdsAgentDbconstr));
       services.AddDatabaseDeveloperPageExceptionFilter();
 
       // add cached settings 
       using (var dataCntxt = new CoreDbsqlContext(npdsSrvcDefs.NpdsCoreDbconstr))
       {
         dataCntxt.LoadNpdsServiceCache();
-      }
-      using (var userCntxt = new QebIdentityContext(npdsSrvcDefs.NpdsUserDbconstr))
-      {
-        var app = userCntxt.QebIdentityApps.Single(a => a.AppName == pdpSitSets.AppSecureUiaaName);
-        pdpSitSets.AppSecureUiaaGuid = app.AppGuidKey;
       }
 
       // configure IIS
@@ -91,15 +80,12 @@ namespace PDP.DREAM.ScribeWebApp
           options.Secure = CookieSecurePolicy.Always;
           options.CheckConsentNeeded = (context => true);
         });
-        services.AddAuthentication(PdpConst.PdpIdentityScheme)
-          .AddCookie(PdpConst.PdpIdentityScheme, options =>
-          {
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            options.SlidingExpiration = true;
-            options.LoginPath = PdpConst.PdpPathIdentLogin;
-            options.AccessDeniedPath = PdpConst.PdpPathIdentRequired;
-          });
-        if (!Environment.IsDevelopment())
+        services.ConfigureApplicationCookie(options =>
+        {
+          options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+          options.SlidingExpiration = true;
+        });
+        if (!AppEnvironment.IsDevelopment())
         {
           services.AddHttpsRedirection(options =>
           {
@@ -126,13 +112,15 @@ namespace PDP.DREAM.ScribeWebApp
 
       // add Telerik Kendo UI
       services.AddKendo();
+
+      AppServices = services;
     }
 
     public void Configure(IApplicationBuilder app)
     {
       app.UseHttpContext();
       app.UseStatusCodePages();
-      if (Environment.IsDevelopment())
+      if (AppEnvironment.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();
         // app.UseMigrationsEndPoint();
@@ -144,7 +132,7 @@ namespace PDP.DREAM.ScribeWebApp
 
       if (pdpSitSets.AppUseSecureUiaa)
       {
-        if (!Environment.IsDevelopment()) { app.UseHsts(); }
+        if (!AppEnvironment.IsDevelopment()) { app.UseHsts(); }
         app.UseHttpsRedirection();
         app.UseCookiePolicy();
       }
@@ -178,7 +166,6 @@ namespace PDP.DREAM.ScribeWebApp
       {
         // first routes with constraints
         PdpEndpoints.RegisterPdpArea(r);
-        PdpEndpoints.RegisterForScribeReadWriteSvc(r);
         // then routes without constraints
         PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");

@@ -1,0 +1,280 @@
+﻿@(Html.Kendo().Menu().Name("MenuScribeAuthGtgn")
+.HtmlAttributes(new { style = "float: left" }).Items(m => {
+m.Add().Text("Home").Items(s =>
+{
+  if (User?.Identity?.IsAuthenticated ?? false)
+  {
+    s.Add().Text("Logout").Url("~/PDP/Auth/LogoutUser");
+  }
+  else
+  {
+    s.Add().Text("Register").Url("~/PDP/Anon/RegisterUser");
+    s.Add().Text("Login").Url("~/PDP/Anon/LoginUser");
+  }
+  s.Add().Text("PDP Info").Url("~/PDP/Site/Info");
+  s.Add().Text("PDP Design").Url("~/PDP/Site/Design");
+  s.Add().Text("PDP Papers").Url("~/PDP/Site/Papers");
+  s.Add().Text("PDP Home").Url("http://www.portaldoors.org/").LinkHtmlAttributes(new { target = "PDPO" });
+  s.Add().Text("PDP Registrar").Url("https://www.portaldoors.net/").LinkHtmlAttributes(new { target = "PDPN" });
+  s.Add().Text("BHA Home").Url("http://www.brainhealthalliance.org/").LinkHtmlAttributes(new { target = "BHAO" });
+  s.Add().Text("BHA Registrar").Url("https://www.brainhealthalliance.net/").LinkHtmlAttributes(new { target = "BHAN" });
+  s.Add().Text("GTG Home").Url("http://www.telegenetics.com/").LinkHtmlAttributes(new { target = "GTGC" });
+  s.Add().Text("GTG Registrar").Url("https://www.telegenetics.net/").LinkHtmlAttributes(new { target = "GTGN" });
+  s.Add().Text("NPDS Home").Url("http://www.npdslinks.org/").LinkHtmlAttributes(new { target = "NLSO" });
+  s.Add().Text("NPDS Registrar").Url("https://www.npdslinks.net/").LinkHtmlAttributes(new { target = "NLSN" });
+}); // end s items
+
+m.Add().Text("Records").Items(s =>
+{
+  s.Add().Text("Index").Url("~/PDP/AnonResreps/Index");
+  s.Add().Text("GTG-Nexus").Url("~/PDP/AnonResreps/NpdsView/Nexus/GTG-Nexus");
+  s.Add().Text("GTG-PORTAL").Url("~/PDP/AnonResreps/NpdsView/PORTAL/GTG-PORTAL");
+  s.Add().Text("GTG-DOORS").Url("~/PDP/AnonResreps/NpdsView/DOORS/GTG-DOORS");
+  s.Add().Text("GTG-Scribe").Url("~/PDP/AnonResreps/NpdsView/Scribe/GTG-Scribe");
+  s.Add().Text("BioPORT").Url("~/PDP/AnonResreps/NpdsView/Nexus/BioPORT");
+  s.Add().Text("CTGaming").Url("~/PDP/AnonResreps/NpdsView/Nexus/CTGaming");
+  s.Add().Text("GeneScene").Url("~/PDP/AnonResreps/NpdsView/Nexus/GeneScene");
+  s.Add().Text("ManRay").Url("~/PDP/AnonResreps/NpdsView/Nexus/ManRay");
+  s.Add().Text("Osler").Url("~/PDP/AnonResreps/NpdsView/Nexus/Osler");
+}); // end s items
+
+if (User?.Identity?.IsAuthenticated ?? false)
+{
+  m.Add().Text(User.Identity.Name).Items(s =>
+  {
+    s.Add().Text("Display Profile").Url("~/PDP/Auth/DisplayProfile");
+    s.Add().Text("Change Profile").Url("~/PDP/Auth/ChangeProfile");
+    s.Add().Text("Change Email").Url("~/PDP/Auth/ChangeEmail");
+    s.Add().Text("Change Password").Url("~/PDP/Auth/ChangePassword");
+    s.Add().Text("Change Username").Url("~/PDP/Auth/ChangeUsername");
+    s.Add().Text("View Agent Index").Url("~/PDP/Agent/Index");
+    s.Add().Text("View Agent Help").Url("~/PDP/Agent/Help");
+    s.Add().Text("Add Agent Author Role").Url("~/PDP/Agent/AddRoleAuthor");
+    s.Add().Text("Add Agent Editor Role").Url("~/PDP/Agent/AddRoleEditor");
+    s.Add().Text("Check Agent Session").Url("~/PDP/Agent/CheckSession");
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAgent.ToString()))
+{
+  m.Add().Text("Agent").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AgentResreps/Index");
+    s.Add().Text("Agent Help").Url("~/PDP/AgentResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/AgentResreps/NpdsView/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/AgentResreps/NpdsView/Nexus/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/AgentResreps/NpdsView/Nexus/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/AgentResreps/NpdsView/Nexus/GTG-Scribe");
+      i.Add().Text("BioPORT").Url("~/PDP/AgentResreps/NpdsView/Nexus/BioPORT");
+      i.Add().Text("CTGaming").Url("~/PDP/AgentResreps/NpdsView/Nexus/CTGaming");
+      i.Add().Text("GeneScene").Url("~/PDP/AgentResreps/NpdsView/Nexus/GeneScene");
+      i.Add().Text("ManRay").Url("~/PDP/AgentResreps/NpdsView/Nexus/ManRay");
+      i.Add().Text("Osler").Url("~/PDP/AgentResreps/NpdsView/Nexus/Osler");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/GTG-Scribe");
+      i.Add().Text("BioPORT").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/BioPORT");
+      i.Add().Text("CTGaming").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/CTGaming");
+      i.Add().Text("GeneScene").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/GeneScene");
+      i.Add().Text("ManRay").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/ManRay");
+      i.Add().Text("Osler").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Osler");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAuthor.ToString()))
+{
+  m.Add().Text("Author").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AuthorResreps/Index");
+    s.Add().Text("Author Help").Url("~/PDP/AuthorResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/AuthorResreps/NpdsView/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/AuthorResreps/NpdsView/Nexus/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/AuthorResreps/NpdsView/Nexus/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/AuthorResreps/NpdsView/Nexus/GTG-Scribe");
+      i.Add().Text("BioPORT").Url("~/PDP/AuthorResreps/NpdsView/Nexus/BioPORT");
+      i.Add().Text("CTGaming").Url("~/PDP/AuthorResreps/NpdsView/Nexus/CTGaming");
+      i.Add().Text("GeneScene").Url("~/PDP/AuthorResreps/NpdsView/Nexus/GeneScene");
+      i.Add().Text("ManRay").Url("~/PDP/AuthorResreps/NpdsView/Nexus/ManRay");
+      i.Add().Text("Osler").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Osler");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/GTG-Scribe");
+      i.Add().Text("BioPORT").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/BioPORT");
+      i.Add().Text("CTGaming").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/CTGaming");
+      i.Add().Text("GeneScene").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/GeneScene");
+      i.Add().Text("ManRay").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/ManRay");
+      i.Add().Text("Osler").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Osler");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsEditor.ToString()))
+{
+  m.Add().Text("Editor").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/EditorResreps/Index");
+    s.Add().Text("Editor Help").Url("~/PDP/EditorResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/EditorResreps/NpdsView/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/EditorResreps/NpdsView/PORTAL/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/EditorResreps/NpdsView/DOORS/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/EditorResreps/NpdsView/Scribe/GTG-Scribe");
+      i.Add().Text("BioPORT").Url("~/PDP/EditorResreps/NpdsView/Nexus/BioPORT");
+      i.Add().Text("CTGaming").Url("~/PDP/EditorResreps/NpdsView/Nexus/CTGaming");
+      i.Add().Text("GeneScene").Url("~/PDP/EditorResreps/NpdsView/Nexus/GeneScene");
+      i.Add().Text("ManRay").Url("~/PDP/EditorResreps/NpdsView/Nexus/ManRay");
+      i.Add().Text("Osler").Url("~/PDP/EditorResreps/NpdsView/Nexus/Osler");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/EditorResreps/NpdsEdit/PORTAL/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/EditorResreps/NpdsEdit/DOORS/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/EditorResreps/NpdsEdit/Scribe/GTG-Scribe");
+          i.Add().Text("BioPORT").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/BioPORT").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/EditorResreps/NpdsEdit/PORTAL/BioPORT");
+            j.Add().Text("Organization").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/BioPORT/Organization");
+            j.Add().Text("Person").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/BioPORT/Person");
+          });
+          i.Add().Text("CTGaming").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/CTGaming").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/CTGaming");
+            j.Add().Text("Organization").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/CTGaming/Organization");
+            j.Add().Text("Person").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/CTGaming/Person");
+          });
+          i.Add().Text("GeneScene").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/GeneScene").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/GeneScene");
+            j.Add().Text("Organization").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/GeneScene/Organization");
+            j.Add().Text("Person").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/GeneScene/Person");
+            j.Add().Text("*Organization").Url("~/PDP/EditorResreps/OrgEdit/Nexus/GeneScene/Organization");
+            j.Add().Text("*Person").Url("~/PDP/EditorResreps/PerEdit/Nexus/GeneScene/Person");
+          });
+          i.Add().Text("ManRay").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/ManRay").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/ManRay");
+            j.Add().Text("Organization").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/ManRay/Organization");
+            j.Add().Text("Person").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/ManRay/Person");
+      });
+          i.Add().Text("Osler").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Osler").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Osler");
+            j.Add().Text("Organization").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Osler/Organization");
+            j.Add().Text("Person").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Osler/Person");
+  	  });
+    });
+    s.Add().Text("Manage Records").Items(i =>
+    {
+      i.Add().Text("Resrep Author Requests").Url("~/PDP/EditorResreps/ResrepAuthorRequests");
+      i.Add().Text("Service Editor Requests").Url("~/PDP/EditorResreps/ServiceEditorRequests");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAdmin.ToString()))
+{
+  m.Add().Text("Admin").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AdminResreps/Index");
+    s.Add().Text("Admin Help").Url("~/PDP/AdminResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("NPDS-Root").Url("~/PDP/AdminResreps/NpdsView/Scribe/NPDS-Root");
+      i.Add().Text("GTG-Nexus").Url("~/PDP/AdminResreps/NpdsView/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/AdminResreps/NpdsView/PORTAL/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/AdminResreps/NpdsView/DOORS/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/AdminResreps/NpdsView/Scribe/GTG-Scribe");
+          i.Add().Text("BioPORT").Url("~/PDP/AdminResreps/NpdsView/Nexus/BioPORT").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsView/Nexus/BioPORT");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsView/Nexus/BioPORT/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsView/Nexus/BioPORT/Person");
+          });
+          i.Add().Text("CTGaming").Url("~/PDP/AdminResreps/NpdsView/Nexus/CTGaming").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsView/Nexus/CTGaming");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsView/Nexus/CTGaming/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsView/Nexus/CTGaming/Person");
+          });
+          i.Add().Text("GeneScene").Url("~/PDP/AdminResreps/NpdsView/Nexus/GeneScene").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsView/Nexus/GeneScene");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsView/Nexus/GeneScene/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsView/Nexus/GeneScene/Person");
+          });
+          i.Add().Text("ManRay").Url("~/PDP/AdminResreps/NpdsView/Nexus/ManRay").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsView/Nexus/ManRay");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsView/Nexus/ManRay/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsView/Nexus/ManRay/Person");
+          });
+          i.Add().Text("Osler").Url("~/PDP/AdminResreps/NpdsView/Nexus/Osler").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsView/Nexus/Osler");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsView/Nexus/Osler/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsView/Nexus/Osler/Person");
+        });
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("GTG-Nexus").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/GTG-Nexus");
+      i.Add().Text("GTG-PORTAL").Url("~/PDP/AdminResreps/NpdsEdit/PORTAL/GTG-PORTAL");
+      i.Add().Text("GTG-DOORS").Url("~/PDP/AdminResreps/NpdsEdit/DOORS/GTG-DOORS");
+      i.Add().Text("GTG-Scribe").Url("~/PDP/AdminResreps/NpdsEdit/Scribe/GTG-Scribe");
+          i.Add().Text("BioPORT").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BioPORT").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BioPORT");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BioPORT/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BioPORT/Person");
+          });
+          i.Add().Text("CTGaming").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/CTGaming").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/CTGaming");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/CTGaming/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/CTGaming/Person");
+          });
+          i.Add().Text("GeneScene").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/GeneScene").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/GeneScene");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/GeneScene/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/GeneScene/Person");
+          });
+          i.Add().Text("ManRay").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/ManRay").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/ManRay");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/ManRay/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/ManRay/Person");
+          });
+          i.Add().Text("Osler").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Osler").Items(j =>
+          {
+            j.Add().Text("All").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Osler");
+            j.Add().Text("Organization").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Osler/Organization");
+            j.Add().Text("Person").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Osler/Person");
+          });
+    });
+    s.Add().Text("Manage Records").Items(i =>
+    {
+      i.Add().Text("NPDS Service Defaults").Url("~/PDP/AdminResreps/NpdsServiceDefaults");
+      i.Add().Text("NPDS Service Restrictions").Url("~/PDP/AdminResreps/NpdsServiceRestrictions");
+      i.Add().Text("Resrep Author Requests").Url("~/PDP/AdminResreps/ResrepAuthorRequests");
+      i.Add().Text("Service Editor Requests").Url("~/PDP/AdminResreps/ServiceEditorRequests");
+    });
+  });
+}
+}) // end m items
+)

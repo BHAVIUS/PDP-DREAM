@@ -1,0 +1,266 @@
+﻿@(Html.Kendo().Menu().Name("MenuScribeAuthPdpn")
+.HtmlAttributes(new { style = "float: left" }).Items(m => {
+m.Add().Text("Home").Items(s =>
+{
+  if (User?.Identity?.IsAuthenticated ?? false)
+  {
+    s.Add().Text("Logout").Url("~/PDP/Auth/LogoutUser");
+  }
+  else
+  {
+    s.Add().Text("Register").Url("~/PDP/Anon/RegisterUser");
+    s.Add().Text("Login").Url("~/PDP/Anon/LoginUser");
+  }
+  s.Add().Text("PDP Info").Url("~/PDP/Site/Info");
+  s.Add().Text("PDP Design").Url("~/PDP/Site/Design");
+  s.Add().Text("PDP Papers").Url("~/PDP/Site/Papers");
+  s.Add().Text("PDP Home").Url("http://www.portaldoors.org/").LinkHtmlAttributes(new { target = "PDPO" });
+  s.Add().Text("PDP Registrar").Url("https://www.portaldoors.net/").LinkHtmlAttributes(new { target = "PDPN" });
+  s.Add().Text("BHA Home").Url("http://www.brainhealthalliance.org/").LinkHtmlAttributes(new { target = "BHAO" });
+  s.Add().Text("BHA Registrar").Url("https://www.brainhealthalliance.net/").LinkHtmlAttributes(new { target = "BHAN" });
+  s.Add().Text("GTG Home").Url("http://www.telegenetics.com/").LinkHtmlAttributes(new { target = "GTGC" });
+  s.Add().Text("GTG Registrar").Url("https://www.telegenetics.net/").LinkHtmlAttributes(new { target = "GTGN" });
+  s.Add().Text("NPDS Home").Url("http://www.npdslinks.org/").LinkHtmlAttributes(new { target = "NLSO" });
+  s.Add().Text("NPDS Registrar").Url("https://www.npdslinks.net/").LinkHtmlAttributes(new { target = "NLSN" });
+}); // end s items
+
+m.Add().Text("Records").Items(s =>
+{
+  s.Add().Text("Index").Url("~/PDP/AnonResreps/Index");
+  s.Add().Text("PDP-Nexus").Url("~/PDP/AnonResreps/NpdsView/Nexus/PDP-Nexus");
+  s.Add().Text("PDP-PORTAL").Url("~/PDP/AnonResreps/NpdsView/PORTAL/PDP-PORTAL");
+  s.Add().Text("PDP-DOORS").Url("~/PDP/AnonResreps/NpdsView/DOORS/PDP-DOORS");
+  s.Add().Text("PDP-Scribe").Url("~/PDP/AnonResreps/NpdsView/Scribe/PDP-Scribe");
+  s.Add().Text("Ashurbanipal").Url("~/PDP/AnonResreps/NpdsView/Nexus/Ashurbanipal");
+  s.Add().Text("Avicenna").Url("~/PDP/AnonResreps/NpdsView/Nexus/Avicenna");
+  s.Add().Text("Beacon").Url("~/PDP/AnonResreps/NpdsView/Nexus/Beacon");
+  s.Add().Text("DaVinci").Url("~/PDP/AnonResreps/NpdsView/Nexus/DaVinci");
+  s.Add().Text("Fidentinus").Url("~/PDP/AnonResreps/NpdsView/Nexus/Fidentinus");
+  s.Add().Text("Knuth").Url("~/PDP/AnonResreps/NpdsView/Nexus/Knuth");
+  s.Add().Text("Martialis").Url("~/PDP/AnonResreps/NpdsView/Nexus/Martialis");
+  s.Add().Text("Socrates").Url("~/PDP/AnonResreps/NpdsView/Nexus/Socrates");
+}); // end s items
+
+if (User?.Identity?.IsAuthenticated ?? false)
+{
+  m.Add().Text(User.Identity.Name).Items(s =>
+  {
+    s.Add().Text("Display Profile").Url("~/PDP/Auth/DisplayProfile");
+    s.Add().Text("Change Profile").Url("~/PDP/Auth/ChangeProfile");
+    s.Add().Text("Change Email").Url("~/PDP/Auth/ChangeEmail");
+    s.Add().Text("Change Password").Url("~/PDP/Auth/ChangePassword");
+    s.Add().Text("Change Username").Url("~/PDP/Auth/ChangeUsername");
+    s.Add().Text("View Agent Index").Url("~/PDP/Agent/Index");
+    s.Add().Text("View Agent Help").Url("~/PDP/Agent/Help");
+    s.Add().Text("Add Agent Author Role").Url("~/PDP/Agent/AddRoleAuthor");
+    s.Add().Text("Add Agent Editor Role").Url("~/PDP/Agent/AddRoleEditor");
+    s.Add().Text("Check Agent Session").Url("~/PDP/Agent/CheckSession");
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAgent.ToString()))
+{
+  m.Add().Text("Agent").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AgentResreps/Index");
+    s.Add().Text("Agent Help").Url("~/PDP/AgentResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("PDP-Nexus").Url("~/PDP/AgentResreps/NpdsView/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/AgentResreps/NpdsView/Nexus/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/AgentResreps/NpdsView/Nexus/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/AgentResreps/NpdsView/Nexus/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/AgentResreps/NpdsView/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/AgentResreps/NpdsView/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/AgentResreps/NpdsView/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/AgentResreps/NpdsView/Nexus/Beacon");
+      i.Add().Text("DaVinci").Url("~/PDP/AgentResreps/NpdsView/Nexus/DaVinci");
+      i.Add().Text("Fidentinus").Url("~/PDP/AgentResreps/NpdsView/Nexus/Fidentinus");
+      i.Add().Text("Knuth").Url("~/PDP/AgentResreps/NpdsView/Nexus/Knuth");
+      i.Add().Text("Martialis").Url("~/PDP/AgentResreps/NpdsView/Nexus/Martialis");
+      i.Add().Text("Socrates").Url("~/PDP/AgentResreps/NpdsView/Nexus/Socrates");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("PDP-Nexus").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Beacon");
+      i.Add().Text("DaVinci").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/DaVinci");
+      i.Add().Text("Fidentinus").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Fidentinus");
+      i.Add().Text("Knuth").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Knuth");
+      i.Add().Text("Martialis").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Martialis");
+      i.Add().Text("Socrates").Url("~/PDP/AgentResreps/NpdsEdit/Nexus/Socrates");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAuthor.ToString()))
+{
+  m.Add().Text("Author").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AuthorResreps/Index");
+    s.Add().Text("Author Help").Url("~/PDP/AuthorResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("PDP-Nexus").Url("~/PDP/AuthorResreps/NpdsView/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/AuthorResreps/NpdsView/Nexus/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/AuthorResreps/NpdsView/Nexus/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/AuthorResreps/NpdsView/Nexus/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/AuthorResreps/NpdsView/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Beacon");
+      i.Add().Text("DaVinci").Url("~/PDP/AuthorResreps/NpdsView/Nexus/DaVinci");
+      i.Add().Text("Fidentinus").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Fidentinus");
+      i.Add().Text("Knuth").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Knuth");
+      i.Add().Text("Martialis").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Martialis");
+      i.Add().Text("Socrates").Url("~/PDP/AuthorResreps/NpdsView/Nexus/Socrates");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("PDP-Nexus").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Beacon");
+      i.Add().Text("DaVinci").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/DaVinci");
+      i.Add().Text("Fidentinus").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Fidentinus");
+      i.Add().Text("Knuth").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Knuth");
+      i.Add().Text("Martialis").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Martialis");
+      i.Add().Text("Socrates").Url("~/PDP/AuthorResreps/NpdsEdit/Nexus/Socrates");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsEditor.ToString()))
+{
+  m.Add().Text("Editor").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/EditorResreps/Index");
+    s.Add().Text("Editor Help").Url("~/PDP/EditorResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("PDP-Nexus").Url("~/PDP/EditorResreps/NpdsView/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/EditorResreps/NpdsView/PORTAL/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/EditorResreps/NpdsView/DOORS/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/EditorResreps/NpdsView/Scribe/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/EditorResreps/NpdsView/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/EditorResreps/NpdsView/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/EditorResreps/NpdsView/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/EditorResreps/NpdsView/Nexus/Beacon");
+      i.Add().Text("DaVinci").Url("~/PDP/EditorResreps/NpdsView/Nexus/DaVinci");
+      i.Add().Text("Fidentinus").Url("~/PDP/EditorResreps/NpdsView/Nexus/Fidentinus");
+      i.Add().Text("Knuth").Url("~/PDP/EditorResreps/NpdsView/Nexus/Knuth");
+      i.Add().Text("Martialis").Url("~/PDP/EditorResreps/NpdsView/Nexus/Martialis");
+      i.Add().Text("Socrates").Url("~/PDP/EditorResreps/NpdsView/Nexus/Socrates");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("PDP-Nexus").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/EditorResreps/NpdsEdit/PORTAL/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/EditorResreps/NpdsEdit/DOORS/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/EditorResreps/NpdsEdit/Scribe/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Beacon");
+      i.Add().Text("DaVinci").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/DaVinci");
+      i.Add().Text("Fidentinus").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Fidentinus");
+      i.Add().Text("Knuth").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Knuth");
+      i.Add().Text("Martialis").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Martialis");
+      i.Add().Text("Socrates").Url("~/PDP/EditorResreps/NpdsEdit/Nexus/Socrates");
+    });
+    s.Add().Text("Manage Records").Items(i =>
+    {
+      i.Add().Text("Resrep Author Requests").Url("~/PDP/EditorResreps/ResrepAuthorRequests");
+      i.Add().Text("Service Editor Requests").Url("~/PDP/EditorResreps/ServiceEditorRequests");
+      i.Add().Text("MergeToSame for PDP-DREAM").Url("~/PDP/EditorResreps/MergeToSame");
+      i.Add().Text("SplitToDifferent for PDP-DREAM").Url("~/PDP/EditorResreps/SplitToDifferent");
+      i.Add().Text("Generate PDP-DREAM ontology").Url("~/PDP/EditorResreps/GenerateOntology");
+      i.Add().Text("Generate PDP-DREAM document").Url("~/PDP/EditorResreps/GenerateDocument");
+    });
+  });
+}
+
+if (User.IsInRole(PdpConst.IdentityRoleNames.NpdsAdmin.ToString()))
+{
+  m.Add().Text("Admin").Items(s =>
+  {
+    s.Add().Text("Index").Url("~/PDP/AdminResreps/Index");
+    s.Add().Text("Admin Help").Url("~/PDP/AdminResreps/Help");
+    s.Add().Text("View Records").Items(i =>
+    {
+      i.Add().Text("NPDS-Root").Url("~/PDP/AdminResreps/NpdsView/Scribe/NPDS-Root");
+      i.Add().Text("PDP-Nexus").Url("~/PDP/AdminResreps/NpdsView/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/AdminResreps/NpdsView/PORTAL/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/AdminResreps/NpdsView/DOORS/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/AdminResreps/NpdsView/Scribe/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/AdminResreps/NpdsView/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/AdminResreps/NpdsView/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/AdminResreps/NpdsView/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/AdminResreps/NpdsView/Nexus/Beacon");
+      i.Add().Text("BioPORT").Url("~/PDP/AdminResreps/NpdsView/Nexus/BioPORT");
+      i.Add().Text("BrainWatch").Url("~/PDP/AdminResreps/NpdsView/Nexus/BrainWatch");
+      i.Add().Text("CTGaming").Url("~/PDP/AdminResreps/NpdsView/Nexus/CTGaming");
+      i.Add().Text("DaVinci").Url("~/PDP/AdminResreps/NpdsView/Nexus/DaVinci");
+      i.Add().Text("Eywa").Url("~/PDP/AdminResreps/NpdsView/Nexus/Eywa");
+      i.Add().Text("Fidentinus").Url("~/PDP/AdminResreps/NpdsView/Nexus/Fidentinus");
+      i.Add().Text("Gaia").Url("~/PDP/AdminResreps/NpdsView/Nexus/Gaia");
+      i.Add().Text("GeneScene").Url("~/PDP/AdminResreps/NpdsView/Nexus/GeneScene");
+      i.Add().Text("HELPME").Url("~/PDP/AdminResreps/NpdsView/Nexus/HELPME");
+      i.Add().Text("Knuth").Url("~/PDP/AdminResreps/NpdsView/Nexus/Knuth");
+      i.Add().Text("ManRay").Url("~/PDP/AdminResreps/NpdsView/Nexus/ManRay");
+      i.Add().Text("Martialis").Url("~/PDP/AdminResreps/NpdsView/Nexus/Martialis");
+      i.Add().Text("Osler").Url("~/PDP/AdminResreps/NpdsView/Nexus/Osler");
+      i.Add().Text("Socrates").Url("~/PDP/AdminResreps/NpdsView/Nexus/Socrates");
+    });
+    s.Add().Text("Edit Records").Items(i =>
+    {
+      i.Add().Text("NPDS-Root").Url("~/PDP/AdminResreps/NpdsEdit/Scribe/NPDS-Root");
+      i.Add().Text("PDP-Nexus").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/PDP-Nexus");
+      i.Add().Text("PDP-PORTAL").Url("~/PDP/AdminResreps/NpdsEdit/PORTAL/PDP-PORTAL");
+      i.Add().Text("PDP-DOORS").Url("~/PDP/AdminResreps/NpdsEdit/DOORS/PDP-DOORS");
+      i.Add().Text("PDP-Scribe").Url("~/PDP/AdminResreps/NpdsEdit/Scribe/PDP-Scribe");
+      i.Add().Text("PDP-DREAM").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/PDP-DREAM");
+      i.Add().Text("Ashurbanipal").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Ashurbanipal");
+      i.Add().Text("Avicenna").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Avicenna");
+      i.Add().Text("Beacon").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Beacon");
+      i.Add().Text("BioPORT").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BioPORT");
+      i.Add().Text("BrainWatch").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/BrainWatch");
+      i.Add().Text("CTGaming").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/CTGaming");
+      i.Add().Text("DaVinci").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/DaVinci");
+      i.Add().Text("Eywa").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Eywa");
+      i.Add().Text("Fidentinus").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Fidentinus");
+      i.Add().Text("Gaia").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Gaia");
+      i.Add().Text("GeneScene").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/GeneScene");
+      i.Add().Text("HELPME").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/HELPME");
+      i.Add().Text("Knuth").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Knuth");
+      i.Add().Text("ManRay").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/ManRay");
+      i.Add().Text("Martialis").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Martialis");
+      i.Add().Text("Osler").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Osler");
+      i.Add().Text("Socrates").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/Socrates");
+      i.Add().Text("SOLOMON").Url("~/PDP/AdminResreps/NpdsEdit/Nexus/SOLOMON");
+    });
+    s.Add().Text("Manage Records").Items(i =>
+    {
+      i.Add().Text("NPDS Service Defaults").Url("~/PDP/AdminResreps/NpdsServiceDefaults");
+      i.Add().Text("NPDS Service Restrictions").Url("~/PDP/AdminResreps/NpdsServiceRestrictions");
+      i.Add().Text("Resrep Author Requests").Url("~/PDP/AdminResreps/ResrepAuthorRequests");
+      i.Add().Text("Service Editor Requests").Url("~/PDP/AdminResreps/ServiceEditorRequests");
+      i.Add().Text("MergeToSame for PDP-DREAM").Url("~/PDP/AdminResreps/MergeToSame");
+      i.Add().Text("SplitToDifferent for PDP-DREAM").Url("~/PDP/AdminResreps/SplitToDifferent");
+      i.Add().Text("Generate PDP-DREAM ontology").Url("~/PDP/AdminResreps/GenerateOntology");
+      i.Add().Text("Generate PDP-DREAM document").Url("~/PDP/AdminResreps/GenerateDocument");
+    });
+  });
+}
+}) // end m items
+)

@@ -25,20 +25,17 @@ using PDP.DREAM.SiaaDataLib.Stores.PdpIdentity;
 
 namespace PDP.DREAM.SiaaDataLib
 {
-  public class Startup
+  public class StartSiaaDataLib
   {
     private PdpSiteSettings? pdpSitSets = null;
     private NpdsServiceDefaults? npdsSrvcDefs = null;
 
-    public IConfiguration Configuration { get; private set; }
     public IWebHostEnvironment Environment { get; private set; }
-    // public IServiceProvider ServiceProvider { get; private set; }
 
-    public Startup(IConfiguration config, IWebHostEnvironment envir)
+    public StartSiaaDataLib(IConfiguration config, IWebHostEnvironment envir)
     {
       // from PDP.DREAM.NpdsRootLib.Utilities
       ConfigManager.Initialize(config);
-      Configuration = config;
       Environment = envir;
     }
 
@@ -80,17 +77,13 @@ namespace PDP.DREAM.SiaaDataLib
       services.AddHttpContextAccessor();
 
       // add utility services
-      services.AddSingleton<IConfiguration>(Configuration);
       services.AddSingleton<ISmsSender, TwilioSmsender>();
       services.AddSingleton<IEmailSender, MailKitEmailer>();
+      services.AddHttpClient<BingMapsService>();
 
       // add secure user identity authentication authorization
       if (pdpSitSets.AppUseSecureUiaa)
       {
-        // services.AddTransient<IPasswordValidator<QebIdentityUser>, PasswordValidator<QebIdentityUser>>();
-        // services.AddTransient<IPasswordHasher<QebIdentityUser>, PasswordHasher<QebIdentityUser>>();
-        // services.AddTransient<IUserValidator<QebIdentityUser>, UserValidator<QebIdentityUser>>();
-
         services.Configure<CookiePolicyOptions>(options =>
         {
           options.MinimumSameSitePolicy = SameSiteMode.Strict;
@@ -184,11 +177,10 @@ namespace PDP.DREAM.SiaaDataLib
       GetRoutes = (r =>
       {
         // first routes with constraints
-        // PdpEndpoints.RegisterForNexusReadOnlySvc(r);
-        // PdpEndpoints.RegisterForScribeReadWriteSvc(r);
         PdpEndpoints.RegisterPdpArea(r);
+        PdpEndpoints.RegisterForScribeReadWriteSvc(r);
         // then routes without constraints
-        // PdpEndpoints.RegisterPdpWebApp(r);
+        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

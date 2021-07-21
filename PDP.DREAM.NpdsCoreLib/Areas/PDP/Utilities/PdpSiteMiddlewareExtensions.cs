@@ -2,10 +2,20 @@
 // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
 // Licensed per the OSI approved MIT License (https://opensource.org/licenses/MIT).
 
+using System;
+
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders;
 
 using PDP.DREAM.NpdsCoreLib.Models;
+using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
+using PDP.DREAM.NpdsCoreLib.Types;
 
 namespace PDP.DREAM.NpdsCoreLib.Utilities
 {
@@ -51,6 +61,13 @@ namespace PDP.DREAM.NpdsCoreLib.Utilities
 
     } // method
 
-  } // class
+    public static IServiceCollection AddPdpSiteDbContext<TDbcontxt>
+      (this IServiceCollection services, string dbconstr) where TDbcontxt : DbContext
+    {
+      services.AddDbContext<TDbcontxt>(options => options.UseSqlServer(dbconstr));
+      return services;
+    }
+
+   } // class
 
 } // namespace

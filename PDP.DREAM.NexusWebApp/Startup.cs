@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using PDP.DREAM.NpdsCoreLib.Types;
 using PDP.DREAM.NpdsCoreLib.Controllers;
 using PDP.DREAM.NpdsCoreLib.Models;
 using PDP.DREAM.NpdsCoreLib.Services;
@@ -23,20 +24,17 @@ using PDP.DREAM.NpdsDataLib.Stores.NpdsSqlDatabase;
 
 namespace PDP.DREAM.NexusWebApp
 {
-  public class Startup
+  public class StartNexusWebApp
   {
     private PdpSiteSettings? pdpSitSets = null;
     private NpdsServiceDefaults? npdsSrvcDefs = null;
 
-    public IConfiguration Configuration { get; private set; }
     public IWebHostEnvironment Environment { get; private set; }
-    // public IServiceProvider ServiceProvider { get; private set; }
 
-    public Startup(IConfiguration config, IWebHostEnvironment envir)
+    public StartNexusWebApp(IConfiguration config, IWebHostEnvironment envir)
     {
       // from PDP.DREAM.NpdsRootLib.Utilities
       ConfigManager.Initialize(config);
-      Configuration = config;
       Environment = envir;
     }
 
@@ -67,7 +65,6 @@ namespace PDP.DREAM.NexusWebApp
       services.AddHttpContextAccessor();
 
       // add utility services
-      services.AddSingleton<IConfiguration>(Configuration);
       services.AddSingleton<ISmsSender, TwilioSmsender>();
       services.AddSingleton<IEmailSender, MailKitEmailer>();
       services.AddHttpClient<BingMapsService>();
@@ -168,7 +165,7 @@ namespace PDP.DREAM.NexusWebApp
         PdpEndpoints.RegisterPdpArea(r);
         PdpEndpoints.RegisterForNexusReadOnlySvc(r);
         // then routes without constraints
-        // PdpEndpoints.RegisterPdpWebApp(r);
+        PdpEndpoints.RegisterPdpWebApp(r, "PDP", "Site", "Info");
         // PdpEndpoints.RegisterPdpRazorBlazor(r, true, false, "/Error");
       });
       app.UseEndpoints(GetRoutes);

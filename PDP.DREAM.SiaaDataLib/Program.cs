@@ -15,10 +15,10 @@ namespace PDP.DREAM.SiaaDataLib
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-              webBuilder.UseStartup<Startup>();
-            });
-  }
-}
+      Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(
+        webBuilder => { webBuilder.UseStartup<StartSiaaDataLib>(); });
+
+  } // class
+
+} // namespace
+

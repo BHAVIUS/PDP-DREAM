@@ -22,7 +22,7 @@ namespace PDP.DREAM.ScribeWebApp.Controllers
     {
       PRC = new PdpRestContext(oaeCntxt.HttpContext.Request)
       {
-        DatabaseType = NpdsConst.DatabaseType.Nexus,
+        DatabaseType = NpdsConst.DatabaseType.Scribe,
         DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,
         RecordAccess = NpdsConst.RecordAccess.Author,
         ClientInAuthorModeIsRequired = true,
@@ -30,6 +30,21 @@ namespace PDP.DREAM.ScribeWebApp.Controllers
       };
       ResetScribeRepository();
       CheckClientAgentSession();
+    }
+
+    [HttpGet]
+    public IActionResult PrcTest()
+    {
+      PRC.SectionTitle = "PDP/ScribeTestApp/PrcTest";
+      return View();
+    }
+
+
+    [HttpGet]
+    public IActionResult MvcRoutes()
+    {
+      PRC.SectionTitle = "PDP/ScribeTestApp/MvcRoutes";
+      return View();
     }
 
   } // class
