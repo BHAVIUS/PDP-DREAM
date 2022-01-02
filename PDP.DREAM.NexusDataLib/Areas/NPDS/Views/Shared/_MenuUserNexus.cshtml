@@ -1,0 +1,36 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+  var keys = new Dictionary<string, string>() { ["ugk"] = prc.UserKey, ["agk"] = prc.AgentKey, ["sgk"] = prc.SessionKey };
+}
+
+<span>
+  @if (User?.Identity?.IsAuthenticated ?? false)
+  {
+    <a asp-area="NPDS" asp-controller="AnonSiaa" asp-action="Index" asp-all-route-data="@keys">User</a>
+    <span> | </span>
+    <a asp-area="NPDS" asp-controller="AuthSiaa" asp-action="CheckSession" asp-route-ugk="@prc.UserKey" asp-route-sgk="@prc.SessionKey">Session</a>
+    <span> | </span>
+    <a asp-area="NPDS" asp-controller="AuthSiaa" asp-action="DisplayProfile" title="Profile">@User.Identity.Name</a>
+    <span> | </span>
+    <a asp-area="NPDS" asp-controller="AuthSiaa" asp-action="LogoutUser">Logout</a>
+    @if (User.IsInRole("NpdsAdmin"))
+    {
+      <br />
+      <a asp-area="NPDS" asp-controller="AdminSiaa" asp-action="Index">Admin Index</a>
+      <span> | </span>
+      <a asp-area="NPDS" asp-controller="AdminSiaa" asp-action="ViewRoles">View Roles</a>
+      <span> | </span>
+      <a asp-area="NPDS" asp-controller="AdminSiaa" asp-action="EditRoles">Edit Roles</a>
+      <span> | </span>
+      <a asp-area="NPDS" asp-controller="AdminSiaa" asp-action="ViewUsers">View Users</a>
+      <span> | </span>
+      <a asp-area="NPDS" asp-controller="AdminSiaa" asp-action="EditUsers">Edit Users</a>
+    }
+  }
+  else
+  {
+    <a asp-area="NPDS" asp-controller="AnonSiaa" asp-action="RegisterUser">Register</a>
+    <span> | </span>
+    <a asp-area="NPDS" asp-controller="AnonSiaa" asp-action="LoginUser">Login</a>
+  }
+</span>

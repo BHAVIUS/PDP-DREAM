@@ -1,0 +1,7 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AdminScribe/Index"))
+<p><partial name="_MenuAdminScribe" /></p>

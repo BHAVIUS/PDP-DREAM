@@ -1,0 +1,30 @@
+﻿@model NexusResrepEditModel
+
+@{ var NpdsController = "AgentScribeTkgr"; var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; }
+
+@(Html.Kendo().Grid<NexusSnapshotEditModel>()
+.Name("Snapshots#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.NexusSnapshot).Editable(false);
+  m.Field(p => p.CreatedOn).Editable(false);
+  m.Field(p => p.CreatedByAgentName).Editable(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeSnapshotsForEdit", NpdsController, new { recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+.Create(post => post.Action("EditScribeSnapshot", NpdsController, new { recordGuid = "#=RRRecordGuid#" }))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Bound(row => row.RRFgroupGuid).Hidden(true);
+  col.Bound(row => row.NexusSnapshot).Title("Snapshot");
+  col.Bound(row => row.CreatedOn).Title("Archived").Format(UtcdtFormat);
+  col.Bound(row => row.CreatedByAgentName).Title("Archiver")
+  .HeaderHtmlAttributes(new { title = "Record archived by AgentName" });
+}) // end Columns
+.ToolBar(tb => tb.ClientTemplateId("SnapshotToolBar"))
+.Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pg => pg.Refresh(true)).Sortable().ToClientTemplate()
+.ToString().Replace("#[", "\\#["))

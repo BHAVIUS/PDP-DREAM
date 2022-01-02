@@ -1,0 +1,99 @@
+﻿@*
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model PdpCoreTestLibMvcRoutes
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Routing
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.Mvc.ApplicationModels
+@using Microsoft.AspNetCore.Mvc.Controllers;
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IEnumerable<EndpointDataSource> epDataSources
+
+@{
+  var prc = Model.PRC;
+  Layout = prc.RazorMvcLayoutPage;
+  var repList = epDataSources.SelectMany(s => s.Endpoints)
+    .OfType<RouteEndpoint>().OrderBy(p => p.Order).ThenBy(p => p.DisplayName).ToList();
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/CoreTestLib/MvcRoutes"))
+<p><partial name="_MenuCoreTestLib" /></p>
+
+<h4>PDP Current Endpoint</h4>
+<ul>
+  <li>RequestUrl: @prc.NpdsRequest.GetDisplayUrl()</li>
+  <li>Endpoint: @prc.NpdsContext.GetEndpoint().DisplayName</li>
+  <li>RouteDataValues: @string.Join(',', prc.NpdsContext.GetRouteData().Values.Select(p => p.ToString()))</li>
+  <li>QueryString: @prc.NpdsRequest.QueryString</li>
+</ul>
+
+<h4>PDP MvcRoutes (Endpoints)</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Display Name</th>
+      <th>Route Pattern and Metadata</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (RouteEndpoint rep in repList)
+    {
+      EndpointMetadataCollection repmd = rep.Metadata;
+      string repname = repmd.GetMetadata<RouteNameMetadata>()?.RouteName;
+      var mdList = repmd.Select(p => p).OrderBy(p => p.ToString()).ToList();
+      <tr>
+        <td>@rep.Order</td>
+        <td>@repname</td>
+        <td>
+          <p style="color:navy"><span>&#8220</span>@rep.RoutePattern.RawText<span>&#8221</span></p>
+          <ul>
+            @foreach (var md in mdList)
+            {
+              switch (md)
+              {
+                case AreaAttribute aa:
+                  <li>AreaName: @aa.RouteValue</li>
+                  break;
+                case ControllerActionDescriptor cad:
+                  <li>ControllerName: @cad.ControllerName</li>
+                  <li>ActionName: @cad.ActionName</li>
+                  break;
+                case DataTokensMetadata dtm:
+                  if (dtm.DataTokens.Count > 0)
+                  {
+                    <li>DataToken Keys: @string.Join(',', dtm.DataTokens.Keys.Select(p => p.ToString()))</li>
+                    <li>DataToken Values: @string.Join(',', dtm.DataTokens.Values.Select(p => p.ToString()))</li>
+                    <li>DataToken: help = @dtm.DataTokens.GetValueOrDefault("help")?.ToString()</li>
+                    <li>DataToken: examples = @dtm.DataTokens.GetValueOrDefault("examples")?.ToString()</li>
+                  }
+                  break;
+                case EndpointNameMetadata epnm:
+                  <li>EndpointName: @epnm.EndpointName</li>
+                  break;
+                case PageRouteMetadata prm:
+                  <li>PageRoute: @prm.PageRoute</li>
+                  <li>RouteTemplate: @prm.RouteTemplate</li>
+                  break;
+                case RouteNameMetadata rnm:
+                  <li>RouteName: @rnm.RouteName</li>
+                  break;
+                default:
+                  <li>@md.ToString()</li>
+                  break;
+              }
+            }
+          </ul>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

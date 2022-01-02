@@ -1,0 +1,32 @@
+﻿@{
+  var auth = User?.Identity?.IsAuthenticated;
+  bool userAuth = (bool)(auth ?? false);
+  var userName = User?.Identity?.Name;
+}
+
+<div>
+  @if (userAuth)
+  {
+    @Html.ActionLink("Logout", "LogoutUser", "AuthScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+  }
+  else
+  {
+    @Html.ActionLink("Register", "RegisterUser", "AnonScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+    @Html.ActionLink("Login", "LoginUser", "AnonScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+  }
+  @if (userAuth)
+  {
+    @Html.ActionLink(userName, "DisplayProfile", "AuthScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+    @Html.ActionLink("Change Profile", "ChangeProfile", "AuthScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+    @Html.ActionLink("Change Email", "ChangeEmail", "AuthScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+    @Html.ActionLink("Change Password", "ChangePassword", "AuthScribe", new { area = "NPDS" })
+    @Html.Raw(" | ")
+    @Html.ActionLink("Change Username", "ChangeUsername", "AuthScribe", new { area = "NPDS" })
+  }
+</div>

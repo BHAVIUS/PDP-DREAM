@@ -1,0 +1,20 @@
+﻿@*
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model PdpCoreDataLibEntities
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@Html.AntiForgeryToken()
+
+@{
+  var prc = Model.PRC;
+  Layout = prc.RazorMvcLayoutPage;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/CoreDataLib/Entities"))
+<p><partial name="_MenuCoreDataLib" /></p>
+
+<partial name="_HelpdocListEntityTypes" />
+

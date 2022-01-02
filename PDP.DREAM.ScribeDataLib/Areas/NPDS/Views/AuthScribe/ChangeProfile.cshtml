@@ -1,0 +1,71 @@
+﻿@model ChangeProfileUxm
+
+@{
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AuthScribe/ChangeProfile"))
+
+<section id="ChangeProfileForm">
+  @using (Html.BeginForm("ChangeProfile", "AuthScribe", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
+  {
+    <p>
+      Use the form below to change your profile.
+    </p>
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.FirstName, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.LastName, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.LastName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UserNameDisplayed, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.UserNameDisplayed, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UserNameDisplayed, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.PhoneNumber, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.PhoneNumber, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.WebsiteAddress, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.WebsiteAddress, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.WebsiteAddress, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.Organization, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.Organization, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.Organization, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.SecurityQuestion, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.SecurityQuestion, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.SecurityQuestion, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.SecurityAnswer, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.SecurityAnswer, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.SecurityAnswer, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.PassWord, new { @class = "control-label col-md-3" })
+      @Html.PasswordFor(m => m.PassWord, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.PassWord, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default col-md-offset-2 col-md-2">Change Profile</button>
+    </div>
+  }
+</section>
+
+<partial name="_ValidationScripts" />

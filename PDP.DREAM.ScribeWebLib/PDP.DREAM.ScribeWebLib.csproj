@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <AssemblyName>PDP.Tahtali.ScribeWebLib</AssemblyName>
+    <RootNamespace>PDP.DREAM.ScribeWebLib</RootNamespace>
+    <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
+    <Company>Brain Health Alliance</Company>
+    <AssemblyVersion>10.0.1</AssemblyVersion>
+    <FileVersion>10.0.1</FileVersion>
+    <Version>10.0.1</Version>
+    <Platforms>x64;AnyCPU</Platforms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>CS1998;CS0103;CS0120;CS0219;CS8600;CS8602;CS8604;CS8629;CS8669;</NoWarn>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PDP.DREAM.ScribeRestLib\PDP.DREAM.ScribeRestLib.csproj" />
+  </ItemGroup>
+
+</Project>
+

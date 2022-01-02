@@ -1,0 +1,12 @@
+﻿// SupportingLabelViewModel.cs 
+// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+namespace PDP.DREAM.NexusDataLib.Models
+{
+  public class SupportingLabelViewModel : NexusViewModelBase 
+  {
+    public string SupportingLabel { get; set; } = string.Empty;
+  }
+
+}

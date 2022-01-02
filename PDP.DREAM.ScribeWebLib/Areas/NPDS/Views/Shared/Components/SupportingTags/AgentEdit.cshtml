@@ -1,0 +1,47 @@
+﻿@model NexusResrepEditModel
+
+@{ var NpdsController = "AgentScribeTkgr"; var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; }
+
+@(Html.Kendo().Grid<SupportingTagEditModel>()
+.Name("SupportingTags#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+  m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+  m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+  m.Field(p => p.SupportingTag).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.UpdatedOn).Editable(false);
+  m.Field(p => p.UpdatedByAgentName).Editable(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeSupportingTagsForEdit", NpdsController, new { recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+.Create(post => post.Action("EditScribeSupportingTag", NpdsController, new { recordGuid = "#=RRRecordGuid#" }))
+.Update(put => put.Action("EditScribeSupportingTag", NpdsController))
+.Destroy(delete => delete.Action("DeleteScribeSupportingTag", NpdsController))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Bound(row => row.RRFgroupGuid).Hidden(true); // false for DevTest only
+  col.Bound(row => row.RRRecordGuid).Hidden(true); // false for DevTest only
+  col.Command(com1 => com1.Edit()).Title("");
+  col.Bound(row => row.HasPriority).Title("Priority")
+  .HeaderHtmlAttributes(new { title = "SupportingTag has Priority in integer range [0,1,...,255]" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.IsMarked).Title("Marked")
+  .HeaderHtmlAttributes(new { title = "SupportingTag is Marked?" });
+  col.Bound(row => row.IsPrincipal).Title("Principal")
+  .HeaderHtmlAttributes(new { title = "SupportingTag is Principal?" });
+  col.Bound(row => row.SupportingTag).Title("SupportingTag");
+  col.Bound(row => row.UpdatedOn).Title("Updated").Format(UtcdtFormat);
+  col.Bound(row => row.UpdatedByAgentName).Title("Updater")
+  .HeaderHtmlAttributes(new { title = "Record updated by AgentName" });
+  col.Command(com2 => com2.Destroy()).Title("");
+}) // end Columns
+.Editable(edit => edit.Mode(GridEditMode.InLine))
+.ToolBar(tb => tb.ClientTemplateId("SupportingTagToolBar"))
+.Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pg => pg.Refresh(true)).Sortable()
+.ToClientTemplate().ToString().Replace("#[", "\\#["))

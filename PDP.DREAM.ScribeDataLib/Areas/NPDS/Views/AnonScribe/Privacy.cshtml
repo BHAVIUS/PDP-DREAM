@@ -1,0 +1,8 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AnonScribe/Privacy"))
+
+<p>Use this page to detail your site's privacy policy.</p>

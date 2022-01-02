@@ -1,0 +1,73 @@
+﻿@model NexusResrepEditModel
+
+@{ var NpdsController = "AdminScribeTkgr"; var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; }
+
+@(Html.Kendo().Grid<EntityLabelEditModel>()
+.Name("EntityLabels#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+  m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+  m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+  m.Field(p => p.EntityLabel).Editable(false).DefaultValue(string.Empty);
+  m.Field(p => p.IsResolvable).Editable(true).DefaultValue(false);
+  m.Field(p => p.IsPrivate).Editable(true).DefaultValue(false);
+  m.Field(p => p.IsGenerating).Editable(true).DefaultValue(false);
+  m.Field(p => p.ServiceTypeCode).Editable(true).DefaultValue(2);
+  m.Field(p => p.TagToken).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.LabelUri).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.UpdatedOn).Editable(false);
+  m.Field(p => p.UpdatedByAgentName).Editable(false);
+  m.Field(p => p.DeletedOn).Editable(false);
+  m.Field(p => p.DeletedByAgentName).Editable(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeEntityLabelsForEdit", NpdsController, new { recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+.Create(post => post.Action("EditScribeEntityLabel", NpdsController, new { recordGuid = "#=RRRecordGuid#" }))
+.Update(put => put.Action("EditScribeEntityLabel", NpdsController))
+.Destroy(delete => delete.Action("DeleteScribeEntityLabel", NpdsController))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Bound(row => row.RRFgroupGuid).Hidden(true); // false for DevTest only
+  col.Bound(row => row.RRRecordGuid).Hidden(true); // false for DevTest only
+  col.Command(com1 => com1.Edit()).Title("");
+  col.Bound(row => row.HasPriority).Title("Priority")
+  .HeaderHtmlAttributes(new { title = "EntityLabel has Priority in integer range [0,1,...,255]" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.IsMarked).Title("Marked")
+  .HeaderHtmlAttributes(new { title = "EntityLabel is Marked?" });
+  col.Bound(row => row.IsPrincipal).Title("Principal")
+  .HeaderHtmlAttributes(new { title = "EntityLabel is Principal (Canonical)?" });
+  col.Bound(row => row.EntityLabel).Title("EntityLabel")
+  .HeaderHtmlAttributes(new { title = "Entity Label derived from Tag-Independent LabelUri or from TagToken concatenated with Registry Label" })
+  .ClientTemplate("\\#=EntityLabelHtml\\#");
+  col.Bound(row => row.IsResolvable).Title("Resolvable")
+  .HeaderHtmlAttributes(new { title = "EntityLabel is Resolvable? (URI is also URL?)" });
+  col.Bound(row => row.IsPrivate).Title("Private")
+  .HeaderHtmlAttributes(new { title = "EntityLabel is Private?" });
+  col.Bound(row => row.IsGenerating).Title("GL?")
+  .HeaderHtmlAttributes(new { title = "EntityLabel is a Generating URI?" });
+  col.Bound(row => row.ServiceTypeCode).Title("STC?")
+  .HeaderHtmlAttributes(new { title = "EntityLabel has ServiceTypeCode?" });
+  col.Bound(row => row.TagToken).Title("TagToken")
+  .HeaderHtmlAttributes(new { title = "EntityLabel TagToken" });
+  col.Bound(row => row.LabelUri).Title("LabelUri")
+  .HeaderHtmlAttributes(new { title = "EntityLabel has a non-default Generating URI" });
+  col.Bound(row => row.UpdatedOn).Title("Updated").Format(UtcdtFormat);
+  col.Bound(row => row.UpdatedByAgentName).Title("Updater")
+  .HeaderHtmlAttributes(new { title = "Record updated by AgentName" });
+  col.Command(com2 => com2.Destroy()).Title("");
+  col.Bound(row => row.DeletedOn).Title("SoftDeleted").Format(UtcdtFormat)
+  .HtmlAttributes(new { @class = "scribeDeletedOn" });
+  col.Bound(row => row.DeletedByAgentName).Title("Deleter")
+  .HeaderHtmlAttributes(new { title = "Record deleted by AgentName" });
+}) // end Columns
+.Editable(edit => edit.Mode(GridEditMode.InLine))
+.ToolBar(tb => tb.ClientTemplateId("EntityLabelToolBar"))
+.Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pg => pg.Refresh(true)).Sortable()
+.ToClientTemplate().ToString().Replace("#[", "\\#["))

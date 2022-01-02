@@ -1,0 +1,86 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView;
+  var SiaaArea = "NPDS"; 
+  var SiaaController = "AdminScribe";
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AdminScribe/EditSiaaRoles"))
+<p><partial name="_MenuAdminScribe" /></p>
+
+<div id="SiaaGrid">
+  @(Html.Kendo().Grid<QebiRoleUxm>()
+  .Name("PdpAppRoleGrid").HtmlAttributes(new { style = "float:left;" })
+  .DataSource(ds => ds.Ajax().PageSize(5)
+  .Model(m => {
+  m.Id(p => p.RoleGuid);
+  m.Field(p => p.AppGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RoleGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RoleName).Editable(true).DefaultValue(String.Empty);
+  m.Field(p => p.RoleDescription).Editable(true).DefaultValue(String.Empty);
+  }) // end Model
+  .Read(get => get.Action("SelectSiaaRoles", SiaaController, new { area = SiaaArea }))
+  .Create(post => post.Action("EditSiaaRole", SiaaController, new { area = SiaaArea }))
+  .Update(put => put.Action("EditSiaaRole", SiaaController, new { area = SiaaArea }))
+  .Destroy(delete => delete.Action("DeleteSiaaRole", SiaaController, new { area = SiaaArea }))
+  .Events(e => e.Error("HandleAjaxErrors"))
+  ) // end DataSource
+  .Columns(col => {
+  col.Bound(row => row.AppGuid).Hidden(true);
+  col.Bound(row => row.RoleGuid).Hidden(true);
+  col.Command(com => {
+  com.Edit();
+  }).Title(""); // end Command
+  col.Bound(row => row.RoleName).Title("Name");
+  col.Bound(row => row.RoleDescription).Title("Description");
+  col.Command(com => {
+  com.Destroy();
+  }).Title(""); // end Command
+  }) // end Columns
+  .ToolBar(tb => tb.ClientTemplateId("SiaaToolBar"))
+  .Editable(ed => ed.Mode(GridEditMode.InLine))
+  .Pageable(pg => pg.AlwaysVisible(true).Responsive(true).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
+  .Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+  .Filterable().Resizable(rs => rs.Columns(true))
+  )
+</div>
+
+<script id="SiaaToolBar" type="text/x-kendo-template">
+  <a class="k-button k-button-icontext k-grid-add" role="button">
+    <span class="k-icon k-i-plus"></span>Add new record</a>
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#SiaaGrid").show();
+    $("#PdpAppRoleGrid").data("kendoGrid").resize();
+  })
+  function ResizeGrid(e) {
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    grid.resize();
+  }
+  function RefreshGrid(e) {
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    grid.dataSource.read();
+  }
+  function HandleJsonErrors(e) {
+    // alert(e.xhr.responseText);
+    var msg = $.parseJSON(e.xhr.responseText);
+    if (msg) {
+      alert("Errors:\n" + msg.join("\n"));
+    }
+  }
+  function HandleAjaxErrors(e) {
+    if (e.errors) {
+      var message = "Errors:\n";
+      $.each(e.errors, function (key, value) {
+        if ('errors' in value) {
+          $.each(value.errors, function () {
+            message += this + "\n";
+          });
+        }
+      });
+      alert(message);
+    }
+  }
+</script>

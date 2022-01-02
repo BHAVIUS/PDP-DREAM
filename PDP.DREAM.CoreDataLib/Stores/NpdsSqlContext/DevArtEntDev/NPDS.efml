@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<efcore context-namespace="PDP.DREAM.CoreDataLib.Stores" namespace="PDP.DREAM.CoreDataLib.Stores" p1:name="CoreDbsqlContext" p1:Guid="9b64ffd1-c35c-4f35-bdab-3febf7b505a6" p1:ContextBase="PDP.DREAM.CoreDataLib.Stores.PdpDataContext" p1:DoNotGenerateDefaultConstructor="True" p1:DoNotGenerateConstructorWithDbContextOptionsArgument="True" p1:UseGenericDbContextOptionsConstructorArgument="False" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+  <class name="CoreEntityTypeItem" entity-set="CoreEntityTypeItems" table="CoreEntityTypeItem" schema="dbo" p1:Guid="04e0c8da-172b-42be-9da5-07681c5ff782">
+    <id name="CodeKey" type="Int16" p1:ValidateRequired="true" p1:Guid="57c7b99f-8574-4ca2-94cf-15dba27c5a5d">
+      <column name="CodeKey" not-null="True" precision="5" scale="0" sql-type="smallint" p1:unicode="False" />
+    </id>
+    <property name="TypeName" type="String" p1:ValidateMaxLength="32" p1:ValidateRequired="true" p1:Guid="e9b29243-a9b7-4905-af63-143680d32ba7">
+      <column name="TypeName" not-null="True" length="32" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="TypeDescription" type="String" p1:nullable="True" p1:ValidateMaxLength="128" p1:ValidateRequired="false" p1:Guid="37f8ffbe-2239-421d-848a-4183420ebf34">
+      <column name="TypeDescription" not-null="False" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="TypeIsComponent" type="Boolean" p1:ValidateRequired="true" p1:Guid="5e1c308e-216b-495e-89b4-51e4a87082b1">
+      <column name="TypeIsComponent" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="TypeIsConstituent" type="Boolean" p1:ValidateRequired="true" p1:Guid="0181868c-d355-4e42-99a4-0ab4ce595307">
+      <column name="TypeIsConstituent" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="TypeEditedByAgent" type="Boolean" p1:ValidateRequired="true" p1:Guid="c944f7f2-3f67-4b14-b713-9be53de70e6c">
+      <column name="TypeEditedByAgent" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="TypeEditedByAuthor" type="Boolean" p1:ValidateRequired="true" p1:Guid="5011933b-a6d3-4e20-abb3-f14d58abe5c2">
+      <column name="TypeEditedByAuthor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="TypeEditedByEditor" type="Boolean" p1:ValidateRequired="true" p1:Guid="ae683eb0-b47d-4edb-9401-4979bf43e299">
+      <column name="TypeEditedByEditor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="TypeEditedByAdmin" type="Boolean" p1:ValidateRequired="true" p1:Guid="77df0a7a-7935-4f2b-aeb2-3ddb4cf2c6e8">
+      <column name="TypeEditedByAdmin" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+  </class>
+  <class name="CoreInfosetStatusItem" entity-set="CoreInfosetStatusItems" table="CoreInfosetStatusItem" schema="dbo" p1:Guid="fe1677b4-e68e-4ec1-b100-63970f56903f">
+    <id name="CodeKey" type="Int16" p1:ValidateRequired="true" p1:Guid="b28d0437-317a-46fb-90b0-23a88dfc6909">
+      <column name="CodeKey" not-null="True" precision="5" scale="0" sql-type="smallint" p1:unicode="False" />
+    </id>
+    <property name="StatusName" type="String" p1:ValidateMaxLength="32" p1:ValidateRequired="true" p1:Guid="ba03cf95-bdb7-4d0b-af40-120be7c7d2b4">
+      <column name="StatusName" not-null="True" length="32" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="StatusDescription" type="String" p1:nullable="True" p1:ValidateMaxLength="128" p1:ValidateRequired="false" p1:Guid="763c7a4e-7e1f-4d91-a3d5-7b915556200f">
+      <column name="StatusDescription" not-null="False" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="StatusEditedByAgent" type="Boolean" p1:ValidateRequired="true" p1:Guid="015e90dd-53b7-4007-b6a8-049003d8b942">
+      <column name="StatusEditedByAgent" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="StatusEditedByAuthor" type="Boolean" p1:ValidateRequired="true" p1:Guid="55315ab4-8efd-44b2-b1d4-5e229191dd14">
+      <column name="StatusEditedByAuthor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="StatusEditedByEditor" type="Boolean" p1:ValidateRequired="true" p1:Guid="8e826d19-cbba-4ec1-b94e-0c933789c63b">
+      <column name="StatusEditedByEditor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="StatusEditedByAdmin" type="Boolean" p1:ValidateRequired="true" p1:Guid="55e3504c-7bbd-4a5f-b4d4-57d595ada73b">
+      <column name="StatusEditedByAdmin" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+  </class>
+  <class name="CoreServiceTypeItem" entity-set="CoreServiceTypeItems" table="CoreServiceTypeItem" schema="dbo" p1:Guid="770ba97f-3bf3-4baa-8c10-ce1e6b58c845">
+    <id name="CodeKey" type="Int16" p1:ValidateRequired="true" p1:Guid="b48d937d-a90b-488f-9f62-ef4eb7072b29">
+      <column name="CodeKey" not-null="True" precision="5" scale="0" sql-type="smallint" p1:unicode="False" />
+    </id>
+    <property name="TypeName" type="String" p1:ValidateMaxLength="32" p1:ValidateRequired="true" p1:Guid="6303a712-a085-45cd-82e8-e167f06265fa">
+      <column name="TypeName" not-null="True" length="32" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="TypeDescription" type="String" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="201eb1b4-1239-47ef-bd5e-dc540f757f04">
+      <column name="TypeDescription" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="DefaultGeneratingLabel" type="String" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="11c3e1ad-b7b9-478a-9c04-3c4f6b9d03e1">
+      <column name="DefaultGeneratingLabel" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="CoreServiceDefault" entity-set="CoreServiceDefaults" table="CoreServiceDefault" schema="dbo" p1:Guid="c9c173c0-f8df-491d-9f5f-6fbb8345538c">
+    <id name="ServiceIGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="68562898-113c-434a-b8ae-8d3f426c9935">
+      <column name="ServiceIGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="ServiceName" type="String" p1:nullable="True" p1:ValidateMaxLength="128" p1:ValidateRequired="false" p1:Guid="4861994a-e287-4350-922a-19a2e6bc9879">
+      <column name="ServiceName" not-null="False" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ServiceNature" type="String" p1:nullable="True" p1:ValidateMaxLength="256" p1:ValidateRequired="false" p1:Guid="ea2ae00a-9457-41a3-b556-c4e11ae7319e">
+      <column name="ServiceNature" not-null="False" length="256" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ServiceRGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="be4b8d68-01bc-475a-879a-f2428e6b935b">
+      <column name="ServiceRGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="ServiceTCode" type="Int16" p1:ValidateRequired="true" p1:Guid="98eaf0d2-9079-46c7-9879-883f6b24e4b4">
+      <column name="ServiceTCode" not-null="True" precision="5" scale="0" sql-type="smallint" p1:unicode="False" />
+    </property>
+    <property name="ServiceTName" type="String" p1:ValidateMaxLength="32" p1:ValidateRequired="true" p1:Guid="d670edc8-bcee-428c-8ff6-aa023849df2f">
+      <column name="ServiceTName" not-null="True" length="32" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ServicePTag" type="String" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="191ba559-fbff-4877-8acf-f3202e5ac18e">
+      <column name="ServicePTag" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="DefDiristryGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="aba86be6-3bc3-49fe-a21d-731e2411b348">
+      <column name="DefDiristryGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="DefRegistryGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="435d96ae-f912-4385-b824-41be7b21466e">
+      <column name="DefRegistryGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="DefDirectoryGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="c26f668d-08c0-4ef8-8366-4c8b5534e9dc">
+      <column name="DefDirectoryGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="DefRegistrarGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="4668295b-7757-418a-81e2-6cccdeff0613">
+      <column name="DefRegistrarGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+  </class>
+  <class name="CoreServiceRoot" entity-set="CoreServiceRoots" table="CoreServiceRoot" schema="dbo" p1:Guid="8e247b0f-4403-4e2e-8f51-112b2936a711">
+    <id name="ServiceIGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="6327673f-07b0-488f-ad60-ae492e5f5d95">
+      <column name="ServiceIGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="ServiceName" type="String" p1:nullable="True" p1:ValidateMaxLength="256" p1:ValidateRequired="false" p1:Guid="cfdab6eb-5c76-4c4a-9e8b-a1d0275a39e4">
+      <column name="ServiceName" not-null="False" length="256" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ServiceNature" type="String" p1:nullable="True" p1:ValidateMaxLength="1024" p1:ValidateRequired="false" p1:Guid="70f8c31f-5852-40c5-bcb1-6513dae3465c">
+      <column name="ServiceNature" not-null="False" length="1024" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ServiceRGuid" type="Guid" p1:ValidateRequired="true" p1:Guid="c1f0fe64-21cc-43cc-b04c-e8ef40ce401f">
+      <column name="ServiceRGuid" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="ServiceTCode" type="Int16" p1:ValidateRequired="true" p1:Guid="fc7fe603-aaed-4caa-9612-9e2cf21b1cd0">
+      <column name="ServiceTCode" not-null="True" precision="5" scale="0" sql-type="smallint" p1:unicode="False" />
+    </property>
+    <property name="ServiceTName" type="String" p1:ValidateMaxLength="32" p1:ValidateRequired="true" p1:Guid="785cdf7b-825e-4c05-8856-374e768b2947">
+      <column name="ServiceTName" not-null="True" length="32" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ServicePTag" type="String" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="40448723-a83d-4b92-8913-db16a8e8e036">
+      <column name="ServicePTag" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="CoreSessionAgent" entity-set="CoreSessionAgents" table="CoreSessionAgent" schema="dbo" p1:Guid="454e77e9-9ecf-4f9b-8042-43ebcfb24800">
+    <id name="AgentGuidKey" type="Guid" p1:ValidateRequired="true" p1:Guid="32df293c-0784-4bcf-bc33-8676351173cc">
+      <column name="AgentGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="AgentInfosetGuidRef" type="Guid" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="8a753136-ed83-4ef4-84d7-6050a9aa1fce">
+      <column name="AgentInfosetGuidRef" not-null="False" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AgentIsAuthor" type="Boolean" p1:ValidateRequired="true" p1:Guid="466bab94-8f15-4846-bbb1-b0fb089055dd">
+      <column name="AgentIsAuthor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="AgentIsEditor" type="Boolean" p1:ValidateRequired="true" p1:Guid="9866129b-2825-4e4d-bdb3-80a50c8c4ce8">
+      <column name="AgentIsEditor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="AgentIsAdmin" type="Boolean" p1:ValidateRequired="true" p1:Guid="9fd8b3e0-5e6c-406a-a70b-c21cb6b0f433">
+      <column name="AgentIsAdmin" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="IdentityUserGuidRef" type="Guid" p1:ValidateRequired="true" p1:Guid="ca60fb4f-acbe-4f0d-abb8-2f4dc929efe2">
+      <column name="IdentityUserGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="IdentityUserName" type="String" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="4838130f-9cfd-45be-a441-9c211a80fbbf">
+      <column name="IdentityUserName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="IdentitySystemGuidRef" type="Guid" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="fa9656a6-d96b-4657-a9af-453c9542969f">
+      <column name="IdentitySystemGuidRef" not-null="False" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="SessionGuidKey" type="Guid" p1:ValidateRequired="true" p1:Guid="9455de65-3489-47c1-8a1e-25c974144594">
+      <column name="SessionGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="SessionDateCreated" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="6b7e285f-7e42-4105-bbdd-4157487c61cf">
+      <column name="SessionDateCreated" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="SessionDateAccessed" type="DateTime" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="7cbe0905-c016-4025-b7af-786009eddb87">
+      <column name="SessionDateAccessed" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+  </class>
+</efcore>

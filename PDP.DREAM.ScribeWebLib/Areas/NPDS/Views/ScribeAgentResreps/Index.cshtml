@@ -1,0 +1,11 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeAgentResreps/Index"))
+
+<p>
+  You are registered as an NPDS Record Agent
+  and may request and/or release resource metadata records on this server.
+</p>

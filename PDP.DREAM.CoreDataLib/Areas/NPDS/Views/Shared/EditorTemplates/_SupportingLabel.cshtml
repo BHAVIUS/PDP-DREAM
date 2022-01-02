@@ -1,0 +1,15 @@
+﻿@model string
+
+@(
+  Html.Kendo().DropDownListFor(m => m)
+  .Name("SupportingLabel")
+  .DataValueField("Value").DataTextField("Text")
+  .BindTo((System.Collections.IEnumerable)ViewData["SupportingLabelList"])
+  .HtmlAttributes(new { style = "width: 14em;", title = "Select any TerminologyItem for a SupportingLabel." })
+)
+
+@* 
+     this does not work placing title for tooltip in .DropDownHtmlAttributes
+    .DropDownHtmlAttributes(new { title = "Select most appropriate EntityType." })
+    .HtmlAttributes(new { style = "width: 333px;" })
+*@

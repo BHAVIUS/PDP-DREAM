@@ -1,0 +1,44 @@
+﻿@model ChangeEmailUxm
+
+@{
+  var prc = (PdpRestContext)ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AuthScribe/ChangeEmail"))
+
+<section id="ChangeEmailForm">
+  @using (Html.BeginForm("ChangeEmail", "AuthScribe", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
+  {
+    <p>
+      Use the form below to change your email address.
+    </p>
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(m => m.UserName, new { Value = Model.UserName })
+      @Html.HiddenFor(m => m.RequireSecTok, new { Value = Model.RequireSecTok })
+      @Html.HiddenFor(m => m.SecurityToken, new { Value = Model.SecurityToken })
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.OldEmail, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.OldEmail, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.OldEmail, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.NewEmail, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.NewEmail, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.NewEmail, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.AltEmail, new { @class = "control-label col-md-3" })
+      @Html.TextBoxFor(m => m.AltEmail, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.AltEmail, null, new { @class = "control-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default col-md-offset-2 col-md-2">Change Email</button>
+    </div>
+  }
+</section>
+
+<partial name="_ValidationScripts" />

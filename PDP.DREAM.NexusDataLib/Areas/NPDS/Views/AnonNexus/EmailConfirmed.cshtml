@@ -1,0 +1,10 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AnonSiaa/EmailConfirmed"))
+
+<p>
+  Your email has been confirmed.
+</p>

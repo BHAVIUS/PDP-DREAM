@@ -1,0 +1,16 @@
+﻿@*
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model PdpDreamPrivacy
+@{
+  var prc = Model.PRC;
+  Layout = prc.RazorMvcLayoutPage;
+}
+
+@Html.Raw(prc.FormatPageTitle("PDP/DREAM/Privacy"))
+<p><partial name="_MenuPdpDream" /></p>
+
+<p>Use this page to document your site's privacy policy.</p>

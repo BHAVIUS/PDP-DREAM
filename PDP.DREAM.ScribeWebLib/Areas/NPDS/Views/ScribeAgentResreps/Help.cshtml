@@ -1,0 +1,21 @@
+@*  
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeAgentResreps/Help"))
+
+<h5>
+  Resource Metadata Records
+</h5>
+<p>
+  Record Requests/Releases:
+  You may request authorship for the resource record from the current author;
+  or if you are the current author for the record, then you may release authorship for transfer to another agent;
+  all requests/releases are mediated by the registry editor.
+</p>

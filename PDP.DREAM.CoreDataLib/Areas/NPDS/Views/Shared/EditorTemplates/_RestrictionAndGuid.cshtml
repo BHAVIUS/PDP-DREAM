@@ -1,0 +1,11 @@
+﻿@model Guid
+
+@{
+  var restAndList = (System.Collections.IList)ViewData["RestrictionAndList"];
+  var listCount = restAndList.Count;
+  }
+
+@(Html.Kendo().DropDownListFor(p => p)   
+  .BindTo(new SelectList(restAndList, "Value", "Text"))
+  .HtmlAttributes(new { style = "width: 21em;", title = "Select RestrictionAnd Concept Group." })
+)

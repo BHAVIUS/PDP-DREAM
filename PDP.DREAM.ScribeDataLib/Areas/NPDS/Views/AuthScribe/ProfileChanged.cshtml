@@ -1,0 +1,10 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AuthScribe/ProfileChanged"))
+
+<p>
+  Your profile has been changed.
+</p>

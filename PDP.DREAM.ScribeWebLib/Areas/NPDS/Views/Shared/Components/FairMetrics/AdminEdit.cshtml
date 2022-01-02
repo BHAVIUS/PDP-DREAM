@@ -1,0 +1,75 @@
+﻿@model NexusResrepEditModel
+
+@{
+  var NpdsController = "AdminScribeTkgr";
+  var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
+  var Numf3Format = "{0:n3}"; 
+}
+
+@(Html.Kendo().Grid<FairMetricEditModel>()
+.Name("FairMetrics#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+  m.Field(p => p.MInvalidOldClaim).Editable(true).DefaultValue(0);
+  m.Field(p => p.QValidOldClaim).Editable(true).DefaultValue(0);
+  m.Field(p => p.PInvalidNewClaim).Editable(true).DefaultValue(0);
+  m.Field(p => p.NValidNewClaim).Editable(true).DefaultValue(0);
+  m.Field(p => p.FAIR1).Editable(false).DefaultValue(0);
+  m.Field(p => p.FAIR2).Editable(false).DefaultValue(0);
+  m.Field(p => p.FAIR3).Editable(false).DefaultValue(0);
+  m.Field(p => p.FAIR4).Editable(false).DefaultValue(0);
+  m.Field(p => p.UpdatedOn).Editable(false);
+  m.Field(p => p.UpdatedByAgentName).Editable(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeFairMetricsForEdit", NpdsController, new { recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+.Create(post => post.Action("EditScribeFairMetric", NpdsController, new { recordGuid = "#=RRRecordGuid#" }))
+.Update(put => put.Action("EditScribeFairMetric", NpdsController))
+.Destroy(delete => delete.Action("DeleteScribeFairMetric", NpdsController))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Bound(row => row.RRFgroupGuid).Hidden(true);
+  col.Bound(row => row.RRRecordGuid).Hidden(true);
+  col.Command(com1 => com1.Edit()).Title("");
+  col.Bound(row => row.HasPriority).Title("Priority")
+  .HeaderHtmlAttributes(new { title = "FairMetric has Priority in integer range [0,1,...,255]" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.MInvalidOldClaim).Title("M = Misquoted")
+  .HeaderHtmlAttributes(new { title = "Invalid Old Claims" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.QValidOldClaim).Title("Q = Quoted")
+  .HeaderHtmlAttributes(new { title = "Valid Old Claims" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.PInvalidNewClaim).Title("P = Plagiarized")
+  .HeaderHtmlAttributes(new { title = "Invalid New Claims" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.NValidNewClaim).Title("N = Novel")
+  .HeaderHtmlAttributes(new { title = "Valid New Claims" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.FAIR1).Title("F1").Format(Numf3Format)
+  .HeaderHtmlAttributes(new { title = "FAIR 1 Metric" });
+  col.Bound(row => row.FAIR2).Title("F2").Format(Numf3Format)
+  .HeaderHtmlAttributes(new { title = "FAIR 2 Metric" });
+  col.Bound(row => row.FAIR3).Title("F3").Format(Numf3Format)
+  .HeaderHtmlAttributes(new { title = "FAIR 3 Metric" });
+  col.Bound(row => row.FAIR4).Title("F4").Format(Numf3Format)
+  .HeaderHtmlAttributes(new { title = "FAIR 4 Metric" });
+  col.Bound(row => row.UpdatedOn).Title("Updated").Format(UtcdtFormat);
+  col.Bound(row => row.UpdatedByAgentName).Title("Updater")
+  .HeaderHtmlAttributes(new { title = "Record updated by AgentName" });
+  col.Command(com2 => com2.Destroy()).Title("");
+}) // end Columns
+.Editable(edit => edit.Mode(GridEditMode.InLine))
+.ToolBar(tb => tb.ClientTemplateId("FairMetricToolBar"))
+.Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pg => pg.Refresh(true)).Sortable()
+.ToClientTemplate().ToString().Replace("#[", "\\#["))

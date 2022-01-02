@@ -1,0 +1,10 @@
+@{ 
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView; 
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/NexusDataLib/Help"))
+<p><partial name="_MenuNexusDataLib" /></p>
+
+<p>Use this page to provide your Nexus database help information.</p>
+

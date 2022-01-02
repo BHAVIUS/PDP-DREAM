@@ -1,0 +1,11 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AgentScribe/RoleAgentAdded"))
+
+<p>
+  NPDS Resource Agent role has been added to your account.
+  Please logout then login for the changes to update the menu bar.
+</p>

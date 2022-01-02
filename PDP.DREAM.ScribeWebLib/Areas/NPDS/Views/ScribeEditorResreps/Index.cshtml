@@ -1,0 +1,20 @@
+﻿@{
+  var prc = (PdpRestContext)ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeEditorResreps/Index"))
+
+<p>
+  You are registered as an NPDS Record Editor
+  and may edit resource metadata records on this server for any services
+  for which you have been granted Editor privileges.
+</p>
+
+
+<h3>NPDS Editor Manage Records</h3>
+
+<ul>
+  <li> @Html.ActionLink("Request Author Access to Resrep", "NpdsRequestResrepAuthor", "ScribeEditorResreps", new { area = "NPDS" }) </li>
+  <li> @Html.ActionLink("Request Editor Access to Service", "NpdsRequestServiceEditor", "ScribeEditorResreps", new { area = "NPDS" }) </li>
+</ul>

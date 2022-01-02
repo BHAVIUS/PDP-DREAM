@@ -1,0 +1,21 @@
+﻿@*
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  var prc = (PdpRestContext)ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeDataLibTest/Index"))
+<p><partial name="_MenuScribeDataLibTest" /></p>
+
+@Html.Raw(prc.FormatSectionTitle("ScribeDataLib Project Menus"))
+<partial name="_ScribeDataLibDefaultListProj" />
+
+@if (prc.PDPSS.AppUseDevtestFeature)
+{
+  @Html.Raw(prc.FormatSectionTitle("ScribeDataLib Test Menus"))
+  <partial name="_ScribeDataLibDefaultListTest" />
+}

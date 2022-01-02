@@ -2,27 +2,26 @@
 
 ### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
-Current Version: Aoraki 9.3.3  
-Current DotNet Target: 6.0.0-preview6 with Visual Studio 17 preview 2  
-Planned DotNet Target: 6.0 maintain in 6.0 for Microsoft lifetime of 6.0  
-Dev/Test Focus: web apps with Telerik UI for ASP.Net Core  
-Public Release: 24 June 2021 in repository github.com/BHAVIUS/PDP-DREAM  
+Current Version: Aoraki 10.0.1  
+Required Packages: Telerik.UI.for.AspNet.Core.2021.3.1207.nupkg  
+Current DotNet Target: 6.0.101 with Visual Studio 17.0.4  
+Planned DotNet Target: maintain in 6.\*.\* 
+Dev/Test Focus: convention routing, web apps with Telerik UI for ASP.Net Core  
+Example Web Sites: \*.PORTALDOORS.\*,  \*.NPDSLINKS.\*  
+Initial Public Release: 24 June 2021 in repository github.com/BHAVIUS/PDP-DREAM  
 
-Visual Studio Solution Stack of DotNet Projects and Assemblies for NexusWebApp  
+Visual Studio Solution of DotNet Projects and Assemblies  
+(stack dependencies configured as single chain from top to bottom)
 
-* PDP.DREAM.NexusWebApp (PDP.Aoraki.NexusWebApp)
-* -> PDP.DREAM.NexusRestApi (PDP.Aoraki.NexusRestApi)
-* --> PDP.DREAM.NexusDataLib (PDP.Aoraki.NexusDataLib)
-* ---> PDP.DREAM.NpdsCoreLib (PDP.Aoraki.NpdsCoreLib)
+* PDP.DREAM.ScribeWebLib (PDP.Aoraki.ScribeWebLib) for ACGT
+* PDP.DREAM.ScribeRestLib (PDP.Aoraki.ScribeRestLib) for ACGT
+* PDP.DREAM.ScribeDataLib (PDP.Aoraki.ScribeDataLib) for ACGT
+* PDP.DREAM.NexusWebLib (PDP.Aoraki.NexusWebLib) for ACGT
+* PDP.DREAM.NexusRestLib (PDP.Aoraki.NexusRestLib) for ACGT
+* PDP.DREAM.NexusDataLib (PDP.Aoraki.NexusDataLib) for ACGT
+* PDP.DREAM.CoreDataLib (PDP.Aoraki.CoreDataLib) for ACGT
 
-Visual Studio Solution Stack of DotNet Projects and Assemblies for ScribeWebApp  
-
-* PDP.DREAM.ScribeWebApp (PDP.Aoraki.ScribeWebApp)
-* -> PDP.DREAM.ScribeRestApi (PDP.Aoraki.ScribeRestApi)
-* --> PDP.DREAM.SiaaDataLib (PDP.Aoraki.SiaaDataLib)
-* ---> PDP.DREAM.ScribeDataLib (PDP.Aoraki.ScribeDataLib)
-* ----> PDP.DREAM.NexusDataLib (PDP.Aoraki.NexusDataLib)
-* -----> PDP.DREAM.NpdsCoreLib (PDP.Aoraki.NpdsCoreLib)
+where A is Aoraki (Net 6), C is Cervin (Net 7), G is Gangkhar (Net 8), T is Tahtali (current)
 
 Related Github Projects  
 
@@ -112,24 +111,3 @@ Related Github Projects
   not for management of NPDS components where write access is restricted to agents with Admin roles.
 </p>
 
-
-<h4>Nexus Sites (anonymous)</h4>
-
-<ul>
-  <li><a href="http://www.bhaconservation.net/" target="_blank">www.BHAConservation.net</a></li>
-  <li><a href="http://www.bhahealth.net/" target="_blank">www.BHAHealth.net</a></li>
-  <li><a href="http://www.biomedicalcomputing.net/" target="_blank">www.BioMedicalComputing.net</a></li>
-  <li><a href="http://www.brainwatch.net/" target="_blank">www.BrainWatch.net</a></li>
-  <li><a href="http://www.clinicaltelegaming.net/" target="_blank">www.ClinicalTeleGaming.net</a></li>
-  <li><a href="http://www.genescene.net/" target="_blank">www.GeneScene.net</a></li>
-  <li><a href="http://www.nucmedlib.net/" target="_blank">www.NucMedLib.net</a></li>
-</ul>
-
-<h4>Scribe Sites (authenticated)</h4>
-
-<ul>
-  <li><a href="https://www.brainhealthalliance.net/" target="_blank">www.BrainHealthAlliance.net</a></li>
-  <li><a href="https://www.npdslinks.net/" target="_blank">www.NPDSLINKS.net</a></li>
-  <li><a href="https://www.portaldoors.net/" target="_blank">www.PORTALDOORS.net</a></li>
-  <li><a href="https://www.telegenetics.net/" target="_blank">www.TeleGenetics.net</a></li>
-</ul>

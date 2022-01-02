@@ -1,0 +1,71 @@
+﻿@model NexusResrepEditModel
+
+@{ var NpdsController = "AgentScribeTkgr"; var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; }
+
+@(Html.Kendo().Grid<LocationEditModel>()
+.Name("Locations#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+  m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+  m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+  m.Field(p => p.Telephone).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.EmailAddress).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.UrlWebAddress).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.StreetAddress).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.CityLocality).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.StateRegion).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.Country).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.PostalCode).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.Location).Editable(false).DefaultValue(string.Empty);
+  m.Field(p => p.GeocodeType).Editable(false).DefaultValue(string.Empty);
+  m.Field(p => p.GeocodeConfidence).Editable(false).DefaultValue(string.Empty);
+  m.Field(p => p.FormattedAddress).Editable(false).DefaultValue(string.Empty);
+  m.Field(p => p.Latitude).Editable(false).DefaultValue(0);
+  m.Field(p => p.Longitude).Editable(false).DefaultValue(0);
+  m.Field(p => p.UpdatedOn).Editable(false);
+  m.Field(p => p.UpdatedByAgentName).Editable(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeLocationsForEdit", NpdsController, new { recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+.Create(post => post.Action("EditScribeLocation", NpdsController, new { recordGuid = "#=RRRecordGuid#" }))
+.Update(put => put.Action("EditScribeLocation", NpdsController))
+.Destroy(delete => delete.Action("DeleteScribeLocation", NpdsController))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Bound(row => row.RRFgroupGuid).Hidden(true);
+  col.Bound(row => row.RRRecordGuid).Hidden(true);
+  col.Command(com1 => {
+    com1.Edit();
+    com1.Custom("ValidateLocation").Click("OnValidateLocation").Text("Validate").HtmlAttributes(new { title = "Validate Location" });
+  }).Title("");  // end Command
+  col.Bound(row => row.HasPriority).Title("Priority")
+  .HeaderHtmlAttributes(new { title = "Location has Priority in integer range [0,1,...,255]" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.IsMarked).Title("Marked")
+  .HeaderHtmlAttributes(new { title = "Location is Marked?" });
+  col.Bound(row => row.IsPrincipal).Title("Principal")
+  .HeaderHtmlAttributes(new { title = "Location is Principal?" });
+  col.Bound(row => row.Telephone).Title("Phone Number");
+  col.Bound(row => row.EmailAddress).Title("Email Address");
+  col.Bound(row => row.UrlWebAddress).Title("Web Address")
+  .ClientTemplate("\\#=UrlWebAddressHtml\\#");
+  col.Bound(row => row.StreetAddress).Title("Street Address");
+  col.Bound(row => row.CityLocality).Title("City / Locality");
+  col.Bound(row => row.StateRegion).Title("State / Region");
+  col.Bound(row => row.Country).Title("Country");
+  col.Bound(row => row.PostalCode).Title("Postal Code");
+  col.Bound(row => row.UpdatedOn).Title("Updated").Format(UtcdtFormat);
+  col.Bound(row => row.UpdatedByAgentName).Title("Updater")
+  .HeaderHtmlAttributes(new { title = "Record updated by AgentName" });
+  col.Command(com2 => com2.Destroy()).Title("");
+}) // end Columns
+.Editable(edit => edit.Mode(GridEditMode.InLine))
+.ToolBar(tb => tb.ClientTemplateId("LocationToolBar"))
+.Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pg => pg.Refresh(true)).Sortable()
+.ToClientTemplate().ToString().Replace("#[", "\\#["))

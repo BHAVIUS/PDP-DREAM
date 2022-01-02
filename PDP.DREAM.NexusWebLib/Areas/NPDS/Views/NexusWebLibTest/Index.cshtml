@@ -1,0 +1,21 @@
+﻿@*
+  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  var prc = (PdpRestContext)ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/NexusWebLibTest/Index"))
+<p><partial name="_MenuNexusWebLibTest" /></p>
+
+@Html.Raw(prc.FormatSectionTitle("NexusWebLib Project Menus"))
+<partial name="_NexusWebLibDefaultListProj" />
+
+@if (prc.PDPSS.AppUseDevtestFeature)
+{
+  @Html.Raw(prc.FormatSectionTitle("NexusWebLib Test Menus"))
+  <partial name="_NexusWebLibDefaultListTest" />
+}

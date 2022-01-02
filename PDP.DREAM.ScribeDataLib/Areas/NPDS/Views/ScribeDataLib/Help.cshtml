@@ -1,0 +1,9 @@
+@{ 
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView; 
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeDataLib/Help"))
+<p><partial name="_MenuScribeDataLib" /></p>
+
+<p>Use this page to provide your Scribe database help information.</p>

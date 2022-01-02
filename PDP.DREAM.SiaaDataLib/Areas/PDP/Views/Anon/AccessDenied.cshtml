@@ -1,9 +1,0 @@
-﻿@{
-  var prc = ViewBag.PRC; Layout = prc.PageLayout;
-}
-
-@Html.Raw(prc.FormatPageTitle("PDP/Anon/AccessDenied"))
-
-<p>Access denied to requested resource. Authorization required.</p>
-
-<partial name="_MenuPdpAnon" />

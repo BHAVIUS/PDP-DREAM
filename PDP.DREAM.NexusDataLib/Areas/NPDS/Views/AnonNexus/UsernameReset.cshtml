@@ -1,0 +1,10 @@
+﻿@{
+  var prc = (PdpRestContext) ViewData["PRC"]; 
+  Layout = prc.RazorMvcLayoutView; 
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/AnonSiaa/UsernameReset"))
+
+<p>
+  Your email address has been reset.
+</p>

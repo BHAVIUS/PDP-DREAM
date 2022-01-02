@@ -1,0 +1,13 @@
+﻿@{
+  var prc = (PdpRestContext)ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeAuthorResreps/Index"))
+
+<p>
+  You are registered as an NPDS Record Author
+  and may edit your own resource metadata records on this server for any records
+  for which you have been granted privileges as the current ManagedByAgent.
+</p>
+
