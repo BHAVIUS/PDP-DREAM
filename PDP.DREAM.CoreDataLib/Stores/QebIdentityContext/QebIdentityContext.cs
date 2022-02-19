@@ -1,5 +1,5 @@
 ﻿// QebIdentityContext.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -21,15 +21,17 @@ namespace PDP.DREAM.CoreDataLib.Stores;
 public partial class QebIdentityContext : PdpDataContext, IQebIdentityContext
 {
   // OnConfiguring method with DbContextOptionsBuilder required for EntityFrameworkCore
-  protected override void OnConfiguring(DbContextOptionsBuilder builder)
+  // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+  partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder)
   {
-    if (!builder.IsConfigured ||
-        (!builder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
-         !builder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
+    if (!optionsBuilder.IsConfigured ||
+        (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
+         !optionsBuilder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
     {
-      builder.UseSqlServer(NpdsServiceDefaults.Values.NpdsUserDbconstr);
+      optionsBuilder.UseSqlServer(NpdsServiceDefaults.Values.NpdsUserDbconstr);
     }
   }
+
   protected void OnInitiating(string? dbcs = null)
   {
     if (string.IsNullOrEmpty(dbcs)) { dbcs = NpdsServiceDefaults.Values.NpdsUserDbconstr; }
@@ -41,23 +43,15 @@ public partial class QebIdentityContext : PdpDataContext, IQebIdentityContext
   }
   protected void OnInitiating(DbContextOptions<QebIdentityContext> dbco)
   {
-    // TODO: pass dbco to DbContext base, not the Nexus/Core base  ???
+    var builder = new DbContextOptionsBuilder(dbco);
+    OnConfiguring(builder);
     OnCreated();
   }
 
-  // constructor with DbContextOptions required for EntityFrameworkCore
-  public QebIdentityContext(DbContextOptions<QebIdentityContext> dbco) : base()
-  {
-    OnInitiating(dbco);
-  }
-  public QebIdentityContext(string dbcs) : base()
-  {
-    OnInitiating(dbcs);
-  }
-  public QebIdentityContext() : base()
-  {
-    OnInitiating();
-  }
+  // constructor with typed DbContextOptions required for EntityFrameworkCore
+  public QebIdentityContext(DbContextOptions<QebIdentityContext> dbco) : base() { OnInitiating(dbco); }
+  public QebIdentityContext(string dbcs) : base() { OnInitiating(dbcs); }
+  public QebIdentityContext() : base() { OnInitiating(); }
 
   public QebIdentityApp GetAppByAppName(string appName)
   {

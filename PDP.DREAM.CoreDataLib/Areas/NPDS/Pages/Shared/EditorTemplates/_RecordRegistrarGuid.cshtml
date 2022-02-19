@@ -1,0 +1,8 @@
+﻿@model Guid?
+
+@(
+  Html.Kendo().DropDownListFor(p => p)
+  .DataValueField("RecordRegistrarGuid").DataTextField("RecordRegistrarName").OptionLabel("Select Registrar")
+  .BindTo((System.Collections.IEnumerable)ViewData["RegistrarList"])
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select Scribe Registrar" })
+)  

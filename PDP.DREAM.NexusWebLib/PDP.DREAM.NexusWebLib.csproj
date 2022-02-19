@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyName>PDP.Tahtali.NexusWebLib</AssemblyName>
+    <AssemblyName>PDP.Aoraki.NexusWebLib</AssemblyName>
     <RootNamespace>PDP.DREAM.NexusWebLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
-    <AssemblyVersion>10.0.1</AssemblyVersion>
-    <FileVersion>10.0.1</FileVersion>
-    <Version>10.0.1</Version>
+    <AssemblyVersion>10.1.0</AssemblyVersion>
+    <FileVersion>10.1.0</FileVersion>
+    <Version>10.1.0</Version>
     <Platforms>x64;AnyCPU</Platforms>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <NoWarn>CS8600;CS8601;CS8602;CS8603;IDE0047;IDE0059;</NoWarn>
+    <NoWarn>CS0219;CS8600;CS8601;CS8602;CS8603;IDE0047;IDE0059;</NoWarn>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

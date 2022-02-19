@@ -1,5 +1,5 @@
 ﻿// PdpSiteMiddlewareExtensions.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -96,4 +97,6 @@ public static class PdpSiteMiddlewareExtensions
     return services;
   }
 
-} // class
+} // end class
+
+// end file

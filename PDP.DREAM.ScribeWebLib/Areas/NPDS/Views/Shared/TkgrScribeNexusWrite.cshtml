@@ -7,6 +7,8 @@
   var TkgrPath = $"/{TkgrArea}/{TkgrController}/";
   var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
   var Numf3Format = "{0:n3}";
+  var inAnonRole = false;
+  if (TkgrViewRole == "Anon") { inAnonRole = true; }
   var inAgentRole = false;
   if (TkgrViewRole == "Agent") { inAgentRole = true; }
   var inAdminRole = false;
@@ -87,18 +89,20 @@
   .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
   .HtmlAttributes(new { title = "#=EntityNature#" })
   .ClientTemplate("#=EntityNature128#");
-  col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Hidden(false).Sortable(false)
-  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
-  .Filterable(false);
-  col.Bound(row => row.InfosetIsAgentShared).Title("Shared?").Hidden(false).Sortable(false)
-  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
-  .Filterable(false);
-  col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?").Hidden(false).Sortable(false)
-  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
-  .Filterable(false);
-  col.Bound(row => row.InfosetIsManagerReleased).Title("Released?").Hidden(false).Sortable(false)
-  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
-  .Filterable(false);
+  if (!inAnonRole) {
+    col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
+    .Filterable(false);
+    col.Bound(row => row.InfosetIsAgentShared).Title("Shared?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
+    .Filterable(false);
+    col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
+    .Filterable(false);
+    col.Bound(row => row.InfosetIsManagerReleased).Title("Released?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
+    .Filterable(false);
+  }
   if (!inAgentRole) {
     col.Command(com => {
     com.Custom("RefreshRecord").Click("OnRefreshRecord").Text("Refresh")
@@ -118,13 +122,13 @@
   .Editable(ed => ed.Mode(GridEditMode.InLine))
   .Events(ce => ce.Edit("HideStatus").Page("HideStatus")
   .DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
-  .Pageable(pg => pg.AlwaysVisible(true).Responsive(true).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
+  .Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
   .Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
-  .Filterable().Resizable(rs => rs.Columns(true))
+  .Filterable().Navigatable().Resizable(rs => rs.Columns(true))
   )
 </div>
 
-<partial name="_TkgrScribeNexusToolbarsWrite" />
+<partial name="_TkgrScribeNexusToolbars" />
 
 <script id="ResrepRecordTabStrip" type="text/x-kendo-template">
   @(Html.Kendo().TabStrip().Name("TabStrip#=RRRecordGuid#").Items(itm => {
@@ -185,23 +189,23 @@
     col.Bound(row => row.DiristryGuid).Title("Diristry")
     .HeaderHtmlAttributes(new { title = "Nexus Diristry" })
     .HtmlAttributes(new { title = "\\#=DiristryGuid\\#" })
-    .ClientTemplate("\\#=DiristryName\\#")
-    .EditorTemplateName("_RecordDiristryGuid");
+    .EditorTemplateName("_RecordDiristryGuid")
+    .ClientTemplate("\\#=DiristryName\\#");
     col.Bound(row => row.RegistryGuid).Title("Registry")
     .HeaderHtmlAttributes(new { title = "PORTAL Registry" })
     .HtmlAttributes(new { title = "\\#=RegistryGuid\\#" })
-    .ClientTemplate("\\#=RegistryName\\#")
-    .EditorTemplateName("_RecordRegistryGuid");
+    .EditorTemplateName("_RecordRegistryGuid")
+    .ClientTemplate("\\#=RegistryName\\#");
     col.Bound(row => row.DirectoryGuid).Title("Directory")
     .HeaderHtmlAttributes(new { title = "DOORS Directory" })
     .HtmlAttributes(new { title = "\\#=DirectoryGuid\\#" })
-    .ClientTemplate("\\#=DirectoryName\\#")
-    .EditorTemplateName("_RecordDirectoryGuid");
+    .EditorTemplateName("_RecordDirectoryGuid")
+    .ClientTemplate("\\#=DirectoryName\\#");
     col.Bound(row => row.RegistrarGuid).Title("Registrar")
     .HeaderHtmlAttributes(new { title = "Scribe Registrar" })
     .HtmlAttributes(new { title = "\\#=RegistrarGuid\\#" })
-    .ClientTemplate("\\#=RegistrarName\\#")
-    .EditorTemplateName("_RecordRegistrarGuid");
+    .EditorTemplateName("_RecordRegistrarGuid")
+    .ClientTemplate("\\#=RegistrarName\\#");
     if (inAdminRole) {
       col.Command(com => {
       com.Destroy();
@@ -999,4 +1003,5 @@
   )
 </script>
 
-<partial name="_TkgrScribeNexusWriteJS" />
+<partial name="_TkgrScribeNexusJS" />
+

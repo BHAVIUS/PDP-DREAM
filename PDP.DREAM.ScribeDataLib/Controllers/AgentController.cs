@@ -1,5 +1,5 @@
 ﻿// ScribeAgentController.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
 using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeDataLib.Controllers;
@@ -47,11 +47,11 @@ public partial class AgentScribeController : UserScribeController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Index() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Help() { return View(); }
 
   // Index/Help first, then rest alphabetical
@@ -63,7 +63,7 @@ public partial class AgentScribeController : UserScribeController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult CheckSession()
   {
     bool agentSessionCreated = false, agentSessionIdentified = false;

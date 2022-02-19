@@ -1,0 +1,20 @@
+﻿@*
+  // Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  var prc = (PdpRestContext) Model.PRC;
+}
+
+<div>
+  <span>
+    <a asp-area="NPDS" asp-page="/Site/Index">Site</a>
+    | <a asp-area="NPDS" asp-page="/CoreDataLib/Index">CoreDataLib</a>
+    @if (prc.PDPSS.AppUseDevtestFeature)
+    {
+      <span> | </span>
+      <a asp-area="NPDS" asp-page="/CoreDataLibTest/Index">CoreDataLibTest</a>
+    }
+  </span>
+</div>

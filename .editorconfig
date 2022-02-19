@@ -6,7 +6,7 @@ root = true
 [*.cs]
 
 # Copyright for fileheaders
-file_header_template = {fileName} \nCopyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. \nCode license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+file_header_template = {fileName} \nCopyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. \nCode license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 #Core editorconfig formatting - indentation
 

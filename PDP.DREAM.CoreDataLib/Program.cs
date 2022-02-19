@@ -1,5 +1,5 @@
 // Program.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -17,6 +17,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Migrations;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
@@ -154,16 +155,15 @@ public class Program
       options.ConstraintMap.Add("NpdsIS", typeof(NpdsInfosetStatusConstraint));
     });
     pdwServices.AddControllersWithViews()
-      // .AddRazorRuntimeCompilation()
       .AddJsonOptions(options => {
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
       });
     pdwServices.AddRazorPages(options => {
-      options.Conventions.AddPageRoute(CoreDLC.PdpPathSiteInfo, "");
+      options.Conventions.AddAreaPageRoute("NPDS", "/Site/Info", "");
       options.Conventions.Add(new PdpMvcPageRouteConvention());
     });
-    pdwServices.AddKendo(); // Telerik Kendo UI
+    pdwServices.AddKendo(); // Telerik Kendo UI widgets
 
     #endregion
 
@@ -219,7 +219,7 @@ public class Program
     Action<IEndpointRouteBuilder> GetRoutes;
     GetRoutes = (r => {
       r.MapControllers();
-      r.MapRazorPages();
+      // r.MapRazorPages();
     });
     pdwApp.UseEndpoints(GetRoutes);
 

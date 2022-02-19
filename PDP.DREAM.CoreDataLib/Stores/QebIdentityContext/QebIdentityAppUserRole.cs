@@ -1,5 +1,5 @@
 ﻿// QebIdentityAppUserRole.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -82,13 +82,22 @@ public partial class QebIdentityContext
     return result;
   }
 
-  public List<string>? GetAppUserRolesForUserGuid(Guid userGuid)
+  public IList<string>? GetAppUserRolesForUserGuid(Guid userGuid)
   {
-    List<string>? userRoles = this.QebIdentityAppUserRoles
+    IList<string>? userRoles = this.QebIdentityAppUserRoles
       .Where(r =>
       (r.AppGuidRef == PdpSiteSettings.Values.AppSecureUiaaGuid) &&
       (r.UserGuidRef == userGuid)).Select(n => n.RoleName).ToList();
     return userRoles;
   }
 
-} // class
+  public Guid? GetAppLinkGuidByUserGuidRoleName(Guid userGuid, string roleName)
+  {
+    Guid? linkGuid = this.QebIdentityAppUserRoles
+      .Where(r =>
+      (r.AppGuidRef == PdpSiteSettings.Values.AppSecureUiaaGuid) && (r.RoleName == roleName) &&
+      (r.UserGuidRef == userGuid)).Select(g => g.LinkGuidKey).FirstOrDefault();
+    return linkGuid;
+  }
+
+}

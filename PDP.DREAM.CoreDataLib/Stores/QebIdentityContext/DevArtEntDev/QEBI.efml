@@ -350,4 +350,15 @@
     <parameter name="DateUserNameChanged" type="DateTime" sql-type="datetime2" />
     <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
   </method>
+  <method name="QebIdentityAppUserApprove" p1:procedure="dbo.QebIdentityAppUserApprove" p1:Guid="80653377-e54b-4391-99be-2c660f00081a">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserIsApproved" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="QebIdentityAppLinkDelete" p1:procedure="dbo.QebIdentityAppLinkDelete" p1:Guid="7b731869-becf-4511-8523-04dca8701709">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="LinkGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
 </efcore>

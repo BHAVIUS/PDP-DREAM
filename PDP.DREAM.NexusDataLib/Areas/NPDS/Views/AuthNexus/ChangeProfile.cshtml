@@ -5,10 +5,10 @@
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AuthSiaa/ChangeProfile"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AuthNexus/ChangeProfile"))
 
 <section id="ChangeProfileForm">
-  @using (Html.BeginForm("ChangeProfile", "AuthSiaa", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
+  @using (Html.BeginForm("ChangeProfile", "AuthNexus", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
   {
     <p>
       Use the form below to change your profile.

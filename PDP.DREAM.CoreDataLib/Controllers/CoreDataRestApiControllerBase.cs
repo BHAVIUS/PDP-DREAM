@@ -1,5 +1,5 @@
 ﻿// NpdsCoreControllerBase.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -53,9 +53,9 @@ public abstract class CoreDataRestApiControllerBase : PdpPrcRestApiControllerBas
     pdpCoreDataCntxt = coreCntxt;
   }
 
-  public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
+  public override void OnActionExecuting(ActionExecutingContext exeCntxt)
   {
-    pdpRestCntxt = new PdpRestContext(oaeCntxt.HttpContext.Request)  // calls ParseQueryCollection on new()
+    pdpRestCntxt = new PdpRestContext(exeCntxt.HttpContext.Request)  // calls ParseQueryCollection on new()
     {
       DatabaseType = NpdsConst.DatabaseType.Core,
       DatabaseAccess = NpdsConst.DatabaseAccess.AnonReadOnly,
@@ -65,9 +65,8 @@ public abstract class CoreDataRestApiControllerBase : PdpPrcRestApiControllerBas
     };
     ResetCoreRepository();
   }
-  public override void OnActionExecuted(ActionExecutedContext oaeCntxt)
+  public override void OnActionExecuted(ActionExecutedContext exeCntxt)
   {
-    base.OnActionExecuted(oaeCntxt);
     if (pdpRestCntxt == null)
     { throw new NullReferenceException($"pdpRestCntxt is null in {nameof(CoreDataRestApiControllerBase)} OnActionExecuted()."); }
     // PDP REST Context in PDP.DREAM.CoreDataLib.Models.PdpRestContext
@@ -75,4 +74,6 @@ public abstract class CoreDataRestApiControllerBase : PdpPrcRestApiControllerBas
     ViewData["PRC"] = pdpRestCntxt;
   }
 
-} // class
+} // end class
+
+// end file

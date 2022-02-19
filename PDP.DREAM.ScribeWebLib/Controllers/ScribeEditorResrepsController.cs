@@ -1,22 +1,22 @@
-﻿// EditorResrepsController.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+﻿// ScribeEditorResrepsController.cs 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSEDITOR)]
+[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NpdsEditor)]
 public class ScribeEditorResrepsController : TkgrControllerBase
 {
   public ScribeEditorResrepsController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
@@ -48,15 +48,17 @@ public class ScribeEditorResrepsController : TkgrControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(ScribeWLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Index() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(ScribeWLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Help() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(ScribeWLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Examples() { return View(); }
 
-} // class
+} // end class
+
+// end file

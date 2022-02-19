@@ -5,10 +5,10 @@
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AuthSiaa/DisplayProfile"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AuthNexus/DisplayProfile"))
 
 <section id="DisplayProfileForm">
-  @using (Html.BeginForm("DisplayProfile", "AuthSiaa", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+  @using (Html.BeginForm("DisplayProfile", "AuthNexus", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
   {
     <div class="form-group">
       @Html.LabelFor(m => m.FirstName, new { @class = "control-label col-md-offset-1 col-md-2" })
@@ -48,4 +48,4 @@
   }
 </section>
 
-<partial name="_MenuAuthSiaaLogout" />
+<partial name="_MenuAuthNexusLogout" />

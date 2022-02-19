@@ -1,5 +1,5 @@
 ﻿// PdpDataContext.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -43,6 +43,13 @@ public class PdpDataContext : DbContext
   protected PdpRestContext pdpRestCntxt;
 
   // PDP NPDS Data Context = PDC
+
+  public virtual void UsePrcDefaultConnection(ref DbContextOptionsBuilder optionsBuilder)
+  {
+    var dbcs = pdpRestCntxt?.DbConnectionString; // assume dynamic selection on each request
+    if (string.IsNullOrEmpty(dbcs)) { dbcs = NpdsServiceDefaults.Values.NpdsCoreDbconstr; } // for Core service
+    if (!string.IsNullOrEmpty(dbcs)) { optionsBuilder.UseSqlServer(dbcs); }
+  }
 
   public SqlConnection PdcSqlconn // PDC SQL Data Connection
   {

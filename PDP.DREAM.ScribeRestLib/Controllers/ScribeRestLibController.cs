@@ -1,24 +1,25 @@
 ﻿// ScribeRestLibController.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
+using System.Linq;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
 using PDP.DREAM.CoreDataLib.Utilities;
 using PDP.DREAM.ScribeDataLib.Controllers;
-using PDP.DREAM.ScribeDataLib.Models;
 using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeRestLib.Controllers;
 
-[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize()]
+[Area(PdpConst.PdpMvcArea), RequireHttps, AllowAnonymous]
 public class ScribeRestLibController : ScribeDataLibControllerBase
 {
   public ScribeRestLibController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
@@ -29,28 +30,34 @@ public class ScribeRestLibController : ScribeDataLibControllerBase
     {
       DatabaseType = NpdsConst.DatabaseType.Scribe,
       DatabaseAccess = NpdsConst.DatabaseAccess.AuthReadWrite,
-      RecordAccess = NpdsConst.RecordAccess.Author,
-      ClientInAuthorModeIsRequired = true,
+      RecordAccess = NpdsConst.RecordAccess.User,
+      ClientInUserModeIsRequired = true,
       SessionValueIsRequired = true
     };
     ResetScribeRepository();
-    var isVerified = CheckClientAgentSession();
-    if (!isVerified) { oaeCntxt.Result = Redirect(ScribeDLC.PdpPathIdentRequired); }
+    var anonActionList = new string[] { nameof(Index), nameof(Help) };
+    string actionName = oaeCntxt.ActionName();
+    if (!anonActionList.Contains(actionName))
+    {
+      var isVerified = CheckClientAgentSession();
+      if (!isVerified) { oaeCntxt.Result = Redirect(ScribeDLC.PdpPathIdentRequired); }
+    }
+    base.OnActionExecuting(oaeCntxt);
   }
 
-  [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [HttpGet, AllowAnonymous]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Index() { return View(); }
 
-  [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [HttpGet, AllowAnonymous]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Help() { return View(); }
 
   // both "agents" and "resreps" should be considered reserved keywords
   //    that cannot be used as ServiceTags in second segment of routes
 
   // "scribe/agents/" constrained route for iaguid selected individual agent
-  [HttpGet]
+  [HttpGet, Authorize()]
   [PdpMvcRoute("scribe/agents/{iaguid:guid}", "PdpScribeAgentsByGuid", false)]
   public IActionResult AgentsByGuid(Guid iaguid)
   {
@@ -63,7 +70,7 @@ public class ScribeRestLibController : ScribeDataLibControllerBase
   //    and optional selected subcollection rrlistxnam and subitem rritemguid
   //   TODO: add regex constraint rrlistxnam = NpdsConst.RegexResRepListXnams
   //       examples show "{parameter:regex(theRegexPattern)}" where the RegexPattern is hardcoded
-  [HttpGet]
+  [HttpGet, Authorize()]
   [PdpMvcRoute("scribe/resreps/{rrguid:guid}/{rrlistxnam?}/{rritemguid:guid?}", "PdpScribeResrepsByGuid", false)]
   public IActionResult ResrepsByGuid(Guid rrguid, string? rrlistxnam = "", Guid? rritemguid = null)
   {
@@ -73,7 +80,7 @@ public class ScribeRestLibController : ScribeDataLibControllerBase
   }
 
   // 4-segment route with entityType selected collection of resreps
-  [HttpGet]
+  [HttpGet, Authorize()]
   [PdpMvcRoute("scribe/{serviceTag:NpdsPT}/{entityType:NpdsPT}/{infosetStatus:NpdsIS}", "PdpScribeResrepsByEntityType", false)]
   public IActionResult ResrepsByEntityType(string serviceType, string serviceTag, string entityType, string infosetStatus)
   {
@@ -85,7 +92,7 @@ public class ScribeRestLibController : ScribeDataLibControllerBase
   }
 
   // 3-segment route with entityTag selected collection of resreps
-  [HttpGet]
+  [HttpGet, Authorize()]
   [PdpMvcRoute("scribe/{serviceTag:NpdsPT}/{entityTag:NpdsPT}/{entityVersion?}", "PdpScribeResrepsByEntityTag", false)]
   public IActionResult ResrepsByEntityTag(string serviceType, string serviceTag, string entityTag, string entityVersion = "")
   {
@@ -96,7 +103,7 @@ public class ScribeRestLibController : ScribeDataLibControllerBase
   }
 
   // 2-segment route with serviceTag selected collection of resreps
-  [HttpGet]
+  [HttpGet, Authorize()]
   [PdpMvcRoute("scribe/{serviceTag:NpdsPT}", "PdpScribeResrepsByServiceTag", false)]
   public IActionResult ResrepsByServiceTag(string serviceType, string serviceTag)
   {
@@ -145,4 +152,6 @@ public class ScribeRestLibController : ScribeDataLibControllerBase
     return response;
   }
 
-} // class
+} // end class
+
+// end file

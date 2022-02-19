@@ -1,5 +1,5 @@
 ﻿// ScribeAdminController.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Authorization;
@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
 using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeDataLib.Controllers;
 
-[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSADMIN)]
+[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NpdsAdmin)]
 public partial class AdminScribeController : UserScribeController
 {
   public AdminScribeController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt,
@@ -34,10 +34,9 @@ public partial class AdminScribeController : UserScribeController
       SessionValueIsRequired = true
     };
     pdpScribeDataCntxt.SetRestContext(ref pdpRestCntxt);
-    // TODO: build analogous CheckClientUserSession
-    // that calls OnlineUserIsAuthenticated 
     if (OnlineUserIsAuthenticated)
     {
+      // TODO: build analogous CheckClientUserSession
       var isVerified = CheckClientAgentSession();
       if (!isVerified) { oaeCntxt.Result = Redirect(ScribeDLC.PdpPathIdentRequired); }
     }
@@ -45,7 +44,9 @@ public partial class AdminScribeController : UserScribeController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Index() { return View(); }
 
-} // class
+} // end class
+
+// end file

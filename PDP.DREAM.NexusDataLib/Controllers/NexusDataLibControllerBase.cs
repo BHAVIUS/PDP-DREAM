@@ -1,5 +1,5 @@
-﻿// NexusDataControllerBase.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+﻿// NexusDataLibControllerBase.cs 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -11,6 +11,7 @@ using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
+using PDP.DREAM.CoreDataLib.Types;
 using PDP.DREAM.NexusDataLib.Stores;
 
 namespace PDP.DREAM.NexusDataLib.Controllers;
@@ -99,6 +100,39 @@ public abstract class NexusDataLibControllerBase : QebIdentityControllerBase
       ClientInUserModeIsRequired = false,
       SessionValueIsRequired = false
     };
+  }
+
+  public bool CheckClientUserSession()
+  {
+    var pdpSignin = new PdpIdentityResult();
+    var sessionIsIdentified = false;
+    var agentIsVerified = false;
+    if (PRC.AuthorizedClientIsRequired) // depends on the PRC.RecordAccess setting
+    {
+      if (OnlineUserIsAuthenticated)
+      {
+        sessionIsIdentified = PNDC.CheckCoreUserSession(ref pdpRestCntxt);
+      }
+      else if (!string.IsNullOrEmpty(PRC.UserName) && !string.IsNullOrEmpty(PRC.PassWord))
+      {
+        pdpSignin = QebUserSignin(PRC.UserName, PRC.PassWord);
+        sessionIsIdentified = PNDC.CheckCoreUserSession(ref pdpRestCntxt);
+      }
+      else if (PRC.SessionValueIsRequired && !PRC.SessionGuid.IsInvalid())
+      {
+        sessionIsIdentified = PNDC.CheckCoreUserSession(ref pdpRestCntxt);
+        pdpSignin = QebUserSignin(PRC.UserGuid, PRC.AgentGuid, PRC.SessionGuid);
+      }
+      if (sessionIsIdentified)
+      {
+        agentIsVerified = PRC.ClientIsVerified;
+      }
+      ResetRecordAccess();
+    }
+#if DEBUG
+    UserGuidDevTest();
+#endif
+    return agentIsVerified;
   }
 
 } // class

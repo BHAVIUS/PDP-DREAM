@@ -1,9 +1,10 @@
 ﻿// AnonControllerConfirmEmail.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Types;
 
@@ -13,7 +14,7 @@ namespace PDP.DREAM.NexusDataLib.Controllers;
 public partial class AnonNexusController
 {
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(NexusDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult ConfirmEmail(string id, string ct)
   {
     var uxm = new ChangeEmailUxm(id, ct);
@@ -21,7 +22,7 @@ public partial class AnonNexusController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(NexusDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult ConfirmEmail(ChangeEmailUxm uxm)
   {
     if (ModelState.IsValid)
@@ -41,7 +42,9 @@ public partial class AnonNexusController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(NexusDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult EmailConfirmed() { return View(); }
 
-} // class
+} // end class
+
+// end file

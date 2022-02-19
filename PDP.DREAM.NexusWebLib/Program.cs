@@ -1,5 +1,5 @@
 // Program.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -17,12 +17,13 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
 using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.NexusDataLib.Models;
+using PDP.DREAM.NexusDataLib.Controllers;
 using PDP.DREAM.NexusDataLib.Stores;
 
 // top-level program can be derived from previous combined use of 
@@ -210,7 +211,7 @@ public class Program
     Action<IEndpointRouteBuilder> GetRoutes;
     GetRoutes = (r => {
       r.MapControllers();
-      r.MapRazorPages();
+      // r.MapRazorPages();
     });
     pdwApp.UseEndpoints(GetRoutes);
 

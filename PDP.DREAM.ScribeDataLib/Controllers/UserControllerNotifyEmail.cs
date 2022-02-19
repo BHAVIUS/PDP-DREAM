@@ -1,5 +1,5 @@
 ﻿// UserControllerNotifyEmail.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -37,7 +37,8 @@ public partial class UserScribeController
   {
     try
     {
-      var link = LinkToConfirmToken(uxm.UserName, uxm.SecurityToken, "ConfirmEmail", "Anon", "PDP");
+      // TODO: eliminate magic strings on route
+      var link = LinkToConfirmToken(uxm.UserName, uxm.SecurityToken, "ConfirmEmail", "AnonScribe", "NPDS");
       var subj = PdpSiteSettings.Values.AppSiteTitle + " user account for " + uxm.PersonName;
       var body = new StringBuilder();
       body.AppendLine("Name: " + uxm.PersonName);

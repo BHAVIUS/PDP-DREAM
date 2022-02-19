@@ -1,0 +1,77 @@
+﻿@*
+  // Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  var prc = (PdpRestContext) ViewData["PRC"];
+}
+
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
+  <meta name="author" content="@Html.Raw(prc.MetatagAuthor)" />
+  <meta name="keywords" content="@Html.Raw(prc.MetatagKeywords)" />
+  <meta name="description" content="@Html.Raw(prc.MetatagDescription)" />
+  <title>@Html.Raw(prc.SiteTitle)</title>
+  <environment names="Development">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist413/css/bootstrap.css" />
+  </environment>
+  <environment names="Staging,Production">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist413/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+  </environment>
+  <!-- css styles before js scripts -->
+  <link href="~/lib/kendo/2022.1.119/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+  <link href="~/lib/kendo/2022.1.119/styles/kendo.blueopal.min.css" rel="stylesheet" type="text/css" />
+  <link href="~/lib/kendo/2022.1.119/styles/kendo.blueopal.mobile.min.css" rel="stylesheet" type="text/css" />
+  <link href="~/PdpSiteDefault.css" rel="stylesheet" type="text/css" />
+  <!-- Kendo scripts after jQuery scripts -->
+  <script src="~/lib/kendo/2022.1.119/js/jquery.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/jszip.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/kendo.all.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/kendo.aspnetmvc.min.js"></script>
+</head>
+<body>
+  <div class="pdpPage container">
+    <header class="pdpHead container row nav navbar navbar-left">
+      <nav class="col-md-3">
+        <img @Html.Raw(prc.HeaderImageLogo) />
+      </nav>
+      <nav class="col-md-9">
+        <a asp-area="@prc.RazorMvcArea" asp-controller="@prc.RazorMvcController" asp-action="@prc.RazorMvcAction">@Html.Raw(prc.FormatHeaderTitle())</a>
+        @Html.Raw(prc.FormatSectionTitle(prc.HeaderTagLine))
+        @Html.Raw(prc.FormatSectionTitle(prc.HeaderSloganLine))
+        <partial name="@prc.PageMenu" />
+      </nav>
+    </header>
+    <div class="pdpClear"><hr /></div>
+    <section class="pdpBody container body-content">
+      @RenderBody()
+    </section>
+    <div class="pdpClear"><hr /></div>
+    <footer class="pdpFoot container row nav navbar navbar-left">
+      <nav class="col-md-12">
+        @Html.Raw(prc.FooterCopyrightLine)
+        @Html.Raw(prc.FooterCrosslinkLine)
+        @Html.Raw(prc.FooterContactLine)
+        Served on @DateTime.Now by @prc.SiteAppNameVersion.
+      </nav>
+    </footer>
+  </div>
+  <environment names="Development">
+    <script src="~/lib/bootstrap/dist413/js/bootstrap.js"></script>
+  </environment>
+  <environment names="Staging,Production">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist413/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+  </environment>
+  @RenderSection("Scripts", required: false)
+</body>
+</html>

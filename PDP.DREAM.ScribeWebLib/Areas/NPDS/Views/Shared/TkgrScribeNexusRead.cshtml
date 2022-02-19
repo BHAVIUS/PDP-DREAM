@@ -7,6 +7,8 @@
   var TkgrPath = $"/{TkgrArea}/{TkgrController}/";
   var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
   var Numf3Format = "{0:n3}";
+  var inAnonRole = false;
+  if (TkgrViewRole == "Anon") { inAnonRole = true; }
   var inAgentRole = false;
   if (TkgrViewRole == "Agent") { inAgentRole = true; }
   var inAdminRole = false;
@@ -36,8 +38,11 @@
   col.Bound(row => row.RRInfosetGuid).Title("RRInfosetGuid").Hidden(true)
   .HeaderHtmlAttributes(new { title = "Resource Representation RRInfosetGuid" })
   ;
-  col.Bound(row => row.EntityTypeName).Title("Type")
-  .HeaderHtmlAttributes(new { title = "Resource Entity Type" });
+  col.Bound(row => row.EntityTypeCode).Title("Type")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Type" })
+  .HtmlAttributes(new { title = "#=EntityTypeCode#" })
+  .ClientTemplate("#=EntityTypeName#")
+  .Filterable(false);
   col.Bound(row => row.EntityName).Title("Name")
   .HeaderHtmlAttributes(new { title = "Resource Entity Name" })
   .HtmlAttributes(new { title = "#=EntityName#" })
@@ -46,24 +51,41 @@
   .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
   .HtmlAttributes(new { title = "#=EntityNature#" })
   .ClientTemplate("#=EntityNature128#");
+  if (!inAnonRole) {
+    col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
+    .Filterable(false);
+    col.Bound(row => row.InfosetIsAgentShared).Title("Shared?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
+    .Filterable(false);
+    col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
+    .Filterable(false);
+    col.Bound(row => row.InfosetIsManagerReleased).Title("Released?").Hidden(false).Sortable(false)
+    .HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
+    .Filterable(false);
+  }
+  col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+  .HeaderHtmlAttributes(new { title = "Updated on date" });
+  if (inAdminRole) {
+    col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+    .HeaderHtmlAttributes(new { title = "Deleted on date" });
+  } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("ResrepRecordToolBar"))
   .ClientDetailTemplateId("ResrepRecordTabStrip")
-  .Events(ce => ce.Page("HideStatus")
-  .DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
-  .Pageable(pg => pg.AlwaysVisible(true).Responsive(true).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
+  .Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
   .Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
-  .Filterable().Resizable(rs => rs.Columns(true))
+  .Filterable().Navigatable().Resizable(rs => rs.Columns(true))
   )
 </div>
 
-<partial name="_TkgrScribeNexusToolbarsRead" />
+<partial name="_TkgrScribeNexusToolbars" />
 
 <script id="ResrepRecordTabStrip" type="text/x-kendo-template">
   @(Html.Kendo().TabStrip().Name("TabStrip#=RRRecordGuid#").Items(itm => {
 
   itm.Add().Text("Services").Content(@<text>
-  @(Html.Kendo().Grid<ServiceDefaultEditModel>()
+  @(Html.Kendo().Grid<ServiceDefaultViewModel>()
   .Name("ServiceDefaults#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -81,7 +103,7 @@
     ;
     col.Bound(row => row.HasPriority).Title("Priority")
     .HeaderHtmlAttributes(new { title = "ServiceDefault has Priority in integer range [0,1,...,255]" })
-    ;
+    .EditorTemplateName("_PriorityInteger");
     col.Bound(row => row.IsMarked).Title("Marked")
     .HeaderHtmlAttributes(new { title = "ServiceDefault is Marked?" });
     col.Bound(row => row.IsPrincipal).Title("Principal")
@@ -89,35 +111,35 @@
     col.Bound(row => row.DiristryGuid).Title("Diristry")
     .HeaderHtmlAttributes(new { title = "Nexus Diristry" })
     .HtmlAttributes(new { title = "\\#=DiristryGuid\\#" })
-    .ClientTemplate("\\#=DiristryName\\#")
-    .EditorTemplateName("_RecordDiristryGuid");
+    .ClientTemplate("\\#=DiristryName\\#");
     col.Bound(row => row.RegistryGuid).Title("Registry")
     .HeaderHtmlAttributes(new { title = "PORTAL Registry" })
     .HtmlAttributes(new { title = "\\#=RegistryGuid\\#" })
-    .ClientTemplate("\\#=RegistryName\\#")
-    .EditorTemplateName("_RecordRegistryGuid");
+    .ClientTemplate("\\#=RegistryName\\#");
     col.Bound(row => row.DirectoryGuid).Title("Directory")
     .HeaderHtmlAttributes(new { title = "DOORS Directory" })
     .HtmlAttributes(new { title = "\\#=DirectoryGuid\\#" })
-    .ClientTemplate("\\#=DirectoryName\\#")
-    .EditorTemplateName("_RecordDirectoryGuid");
+    .ClientTemplate("\\#=DirectoryName\\#");
     col.Bound(row => row.RegistrarGuid).Title("Registrar")
     .HeaderHtmlAttributes(new { title = "Scribe Registrar" })
     .HtmlAttributes(new { title = "\\#=RegistrarGuid\\#" })
-    .ClientTemplate("\\#=RegistrarName\\#")
-    .EditorTemplateName("_RecordRegistrarGuid");
+    .ClientTemplate("\\#=RegistrarName\\#");
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date" });
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("ServiceDefaultToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("EntityLabels").Content(@<text>
-    @(Html.Kendo().Grid<EntityLabelViewModel>()
+  @(Html.Kendo().Grid<EntityLabelViewModel>()
   .Name("EntityLabels#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -145,15 +167,29 @@
     .HeaderHtmlAttributes(new { title = "EntityLabel is Resolvable? (URI is also URL?)" });
     col.Bound(row => row.IsPrivate).Title("Private")
     .HeaderHtmlAttributes(new { title = "EntityLabel is Private?" });
+    if (inAdminRole) {
+      col.Bound(row => row.IsGenerating).Title("GL?")
+      .HeaderHtmlAttributes(new { title = "EntityLabel is a Generating URI?" });
+      col.Bound(row => row.ServiceTypeCode).Title("STC?")
+      .HeaderHtmlAttributes(new { title = "EntityLabel has ServiceTypeCode?" });
+    } // end if
     col.Bound(row => row.TagToken).Title("TagToken")
     .HeaderHtmlAttributes(new { title = "EntityLabel TagToken" });
+    if (inAdminRole) {
+      col.Bound(row => row.LabelUri).Title("LabelUri")
+      .HeaderHtmlAttributes(new { title = "EntityLabel has a non-default Generating URI" });
+    } // end if
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("EntityLabelToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
@@ -171,6 +207,8 @@
   .Columns(col => {
     col.Bound(row => row.RRFgroupGuid).Hidden(true);
     col.Bound(row => row.RRRecordGuid).Hidden(true);
+    col.Bound(row => row.HasIndex).Title("Index")
+    .HeaderHtmlAttributes(new { title = "SupportingTag has Index in integer range [0,1,...,255]" });
     col.Bound(row => row.HasPriority).Title("Priority")
     .HeaderHtmlAttributes(new { title = "SupportingTag has Priority in integer range [0,1,...,255]" })
     ;
@@ -183,14 +221,18 @@
     .HtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("SupportingTagToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("SupportingLabels").Content(@<text>
-    @(Html.Kendo().Grid<SupportingLabelViewModel>()
+  @(Html.Kendo().Grid<SupportingLabelViewModel>()
   .Name("SupportingLabels#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -217,18 +259,31 @@
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("SupportingLabelToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("CrossReferences").Content(@<text>
-          @(Html.Kendo().Grid<CrossReferenceViewModel>()
+  @(Html.Kendo().Grid<CrossReferenceViewModel>()
   .Name("CrossReferences#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
     m.Id(p => p.RRFgroupGuid);
+    m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+    m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+    m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+    m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+    m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+    m.Field(p => p.CrossReference).Editable(true).DefaultValue(string.Empty);
+    m.Field(p => p.UpdatedOn).Editable(false);
+    m.Field(p => p.UpdatedByAgentName).Editable(false);
   }) // end Model
   .Read(get => get.Action("ScribeSelectCrossReferences", TkgrController,
   new { area = TkgrArea, recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
@@ -251,14 +306,18 @@
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // Columns
-  .ToolBar(tb => tb.ClientTemplateId("CrossReferenceToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("OtherTexts").Content(@<text>
-    @(Html.Kendo().Grid<OtherTextViewModel>()
+  @(Html.Kendo().Grid<OtherTextViewModel>()
   .Name("OtherTexts#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -283,17 +342,21 @@
     col.Bound(row => row.OtherText).Title("OtherText")
     .HeaderHtmlAttributes(new { title = "OtherText in valid XML format" });
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("OtherTextToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Locations").Content(@<text>
-    @(Html.Kendo().Grid<LocationViewModel>()
+  @(Html.Kendo().Grid<LocationViewModel>()
   .Name("Locations#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -320,14 +383,18 @@
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("LocationToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Descriptions").Content(@<text>
-    @(Html.Kendo().Grid<DescriptionViewModel>()
+  @(Html.Kendo().Grid<DescriptionViewModel>()
   .Name("Descriptions#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -342,6 +409,11 @@
     col.Bound(row => row.RRRecordGuid).Hidden(true);
     col.Bound(row => row.HasIndex).Title("Index")
     .HeaderHtmlAttributes(new { title = "Description has Index in integer range [0,1,...,255]" });
+    col.Command(com =>
+    {
+      com.Edit();
+      com.Custom("CheckDescription").Click("OnCheckInfosubset").Text("Check").HtmlAttributes(new { title = "Description" });
+    }).Title("");  // end Command
     col.Bound(row => row.HasPriority).Title("Priority")
     .HeaderHtmlAttributes(new { title = "Description has Priority in integer range [0,1,...,255]" })
     ;
@@ -349,21 +421,27 @@
     .HeaderHtmlAttributes(new { title = "Description is Marked?" });
     col.Bound(row => row.IsPrincipal).Title("Principal")
     .HeaderHtmlAttributes(new { title = "Description is Principal?" });
+    col.Bound(row => row.Description128).Title("Description128")
+    .HeaderHtmlAttributes(new { title = "Description128 in truncated display" })
+    .HtmlAttributes(new { title = "\\#=Description\\#" });
     col.Bound(row => row.Description).Title("Description")
-    .HeaderHtmlAttributes(new { title = "Description in non-truncated display" })
-    ;
+    .HeaderHtmlAttributes(new { title = "Description in non-truncated display" });
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("DescriptionToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Provenances").Content(@<text>
-    @(Html.Kendo().Grid<ProvenanceViewModel>()
+  @(Html.Kendo().Grid<ProvenanceViewModel>()
   .Name("Provenances#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -391,14 +469,18 @@
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("ProvenanceToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Distributions").Content(@<text>
-    @(Html.Kendo().Grid<DistributionViewModel>()
+  @(Html.Kendo().Grid<DistributionViewModel>()
   .Name("Distributions#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -426,14 +508,18 @@
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("DistributionToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("FairMetrics").Content(@<text>
-    @(Html.Kendo().Grid<FairMetricViewModel>()
+  @(Html.Kendo().Grid<FairMetricViewModel>()
   .Name("FairMetrics#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -475,14 +561,18 @@
     .HeaderHtmlAttributes(new { title = "Updated on date" });
     col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
     .HeaderHtmlAttributes(new { title = "Updated by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("FairMetricToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Snapshots").Content(@<text>
-    @(Html.Kendo().Grid<NexusSnapshotViewModel>()
+  @(Html.Kendo().Grid<NexusSnapshotViewModel>()
   .Name("Snapshots#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -500,9 +590,17 @@
     .HeaderHtmlAttributes(new { title = "Archived on date" });
     col.Bound(row => row.CreatedByAgentName).Title("ArchivedBy")
     .HeaderHtmlAttributes(new { title = "Archived by agent" });
+    if (inAdminRole) {
+      col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Updated on date" });
+      col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
+      .HeaderHtmlAttributes(new { title = "Updated by agent" });
+      col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+      .HeaderHtmlAttributes(new { title = "Deleted on date"});
+      col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
+      .HeaderHtmlAttributes(new { title = "Deleted by agent" });
+    } // end if
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("ResrepSnapshotToolBar"))
-  .Events(ce => ce.Page("HideStatus"))
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
@@ -513,5 +611,5 @@
   )
 </script>
 
-<partial name="_TkgrScribeNexusReadJS" />
+<partial name="_TkgrScribeNexusJS" />
 

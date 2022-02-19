@@ -1,5 +1,5 @@
 ﻿// AnonControllerLoginUser.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System.Threading.Tasks;
@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Models;
 
 namespace PDP.DREAM.NexusDataLib.Controllers;
 
 public partial class AnonNexusController
 {
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult LoginUser(string? returnUrl = null)
   {
     returnUrl = ArgCheckReturnUrl(returnUrl);
@@ -38,7 +38,7 @@ public partial class AnonNexusController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public virtual async Task<IActionResult> LoginUser(LoginUserUxm uxm)
   {
     QebUserSignoutAsync(); // clear authentication cookie

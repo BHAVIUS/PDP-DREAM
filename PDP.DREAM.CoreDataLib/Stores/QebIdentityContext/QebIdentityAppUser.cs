@@ -1,5 +1,5 @@
 ﻿// QebIdentityAppUser.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
 
 namespace PDP.DREAM.CoreDataLib.Stores;
 
@@ -98,10 +99,10 @@ public static partial class QebIdentityAppOperators
     IEnumerable<QebiUserUxm>? rows = query
       .Include(rec => rec.QebIdentityAppUserRoles)
       .AsEnumerable().Select(rec => {
-        var uxmRoles = rec.QebIdentityAppUserRoles
-        .OrderBy(p => p.RoleName).Select(p => p.RoleName).ToList();
         var uxmUser = new QebiUserUxm(rec.AppGuidRef, rec.UserGuidKey,
-          rec.FirstName, rec.LastName, rec.UserName, rec.EmailAddress, rec.UserIsApproved, uxmRoles);
+          rec.FirstName, rec.LastName, rec.UserName, rec.EmailAddress, rec.UserIsApproved);
+        uxmUser.UserRoleList = rec.QebIdentityAppUserRoles
+        .OrderBy(p => p.RoleName).Select(p => p.RoleName).ToList();
         return uxmUser;
       }).ToList();
     return rows;
@@ -146,16 +147,30 @@ public partial class QebIdentityContext
     return result;
   }
 
+  // ATTN: note differences between AppGuid and AppGuidRef, between UserGuid and UserGuidKey
+  // TODO: reconcile these differences to simplify for consistency across RegisterUserUxm, QebiUserUxm, QebIdentityAppUser
+
   public RegisterUserUxm RegisterSiaaUser(RegisterUserUxm editObj)
   {
     if (editObj.AppGuidRef.IsEmpty()) { editObj.AppGuidRef = PdpSiteSettings.Values.AppSecureUiaaGuid; }
     if (editObj.UserGuidKey.IsEmpty()) { editObj.UserGuidKey = Guid.NewGuid(); }
     var qebUser = new QebIdentityAppUser(editObj);
+
     var errorCode = QebIdentityAppUserRegister(qebUser.AppGuidRef, qebUser.UserGuidKey,
       qebUser.UserName, qebUser.UserNameDisplayed, qebUser.FirstName, qebUser.LastName, qebUser.PhoneNumber,
       qebUser.EmailAddress, qebUser.EmailAlternate, qebUser.WebsiteAddress, qebUser.Organization,
       qebUser.SecurityQuestion, qebUser.SecurityAnswer, qebUser.SecurityStamp, qebUser.SecurityToken,
       qebUser.PasswordHash, qebUser.DateUserCreated, qebUser.DateTokenExpired);
+    if (errorCode < 0) { editObj.Message = $"Error code = {errorCode} while registering user with index {editObj.UserName}"; }
+    return editObj;
+  }
+
+  public QebiUserUxm ApproveSiaaUser(QebiUserUxm editObj)
+  {
+    if (editObj.AppGuid.IsEmpty()) { editObj.AppGuid = PdpSiteSettings.Values.AppSecureUiaaGuid; }
+    if (editObj.UserGuid.IsEmpty()) { editObj.UserGuid = Guid.NewGuid(); }
+
+    var errorCode = QebIdentityAppUserApprove(editObj.AppGuid, editObj.UserGuid, editObj.UserIsApproved);
     if (errorCode < 0) { editObj.Message = $"Error code = {errorCode} while registering user with index {editObj.UserName}"; }
     return editObj;
   }
@@ -170,8 +185,8 @@ public partial class QebIdentityContext
       // database context roles
       var dbcRoles = GetAppUserRolesForUserGuid(editObj.UserGuid);
       // user interface model roles
-      var uxmRoles = editObj.SplitUserRoles();
-      // roles not deleted, roles only added if do not exist in database context
+      var uxmRoles = editObj.UserRoleNames.SplitOrStringToList();
+      // add uxmRole if does not exist in dbcRoles
       foreach (var roleName in uxmRoles)
       {
         if (!dbcRoles.Contains(roleName))
@@ -184,10 +199,23 @@ public partial class QebIdentityContext
           }
         }
       }
+      // delete dbcRole if does not exist in uxmRoles
+      foreach (var roleName in dbcRoles)
+      {
+        if (!uxmRoles.Contains(roleName))
+        {
+          var linkGuid = GetAppLinkGuidByUserGuidRoleName(editObj.UserGuid, roleName);
+          if (linkGuid != null)
+          {
+            QebIdentityAppLinkDelete(linkGuid, editObj.AppGuid);
+          }
+        }
+      }
     }
 
     var errorCode = QebIdentityAppUserEdit(editObj.AppGuid, editObj.UserGuid,
       editObj.FirstName, editObj.LastName, editObj.UserName, editObj.EmailAddress);
+
     return editObj;
   }
 

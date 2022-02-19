@@ -5,10 +5,10 @@
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AnonSiaa/ConfirmEmail"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AnonNexus/ConfirmEmail"))
 
 <section id="RegisterUserForm">
-  @using (Html.BeginForm("ConfirmEmail", "AnonSiaa", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+  @using (Html.BeginForm("ConfirmEmail", "AnonNexus", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
   {
     <p>
       To confirm your email, please enter your username and security token.

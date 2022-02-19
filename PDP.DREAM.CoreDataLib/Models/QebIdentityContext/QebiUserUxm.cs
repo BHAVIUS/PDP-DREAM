@@ -1,7 +1,8 @@
 ﻿// QebUserUxm.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -22,6 +23,21 @@ public partial class QebiUserUxm : QebiUserUvm, IUserProfileEdit
     this.SecurityQuestion = p.SecurityQuestion;
     this.WebsiteAddress = p.WebsiteAddress;
   }
+  public QebiUserUxm(Guid appGuid, Guid usrGuid, string firstName, string lastName,
+  string userName, string emailAddress, bool isApproved)
+  {
+    AppGuid = appGuid; UserGuid = usrGuid; FirstName = firstName; LastName = lastName;
+    UserName = userName; EmailAddress = emailAddress; UserIsApproved = isApproved;
+  }
+
+  public Guid AppGuid { get; set; } = PdpSiteSettings.Values.AppSecureUiaaGuid;
+  public Guid UserGuid { get; set; } = Guid.Empty;
+
+  // ATTN: does not update in Telerik controls unless use simple standard property
+  [Display(Name = "UserRoles")]
+  [StringLength(128, ErrorMessage = "String must be <=128 characters.")]
+  public string UserRoleNames { get; set; } = string.Empty;
+
 
   [Display(Name = "Email (primary)"), Required, EmailAddress]
   [StringLength(128, ErrorMessage = "String must be <=128 characters.")]

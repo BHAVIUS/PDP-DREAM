@@ -5,10 +5,10 @@
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AuthSiaa/ChangeUsername"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AuthNexus/ChangeUsername"))
 
 <section id="ChangeUsernameForm">
-  @using (Html.BeginForm("ChangeUsername", "AuthSiaa", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
+  @using (Html.BeginForm("ChangeUsername", "AuthNexus", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
   {
 <p>
   Use the form below to change your username.

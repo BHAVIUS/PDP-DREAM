@@ -1,16 +1,20 @@
 ﻿// TkgrControllerFairMetric.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
+using PDP.DREAM.CoreDataLib.Models;
+using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
@@ -19,7 +23,7 @@ public partial class TkgrControllerBase
   private const string eidFairMetricStatus = "span#FairMetricStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeSelectFairMetrics), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeSelectFairMetrics), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeSelectFairMetrics([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -28,7 +32,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeUpsertFairMetric), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeUpsertFairMetric), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeUpsertFairMetric([DataSourceRequest] DataSourceRequest dsr, FairMetricEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -39,7 +43,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeDeleteFairMetric), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeDeleteFairMetric), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeDeleteFairMetric([DataSourceRequest] DataSourceRequest dsr, FairMetricEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -50,7 +54,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeCheckFairMetric), "", TSrg, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeCheckFairMetric), "", CoreDLC.ratsRg, ScribeWLC.ranpView)]
   public JsonResult ScribeCheckFairMetric([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository(); // use PSDC

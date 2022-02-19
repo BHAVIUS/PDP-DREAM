@@ -1,16 +1,20 @@
 ﻿// TkgrControllerRestrictionOr.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
+using PDP.DREAM.CoreDataLib.Models;
+using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
@@ -19,7 +23,7 @@ public partial class TkgrControllerBase
   private const string eidRestrictionOrStatus = "span#RestrictionOrStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeSelectRestrictionOrs), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(ScribeSelectRestrictionOrs), "", "", ScribeWLC.ranpView)]
   public JsonResult ScribeSelectRestrictionOrs([DataSourceRequest] DataSourceRequest request, Guid restAndGuid)
   {
     ResetScribeRepository();
@@ -28,7 +32,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeUpsertRestrictionOr), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(ScribeUpsertRestrictionOr), "", "", ScribeWLC.ranpView)]
   public JsonResult ScribeUpsertRestrictionOr([DataSourceRequest] DataSourceRequest dsr, RestrictionOrEditModel nre, Guid restAndGuid, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository();
@@ -47,7 +51,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeDeleteRestrictionOr), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(ScribeDeleteRestrictionOr), "", "", ScribeWLC.ranpView)]
   public JsonResult ScribeDeleteRestrictionOr([DataSourceRequest] DataSourceRequest dsr, RestrictionOrEditModel nre)
   {
     ResetScribeRepository();

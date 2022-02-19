@@ -1,9 +1,10 @@
 ﻿// AuthControllerChangeProfile.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Types;
@@ -15,7 +16,7 @@ namespace PDP.DREAM.NexusDataLib.Controllers;
 public partial class AuthNexusController
 {
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult DisplayProfile()
   {
     var uxm = new ChangeProfileUxm();
@@ -28,7 +29,7 @@ public partial class AuthNexusController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult ChangeProfile()
   {
     QUC.GetUserByPrincipal(User);
@@ -42,7 +43,7 @@ public partial class AuthNexusController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult ChangeProfile(ChangeProfileUxm uxm)
   {
     if (ModelState.IsValid)
@@ -74,7 +75,7 @@ public partial class AuthNexusController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult ProfileChanged() { return View(); }
 
 } // class

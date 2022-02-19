@@ -5,10 +5,10 @@
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AnonSiaa/RegisterUser"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AnonNexus/RegisterUser"))
 
 <section id="RegisterUserForm">
-  @using (Html.BeginForm("RegisterUser", "AnonSiaa", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
+  @using (Html.BeginForm("RegisterUser", "AnonNexus", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
   {
     <p>
       Use the form below to register a new user account.

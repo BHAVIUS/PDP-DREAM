@@ -1,7 +1,8 @@
 ﻿// SqldbContext.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
+using System;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
@@ -15,48 +16,43 @@ namespace PDP.DREAM.CoreDataLib.Stores;
 public partial class CoreDbsqlContext : PdpDataContext, INpdsDataService
 {
   // OnConfiguring method with DbContextOptionsBuilder required for EntityFrameworkCore
-  protected override void OnConfiguring(DbContextOptionsBuilder builder)
+  // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+  partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder)
   {
-    if (!builder.IsConfigured ||
-        (!builder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
-         !builder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
+    if (!optionsBuilder.IsConfigured ||
+        (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
+         !optionsBuilder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
     {
-      builder.UseSqlServer(NpdsServiceDefaults.Values.NpdsCoreDbconstr);
+      optionsBuilder.UseSqlServer(NpdsServiceDefaults.Values.NpdsCoreDbconstr);
     }
   }
+
   protected void OnInitiating(string? dbcs = null)
   {
     if (string.IsNullOrEmpty(dbcs)) { dbcs = NpdsServiceDefaults.Values.NpdsCoreDbconstr; }
-    var builder = new DbContextOptionsBuilder();
+    if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
+    var builder = new DbContextOptionsBuilder<CoreDbsqlContext>();
     builder.UseSqlServer(dbcs);
     OnConfiguring(builder);
     OnCreated();
   }
   protected void OnInitiating(DbContextOptions<CoreDbsqlContext> dbco)
   {
+    var builder = new DbContextOptionsBuilder(dbco);
+    OnConfiguring(builder);
     OnCreated();
   }
 
   // constructor with typed DbContextOptions required for EntityFrameworkCore
-  public CoreDbsqlContext(DbContextOptions<CoreDbsqlContext> dbco) : base()
-  {
-    OnInitiating(dbco);
-  }
-  public CoreDbsqlContext(string dbcs) : base()
-  {
-    OnInitiating(dbcs);
-  }
-  public CoreDbsqlContext() : base()
-  {
-    OnInitiating();
-  }
+  public CoreDbsqlContext(DbContextOptions<CoreDbsqlContext> dbco) : base() { OnInitiating(dbco); }
+  public CoreDbsqlContext(string dbcs) : base() { OnInitiating(dbcs); }
+  public CoreDbsqlContext() : base() { OnInitiating(); }
 
-  public virtual void UsePrcDefaultConnection(ref DbContextOptionsBuilder builder)
+  public override void UsePrcDefaultConnection(ref DbContextOptionsBuilder optionsBuilder)
   {
     var dbcs = pdpRestCntxt?.DbConnectionString; // assume dynamic selection on each request
     if (string.IsNullOrEmpty(dbcs)) { dbcs = NpdsServiceDefaults.Values.NpdsCoreDbconstr; } // for Core service
-    if (!string.IsNullOrEmpty(dbcs)) { builder.UseSqlServer(dbcs); }
+    if (!string.IsNullOrEmpty(dbcs)) { optionsBuilder.UseSqlServer(dbcs); }
   }
 
-
-} // class
+}

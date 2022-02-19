@@ -5,10 +5,10 @@
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AnonSiaa/ResetUsername"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AnonNexus/ResetUsername"))
 
 <section id="ResetUsernameForm">
-  @using (Html.BeginForm("ResetUsername2", "AnonSiaa", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
+  @using (Html.BeginForm("ResetUsername2", "AnonNexus", FormMethod.Post, new { area = "NPDS", role = "form", @class = "form-horizontal" }))
   {
     <p>
       To reset your username, please enter your password and then answer the security question.

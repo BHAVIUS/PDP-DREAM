@@ -1,10 +1,10 @@
-﻿@*  
-  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+﻿@*
+  // Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
   // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
-  var prc = (PdpRestContext) ViewData["PRC"]; 
+  var prc = (PdpRestContext) ViewData["PRC"];
   Layout = prc.RazorMvcLayoutView;
 }
 
@@ -12,6 +12,7 @@
 <p><partial name="_MenuScribeWebLibTest" /></p>
 
 <h4>URLs in href attributes</h4>
+
 <ul>
   <li><a href="/NPDS/ScribeAdminResreps/ScribeNpdsRead/Nexus/PDP-Nexus">/NPDS/ScribeAdminResreps/ScribeNpdsRead/Nexus/PDP-Nexus</a></li>
   <li><a href="/NPDS/ScribeAdminResreps/ScribeNpdsRead/PORTAL/PDP-PORTAL">/NPDS/ScribeAdminResreps/ScribeNpdsRead/PORTAL/PDP-PORTAL</a></li>
@@ -73,3 +74,4 @@
   <li><a asp-area="NPDS" asp-controller="ScribeAdminResreps" asp-action="ScribeNpdsWrite" asp-route-serviceType="Nexus" asp-route-serviceTag="Martialis">/NPDS/ScribeAdminResreps/ScribeNpdsWrite/Nexus/Martialis</a></li>
   <li><a asp-area="NPDS" asp-controller="ScribeAdminResreps" asp-action="ScribeNpdsWrite" asp-route-serviceType="Nexus" asp-route-serviceTag="Socrates">/NPDS/ScribeAdminResreps/ScribeNpdsWrite/Nexus/Socrates</a></li>
 </ul>
+

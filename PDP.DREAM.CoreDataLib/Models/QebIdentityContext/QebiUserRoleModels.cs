@@ -1,54 +1,35 @@
 ﻿// QebiUserRoleModels.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
+using PDP.DREAM.CoreDataLib.Utilities;
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public partial class QebiUserUxm
 {
-  public QebiUserUxm(Guid appGuid, Guid usrGuid, string firstName, string lastName,
-    string userName, string emailAddress, bool isApproved, IList<string>? roleList)
-  {
-    AppGuid = appGuid; UserGuid = usrGuid; FirstName = firstName; LastName = lastName;
-    UserName = userName; EmailAddress = emailAddress; UserIsApproved = isApproved; UserRoleList = roleList;
-  }
-
-  public Guid AppGuid { get; set; } = PdpSiteSettings.Values.AppSecureUiaaGuid;
-  public Guid UserGuid { get; set; } = Guid.Empty;
-
-  // ATTN: does not update in Telerik controls unless use simple standard property
-  public string UserRoleNames { get; set; } = string.Empty;
-
   private IList<string>? userRoleList = new List<string>() { string.Empty };
   public IList<string>? UserRoleList
   {
     get {
-      if (userRoleList == null) { userRoleList = new List<string>() { string.Empty }; }
+      if (userRoleList == null)
+      {
+        if (!string.IsNullOrEmpty(UserRoleNames)) { userRoleList = UserRoleNames.SplitOrStringToList(); }
+        else { userRoleList = new List<string>() { string.Empty }; }
+      }
       return userRoleList;
     }
     set {
       if (value != null)
       {
         userRoleList = value;
-        UserRoleNames = JoinUserRoles();
+        UserRoleNames = userRoleList.JoinListToOrString();
       }
     }
   }
-
-  public string JoinUserRoles()
-  {
-    return string.Join(" | ", UserRoleList);
-  }
-  public IList<string>? SplitUserRoles()
-  {
-    userRoleList = UserRoleNames.Split("|", StringSplitOptions.TrimEntries).ToList();
-    return userRoleList;
-  }
-
 }
 
 public class QebiRoleUxm

@@ -1,0 +1,31 @@
+﻿@*  
+  // Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  var prc = (PdpRestContext)ViewData["PRC"];
+  Layout = prc.RazorMvcLayoutView;
+}
+
+@Html.Raw(prc.FormatPageTitle("NPDS/ScribeAnonResreps/Examples"))
+<p><partial name="_MenuScribeAnonResreps" /></p>
+
+<h4>URLs in href attributes</h4>
+
+<ul>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/PDP-Nexus">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/PDP-Nexus</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/PORTAL/PDP-PORTAL">/NPDS/ScribeAnonResreps/ScribeNpdsRead/PORTAL/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/DOORS/PDP-DOORS">/NPDS/ScribeAnonResreps/ScribeNpdsRead/DOORS/PDP-DOORS</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Scribe/PDP-Scribe">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Scribe/PDP-Scribe</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Ashurbanipal">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Ashurbanipal</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Avicenna">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Avicenna</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Beacon">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Beacon</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/BioPORT">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/BioPORT</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/DaVinci">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/DaVinci</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Fidentinus">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Fidentinus</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Knuth">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Knuth</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Martialis">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Martialis</a></li>
+  <li><a href="/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Socrates">/NPDS/ScribeAnonResreps/ScribeNpdsRead/Nexus/Socrates</a></li>
+</ul>
+

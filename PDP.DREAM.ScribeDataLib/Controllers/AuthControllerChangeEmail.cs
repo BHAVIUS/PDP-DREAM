@@ -1,9 +1,10 @@
 ﻿// AuthControllerChangeEmail.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Types;
 
@@ -15,7 +16,7 @@ public partial class AuthScribeController
   // Anonymous ResetEmail when forgotten, Authorized ChangeEmail when known
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult ChangeEmail()
   {
     QUC.GetUserByPrincipal(User);
@@ -24,7 +25,7 @@ public partial class AuthScribeController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult ChangeEmail(ChangeEmailUxm uxm)
   {
     QUC.GetUserByPrincipal(User);
@@ -44,7 +45,7 @@ public partial class AuthScribeController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult EmailRequested() { return View(); }
 
 } // class

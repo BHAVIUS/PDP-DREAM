@@ -1,5 +1,5 @@
 ﻿// CoreTestLibController.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System.Diagnostics;
@@ -30,17 +30,17 @@ public class CoreDataLibTestController : CoreDataRestApiControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Index() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Examples() { return View(); }
 
   // Index/Examples first, then rest alphabetical
 
   [HttpGet, ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public virtual IActionResult MvcErrors()
   {
     PRC.SectionTitle = "PDP/CoreTestLib/MvcErrors";
@@ -49,7 +49,7 @@ public class CoreDataLibTestController : CoreDataRestApiControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public virtual IActionResult MvcRoutes()
   {
     PRC.SectionTitle = "PDP/CoreTestLib/MvcRoutes";
@@ -57,7 +57,7 @@ public class CoreDataLibTestController : CoreDataRestApiControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public virtual IActionResult PrcTest()
   {
     PRC.SectionTitle = "PDP/CoreTestLib/PrcTest";

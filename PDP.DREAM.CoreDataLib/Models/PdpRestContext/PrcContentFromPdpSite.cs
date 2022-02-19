@@ -1,5 +1,5 @@
 ﻿// PrcContentForService.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -384,6 +384,21 @@ public partial class PdpRestContext
   {
     if (!string.IsNullOrEmpty(title)) { HeaderTitle = title; }
     return FormatHeaderTitle();
+  }
+
+  public string FormatHeaderTagLine()
+  { return $"<h5>{HeaderTagLine}</h5>"; }
+  public string FormatHeaderTagLine(string tagLine = "")
+  {
+    if (!string.IsNullOrEmpty(tagLine)) { HeaderTagLine = tagLine; }
+    return FormatHeaderTagLine();
+  }
+  public string FormatHeaderSloganLine()
+  { return $"<h5>{HeaderSloganLine}</h5>"; }
+  public string FormatHeaderSloganLine(string sloganLine = "")
+  {
+    if (!string.IsNullOrEmpty(sloganLine)) { HeaderSloganLine = sloganLine; }
+    return FormatHeaderSloganLine();
   }
 
   public string FormatPageTitle()

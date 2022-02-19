@@ -2,10 +2,11 @@
   var prc = (PdpRestContext) ViewData["PRC"]; 
   Layout = prc.RazorMvcLayoutView;
   var SiaaArea = "NPDS"; 
-  var SiaaController = "AdminSiaa";
+  var SiaaController = "AdminNexus";
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/AdminSiaa/ViewSiaaUsers"))
+@Html.Raw(prc.FormatPageTitle("NPDS/AdminNexus/ViewSiaaUsers"))
+<p><partial name="_MenuAdminNexus" /></p>
 
 <div id="SiaaGrid">
   @(Html.Kendo().Grid<QebiUserUxm>()

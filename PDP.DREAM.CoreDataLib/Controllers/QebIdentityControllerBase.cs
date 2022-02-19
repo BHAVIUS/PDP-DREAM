@@ -1,5 +1,5 @@
-﻿// SiaaDataLibControllerBase.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+﻿// QebIdentityControllerBase.cs 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -37,7 +37,6 @@ public abstract class QebIdentityControllerBase : CoreDataRestApiControllerBase
   // QEB Identity users/roles in QEB Identity context (via SQL views)
   protected QebIdentityContext qebUserContext;
   public QebIdentityContext QUC { get { return qebUserContext; } set { qebUserContext = value; } }
-
 
 
   public QebIdentityControllerBase()
@@ -78,7 +77,6 @@ public abstract class QebIdentityControllerBase : CoreDataRestApiControllerBase
     else if (PRC.ClientHasAgentAccess) { PRC.RecordAccess = NpdsConst.RecordAccess.Agent; }
     else if (PRC.ClientHasUserAccess) { PRC.RecordAccess = NpdsConst.RecordAccess.User; }
   }
-
 
   protected void UserGuidDevTest()
   {

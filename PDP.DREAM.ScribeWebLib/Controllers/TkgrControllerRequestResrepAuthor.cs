@@ -1,24 +1,27 @@
 ﻿// TkgrControllerResrepAuthorRequest.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Reflection;
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
+using PDP.DREAM.CoreDataLib.Models;
+using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
 public partial class TkgrControllerBase
 {
   [HttpGet]
-  [PdpMvcRoute(nameof(NpdsRequestResrepAuthor), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(NpdsRequestResrepAuthor), "", "", ScribeWLC.ranpView)]
   public IActionResult NpdsRequestResrepAuthor()
   {
     BuildDropDownListsForResrepRoot();
@@ -26,7 +29,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeSelectResrepAuthorRequests), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(ScribeSelectResrepAuthorRequests), "", "", ScribeWLC.ranpView)]
   public JsonResult ScribeSelectResrepAuthorRequests([DataSourceRequest] DataSourceRequest dsr)
   {
     ResetScribeRepository(); // use PSDC
@@ -35,7 +38,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeUpsertResrepAuthorRequest), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(ScribeUpsertResrepAuthorRequest), "", "", ScribeWLC.ranpView)]
   public JsonResult ScribeUpsertResrepAuthorRequest([DataSourceRequest] DataSourceRequest dsr, ResrepAuthorRequestEditModel rem)
   {
     ResetScribeRepository(); // use PSDC
@@ -59,7 +62,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeDeleteResrepAuthorRequest), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(ScribeDeleteResrepAuthorRequest), "", "", ScribeWLC.ranpView)]
   public JsonResult ScribeDeleteResrepAuthorRequest([DataSourceRequest] DataSourceRequest dsr, ResrepAuthorRequestEditModel rem)
   {
     ResetScribeRepository(); // use PSDC
@@ -69,7 +72,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpPost]
-  [PdpMvcRoute(nameof(ScribeReqRelNpdsResRepRecord), "", TSrg, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeReqRelNpdsResRepRecord), "", CoreDLC.ratsRg, ScribeWLC.ranpView)]
   public JsonResult ScribeReqRelNpdsResRepRecord([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository(); // use PSDC

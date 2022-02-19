@@ -1,10 +1,10 @@
 ﻿@*
-  // Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved.
+  // Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
   // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
-  var prc = (PdpRestContext)ViewData["PRC"];
+  var prc = (PdpRestContext) ViewData["PRC"];
 }
 
 <!doctype html>
@@ -27,40 +27,38 @@
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
   </environment>
   <!-- css styles before js scripts -->
-  <link href="~/lib/kendo/2021.3.1207/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
-  <link href="~/lib/kendo/2021.3.1207/styles/kendo.blueopal.min.css" rel="stylesheet" type="text/css" />
-  <link href="~/lib/kendo/2021.3.1207/styles/kendo.blueopal.mobile.min.css" rel="stylesheet" type="text/css" />
+  <link href="~/lib/kendo/2022.1.119/styles/kendo.classic-opal.min.css" rel="stylesheet" type="text/css" />
   <link href="~/PdpSiteDefault.css" rel="stylesheet" type="text/css" />
   <!-- Kendo scripts after jQuery scripts -->
-  <script src="~/lib/kendo/2021.3.1207/js/jquery.min.js"></script>
-  <script src="~/lib/kendo/2021.3.1207/js/jszip.min.js"></script>
-  <script src="~/lib/kendo/2021.3.1207/js/kendo.all.min.js"></script>
-  <script src="~/lib/kendo/2021.3.1207/js/kendo.aspnetmvc.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/jquery.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/jszip.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/kendo.all.min.js"></script>
+  <script src="~/lib/kendo/2022.1.119/js/kendo.aspnetmvc.min.js"></script>
 </head>
 <body>
-  <div class="pdpPage container">
-    <header class="pdpHead container row nav navbar navbar-left">
+  <div class="pdpPage k-content container-fluid">
+    <header class="pdpHead row nav navbar navbar-left">
       <nav class="col-md-3">
         <img @Html.Raw(prc.HeaderImageLogo) />
       </nav>
       <nav class="col-md-9">
         <a asp-area="@prc.RazorMvcArea" asp-controller="@prc.RazorMvcController" asp-action="@prc.RazorMvcAction">@Html.Raw(prc.FormatHeaderTitle())</a>
-        @Html.Raw(prc.FormatSectionTitle(prc.HeaderTagLine))
-        @Html.Raw(prc.FormatSectionTitle(prc.HeaderSloganLine))
+        @Html.Raw(prc.FormatHeaderTagLine())
+        @Html.Raw(prc.FormatHeaderSloganLine())
         <partial name="@prc.PageMenu" />
       </nav>
     </header>
     <div class="pdpClear"><hr /></div>
-    <section class="pdpBody container body-content">
+    <main class="pdpBody">
       @RenderBody()
-    </section>
+    </main>
     <div class="pdpClear"><hr /></div>
-    <footer class="pdpFoot container row nav navbar navbar-left">
+    <footer class="pdpFoot row nav navbar navbar-left">
       <nav class="col-md-12">
         @Html.Raw(prc.FooterCopyrightLine)
         @Html.Raw(prc.FooterCrosslinkLine)
         @Html.Raw(prc.FooterContactLine)
-        Served on @DateTime.Now by @prc.SiteAppNameVersion.
+        Served @DateTime.Now by @prc.SiteAppNameVersion.
       </nav>
     </footer>
   </div>

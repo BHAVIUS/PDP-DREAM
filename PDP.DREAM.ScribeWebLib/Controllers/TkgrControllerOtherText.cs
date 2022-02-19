@@ -1,16 +1,20 @@
 ﻿// TkgrControllerOtherText.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
+using PDP.DREAM.CoreDataLib.Models;
+using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
@@ -19,7 +23,7 @@ public partial class TkgrControllerBase
   private const string eidOtherTextStatus = "span#OtherTextStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeSelectOtherTexts), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeSelectOtherTexts), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeSelectOtherTexts([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -28,7 +32,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeUpsertOtherText), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeUpsertOtherText), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeUpsertOtherText([DataSourceRequest] DataSourceRequest dsr, OtherTextEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -39,7 +43,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeDeleteOtherText), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeDeleteOtherText), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeDeleteOtherText([DataSourceRequest] DataSourceRequest dsr, OtherTextEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -50,7 +54,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeCheckOtherText), "", TSrg, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeCheckOtherText), "", CoreDLC.ratsRg, ScribeWLC.ranpView)]
   public JsonResult ScribeCheckOtherText([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository(); // use PSDC

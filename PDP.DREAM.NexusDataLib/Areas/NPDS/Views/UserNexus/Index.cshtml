@@ -1,6 +1,17 @@
-﻿@{ 
-  var prc = (PdpRestContext) ViewData["PRC"]; 
+﻿@{
+  var prc = (PdpRestContext)ViewData["PRC"];
   Layout = prc.RazorMvcLayoutView;
 }
 
-@Html.Raw(prc.FormatPageTitle("NPDS/UserSiaa/Index"))
+@Html.Raw(prc.FormatPageTitle("NPDS/UserNexus/Index"))
+
+<p>
+  You are registered as a site user. You may access the following services:
+</p>
+<ul>
+  <li>@Html.ActionLink("Change User Email", "ChangeEmail", "AuthNexus", new { area = "NPDS" })</li>
+  <li>@Html.ActionLink("Change User Password", "ChangePassword", "AuthNexus", new { area = "NPDS" })</li>
+  <li>@Html.ActionLink("Change User Profile", "ChangeProfile", "AuthNexus", new { area = "NPDS" })</li>
+  <li>@Html.ActionLink("Check User Session", "CheckSession", "UserNexus", new { area = "NPDS" })</li>
+  <li>@Html.ActionLink("User Role Help", "Help", "UserNexus", new { area = "NPDS" })</li>
+</ul>

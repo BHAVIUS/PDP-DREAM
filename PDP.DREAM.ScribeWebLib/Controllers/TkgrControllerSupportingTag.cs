@@ -1,8 +1,7 @@
 ﻿// TkgrControllerSupportingTag.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
 using System.Text.RegularExpressions;
 
 using Kendo.Mvc.Extensions;
@@ -10,9 +9,14 @@ using Kendo.Mvc.UI;
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
+using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
@@ -21,7 +25,7 @@ public partial class TkgrControllerBase
   private const string eidSupportingTagStatus = "span#SupportingTagStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeSelectSupportingTags), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeSelectSupportingTags), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeSelectSupportingTags([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -30,7 +34,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeUpsertSupportingTag), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeUpsertSupportingTag), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeUpsertSupportingTag([DataSourceRequest] DataSourceRequest dsr, SupportingTagEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -48,7 +52,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeDeleteSupportingTag), "", TSrgil, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeDeleteSupportingTag), "", CoreDLC.ratsRgil, ScribeWLC.ranpView)]
   public JsonResult ScribeDeleteSupportingTag([DataSourceRequest] DataSourceRequest dsr, SupportingTagEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -59,7 +63,7 @@ public partial class TkgrControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  [PdpMvcRoute(nameof(ScribeCheckSupportingTag), "", TSrg, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeCheckSupportingTag), "", CoreDLC.ratsRg, ScribeWLC.ranpView)]
   public JsonResult ScribeCheckSupportingTag([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository(); // use PSDC

@@ -2,12 +2,11 @@
 
 ### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
-Current Version: Aoraki 10.0.1  
-Required Packages: Telerik.UI.for.AspNet.Core.2021.3.1207.nupkg  
-Current DotNet Target: 6.0.101 with Visual Studio 17.0.4  
+Current Version: Aoraki 10.1.0  
+Required Packages: Telerik.UI.for.AspNet.Core.2022.1.119.nupkg  
+Current DotNet Target: SDK 6.0.200 with Visual Studio 17.1.0  
 Planned DotNet Target: maintain in 6.\*.\* 
 Dev/Test Focus: convention routing, web apps with Telerik UI for ASP.Net Core  
-Example Web Sites: \*.PORTALDOORS.\*,  \*.NPDSLINKS.\*  
 Initial Public Release: 24 June 2021 in repository github.com/BHAVIUS/PDP-DREAM  
 
 Visual Studio Solution of DotNet Projects and Assemblies  

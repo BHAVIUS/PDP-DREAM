@@ -1,9 +1,10 @@
 ﻿// AnonControllerResetPassword.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Mvc;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Types;
 
@@ -17,7 +18,7 @@ public partial class AnonNexusController
   //
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult ResetPassword(string id, string ct)
   {
     if ((!string.IsNullOrWhiteSpace(id)) && (!string.IsNullOrWhiteSpace(ct)))
@@ -33,7 +34,7 @@ public partial class AnonNexusController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult ResetPassword1(ChangePasswordUxm1 uxm1)
   {
     // Wizard Step 1 on post
@@ -55,7 +56,7 @@ public partial class AnonNexusController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult ResetPassword2(ChangePasswordUxm2 uxm2)
   {
     // Wizard Step 2 on Post
@@ -74,7 +75,7 @@ public partial class AnonNexusController
   }
 
   [HttpPost, ValidateAntiForgeryToken]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult ResetPassword3(ChangePasswordUxm3 uxm3)
   {
     // Wizard Step 3 on Post
@@ -89,7 +90,7 @@ public partial class AnonNexusController
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(CoreDLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public ActionResult PasswordReset() { return View(); }
 
 }

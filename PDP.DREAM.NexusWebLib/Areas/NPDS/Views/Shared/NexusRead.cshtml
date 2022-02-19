@@ -1,5 +1,5 @@
 ﻿@{
-  var prc = (PdpRestContext) ViewData["PRC"];
+  var prc = (PdpRestContext)ViewData["PRC"];
   Layout = prc.RazorMvcLayoutView;
   var TkgrArea = "NPDS";
   var TkgrController = "NexusAnonResreps";
@@ -33,17 +33,20 @@
   ;
   col.Bound(row => row.EntityName).Title("Name")
   .HeaderHtmlAttributes(new { title = "Resource Entity Name" })
-  .HtmlAttributes(new { title = "#=EntityName#" });
+  .HtmlAttributes(new { title = "#=EntityName#" })
+  ;
   col.Bound(row => row.EntityNature).Title("Nature")
   .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
-  .HtmlAttributes(new { title = "#=EntityNature#" });
+  .HtmlAttributes(new { title = "#=EntityNature#" })
+  ;
   }) // end Columns
-  .ToolBar(tb => tb.ClientTemplateId("ResrepRecordToolBar"))
+  // .ToolBar(tb => tb.ClientTemplateId("ResrepRecordToolBar"))
   .ClientDetailTemplateId("ResrepRecordTabStrip")
-  .Events(ce => ce.Page("HideStatus").DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
+  .Events(ce => ce.Page("HideStatus")
+  .DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
   .Pageable(pg => pg.AlwaysVisible(true).Responsive(true).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
   .Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
-  .Filterable().Resizable(rs => rs.Columns(true))
+  .Filterable().Navigatable().Resizable(rs => rs.Columns(true))
   )
 </div>
 
@@ -57,7 +60,7 @@
   @(Html.Kendo().TabStrip().Name("TabStrip#=RRRecordGuid#").Items(itm => {
 
   itm.Add().Text("EntityLabels").Content(@<text>
-        @(Html.Kendo().Grid<EntityLabelViewModel>()
+            @(Html.Kendo().Grid<EntityLabelViewModel>()
   .Name("EntityLabels#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -92,7 +95,7 @@
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("SupportingTags").Content(@<text>
-        @(Html.Kendo().Grid<SupportingTagViewModel>()
+            @(Html.Kendo().Grid<SupportingTagViewModel>()
   .Name("SupportingTags#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -120,7 +123,7 @@
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("SupportingLabels").Content(@<text>
-        @(Html.Kendo().Grid<SupportingLabelViewModel>()
+            @(Html.Kendo().Grid<SupportingLabelViewModel>()
   .Name("SupportingLabels#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -142,13 +145,13 @@
     .HeaderHtmlAttributes(new { title = "SupportingLabel is Principal?" });
     col.Bound(row => row.SupportingLabel).Title("SupportingLabel").Encoded(false);
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
   }) // end Columns
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("CrossReferences").Content(@<text>
-        @(Html.Kendo().Grid<CrossReferenceViewModel>()
+            @(Html.Kendo().Grid<CrossReferenceViewModel>()
   .Name("CrossReferences#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -170,13 +173,13 @@
     .HeaderHtmlAttributes(new { title = "CrossReference is Principal?" });
     col.Bound(row => row.CrossReference).Title("CrossReference").Encoded(false);
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
   }) // Columns
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("OtherTexts").Content(@<text>
-        @(Html.Kendo().Grid<OtherTextViewModel>()
+            @(Html.Kendo().Grid<OtherTextViewModel>()
   .Name("OtherTexts#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -199,13 +202,13 @@
     col.Bound(row => row.OtherText).Title("OtherText")
     .HeaderHtmlAttributes(new { title = "OtherText in valid XML format" });
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
   }) // end Columns
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Locations").Content(@<text>
-        @(Html.Kendo().Grid<LocationViewModel>()
+            @(Html.Kendo().Grid<LocationViewModel>()
   .Name("Locations#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -226,13 +229,13 @@
     .HeaderHtmlAttributes(new { title = "Location is Principal?" });
     col.Bound(row => row.Location).Title("Location").Encoded(false);
     col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
-    .HtmlAttributes(new { title = "Updated on date" });
+    .HeaderHtmlAttributes(new { title = "Updated on date" });
   }) // end Columns
   .Pageable(pg => pg.Refresh(true)).Sortable()
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Descriptions").Content(@<text>
-        @(Html.Kendo().Grid<DescriptionViewModel>()
+            @(Html.Kendo().Grid<DescriptionViewModel>()
   .Name("Descriptions#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -261,7 +264,7 @@
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Provenances").Content(@<text>
-        @(Html.Kendo().Grid<ProvenanceViewModel>()
+            @(Html.Kendo().Grid<ProvenanceViewModel>()
   .Name("Provenances#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -290,7 +293,7 @@
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("Distributions").Content(@<text>
-        @(Html.Kendo().Grid<DistributionViewModel>()
+            @(Html.Kendo().Grid<DistributionViewModel>()
   .Name("Distributions#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {
@@ -319,7 +322,7 @@
   .ToClientTemplate()) </text>);
 
   itm.Add().Text("FairMetrics").Content(@<text>
-        @(Html.Kendo().Grid<FairMetricViewModel>()
+            @(Html.Kendo().Grid<FairMetricViewModel>()
   .Name("FairMetrics#=RRRecordGuid#")
   .DataSource(ds => ds.Ajax()
   .Model(m => {

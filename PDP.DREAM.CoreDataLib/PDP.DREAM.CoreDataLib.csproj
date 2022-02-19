@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyName>PDP.Tahtali.CoreDataLib</AssemblyName>
+    <AssemblyName>PDP.Aoraki.CoreDataLib</AssemblyName>
     <RootNamespace>PDP.DREAM.CoreDataLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
-    <AssemblyVersion>10.0.1</AssemblyVersion>
-    <FileVersion>10.0.1</FileVersion>
-    <Version>10.0.1</Version>
+    <AssemblyVersion>10.1.0</AssemblyVersion>
+    <FileVersion>10.1.0</FileVersion>
+    <Version>10.1.0</Version>
     <Platforms>x64;AnyCPU</Platforms>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -24,17 +24,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="sautinsoft.document" Version="5.4.12.1" />
-    <PackageReference Include="Sendgrid" Version="9.25.1" />
-    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2021.3.1207" />
+    <PackageReference Include="Sendgrid" Version="9.25.3" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2022.1.119" />
   </ItemGroup>
 
 </Project>

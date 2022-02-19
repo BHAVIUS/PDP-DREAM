@@ -1,23 +1,24 @@
 ﻿// ScribeAdminResrepsController.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+using PDP.DREAM.CoreDataLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
 using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.ScribeDataLib.Models;
+using PDP.DREAM.ScribeDataLib.Controllers;
 using PDP.DREAM.ScribeDataLib.Stores;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NPDSADMIN)]
+// ATTN: must avoid ambiguous match exceptions, requires use of distinct routing
+
+[Area(PdpConst.PdpMvcArea), RequireHttps, Authorize(Roles = PdpConst.NpdsAdmin)]
 public class ScribeAdminResrepsController : TkgrControllerBase
 {
   public ScribeAdminResrepsController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
@@ -49,19 +50,19 @@ public class ScribeAdminResrepsController : TkgrControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(ScribeWLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Index() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(ScribeWLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Help() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(ranNpds, raoNpds, PdpConst.PdpMvcArea)]
+  [PdpMvcRoute(ScribeWLC.ranpView, CoreDLC.raordView, PdpConst.PdpMvcArea)]
   public IActionResult Examples() { return View(); }
 
   [HttpGet]
-  [PdpMvcRoute(nameof(NpdsServiceDefaults), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(NpdsServiceDefaults), "", "", ScribeWLC.ranpView)]
   public IActionResult NpdsServiceDefaults()
   {
     PRC.ParseNpdsServTagEntity("Nexus", "NPDS-Root", "", "Edit");
@@ -70,7 +71,7 @@ public class ScribeAdminResrepsController : TkgrControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(nameof(NpdsServiceRestrictions), "", "", NPmvc)]
+  [PdpMvcRoute(nameof(NpdsServiceRestrictions), "", "", ScribeWLC.ranpView)]
   public IActionResult NpdsServiceRestrictions()
   {
     PRC.ParseNpdsServTagEntity("Nexus", "NPDS-Root", "", "Edit");
@@ -79,7 +80,7 @@ public class ScribeAdminResrepsController : TkgrControllerBase
   }
 
   [HttpGet]
-  [PdpMvcRoute(nameof(ScribeCheckLocations), "", TSststet, NPmvc)]
+  [PdpMvcRoute(nameof(ScribeCheckLocations), "", CoreDLC.ratsStstet, ScribeWLC.ranpView)]
   public IActionResult ScribeCheckLocations(string serviceType, string serviceTag, string entityType = "")
   {
     ArgumentChecker.CatchNullOrWhite(serviceType); ArgumentChecker.CatchNullOrWhite(serviceTag);
@@ -98,4 +99,6 @@ public class ScribeAdminResrepsController : TkgrControllerBase
     return View(PRC.ViewName);
   }
 
-} // class
+} // end class
+
+// end file

@@ -106,13 +106,13 @@
   .Editable(ed => ed.Mode(GridEditMode.InLine))
   .Events(ce => ce.Edit("HideStatus").Page("HideStatus")
   .DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
-  .Pageable(pg => pg.AlwaysVisible(true).Responsive(true).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
+  .Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
   .Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
   .Filterable().Resizable(rs => rs.Columns(true))
   )
 </div>
 
-<partial name="_TkgrScribeNexusToolbarsWrite" />
+<partial name="_TkgrScribeNexusToolbars" />
 
 <script id="RestrictionAndsTemplate" type="text/x-kendo-template">
   @(Html.Kendo().Grid<RestrictionAndEditModel>()
@@ -216,4 +216,4 @@
   )
 </script>
 
-<partial name="_TkgrScribeNexusWriteJS" />
+<partial name="_TkgrScribeNexusJS" />

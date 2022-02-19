@@ -1,5 +1,5 @@
 ﻿// PdpPrcControllerBase.cs 
-// Copyright (c) 2007 - 2021 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
@@ -16,6 +16,9 @@ namespace PDP.DREAM.CoreDataLib.Controllers;
 public abstract class PdpPrcWebPageControllerBase : PageModel
 {
   // CONSTANTS
+  
+  protected const string ranNpds = CoreDLC.ranpView;
+  protected const int raoNpds = CoreDLC.raordView;
 
   protected const string QuestionChar = "?";
   protected const string AndChar = "&";
@@ -34,13 +37,13 @@ public abstract class PdpPrcWebPageControllerBase : PageModel
     }
   }
 
-  public override void OnPageHandlerExecuting(PageHandlerExecutingContext oaeCntxt)
+  public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    pdpRestCntxt = new PdpRestContext(oaeCntxt.HttpContext.Request); // calls ParseQueryCollection on new()
+    pdpRestCntxt = new PdpRestContext(exeCntxt.HttpContext.Request); // calls ParseQueryCollection on new()
   }
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext oaeCntxt)
+  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
   {
-    base.OnPageHandlerExecuted(oaeCntxt);
+    base.OnPageHandlerExecuted(exeCntxt);
     if (pdpRestCntxt == null)
     { throw new NullReferenceException($"pdpRestCntxt is null in {nameof(PdpPrcWebPageControllerBase)} OnActionExecuted()."); }
     // PDP REST Context in PDP.DREAM.CoreDataLib.Models.PdpRestContext

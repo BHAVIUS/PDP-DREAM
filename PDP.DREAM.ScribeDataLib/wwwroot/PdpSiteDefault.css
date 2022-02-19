@@ -1,13 +1,13 @@
-﻿/* bootstrap media mods */
+﻿/* ----------------------------------------------------------
+-- Classes have strings preceded by a period (use snake casing)
+-- Ids have strings preceded by a hash (use camel Casing)
+-- Use pdp prefix for  PORTAL-DOORS Project
+-- Size properties with 4 values: top, right, bottom, left
+-- Size properties with 3 values: top, right/left, bottom
+-- Size properties with 2 values: top/bottom, right/left
+-----------------------------------------------------------*/
 
-@media (min-width: 1200px) {
-  .container {
-    min-width: 100%;
-    max-width: 100%;
-  }
-}
-
-/* elements */
+/* HTML element default attributes */
 
 a {
   color: blue;
@@ -16,9 +16,7 @@ a {
 body {
   color: black;
   font-size: medium;
-  padding-bottom: 20px;
-  padding-right: 20px;
-  padding-top: 20px;
+  font-weight: 500;
 }
 
 blockquote {
@@ -37,45 +35,52 @@ em {
 
 /* Set width on the form input elements since they're 100% wide by default */
 input, select, textarea {
-  max-width: 280px;
+  max-width: 11em;
 }
 
 table, th, td {
   border: 1px solid navy;
   border-collapse: collapse;
-  padding-bottom: 0.5em;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 0.5em;
 }
 
+/* HTML class attributes */
 
-/* classes */
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-  padding-left: 15px;
-  padding-right: 15px;
+.pdpPage {
+  border: 0 none;
+  clear: both;
+  margin-bottom: 1.0rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.0rem;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists
-   will truncate terms that are too long to fit in the left column
-*/
-.dl-horizontal dt {
-  white-space: normal;
+.pdpClear {
+  border: 0 none;
+  clear: both;
+  margin: 0;
+  padding: 0;
 }
 
-/* ----------------------------------------------------------
--- Classes have strings preceded by a period (use Snake casing)
--- Ids have strings preceded by a hash (use Camel Casing)
--- use pdp prefix for  PORTAL-DOORS Project
------------------------------------------------------------*/
-
-/* classes */
+.pdpHead {
+  border: 0 none;
+  clear: both;
+  margin: 0 1.0em;
+  padding: 0;
+}
 
 .pdpBody {
-  margin: 0 1.5em;
-  padding: 0.1em 0.3em;
+  border: 0 none;
+  clear: both;
+  margin: 0 1.0em;
+  padding: 0;
+}
+
+.pdpFoot {
+  border: 0 none;
+  clear: both;
+  font-size: small;
+  margin: 0 1.0em;
+  padding: 0;
 }
 
 .pdpCenter {
@@ -84,15 +89,9 @@ table, th, td {
   width: auto;
 }
 
-.pdpClear {
-  clear: both;
-  padding: 0.5em 0;
-}
-
-.pdpFoot {
-  font-size: small;
-  margin: 0 1.5em;
-  padding: 0.1em 0.3em;
+.pdpFontDefault {
+  font-size: medium;
+  font-weight: 500;
 }
 
 .pdpGrid1x3 {
@@ -127,21 +126,6 @@ table, th, td {
   grid-column: 4;
 }
 
-.pdpHead {
-  margin: 0 1.5em;
-  padding: 0.1em 0.3em;
-}
-
-.pdpFontDefault {
-  font-size: medium;
-}
-
-.pdpPage {
-  margin-bottom: 0;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0;
-}
 
 .pdpResrepStatus {
   padding-left: 1em;
@@ -152,7 +136,6 @@ table, th, td {
   padding-left: 1em;
   color: blue;
 }
-
 
 .pdpStatusPending {
   color: blue;
@@ -174,8 +157,51 @@ table, th, td {
   color: green;
 }
 
-/* ids */
+.pdpTable {
+  border: 1px solid navy;
+  border-collapse: collapse;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+}
+
+/* HTML element ids */
 
 #NpdsGrid {
   padding-bottom: 1em;
+}
+
+
+/* override Telerik defaults */
+
+.k-content {
+  color: black;
+}
+
+.k-grid a {
+  color: blue;
+}
+
+.k-pager-numbers .k-link {
+  color: navy;
+}
+
+.k-pager-numbers .k-link.k-state-selected {
+    color: navy;
+}
+
+/* override Bootstrap defaults */
+@media (min-width: 1200px) {
+  .container-fluid {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Override default bootstrap behavior where horizontal description lists
+   truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+  white-space: normal;
 }
