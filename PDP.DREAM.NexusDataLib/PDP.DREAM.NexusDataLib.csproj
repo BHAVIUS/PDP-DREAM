@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <AssemblyName>PDP.Aoraki.NexusDataLib</AssemblyName>
+    <AssemblyName>PDP.Cervin.NexusDataLib</AssemblyName>
     <RootNamespace>PDP.DREAM.NexusDataLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
