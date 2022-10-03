@@ -1,74 +1,73 @@
 ﻿// PdpNullableStruct.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 
-namespace PDP.DREAM.CoreDataLib.Types
+namespace PDP.DREAM.CoreDataLib.Types;
+
+public struct PdpNullableStruct<T> where T : struct
 {
-  public struct PdpNullableStruct<T> where T : struct
+
+  public PdpNullableStruct(T par) : this()
   {
+    Value = par;
+  }
 
-    public PdpNullableStruct(T par) : this()
+  private bool sHasVal;
+  public bool HasValue
+  {
+    get
     {
-      Value = par;
+      return sHasVal;
     }
+  }
 
-    private bool sHasVal;
-    public bool HasValue
+  private T sVal;
+  public T Value
+  {
+    get
     {
-      get
-      {
-        return sHasVal;
-      }
+      return sVal;
     }
-
-    private T sVal;
-    public T Value
+    set
     {
-      get
+      sVal = value;
+      if (Convert.IsDBNull(sVal))
       {
-        return sVal;
-      }
-      set
-      {
-        sVal = value;
-        if (Convert.IsDBNull(sVal))
-        {
-          sHasVal = false;
-        }
-        else
-        {
-          sHasVal = true;
-        }
-      }
-    }
-
-    public T GetValueOrDefault(T theDefaultValue)
-    {
-      if (HasValue)
-      {
-        return Value;
+        sHasVal = false;
       }
       else
       {
-        return theDefaultValue;
+        sHasVal = true;
       }
     }
+  }
 
-    // DBNull and IsDBNull are in the System namespace
-    public static DBNull NullValue = DBNull.Value;
-
-    public static implicit operator PdpNullableStruct<T>(T theValue)
+  public T GetValueOrDefault(T theDefaultValue)
+  {
+    if (HasValue)
     {
-      return (new PdpNullableStruct<T>(theValue));
+      return Value;
     }
-
-    public static explicit operator T(PdpNullableStruct<T> theValue)
+    else
     {
-      return theValue.Value;
+      return theDefaultValue;
     }
+  }
 
+  // DBNull and IsDBNull are in the System namespace
+  public static DBNull NullValue = DBNull.Value;
+
+  public static implicit operator PdpNullableStruct<T>(T theValue)
+  {
+    return (new PdpNullableStruct<T>(theValue));
+  }
+
+  public static explicit operator T(PdpNullableStruct<T> theValue)
+  {
+    return theValue.Value;
   }
 
 }
+

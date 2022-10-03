@@ -1,0 +1,26 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/CwlHome/ServerDefaults"
+@model CwlHomeServerDefaults
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var propList = NPDSSD.GetType().GetProperties().OrderBy(p => p.Name);
+}
+@Html.Raw(psr.FormatPageTitle())
+
+@if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
+{
+  <p><partial name="@psr.RazorBodyMenu" /></p>
+}
+@Html.Raw(psr.FormatBodyTitle())
+
+<table class="pdpTable">
+  <tr><td>Name</td><td>Value</td><td>Type</td></tr>
+  @foreach (PropertyInfo item in propList)
+  {
+    <tr><td>@item?.Name</td><td>@item?.GetValue(NPDSSD)?.ToString()</td><td>@item?.PropertyType</td></tr>
+  }
+</table>

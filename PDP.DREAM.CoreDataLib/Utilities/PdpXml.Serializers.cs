@@ -1,6 +1,6 @@
 ﻿// PdpXml.Serializers.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.Runtime.Serialization;
@@ -77,22 +77,22 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return serObj;
     }
 
-    public static string PdpSerialize(PdpRestContext prc, IXmlSerializable ixs, XmlWriterSettings? xws = null)
+    public static string PdpSerialize(QebUserRestContext qurc, IXmlSerializable ixs, XmlWriterSettings? xws = null)
     {
-      if (prc == null) { throw new ArgumentNullException("prc in SerializeToString"); }
+      if (qurc == null) { throw new ArgumentNullException("qurc in SerializeToString"); }
       if (ixs == null) { throw new ArgumentNullException("ixs in SerializeToString"); }
       if (xws == null) { xws = CreateXmlWriterSettings(); }
       // ATTN: StringBuilder fixed encoding of UTF-16 overrides any encoding carried by xws
       // so cannot use framework StringBuilder and instead must use enhanced variation
       // EncodedStringBuilder : StringWriter : TextWriter so esb is a TextWriter
       EncodedStringWriter esb = null;
-      PdpPrcXmlWrappingWriter pxw = null;
+      NpdsXmlWrappingWriter pxw = null;
       XmlSerializer xsz = null;
       var xml = string.Empty;
       try
       {
         esb = new EncodedStringWriter(xws.Encoding);
-        pxw = new PdpPrcXmlWrappingWriter(prc, esb, xws); // create the writer with the settings
+        pxw = new NpdsXmlWrappingWriter(qurc, esb, xws); // create the writer with the settings
         xsz = new XmlSerializer(ixs.GetType()); // create the serializer with the object type
         xsz.Serialize(pxw, ixs); // serialize with the writer and the object value
         pxw.Flush(); // flush the writer
@@ -110,13 +110,13 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return xml;
     }
 
-    public static T PdpDeserialize<T>(PdpRestContext prc, string xmlStr, T serObj) where T : class, IXmlSerializable, new()
+    public static T PdpDeserialize<T>(QebUserRestContext qurc, string xmlStr, T serObj) where T : class, IXmlSerializable, new()
     {
       XmlDocument xd = new XmlDocument();
       xd.LoadXml(xmlStr);
       using (var xnr = new XmlNodeReader(xd))
       {
-        using (var pxr = new PdpPrcXmlWrappingReader(prc, xnr))
+        using (var pxr = new NpdsXmlWrappingReader(qurc, xnr))
         {
           serObj.ReadXml(pxr);
         }
@@ -138,7 +138,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return pairAreEquiv;
     }
 
-    public static bool RoundTripX2<T>(PdpRestContext prc, T serObj1, T serObj2, string pairName = "",
+    public static bool RoundTripX2<T>(QebUserRestContext qurc, T serObj1, T serObj2, string pairName = "",
       XmlWriterSettings? xws = null) where T : class, IXmlSerializable, new()
     {
       if (xws == null) { xws = CreateXmlWriterSettings(); }
@@ -149,7 +149,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       // XML serialized strings may have HTML encoded entities so str1 and str2 may have entities
       // XML deserialized strings should not have any HTML encoded entities so strings in serObj1 and serObj2 should not have any encoded entities
 
-      if (prc == null)
+      if (qurc == null)
       {
         str1 = XmlSerialize(serObj1, xws);
         Console.WriteLine(str1);
@@ -160,11 +160,11 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       }
       else
       {
-        str1 = PdpSerialize(prc, serObj1, xws);
+        str1 = PdpSerialize(qurc, serObj1, xws);
         Console.WriteLine(str1);
 
-        serObj2 = PdpDeserialize(prc, str1, serObj2);
-        str2 = PdpSerialize(prc, serObj2, xws);
+        serObj2 = PdpDeserialize(qurc, str1, serObj2);
+        str2 = PdpSerialize(qurc, serObj2, xws);
         Console.WriteLine(str2);
       }
 

@@ -1,0 +1,56 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AuthCore/ChangeEmail"
+@model AuthCoreChangeEmail
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  // var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    A security token has been sent to you for verification of your new email address.
+    Please check your email and click on the confirmation link to complete the change.
+  </p>
+}
+else
+{
+<form id="frmChangeEmail"  asp-page="/AuthCore/ChangeEmail" 
+    method="post" role="form" class="form-horizontal">
+  <p>
+    Use the form below to change your email address.
+  </p>
+  <div class="form-group">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UXM.RequireSecTok, new { Value = Model.UXM.RequireSecTok })
+    @Html.HiddenFor(m => m.UXM.SecurityToken, new { Value = Model.UXM.SecurityToken })
+    @Html.HiddenFor(m => m.UXM.UserGuid, new { Value = Model.UXM.UserGuid })
+    @Html.HiddenFor(m => m.UXM.UserName, new { Value = Model.UXM.UserName })
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.OldEmail, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.OldEmail, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.OldEmail, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.NewEmail, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.NewEmail, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.NewEmail, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.AltEmail, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.AltEmail, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.AltEmail, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <br />
+  <button type="submit" class="btn btn-outline-primary">Change Email</button>
+</form>
+}
+

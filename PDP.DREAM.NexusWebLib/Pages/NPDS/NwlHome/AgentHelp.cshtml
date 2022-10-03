@@ -1,0 +1,60 @@
+@*  
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/NwlHome/AgentHelp"
+@model NwlHomeAgentHelp
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var psi = (PdpSiteInfoModel)psr.PdpSiteInfo;
+  var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as an NPDS Record Agent
+  and may request and/or release resource metadata records on this server.
+</p>
+
+<h5>
+  Resource Metadata Records
+</h5>
+<p>
+  Record Requests/Releases:
+  You may request authorship for the resource record from the current author;
+  or if you are the current author for the record, then you may release authorship for transfer to another agent;
+  all requests/releases are mediated by the registry editor.
+</p>
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/NPDS-Root">/NPDS/NexusServer/AgentResreps/Nexus/NPDS-Root</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/PDP-Nexus">/NPDS/NexusServer/AgentResreps/Nexus/PDP-Nexus</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/PORTAL/PDP-PORTAL">/NPDS/NexusServer/AgentResreps/PORTAL/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/DOORS/PDP-DOORS">/NPDS/NexusServer/AgentResreps/DOORS/PDP-DOORS</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Scribe/PDP-Scribe">/NPDS/NexusServer/AgentResreps/Scribe/PDP-Scribe</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/PDP-DREAM">/NPDS/NexusServer/AgentResreps/Nexus/PDP-DREAM</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Ashurbanipal">/NPDS/NexusServer/AgentResreps/Nexus/Ashurbanipal</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Avicenna">/NPDS/NexusServer/AgentResreps/Nexus/Avicenna</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Beacon">/NPDS/NexusServer/AgentResreps/Nexus/Beacon</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/BioPORT">/NPDS/NexusServer/AgentResreps/Nexus/BioPORT</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/BrainIACS">/NPDS/NexusServer/AgentResreps/Nexus/BrainIACS</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/BrainWatch">/NPDS/NexusServer/AgentResreps/Nexus/BrainWatch</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/CTGaming">/NPDS/NexusServer/AgentResreps/Nexus/CTGaming</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/DaVinci">/NPDS/NexusServer/AgentResreps/Nexus/DaVinci</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Eywa">/NPDS/NexusServer/AgentResreps/Nexus/Eywa</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Fidentinus">/NPDS/NexusServer/AgentResreps/Nexus/Fidentinus</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Gaia">/NPDS/NexusServer/AgentResreps/Nexus/Gaia</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/GeneScene">/NPDS/NexusServer/AgentResreps/Nexus/GeneScene</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/HELPME">/NPDS/NexusServer/AgentResreps/Nexus/HELPME</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Jubatus">/NPDS/NexusServer/AgentResreps/Nexus/Jubatus</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Knuth">/NPDS/NexusServer/AgentResreps/Nexus/Knuth</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Martialis">/NPDS/NexusServer/AgentResreps/Nexus/Martialis</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/ManRay">/NPDS/NexusServer/AgentResreps/Nexus/ManRay</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Osler">/NPDS/NexusServer/AgentResreps/Nexus/Osler</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/Socrates">/NPDS/NexusServer/AgentResreps/Nexus/Socrates</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Nexus/SOLOMON">/NPDS/NexusServer/AgentResreps/Nexus/SOLOMON</a></li>
+</ul>

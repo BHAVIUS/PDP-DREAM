@@ -1,6 +1,6 @@
 ﻿// SendgridService.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.Diagnostics;
@@ -25,10 +25,10 @@ namespace PDP.DREAM.CoreDataLib.Services
       try
       {
         string adminEmail, adminApiKey;
-        adminApiKey = PdpSiteSettings.Values.ApiKeySendGrid;
-        adminEmail = PdpSiteSettings.Values.AppHostEmail;
-        if (string.IsNullOrWhiteSpace(companyEmail)) { companyEmail = PdpSiteSettings.Values.AppOwnerEmail; }
-        if (string.IsNullOrWhiteSpace(customerEmail)) { customerEmail = PdpSiteSettings.Values.AppOwnerEmail; }
+        adminApiKey = PdpAppStatus.PDPSS.ApiKeySendGrid;
+        adminEmail = PdpAppStatus.PDPSS.AppHostEmail;
+        if (string.IsNullOrWhiteSpace(companyEmail)) { companyEmail = PdpAppStatus.PDPSS.AppOwnerEmail; }
+        if (string.IsNullOrWhiteSpace(customerEmail)) { customerEmail = PdpAppStatus.PDPSS.AppOwnerEmail; }
 
         var companyAddress = new EmailAddress(companyEmail);
         var customerAddress = new EmailAddress(customerEmail);
@@ -44,7 +44,7 @@ namespace PDP.DREAM.CoreDataLib.Services
         msgMail.SetReplyTo(companyAddress);
         msgMail.AddTo(customerAddress);
         msgMail.AddCc(companyAddress); // combo up to here did work
-       // msgMail.AddBcc(adminAddress); // adding Bcc caused a BadRequest
+                                       // msgMail.AddBcc(adminAddress); // adding Bcc caused a BadRequest
         msgMail.SetSubject(msgSubject);
         if (isHtml)
         {

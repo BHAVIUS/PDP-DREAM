@@ -1,0 +1,166 @@
+﻿// SqldbcUilResrepStemEdit.cs 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+using System;
+
+using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreDataLib.Utilities;
+using PDP.DREAM.NexusDataLib.Stores;
+using PDP.DREAM.ScribeDataLib.Models;
+
+namespace PDP.DREAM.ScribeDataLib.Stores;
+
+public partial class ScribeDbsqlContext
+{
+  // TODO: consider deprecation of Edit/Delete *ResrepLeaf
+  public NexusResrepEditModel EditResrepStem(NexusResrepEditModel editObj, bool byStorProc = true)
+  {
+    var errMsg = string.Empty;
+    var recordName = editObj.ItemXnam;
+    var recordHandle = editObj.RecordHandle;
+    var agentGuid = QURC.QebAgentGuid;
+    var infosetGuid = PdpGuid.ParseToNonNullable(editObj.RRInfosetGuid, Guid.Empty);
+    var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
+    var isNewRecord = recordGuid.IsEmpty();
+    NexusResrepStem storObj;
+    if (isNewRecord)
+    {
+      // insert new record
+      recordGuid = PdpGuid.NewGuid();
+      infosetGuid = PdpGuid.NewGuid();
+      storObj = new NexusResrepStem()
+      {
+        RecordCreatedByAgentGuidRef = agentGuid,
+        RecordUpdatedByAgentGuidRef = agentGuid,
+        RecordManagedByAgentGuidRef = agentGuid,
+        RecordGuidKey = recordGuid,
+        InfosetGuidKey = infosetGuid
+      };
+    }
+    else
+    {
+      // update existing record
+      storObj = (NexusResrepStem)GetStorableNexusStemByRKey(recordGuid);
+      storObj.RecordUpdatedByAgentGuidRef = agentGuid;
+    }
+
+    // begin common insert/update edit
+
+    // tranfer from edit object to store object with known non-null defaults
+    storObj.RecordDiristryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordDiristryGuid, QURC.DiristryGuidDeflt); // Nexus
+    storObj.RecordRegistryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordRegistryGuid, QURC.RegistryGuidDeflt); // PORTAL
+    storObj.RecordDirectoryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordDirectoryGuid, QURC.DirectoryGuidDeflt); // DOORS
+    storObj.RecordRegistrarGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordRegistrarGuid, QURC.RegistrarGuidDeflt); // Scribe
+
+    // TODO: must redesign/rebuild to address current redundancy in NPDS scheme with diristry = directory + registry
+    // ATTN: current scheme only resets diristry to registry if registry = directory and if diristry invalid/empty
+    // assure consistency of current scheme until rebuilt with consistency checks
+    if (PdpGuid.IsInvalidGuid(storObj.RecordDiristryGuidRef) && (storObj.RecordDirectoryGuidRef == storObj.RecordRegistryGuidRef))
+    {
+      storObj.RecordDiristryGuidRef = storObj.RecordRegistryGuidRef;
+    }
+
+    // max chars for gridcol display and database store
+    // EntityTag 32 / 64 
+    // EntityName 64 / 256
+    // EntityNature 128 / 1024
+
+    // allowed for Agents
+    storObj.EntityNature = editObj.EntityNature.ParseLeft(1024);
+
+    // not allowed for Agents
+    if (QURC.ClientHasScribeEditAccess)
+    {
+      // when not already initialized elsewhere
+      if (string.IsNullOrWhiteSpace(editObj.EntityInitialTag))
+      {
+        if (string.IsNullOrWhiteSpace(editObj.EntityName)) { editObj.EntityInitialTag = PdpRandom.RandGuidString(); }
+        else { editObj.EntityInitialTag = editObj.EntityName.CleanPhrase().CreateAcronym(); }
+      }
+      storObj.EntityInitialTag = editObj.EntityInitialTag.ParseLeft(64);
+      storObj.EntityTypeCodeRef = editObj.EntityTypeCode;
+      storObj.EntityName = editObj.EntityName.ParseLeft(256);
+      // storObj.EntityOwnerLabel = editObj.EntityOwnerLabel;
+      // storObj.EntityContactLabel = editObj.EntityContactLabel;
+      // storObj.EntityOtherLabel = editObj.EntityOtherLabel;
+      storObj.InfosetIsAuthorPrivate = editObj.InfosetIsAuthorPrivate;
+      storObj.InfosetIsAgentShared = editObj.InfosetIsAgentShared;
+      storObj.InfosetIsUpdaterLimited = editObj.InfosetIsUpdaterLimited;
+      storObj.InfosetIsManagerReleased = editObj.InfosetIsManagerReleased;
+    }
+
+    // end common insert/update edit
+
+    if (byStorProc)
+    {
+      var errCod = ScribeResrepStemEdit(agentGuid, storObj.InfosetGuidKey, recordGuid,
+        storObj.EntityTypeCodeRef, storObj.EntityInitialTag, storObj.EntityName, storObj.EntityNature,
+        // storObj.EntityOwnerLabel, storObj.EntityContactLabel, storObj.EntityOtherLabel,
+        storObj.RecordDiristryGuidRef, storObj.RecordRegistryGuidRef, storObj.RecordDirectoryGuidRef, storObj.RecordRegistrarGuidRef,
+        storObj.InfosetIsAuthorPrivate, storObj.InfosetIsAgentShared, storObj.InfosetIsUpdaterLimited, storObj.InfosetIsManagerReleased);
+      if (errCod < 0) { errMsg = $"Error code = {errCod} while writing to database {recordName} record with handle {recordHandle}"; }
+    }
+    else
+    {
+      if (isNewRecord) { this.NexusResrepStems.Add(storObj); }
+      errMsg = StoreChanges();
+    }
+    // refresh the edit object
+    editObj = GetEditableResrepStemByRKey(recordGuid);
+    if (editObj == null) { editObj = new NexusResrepEditModel(); }
+    // refresh the record handle
+    recordHandle = editObj.RecordHandle;
+    // update the status message
+    if (string.IsNullOrEmpty(errMsg))
+    {
+      editObj.PdpStatusMessage =
+        $"{recordName} record with handle {recordHandle} written to database"; editObj.PdpStatusItemStored = true;
+    }
+    else { editObj.PdpStatusMessage = errMsg; }
+    return editObj;
+  }
+
+  public NexusResrepEditModel DeleteResrepStem(NexusResrepEditModel editObj, bool byStorProc = true)
+  {
+    var errorMessage = string.Empty;
+    var recordMessage = $" {editObj.ItemXnam} record ";
+    var agentGuid = QURC.QebAgentGuid;
+    var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
+    var isNewRecord = recordGuid.IsEmpty();
+    NexusResrepStem storObj;
+    if (!isNewRecord) // delete existing record
+    {
+      storObj = (NexusResrepStem)GetStorableNexusStemByRKey(recordGuid);
+      if (storObj == null) { errorMessage = $"Database error while getting {recordMessage}"; }
+      else
+      {
+        recordMessage = $" {recordMessage} with handle {storObj.RecordHandle} ";
+        storObj.RecordDeletedByAgentGuidRef = agentGuid;
+        storObj.RecordIsDeleted = QURC.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
+        if (byStorProc)
+        {
+          var errorCode = ScribeResrepStemDelete(
+          storObj.RecordDeletedByAgentGuidRef, storObj.RecordGuidKey, storObj.RecordIsDeleted);
+          if (errorCode < 0) { errorMessage = $"Database error = {errorCode} while deleting {recordMessage}"; }
+        }
+        else
+        {
+          this.NexusResrepStems.Attach(storObj);
+          this.NexusResrepStems.Remove(storObj);
+          errorMessage = StoreChanges();
+        }
+      }
+      // refresh the edit object
+      editObj = GetEditableResrepStemByKey(recordGuid);
+      if (editObj == null) { editObj = new NexusResrepEditModel(); }
+      // update the status message
+      if (string.IsNullOrEmpty(errorMessage)) { editObj.PdpStatusMessage = $"{recordMessage} deleted from database"; }
+      else { editObj.PdpStatusMessage = errorMessage; }
+    }
+    return editObj;
+  }
+
+} // end class
+
+// end file

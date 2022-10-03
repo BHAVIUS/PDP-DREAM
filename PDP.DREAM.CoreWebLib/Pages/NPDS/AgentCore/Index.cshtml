@@ -1,0 +1,20 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AgentCore/Index"
+@model AgentCoreIndex
+@{
+  PdpSiteRazorModel psr = Model.PSR;
+  // QebUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as a site user. You may access the following services:
+</p>
+<ul>
+  <li><a  asp-page="/AgentCore/CheckSession">Check User Session</a></li>
+</ul>

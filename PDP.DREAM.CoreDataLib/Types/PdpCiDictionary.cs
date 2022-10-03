@@ -1,6 +1,6 @@
 ﻿// PdpCiDictionary.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.Collections.Generic;
@@ -19,4 +19,19 @@ public class PdpCiDictionary : Dictionary<string, string>
     KeyComparer = sc;
   }
   public StringComparer KeyComparer { get; }
+
 }
+
+// TODO: clone this code functionality to a new Pdp typed dictionary
+//public string this[string attribName]
+//{
+//  get {
+//    var name = attribName.ToLower();
+//    var value = BcrAttributes.ContainsKey(name) ? BcrAttributes[name] : string.Empty;
+//    return value;
+//  }
+//  set {
+//    var name = attribName.ToLower();
+//    BcrAttributes[name] = value;
+//  }
+//}

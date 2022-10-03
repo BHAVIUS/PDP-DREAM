@@ -1,33 +1,26 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <AssemblyName>PDP.Aoraki.NexusDataLib</AssemblyName>
     <RootNamespace>PDP.DREAM.NexusDataLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
-    <AssemblyVersion>10.1.0</AssemblyVersion>
-    <FileVersion>10.1.0</FileVersion>
-    <Version>10.1.0</Version>
-    <Platforms>x64;AnyCPU</Platforms>
-    <Nullable>enable</Nullable>
+    <AssemblyVersion>10.1.9</AssemblyVersion>
+    <FileVersion>10.1.9</FileVersion>
+    <Version>10.1.9</Version>
+    <Platforms>x64;ARM64;</Platforms>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
     <NoWarn>CS0108;CS0114;CS1998;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8629;CS8765;CS8767;IDE0047;IL2026;</NoWarn>
-    <Nullable>enable</Nullable>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Pages\**" />
-    <Content Remove="Pages\**" />
-    <EmbeddedResource Remove="Pages\**" />
-    <None Remove="Pages\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PDP.DREAM.CoreDataLib\PDP.DREAM.CoreDataLib.csproj" />

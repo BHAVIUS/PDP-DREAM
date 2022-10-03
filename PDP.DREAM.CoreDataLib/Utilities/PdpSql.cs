@@ -1,6 +1,6 @@
 // PdpSql.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using Microsoft.Data.SqlClient;
+
+using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -457,9 +459,11 @@ public static class PdpSql
         sqlCnctn.Close();
       }
     }
-    catch (SqlException exc) { errorMessage = PdpStatus.SqlErrorMessage(exc); }
+    catch (SqlException exc) { errorMessage = SqlErrorMessage(exc); }
 
     return errorMessage;
   }
 
-} // class
+} // end class
+
+// end file

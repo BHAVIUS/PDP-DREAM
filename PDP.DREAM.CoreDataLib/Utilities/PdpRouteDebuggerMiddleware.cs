@@ -1,6 +1,6 @@
 // PdpRouteDebuggerMiddleware.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // 2019 info on AspNetCore Routing
 // https://www.tektutorialshub.com/asp-net-core/asp-net-core-routing/
@@ -16,8 +16,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Types;
+
+using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -82,8 +83,8 @@ public class PdpRouteDebuggerMiddleware
   {
     // kqri is Keyed Query Route Information
     string kqriQuery = prdContext.Request.QueryString.ToString();
-    bool doHelp = IsKeyedQueryRoute(kqriQuery, PdpConst.PdpHelpRouteQueryKey);
-    bool doDebug = IsKeyedQueryRoute(kqriQuery, PdpConst.PdpDebugRouteQueryKey);
+    bool doHelp = IsKeyedQueryRoute(kqriQuery, PdpHelpRouteQueryKey);
+    bool doDebug = IsKeyedQueryRoute(kqriQuery, PdpDebugRouteQueryKey);
     var kqriHtmlBodyText = new StringBuilder();
 
     if ((prdEndpoints.Count == 0) && (prdRouters.Count == 0))
@@ -197,9 +198,9 @@ public class PdpRouteDebuggerMiddleware
       else
       {
         dataTokenString = dataTokenValue.ToString();
-        if (dataTokenString.EndsWith(PdpConst.PdpHelpRouteHackKey))
+        if (dataTokenString.EndsWith(PdpHelpRouteHackKey))
         {
-          dataTokenString = dataTokenString.Remove(dataTokenString.Length - PdpConst.PdpHelpRouteHackKey.Length);
+          dataTokenString = dataTokenString.Remove(dataTokenString.Length - PdpHelpRouteHackKey.Length);
         }
       }
     }
@@ -236,7 +237,7 @@ public class PdpRouteDebuggerMiddleware
     {
       bool onlyHelpWhenDebug = false;
       string rHelp = r.GetMvcRouteDataTokenString(HttpRouteExtensions.RouteHelpKey);
-      if (string.IsNullOrWhiteSpace(rHelp) || (rHelp.EndsWith(PdpConst.PdpHelpRouteHackKey)))
+      if (string.IsNullOrWhiteSpace(rHelp) || (rHelp.EndsWith(PdpHelpRouteHackKey)))
       {
         onlyHelpWhenDebug = true;
       }

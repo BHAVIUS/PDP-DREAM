@@ -1,6 +1,6 @@
 ﻿// PdpDictionaryExtensions.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 
@@ -13,6 +13,13 @@ namespace PDP.DREAM.CoreDataLib.Types;
 
 public static class PdpDictionaryExtensions
 {
+  public static IDictionary<int, int> AddUpdate(this IDictionary<int, int> iiDict, int itemKey, int itemVal)
+  {
+    if (iiDict.ContainsKey(itemKey)) { iiDict[itemKey] = itemVal; }
+    else { iiDict.Add(itemKey, itemVal); }
+    return iiDict;
+  }
+
   public static IDictionary<string, string> ToDictionary<T>(this IDictionary<string, T> source)
   {
     if (source == null) { throw new ArgumentNullException(nameof(source)); }
@@ -68,4 +75,6 @@ public static class PdpDictionaryExtensions
     }
   }
 
-} // class
+} // end class
+
+// end file

@@ -1,0 +1,16 @@
+﻿@*
+  // AnonCoreAccessDenied
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AnonCore/AccessDenied"
+@model AnonCoreAccessDenied
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+
+<p>Access denied to requested resource. Authorization required.</p>
+

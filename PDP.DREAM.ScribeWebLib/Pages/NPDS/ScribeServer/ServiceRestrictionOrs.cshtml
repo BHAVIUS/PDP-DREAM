@@ -1,0 +1,232 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+//
+// Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
+*@
+
+@page "/NPDS/ScribeServer/ServiceRestrictionOrs/{recordAccess?}"
+@model ScribeServerServiceRestrictionOrs
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var qurc = (QebUserRestContext)Model.QURC;
+  var TkgPage = psr.RazorPageName;
+var TkgResrepQrystr = $"&serviceType={qurc.ServiceType}&serviceTag={qurc.ServiceTag}&entityType={qurc.EntityType}";
+var TkgFgroupQrystr = $"&recordGuid=#=RRRecordGuid#&infosetGuid=#=RRInfosetGuid#&isLimited=#=InfosetIsUpdaterLimited#";
+var TkgRstrctAndQrystr = $"&rstrctAndGuid=#=RestrictionAndGuid#&recordGuid=#=RRRecordGuid#&infosetGuid=#=RRInfosetGuid#";
+var TkgToken = "kendoToken";
+// TODO: refactor access as more convenient method in QebUserRestContext
+//   with input parameter for the requested RecordAccess
+var TkgAccess = qurc.RecordAccess;
+var hasAnonAccess = false;
+if (TkgAccess == PdpAppConst.NpdsRecordAccess.AnonUser) { hasAnonAccess = qurc.ClientIsAnonymous; }
+var hasAgentAccess = false;
+if (TkgAccess == PdpAppConst.NpdsRecordAccess.Agent) { hasAgentAccess = qurc.ClientHasAgentAccess; }
+var hasAdminAccess = false;
+if (TkgAccess == PdpAppConst.NpdsRecordAccess.Admin) { hasAdminAccess = qurc.ClientHasAdminAccess; }
+// TODO: modify for access
+  var TkgPath = psr.RazorPagePath;
+// column formatting
+var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
+var Numf3Format = "{0:n3}";
+var FipmpWidth = "6em"; // width for index priority marked principal (and other int/bool) columns
+var FonbyWidth = "11em"; // width for date-on person-by columns
+var FcmdbWidth = "21em"; // width for command button columns
+}
+
+@Html.Raw(psr.FormatPageTitle())
+
+<div id="NpdsGrid" data-tkgpath="@TkgPath">
+@(Html.Kendo()
+.Grid<NexusResrepEditModel>()
+.Name("ResrepRecordGrid").HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(5)
+.Model(m => {
+m.Field<Guid?>(p => p.RRInfosetGuid).Editable(false).DefaultValue(Guid.Empty);
+m.Field<Guid?>(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+m.Id<Guid?>(p => p.RRRecordGuid);
+m.Field(p => p.RecordHandle).Editable(false);
+m.Field(p => p.EntityTypeCode).Editable(!hasAgentAccess).DefaultValue(PdpAppConst.DefaultEntityTypeCode);
+m.Field(p => p.EntityTypeName).Editable(false);
+m.Field(p => p.EntityName).Editable(!hasAgentAccess);
+m.Field(p => p.EntityNature).Editable(!hasAgentAccess);
+m.Field(p => p.InfosetIsAuthorPrivate).Editable(!hasAgentAccess).DefaultValue(false);
+m.Field(p => p.InfosetIsAgentShared).Editable(!hasAgentAccess).DefaultValue(false);
+m.Field(p => p.InfosetIsUpdaterLimited).Editable(!hasAgentAccess).DefaultValue(false);
+m.Field(p => p.InfosetIsManagerReleased).Editable(!hasAgentAccess).DefaultValue(false);
+m.Field(p => p.UpdatedOn).Editable(false);
+m.Field(p => p.UpdatedByAgentName).Editable(false);
+m.Field(p => p.DeletedOn).Editable(false);
+m.Field(p => p.DeletedByAgentName).Editable(false);
+}) // end Model
+.Read(rr => rr.Url(TkgPath + "?handler=ReadResrepRoots" + TkgResrepQrystr).Data(TkgToken))
+.Create(rr => rr.Url(TkgPath + "?handler=WriteResrepRoot").Data(TkgToken))
+.Update(rr => rr.Url(TkgPath + "?handler=WriteResrepRoot").Data(TkgToken))
+.Destroy(rr => rr.Url(TkgPath + "?handler=DeleteResrepRoot").Data(TkgToken))
+.Events(evn => evn.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+col.Bound(row => row.RRInfosetGuid).Title("RRInfosetGuid").Hidden(true)
+.HeaderHtmlAttributes(new { title = "Resource Representation RRInfosetGuid" })
+;
+col.Bound(row => row.RRRecordGuid).Title("RRRecordGuid").Hidden(true)
+.HeaderHtmlAttributes(new { title = "Resource Representation RRRecordGuid" })
+;
+col.Bound(row => row.RecordHandle).Title("Handle")
+.HeaderHtmlAttributes(new { title = "Resource Record Handle" });
+col.Bound(row => row.EntityTypeCode).Title("Type")
+.HeaderHtmlAttributes(new { title = "Resource Entity Type" })
+.HtmlAttributes(new { title = "#=EntityTypeCode#" })
+.ClientTemplate("#=EntityTypeName#")
+.EditorTemplateName("_EntityTypeCode")
+.Filterable(false);
+col.Bound(row => row.EntityName).Title("Name")
+.HeaderHtmlAttributes(new { title = "Resource Entity Name" })
+.HtmlAttributes(new { title = "#=EntityName#" })
+.ClientTemplate("#=EntityName64#");
+col.Bound(row => row.EntityNature).Title("Nature")
+.HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
+.HtmlAttributes(new { title = "#=EntityNature#" })
+.ClientTemplate("#=EntityNature128#");
+if (!hasAnonAccess) {
+col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
+.Hidden(false).Sortable(false).Filterable(false);
+col.Bound(row => row.InfosetIsAgentShared).Title("Shared?").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
+.Hidden(false).Sortable(false).Filterable(false);
+col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
+.Filterable(false);
+col.Bound(row => row.InfosetIsManagerReleased).Title("Released?").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
+.Hidden(false).Sortable(false).Filterable(false);
+}
+if (!hasAgentAccess) {
+col.Command(com => {
+com.Edit();
+com.Custom("ValidateRecord").Click("OnValidateRecord").Text("Validate")
+.HtmlAttributes(new { @class = "scribeValidateRecord", title = "Validate Resource Metadata Record" });
+com.Custom("RefreshRecord").Click("OnRefreshRecord").Text("Refresh")
+.HtmlAttributes(new { @class = "scribeRefreshRecord", title = "Refresh Resource Metadata Record" });
+com.Destroy();
+}).Title(""); // end Command
+} // end if
+col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+.HeaderHtmlAttributes(new { title = "Updated on date" });
+if (hasAdminAccess) {
+col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
+.HeaderHtmlAttributes(new { title = "Deleted on date" });
+} // end if
+}) // end Columns
+.ClientDetailTemplateId("ServiceRestrictionOrsGrid")
+.Editable(edt => edt.Mode(GridEditMode.InLine))
+.Events(evn => evn.Edit("HideStatus").Page("HideStatus")
+.DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
+.Pageable(pgb => pgb.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
+.Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }))
+.Sortable(srt => srt.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+.Filterable().Navigatable().Resizable(rs => rs.Columns(true))
+.ToolBar(tlb => tlb.ClientTemplateId("ResrepRecordToolbar"))
+// end ResrepRecord
+)
+</div>
+
+<partial name="_ScribeToolbarsTkgp" />
+
+<script id="ServiceRestrictionOrsGrid" type="text/x-kendo-template">
+@(Html.Kendo()
+.Grid<ServiceRestrictionOrEditModel>()
+.Name("ServiceRestrictionOrs#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+m.Field<Guid?>(p => p.RRInfosetGuid).Editable(false).DefaultValue("#=RRInfosetGuid#");
+m.Field<Guid?>(p => p.RRRecordGuid).Editable(false).DefaultValue("#=RRRecordGuid#");
+m.Field<Guid?>(p => p.RestrictionAndGuid).Editable(false).DefaultValue(Guid.Empty);
+m.Field(p => p.RestrictionAndHasIndex).Editable(false).DefaultValue(0);
+m.Field(p => p.RestrictionAndHasPriority).Editable(false).DefaultValue(0);
+m.Field(p => p.RestrictionName).Editable(false).DefaultValue(string.Empty);
+m.Field(p => p.IsExcluding).Editable(false).DefaultValue(false);
+m.Field(p => p.IsSufficient).Editable(false).DefaultValue(false);
+m.Field<Guid?>(p => p.RestrictionOrGuid).Editable(false).DefaultValue(Guid.Empty);
+m.Id<Guid?>(p => p.RestrictionOrGuid);
+m.Field(p => p.RestrictionOrHasIndex).Editable(false).DefaultValue(0);
+m.Field(p => p.RestrictionOrHasPriority).Editable(true).DefaultValue(0);
+m.Field(p => p.RestrictionValue).Editable(true).DefaultValue(string.Empty);
+m.Field(p => p.IsWordPhrase).Editable(true).DefaultValue(false);
+m.Field(p => p.IsConceptLabel).Editable(true).DefaultValue(false);
+m.Field(p => p.UpdatedOn).Editable(false);
+m.Field(p => p.UpdatedByAgentName).Editable(false);
+m.Field(p => p.DeletedOn).Editable(false);
+m.Field(p => p.DeletedByAgentName).Editable(false);
+}) // end Model
+.Read(fg => fg.Url(TkgPath + "?handler=ReadServiceRestrictionOrs" + TkgFgroupQrystr).Data(TkgToken))
+.Create(fg => fg.Url(TkgPath + "?handler=WriteServiceRestrictionOr").Data(TkgToken))
+.Update(fg => fg.Url(TkgPath + "?handler=WriteServiceRestrictionOr").Data(TkgToken))
+.Destroy(fg => fg.Url(TkgPath + "?handler=DeleteServiceRestrictionOr").Data(TkgToken))
+.Events(evn => evn.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+col.Bound(row => row.RRInfosetGuid).Hidden(false).Title("RRInfosetGuid")
+.HtmlAttributes(new { title = "&infosetGuid=\\#=RRInfosetGuid\\#" })
+.HeaderHtmlAttributes(new { title = "ResRepInfosetGuid for the concept group" });
+col.Bound(row => row.RRRecordGuid).Hidden(false).Title("RRRecordGuid")
+.HtmlAttributes(new { title = "&recordGuid=\\#=RRRecordGuid\\#" })
+.HeaderHtmlAttributes(new { title = "ResRepRecordGuid for the concept group" });
+col.Bound(row => row.RestrictionAndGuid).Hidden(false).Title("RestrictionAndGuid")
+.HtmlAttributes(new { title = "&rstrctAndGuid=\\#=RestrictionAndGuid\\#" })
+.HeaderHtmlAttributes(new { title = "RestrictionAndGuid for the concept group" });
+col.Bound(row => row.RestrictionAndHasIndex).Title("Index")
+.HeaderHtmlAttributes(new { title = "RestrictionAnd has Index in integer range [0,1,...,255]" });
+col.Bound(row => row.RestrictionAndHasPriority).Title("Priority")
+.EditorTemplateName("_IndexInteger")
+.HeaderHtmlAttributes(new { title = "RestrictionAnd has Priority in integer range [0,1,...,255]" });
+col.Bound(row => row.RestrictionName).Title("Name")
+.HeaderHtmlAttributes(new { title = "RestrictionAnd has Name for the concept group" });
+col.Bound(row => row.IsExcluding).Title("Excluding?")
+.HeaderHtmlAttributes(new { title = "RestrictionAnd is Excluding for the concept group" });
+col.Bound(row => row.IsSufficient).Title("Sufficient?")
+.HeaderHtmlAttributes(new { title = "RestrictionAnd is Sufficient for the concept group" });
+col.Bound(row => row.RestrictionOrGuid).Hidden(false).Title("RestrictionOrGuid")
+.HtmlAttributes(new { title = "&rstrctOrGuid=\\#=RestrictionOrGuid\\#" })
+.HeaderHtmlAttributes(new { title = "RestrictionOrGuid for the concept item" });
+col.Bound(row => row.RestrictionOrHasIndex).Title("Index")
+.HeaderHtmlAttributes(new { title = "RestrictionOr has Index in integer range [0,1,...,255]" });
+col.Bound(row => row.RestrictionOrHasPriority).Title("Priority")
+.EditorTemplateName("_IndexInteger")
+.HeaderHtmlAttributes(new { title = "RestrictionOr has Priority in integer range [0,1,...,255]" });
+col.Bound(row => row.RestrictionValue).Title("Value")
+.HeaderHtmlAttributes(new { title = "RestrictionOr has Value for the concept item" });
+col.Bound(row => row.IsWordPhrase).Title("IsWordPhrase")
+.HeaderHtmlAttributes(new { title = "RestrictionOr is word phrase (true) or word stem (false)" });
+col.Bound(row => row.IsConceptLabel).Title("IsConceptLabel")
+.HeaderHtmlAttributes(new { title = "RestrictionOr is concept label (a valid EntityLabel, URI, URL)" });
+if (hasAdminAccess) {
+col.Command(com => {
+com.Edit();
+com.Destroy();
+}).Title("").Width(FcmdbWidth); // end Command
+} // end if
+col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
+.HeaderHtmlAttributes(new { title = "Updated on date" });
+if (!hasAnonAccess) {
+col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
+.HeaderHtmlAttributes(new { title = "Updated by agent" });
+} // end if
+if (hasAdminAccess) {
+col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
+.HeaderHtmlAttributes(new { title = "Deleted on date" });
+col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
+.HeaderHtmlAttributes(new { title = "Deleted by agent" });
+} // end if
+}) // end Columns
+.Editable(edt => edt.Mode(GridEditMode.InLine).Enabled(!hasAgentAccess))
+.Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pgb => pgb.Refresh(true)).Sortable()
+.ToolBar(tlb => tlb.ClientTemplateId("ServiceRestrictionOrToolbar"))
+.ToClientTemplate() // end ServiceRestrictionOrsGrid
+)
+</script>
+
+<partial name="_ScribeJavascriptTkgp" />
+

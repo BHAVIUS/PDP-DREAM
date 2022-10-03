@@ -1,0 +1,45 @@
+﻿@*
+  // AnonCoreLoginUser
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AnonCore/ConfirmEmail"
+@model AnonCoreConfirmEmail
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    Your email has been confirmed.
+  </p>
+}
+else
+{
+  <form id="ConfirmEmailForm"  asp-page="/AnonCore/ConfirmEmail"
+      method="post" role="form" class="form-horizontal">
+    <p>
+      To confirm your email, please enter your username and security token.
+    </p>
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.UserName, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.UserName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.UserName, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SecurityToken, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityToken, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityToken, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <br />
+    <button id="btnConfirmEmail" type="submit" class="btn btn-outline-primary">Confirm Email</button>
+  </form>
+}

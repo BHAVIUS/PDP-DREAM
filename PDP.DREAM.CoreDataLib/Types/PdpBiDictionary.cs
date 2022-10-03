@@ -1,6 +1,6 @@
 ﻿// PdpBiDictionary.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.Collections.Generic;
@@ -67,4 +67,15 @@ public class PdpBiDictionary<TLeft, TRight>
     else return rightToLeft[right];
   }
 
+  public int CountL2R()
+  {
+    return leftToRight.Count;
+  }
+  public int CountR2L()
+  {
+    return rightToLeft.Count;
+  }
+
 } // class
+
+// end file

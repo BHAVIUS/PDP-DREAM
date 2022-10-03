@@ -3,5 +3,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <TargetFramework>net6.0</TargetFramework>
+    <Copyright>PORTAL-DOORS Project Copyright © 2007 - $([System.DateTime]::UtcNow.Year) Brain Health Alliance.
+      All rights reserved. Code assembly built $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
   </PropertyGroup>
 </Project>

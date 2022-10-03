@@ -1,6 +1,6 @@
 ﻿// PdpOsDirFilePath.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.IO;
@@ -10,6 +10,8 @@ namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public static class PdpOsDirFilePath
 {
+  // TODO: recode a custom PdpPathCombine
+
   public static string EnvCurDir()
   {
     string curdir = Environment.CurrentDirectory; // returns location of dll executable
@@ -53,18 +55,23 @@ public static class PdpOsDirFilePath
     return compath;
   }
 
-  public static string FileNameWithPath(string filename, string dirname = "", bool absolute = false)
+  public static string CombineDirNameWithAbsPath(this string dirname, [CallerFilePath]  string filepath = "")
   {
-    if (string.IsNullOrEmpty(dirname))
+    var dirpath = Path.GetDirectoryName(filepath);
+    if (string.IsNullOrEmpty(dirpath) && !string.IsNullOrEmpty(filepath))
     {
-      dirname = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+      dirpath = Directory.GetParent(filepath).Parent.FullName;
     }
-    if ((absolute) && (!Path.IsPathRooted(dirname) || !Path.IsPathFullyQualified(dirname)))
+    if ((!Path.IsPathRooted(dirpath) || !Path.IsPathFullyQualified(dirpath)))
     {
-      dirname = Path.GetFullPath(dirname);
+      dirpath = Path.GetFullPath(dirpath);
     }
-    string filepath = Path.Combine(dirname, filename);
-    return filepath;
+    // TODO: enhance for different OS directory separators
+    if (dirname.Contains("/")) { dirname = dirname.Replace("/","\\"); }
+    string abspath = dirpath + dirname;
+    return abspath;
   }
 
-}
+} // end class
+
+// end file

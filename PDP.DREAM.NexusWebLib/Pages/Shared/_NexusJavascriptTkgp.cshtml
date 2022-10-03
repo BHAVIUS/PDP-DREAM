@@ -1,0 +1,133 @@
+@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+  //
+  // Telerik Kendo Grid (TKG acronym or Tkg prefix/suffix)
+  // Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
+*@
+
+<script type="text/javascript">
+  var TkgPath = $("#NpdsGrid").attr("data-tkgpath");
+  var TkgToken = $("input:hidden[name='__RequestVerificationToken']").val();
+
+  $(document).ready(function() {
+      $("#NpdsGrid").show();
+      $("#ResrepRecordGrid").data("kendoGrid").resize();
+  })
+
+  function OnChangeRecord(e) {
+      if (e.type === "create" || e.type === "update" || e.type === "destroy") {
+          var data = e.response.Data[0];
+          $(data.PdpStatusName).html(data.PdpStatusMessage).show();
+      }
+  }
+
+  function OnRequestReleaseRecord(alink) {
+      var alid = $(alink).attr("id");
+      var posturl = TkgPath + "?handler=ReqRelResrepRecord" + "&recordGuid=" + alid;
+      PostAjaxRequest(posturl);
+      $("span#ReqRel" + data.RecordHandle).html(data.PdpStatusLabel).show();
+  }
+
+  function OnRefreshRecord(e) {
+      var tr = $(e.currentTarget).closest("tr");
+      var trid = this.dataItem(tr).id;
+      var posturl = TkgPath + "?handler=RefreshResrepStatus" + "&recordGuid=" + trid;
+      PostAjaxRequest(posturl);
+  }
+
+  function OnValidateRecord(e) {
+      var tr = $(e.currentTarget).closest("tr");
+      var trid = this.dataItem(tr).id;
+      var posturl = TkgPath + "?handler=ValidateResrepStatus" + "&recordGuid=" + trid;
+      PostAjaxRequest(posturl);
+  }
+
+  function OnCheckInfosubset(e) {
+      var ct = $(e.currentTarget);
+      var cttitle = ct.attr("title");
+      var tr = ct.closest("tr");
+      var trid = this.dataItem(tr).id;
+      var posturl = TkgPath + "?handler=Check" + cttitle + "&recordGuid=" + trid;
+      PostAjaxRequest(posturl);
+  }
+
+  function OnReseqInfosubset(e) {
+      var ct = $(e.currentTarget);
+      var cttitle = ct.attr("title");
+      var tr = ct.closest("tr");
+      var trid = this.dataItem(tr).id;
+      var posturl = TkgPath + "?handler=Reseq" + cttitle + "&recordGuid=" + trid;
+      PostAjaxRequest(posturl);
+  }
+
+  function PostAjaxRequest(requrl) {
+      $.ajax({
+          type: "POST",
+          url: requrl,
+          contentType: "application/json",
+          dataType: "json",
+          headers: { RequestVerificationToken: TkgToken },
+          success: function(result) {
+              var jsondata = result.Data[0];
+              $(jsondata.PdpStatusElement).html(jsondata.PdpStatusMessage).show();
+          },
+          failure: function(fail) { alert(fail.responseText); },
+          error: function(err) { alert(err.responseText); }
+      });
+  }
+
+  function HideStatus(e) {
+      $("span#ResrepRootStatus").hide();
+      $("span#ResrepStemStatus").hide();
+      $("span#ResrepLeafStatus").hide();
+      $("span#EntityLabelStatus").hide();
+      $("span#SupportingTagStatus").hide();
+      $("span#SupportingLabelStatus").hide();
+      $("span#CrossReferenceStatus").hide();
+      $("span#OtherTextStatus").hide();
+      $("span#LocationStatus").hide();
+      $("span#DescriptionStatus").hide();
+      $("span#ProvenanceStatus").hide();
+      $("span#DistributionStatus").hide();
+      $("span#FairMetricStatus").hide();
+      $("span#SnapshotStatus").hide();
+      $("span#ServiceDefaultStatus").hide();
+      $("span#ServiceRestrictionAndStatus").hide();
+      $("span#ServiceRestrictionOrStatus").hide();
+  }
+
+  function ResizeGrid(e) {
+      var grid = $(this).closest(".k-grid").data("kendoGrid");
+      // grid.resize();
+      grid.ResizeGrid();
+  }
+
+  function RefreshGrid(e) {
+      var grid = $(this).closest(".k-grid").data("kendoGrid");
+      // grid.dataSource.read();
+      grid.RefreshGrid();
+  }
+
+  function HandleJsonErrors(e) {
+      // alert(e.xhr.responseText);
+      var msg = $.parseJSON(e.xhr.responseText);
+      if (msg) {
+          alert("Errors:\n" + msg.join("\n"));
+      }
+  }
+
+  function HandleAjaxErrors(e) {
+      if (e.errors) {
+          var message = "Errors:\n";
+          $.each(e.errors, function(key, value) {
+              if ('errors' in value) {
+                  $.each(value.errors, function() {
+                      message += this + "\n";
+                  });
+              }
+          });
+          alert(message);
+      }
+  }
+</script>

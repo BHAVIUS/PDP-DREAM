@@ -1,0 +1,37 @@
+@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/SwlHome/AdminHelp"
+@model SwlHomeAdminHelp
+@{
+  PdpSiteRazorModel psr = Model.PSR;
+  PdpSiteInfoModel psi = psr.PdpSiteInfo;
+  QebUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as an NPDS Record Administrator
+  and may edit resource metadata records on this server for any services
+  for which you have been granted Administrator privileges.
+</p>
+
+<h5>Admin Manage SIAA Users and Roles</h5>
+
+<p><partial name="_AdminCoreSpanPageMenu" /></p>
+
+
+<h5>Admin Manage NPDS Records</h5>
+
+<ul>
+  <li> <a href="/NPDS/ScribeServer/AuthorAccess/Admin">Request Author Access to Resrep</a> </li>
+  <li> <a href="/NPDS/ScribeServer/EditorAccess/Admin">Request Editor Access to Service</a> </li>
+  <li> <a href="/NPDS/ScribeServer/ServiceDefaults/Admin">NPDS Service Defaults</a> </li>
+  <li> <a href="/NPDS/ScribeServer/ServiceRestrictions/Admin">NPDS Service Restrictions</a> </li>
+  <li> <a href="/NPDS/ScribeServer/ServiceStatus/Admin">NPDS Service Status</a> </li>
+</ul>
+
+<partial name="_CuratorHelp" />

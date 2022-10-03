@@ -1,0 +1,42 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/PdpSite/Entities"
+@model PdpSiteEntities
+@{
+  PdpSiteRazorModel psr = Model.PSR;
+}
+@Html.Raw(psr.FormatPageTitle())
+
+@if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
+{
+  <p><partial name="@psr.RazorBodyMenu" /></p>
+}
+
+<h4>NPDS Entity Types</h4>
+
+@(Html.Kendo().Grid<EntityTypeViewModel>()
+    .Name("EntityTypes")
+    .DataSource(ds => ds.Ajax()
+      .Model(m => m.Id(p => p.CodeKey))
+      .Read(post => post.Url(psr.RazorPagePath+"?handler=Read").Data("kendoToken"))
+    )
+    .Columns(col =>
+    {
+      col.Bound(row => row.TypeName).Title("Type Name")
+        .HeaderHtmlAttributes(new { title = "Name of EntityType" });
+      col.Bound(row => row.TypeDescription).Title("Type Description")
+        .HeaderHtmlAttributes(new { title = "Description of EntityType" });
+      col.Bound(row => row.TypeEditedByAgent).Title("Agent")
+        .HeaderHtmlAttributes(new { title = "Editable by Agent" });
+      col.Bound(row => row.TypeEditedByAuthor).Title("Author")
+        .HeaderHtmlAttributes(new { title = "Editable by Author" });
+      col.Bound(row => row.TypeEditedByEditor).Title("Editor")
+        .HeaderHtmlAttributes(new { title = "Editable by Editor" });
+      col.Bound(row => row.TypeEditedByAdmin).Title("Administrator")
+        .HeaderHtmlAttributes(new { title = "Editable by Administrator" });
+    })
+    .Sortable().Filterable()
+)

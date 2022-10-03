@@ -1,0 +1,51 @@
+﻿@model NexusResrepEditModel
+
+@{ var NpdsController = "AgentScribeTkgr"; var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; }
+
+@(Html.Kendo().Grid<DistributionEditModel>()
+.Name("Distributions#=RRRecordGuid#")
+.DataSource(ds => ds.Ajax()
+.Model(m => {
+  m.Id(p => p.RRFgroupGuid);
+  m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+  m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+  m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+  m.Field(p => p.Distribution).Editable(true).DefaultValue(string.Empty);
+  m.Field(p => p.UpdatedOn).Editable(false);
+  m.Field(p => p.UpdatedByAgentName).Editable(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeDistributionsForEdit", NpdsController, new { recordGuid = "#=RRRecordGuid#", isLimited = "#=InfosetIsUpdaterLimited#" }))
+.Create(post => post.Action("EditScribeDistribution", NpdsController, new { recordGuid = "#=RRRecordGuid#" }))
+.Update(put => put.Action("EditScribeDistribution", NpdsController))
+.Destroy(delete => delete.Action("DeleteScribeDistribution", NpdsController))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Bound(row => row.RRFgroupGuid).Hidden(true);
+  col.Bound(row => row.RRRecordGuid).Hidden(true);
+  col.Command(com1 => com1.Edit()).Title("");
+  col.Bound(row => row.HasPriority).Title("Priority")
+  .HeaderHtmlAttributes(new { title = "Distribution has Priority in integer range [0,1,...,255]" })
+  .EditorTemplateName("_PriorityInteger")
+  ;
+  col.Bound(row => row.IsMarked).Title("Marked")
+  .HeaderHtmlAttributes(new { title = "Distribution is Marked?" });
+  col.Bound(row => row.IsPrincipal).Title("Principal")
+  .HeaderHtmlAttributes(new { title = "Distribution is Principal?" });
+  col.Bound(row => row.Distribution).Title("Distribution")
+  .HeaderHtmlAttributes(new { title = "Distribution in valid XML format" })
+  .ClientTemplate("\\#:Distribution\\#").Encoded(false)
+  .EditorTemplateName("_TextAreaBox")
+  ;
+  col.Bound(row => row.UpdatedOn).Title("Updated").Format(UtcdtFormat);
+  col.Bound(row => row.UpdatedByAgentName).Title("Updater")
+  .HeaderHtmlAttributes(new { title = "Record updated by AgentName" });
+  col.Command(com2 => com2.Destroy()).Title("");
+}) // end Columns
+.Editable(edit => edit.Mode(GridEditMode.InLine))
+.ToolBar(tb => tb.ClientTemplateId("DistributionToolbar"))
+.Events(ce => ce.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pg => pg.Refresh(true)).Sortable()
+.ToClientTemplate().ToString().Replace("#[", "\\#["))

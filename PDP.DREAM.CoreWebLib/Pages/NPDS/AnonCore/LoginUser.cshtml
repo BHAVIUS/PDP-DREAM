@@ -1,0 +1,39 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AnonCore/LoginUser"
+@model AnonCoreLoginUser
+@{
+  PdpSiteRazorModel psr = Model.PSR;
+  // QebUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+
+<form id="frmLoginUser" asp-page="/NPDS/AnonCore/LoginUser"
+      method="post" role="form" class="form-horizontal">
+  <p>
+    Please enter your username and password.
+    <a asp-page="/NPDS/AnonCore/RegisterUser">Register User</a>
+    if you do not yet have an account with username and password.
+    <a asp-page="/NPDS/AnonCore/ResetPassword1">Reset Password</a>
+    if you have forgotten it.
+  </p>
+  <div class="form-group mb3">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+  </div>
+  <div class="form-group mb3 w-50">
+    @Html.LabelFor(m => m.UXM.UserName, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.UserName, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.UserName, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <div class="form-group mb3 w-50">
+    @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+    @Html.PasswordFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <br />
+  <button id="btnLoginUser" type="submit" class="btn btn-outline-primary">Login User</button>
+</form>

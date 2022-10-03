@@ -1,6 +1,6 @@
 ﻿// PdpXml.Validaters.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
 using System.IO;
@@ -68,7 +68,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       {
         if (schemas.Count == 0)
         { // https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlresolver?view=net-5.0
-          string appBaseUrl = PdpWebAppHttpContext.BaseUrl;
+          string appBaseUrl = PdpHttpContextAccessor.BaseUrl;
           var baseUri = new Uri(appBaseUrl);
           var fulluri = resolver.ResolveUri(baseUri, "~/xsd/xmldsig-core-schema-pdp.xsd");
           schemas.Add(null, fulluri.ToString());

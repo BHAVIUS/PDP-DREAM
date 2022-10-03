@@ -1,0 +1,47 @@
+﻿@*  
+  // AnonResrepsHelp
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/NwlHome/AnonHelp"
+@model NwlHomeAnonHelp
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var psi = (PdpSiteInfoModel)psr.PdpSiteInfo;
+  var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/NPDS-Root">/NPDS/NexusServer/AnonResreps/Nexus/NPDS-Root</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/PDP-Nexus">/NPDS/NexusServer/AnonResreps/Nexus/PDP-Nexus</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/PORTAL/PDP-PORTAL">/NPDS/NexusServer/AnonResreps/PORTAL/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/DOORS/PDP-DOORS">/NPDS/NexusServer/AnonResreps/DOORS/PDP-DOORS</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Scribe/PDP-Scribe">/NPDS/NexusServer/AnonResreps/Scribe/PDP-Scribe</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/PDP-DREAM">/NPDS/NexusServer/AnonResreps/Nexus/PDP-DREAM</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Ashurbanipal">/NPDS/NexusServer/AnonResreps/Nexus/Ashurbanipal</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Avicenna">/NPDS/NexusServer/AnonResreps/Nexus/Avicenna</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Beacon">/NPDS/NexusServer/AnonResreps/Nexus/Beacon</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/BioPORT">/NPDS/NexusServer/AnonResreps/Nexus/BioPORT</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/BrainIACS">/NPDS/NexusServer/AnonResreps/Nexus/BrainIACS</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/BrainWatch">/NPDS/NexusServer/AnonResreps/Nexus/BrainWatch</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/CTGaming">/NPDS/NexusServer/AnonResreps/Nexus/CTGaming</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/DaVinci">/NPDS/NexusServer/AnonResreps/Nexus/DaVinci</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Eywa">/NPDS/NexusServer/AnonResreps/Nexus/Eywa</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Fidentinus">/NPDS/NexusServer/AnonResreps/Nexus/Fidentinus</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Gaia">/NPDS/NexusServer/AnonResreps/Nexus/Gaia</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/GeneScene">/NPDS/NexusServer/AnonResreps/Nexus/GeneScene</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/HELPME">/NPDS/NexusServer/AnonResreps/Nexus/HELPME</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Jubatus">/NPDS/NexusServer/AnonResreps/Nexus/Jubatus</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Knuth">/NPDS/NexusServer/AnonResreps/Nexus/Knuth</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Martialis">/NPDS/NexusServer/AnonResreps/Nexus/Martialis</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/ManRay">/NPDS/NexusServer/AnonResreps/Nexus/ManRay</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Osler">/NPDS/NexusServer/AnonResreps/Nexus/Osler</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/Socrates">/NPDS/NexusServer/AnonResreps/Nexus/Socrates</a></li>
+  <li><a href="/NPDS/NexusServer/AnonResreps/Nexus/SOLOMON">/NPDS/NexusServer/AnonResreps/Nexus/SOLOMON</a></li>
+</ul>
+

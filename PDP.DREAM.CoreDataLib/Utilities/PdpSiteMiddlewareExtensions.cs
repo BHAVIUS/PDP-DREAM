@@ -1,14 +1,14 @@
 ﻿// PdpSiteMiddlewareExtensions.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
-using PDP.DREAM.CoreDataLib.Controllers;
-using PDP.DREAM.CoreDataLib.Models;
+using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
+using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -17,78 +17,73 @@ public static class PdpSiteMiddlewareExtensions
   public static IApplicationBuilder UsePdpSite404Redirect(this IApplicationBuilder app)
   {
     app.Use(async (context, next) => {
-      await next();
       if (context.Response.StatusCode == 404)
       {
-        context.Request.Path = CoreDLC.PdpPathSiteRoutes;
-        await next();
+        context.Request.Path = DepPdpSiteRoutes;
       }
+      await next();
     });
     return app;
   }
 
+  public static IApplicationBuilder UsePdpSiteDefaultPath(this IApplicationBuilder app)
+  {
+    app.Use(async (context, next) => {
+      if (context.Request.Path.Value == "/")
+      {
+        context.Request.Path = PDPSS.AppSiteDefPath;
+      }
+      await next();
+    });
+    return app;
+  }
   public static IApplicationBuilder UsePdpSiteDefaultFile(this IApplicationBuilder app)
   {
     var opt = new DefaultFilesOptions();
     opt.DefaultFileNames.Clear();
-    opt.DefaultFileNames.Add("PdpSiteDefault.html");
+    opt.DefaultFileNames.Add(PdpSiteDefaultHtml);
     app.UseDefaultFiles(opt);
     return app;
   }
-
-  public static IApplicationBuilder UsePdpSiteStaticFiles(this IApplicationBuilder app, PdpSiteSettings sets)
+  public static IApplicationBuilder UsePdpSiteStaticFiles(this IApplicationBuilder app, bool useDefaultFile = false)
   {
-    if (!string.IsNullOrEmpty(sets.AppRqstpathExtdeplib) && !string.IsNullOrEmpty(sets.AppFilepathExtdeplib))
+    if (useDefaultFile) { app.UsePdpSiteDefaultFile(); }
+    // app.UseDefaultFiles should precede app.UseStaticFiles
+    app.UseStaticFiles(); // for directory configured with WebRootPath in WebApplicationBuilder
+    if (!string.IsNullOrEmpty(PDPSS.AppRqstpathExtdeplib) && !string.IsNullOrEmpty(PDPSS.AppFilepathExtdeplib))
     {
       app.UseStaticFiles(new StaticFileOptions
       {
-        FileProvider = new PhysicalFileProvider(sets.AppFilepathExtdeplib),
-        RequestPath = sets.AppRqstpathExtdeplib
+        FileProvider = new PhysicalFileProvider(PDPSS.AppFilepathExtdeplib),
+        RequestPath = PDPSS.AppRqstpathExtdeplib,
       });
     }
-    if (!string.IsNullOrEmpty(sets.AppRqstpathSecuredocs) && !string.IsNullOrEmpty(sets.AppFilepathSecuredocs))
+    if (!string.IsNullOrEmpty(PDPSS.AppRqstpathSecuredocs) && !string.IsNullOrEmpty(PDPSS.AppFilepathSecuredocs))
     {
       app.UseStaticFiles(new StaticFileOptions
       {
-        FileProvider = new PhysicalFileProvider(sets.AppFilepathSecuredocs),
-        RequestPath = sets.AppRqstpathSecuredocs
+        FileProvider = new PhysicalFileProvider(PDPSS.AppFilepathSecuredocs),
+        RequestPath = PDPSS.AppRqstpathSecuredocs,
       });
     }
-    if (!string.IsNullOrEmpty(sets.AppRqstpathPublicdocs) && !string.IsNullOrEmpty(sets.AppFilepathPublicdocs))
+    if (!string.IsNullOrEmpty(PDPSS.AppRqstpathPublicdocs) && !string.IsNullOrEmpty(PDPSS.AppFilepathPublicdocs))
     {
       app.UseStaticFiles(new StaticFileOptions
       {
-        FileProvider = new PhysicalFileProvider(sets.AppFilepathPublicdocs),
-        RequestPath = sets.AppRqstpathPublicdocs
+        FileProvider = new PhysicalFileProvider(PDPSS.AppFilepathPublicdocs),
+        RequestPath = PDPSS.AppRqstpathPublicdocs,
       });
     }
-    if (!string.IsNullOrEmpty(sets.AppRqstpathWebimages) && !string.IsNullOrEmpty(sets.AppFilepathWebimages))
+    if (!string.IsNullOrEmpty(PDPSS.AppRqstpathFileprov) && !string.IsNullOrEmpty(PDPSS.AppFilepathFileprov))
     {
       app.UseStaticFiles(new StaticFileOptions
       {
-        FileProvider = new PhysicalFileProvider(sets.AppFilepathWebimages),
-        RequestPath = sets.AppRqstpathWebimages
-      });
-    }
-    if (!string.IsNullOrEmpty(sets.AppRqstpathTestdata) && !string.IsNullOrEmpty(sets.AppFilepathTestdata))
-    {
-      app.UseStaticFiles(new StaticFileOptions
-      {
-        FileProvider = new PhysicalFileProvider(sets.AppFilepathTestdata),
-        RequestPath = sets.AppRqstpathTestdata
-      });
-    }
-    if (!string.IsNullOrEmpty(sets.AppRqstpathFileprov) && !string.IsNullOrEmpty(sets.AppFilepathFileprov))
-    {
-      app.UseStaticFiles(new StaticFileOptions
-      {
-        FileProvider = new PhysicalFileProvider(sets.AppFilepathFileprov),
-        RequestPath = sets.AppRqstpathFileprov
+        FileProvider = new PhysicalFileProvider(PDPSS.AppFilepathFileprov),
+        RequestPath = PDPSS.AppRqstpathFileprov,
       });
     }
     return app;
-
-  } // method
+  }
 
   public static IServiceCollection AddPdpSiteDbContext<TDbcontxt>
     (this IServiceCollection services, string dbconstr) where TDbcontxt : DbContext

@@ -1,0 +1,74 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AdminCore/EditSiaaUsers"
+@model AdminCoreEditSiaaUsers
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  var qurc = (QebUserRestContext)Model.QURC;
+}
+
+@Html.Raw(psr.FormatPageTitle())
+
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+<div id="SiaaGrid">
+@(Html.Kendo()
+.Grid<QebiUserUxm>()
+.Name("PdpAppUserGrid")
+.HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(5)
+.Model(m => {
+m.Id(p => p.UserGuid);
+m.Field(p => p.AppGuid).Editable(false).DefaultValue(Guid.Empty);
+m.Field(p => p.UserGuid).Editable(false).DefaultValue(Guid.Empty);
+m.Field(p => p.FirstName).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.LastName).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.QebUserName).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.EmailAddress).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.UserIsApproved).Editable(true).DefaultValue(true);
+m.Field(p => p.UserRoleNames).Editable(true).DefaultValue(String.Empty);
+}) // end Model
+.Read(post => post.Url(psr.RazorPagePath + "?handler=ReadSiaaUsers").Data("kendoToken"))
+.Create(post => post.Url(psr.RazorPagePath + "?handler=WriteSiaaUser").Data("kendoToken"))
+.Update(post => post.Url(psr.RazorPagePath + "?handler=WriteSiaaUser").Data("kendoToken"))
+.Destroy(post => post.Url(psr.RazorPagePath + "?handler=DeleteSiaaUser").Data("kendoToken"))
+.Events(e => e.Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+col.Bound(row => row.AppGuid).Hidden(true);
+col.Bound(row => row.UserGuid).Hidden(true);
+col.Bound(row => row.FirstName).Title("FirstName");
+col.Bound(row => row.LastName).Title("LastName");
+col.Bound(row => row.QebUserName).Title("UserName");
+col.Bound(row => row.EmailAddress).Title("EmailAddress");
+col.Bound(row => row.UserIsApproved).Title("IsApproved");
+col.Bound(row => row.UserRoleNames).Title("UserRoles");
+col.Command(com => {
+com.Edit();
+com.Destroy();
+}).Title(""); // end Command
+}) // end Columns
+.ToolBar(tb => tb.ClientTemplateId("SiaaToolbar"))
+.Editable(ed => ed.Mode(GridEditMode.InLine))
+.Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
+.Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }))
+.Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+.Filterable().Resizable(rs => rs.Columns(true))
+)
+</div>
+
+<script id="SiaaToolbar" type="text/x-kendo-template">
+<a class="k-button k-button-icontext k-grid-add" role="button">
+<span class="k-icon k-i-plus"></span>Add new record</a>
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+$("#SiaaGrid").show();
+$("#PdpAppUserGrid").data("kendoGrid").resize();
+})
+</script>
+

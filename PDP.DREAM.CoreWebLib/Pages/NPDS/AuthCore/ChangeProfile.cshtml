@@ -1,0 +1,83 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AuthCore/ChangeProfile"
+@model AuthCoreChangeProfile
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  // PdpSiteInfoModel psi = psr.PdpSiteInfo;
+  // var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatPageTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">Your profile has been changed.</p>
+}
+else
+{
+  <form id="frmChangeProfile"  asp-page="/AuthCore/ChangeProfile"
+      method="post" role="form" class="form-horizontal">
+    <p>
+      Use the form below to change your profile.
+    </p>
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(m => m.UXM.RequireSecTok, new { Value = Model.UXM.RequireSecTok })
+      @Html.HiddenFor(m => m.UXM.SecurityToken, new { Value = Model.UXM.SecurityToken })
+      @Html.HiddenFor(m => m.UXM.UserGuid, new { Value = Model.UXM.UserGuid })
+      @Html.HiddenFor(m => m.UXM.QebUserName, new { Value = Model.UXM.QebUserName })
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.FirstName, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.FirstName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.FirstName, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.LastName, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.LastName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.LastName, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.QebUserNameDisplayed, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.QebUserNameDisplayed, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.QebUserNameDisplayed, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.PhoneNumber, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.PhoneNumber, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.PhoneNumber, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.WebsiteAddress, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.WebsiteAddress, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.WebsiteAddress, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.Organization, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.Organization, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.Organization, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SecurityQuestion, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityQuestion, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityQuestion, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SecurityAnswer, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityAnswer, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityAnswer, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+      @Html.PasswordFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <br />
+    <button id="btnChangeProfile" type="submit" class="btn btn-outline-primary">Change Profile</button>
+  </form>
+}

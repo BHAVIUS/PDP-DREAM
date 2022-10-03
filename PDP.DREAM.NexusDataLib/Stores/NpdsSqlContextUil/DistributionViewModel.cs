@@ -1,0 +1,43 @@
+﻿// DistributionViewModel.cs 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+using PDP.DREAM.CoreDataLib.Models;
+using PDP.DREAM.CoreDataLib.Utilities;
+
+using static PDP.DREAM.CoreDataLib.Utilities.PdpStringFrasFormFile;
+
+namespace PDP.DREAM.NexusDataLib.Models;
+
+public class DistributionViewModel : CoreResrepModelBase
+{
+  public DistributionViewModel()
+  {
+    itemXnam = PdpAppConst.DistributionItemXnam;
+  }
+
+  public string? Distribution { get; set; } = string.Empty;
+
+  private string ssDistHtml = string.Empty;
+  public string DistributionHtml
+  {
+    get {
+      if (string.IsNullOrEmpty(Distribution)) { ssDistHtml = string.Empty; }
+      else { ssDistHtml = Distribution.StringEscapeHashLiteral(); }
+      return ssDistHtml;
+    }
+  }
+
+  private string ssDist128 = string.Empty;
+  public string Distribution128
+  {
+    get {
+      if (string.IsNullOrEmpty(Distribution)) { ssDist128 = string.Empty; }
+      else { ssDist128 = Distribution.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
+      return ssDist128;
+    }
+  }
+
+} // end class
+
+// end file

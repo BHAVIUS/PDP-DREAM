@@ -1,36 +1,230 @@
-﻿// PdpConfigManager.cs 
-// Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
-// Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
+using System.Data;
+using System.IO;
+using System.Text;
 
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
-public static class PdpConfigManager
+public abstract class PdpConfigManager
 {
-  public static IConfiguration? AppConfig;
-
-  public static void Initialize(IConfiguration? config)
+  protected static ConfigurationManager pdpSiteCnfgMngr;
+  protected static IConfigurationRoot pdpSiteConfig;
+  protected PdpConfigManager(string basedirpath)
   {
-    if (config == null)
-    { throw new ArgumentNullException(nameof(config), "cannot be null in " + nameof(PdpConfigManager)); }
-    AppConfig = config;
+    pdpSiteCnfgMngr = new ConfigurationManager();
+    IConfigurationBuilder builder = new ConfigurationBuilder();
+    var testJsonFile = Path.GetFullPath("testJsonFile.json", basedirpath);
+    string envir = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+    switch (envir)
+    {
+      case "Development":
+        builder.AddJsonFile(Path.GetFullPath("appsettings.json", basedirpath), true, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.Development.json", basedirpath), false, true);
+        break;
+      case "Staging":
+        builder.AddJsonFile(Path.GetFullPath("appsettings.json", basedirpath), true, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.Staging.json", basedirpath), false, true);
+        break;
+      case "Production":
+      default:
+        builder.AddJsonFile(Path.GetFullPath("appsettings.json", basedirpath), true, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.Production.json", basedirpath), false, true);
+        break;
+    }
+    pdpSiteConfig = builder.Build();
+  }
+  public static ConfigurationManager PdpSiteCnfgMngr
+  {
+    get {
+      if (pdpSiteCnfgMngr == null)
+      { throw new ArgumentNullException("pdpCnfgMngr cannot be null in getter for " + nameof(PdpSiteCnfgMngr)); }
+      return pdpSiteCnfgMngr;
+    }
+  }
+  public static IConfigurationRoot PdpSiteConfig
+  {
+    get {
+      if (pdpSiteConfig == null)
+      { throw new ArgumentNullException("pdpCnfgMngr cannot be null in getter for " + nameof(PdpSiteConfig)); }
+      return pdpSiteConfig;
+    }
+  }
+  public void AddConfiguration(IConfiguration value)
+  {
+    if (value == null)
+    { throw new ArgumentNullException("config value cannot be null in " + nameof(AddConfiguration)); }
+    pdpSiteCnfgMngr.AddConfiguration(value);
   }
 
-  public const string WebAppSectionName = "ApplicationSettings";
+  public void AddConnection(string strIn, SqlPipeStringType strInTyp = SqlPipeStringType.WebConfigNameOnly)
+  {
+    // do not allow default null or empty string for strIn
+    if (string.IsNullOrEmpty(strIn))
+    {
+      { throw new ArgumentNullException("config value cannot be null in " + nameof(AddConnection)); }
+    }
+    try
+    {
+      switch (strInTyp)
+      {
+        case SqlPipeStringType.WebConfigNameOnly:
+          strPipe = ParseConnectionString(ParseAppDbConnString(strIn, ""));
+          break;
+        case SqlPipeStringType.AppConfigNameOnly:
+          strPipe = ParseConnectionString(ParseAppStringSetting(strIn, ""));
+          break;
+        case SqlPipeStringType.ConnectionString:
+          strPipe = ParseConnectionString(ParseAppDbConnString(strIn, ""));
+          break;
+      }
+    }
+    catch (Exception exc)
+    {
+      throw new Exception("PdpConnectManager error with connection string", exc);
+    }
+  }
+
+  // for use with DataBase Connection Strings
   public const string DbConnSectionName = "ConnectionStrings";
 
-  // for use with Web Application Settings
-  public static string ParseAppStringSetting(Enum keynam)
-  { return ParseAppStringSetting(keynam.ToString()); }
+  public static string ParseAppDbConnString(Enum keynam)
+  { return ParseAppDbConnString(keynam.ToString(), ""); }
 
-  public static string ParseAppStringSetting(string keynam)
+  public static string ParseAppDbConnString(string keynam, string defval)
   {
-    var keyval = AppConfig?.GetSection(WebAppSectionName)[keynam];
+    var keyval = PdpSiteConfig.GetSection(DbConnSectionName)[keynam];
+    if (string.IsNullOrWhiteSpace(keyval)) { keyval = defval; }
+    // parse via Microsoft.Data.SqlClient.SqlConnectionStringBuilder
+    if (!string.IsNullOrWhiteSpace(keyval))
+    {
+      var strBldr = new SqlConnectionStringBuilder(keyval);
+      // TODO: address these hard-coded properties for new SqlClient in NET 7
+      // ATTN: values are hardcoded in C# for now in NET 6
+      // TODO: address security issues on SQL Connection strings
+      strBldr.Encrypt = false;
+      strBldr.IntegratedSecurity = true;
+      strBldr.MultipleActiveResultSets = true;
+      strBldr.TrustServerCertificate = true;
+      keyval = strBldr.ToString();
+    }
     keyval = (keyval ?? string.Empty);
+    return keyval;
+  }
+
+  // term "pipe" and name SqlPipe used for the SqlConnection
+  public enum SqlPipeStringType : int
+  {
+    WebConfigNameOnly = 1,
+    AppConfigNameOnly = 2,
+    ConnectionString = 3
+  }
+
+  // SqlConnection string
+  private string strPipe = "";
+  public string AppSqlPipeString
+  {
+    get {
+      return strPipe;
+    }
+    set {
+      strPipe = ParseConnectionString(value);
+    }
+  }
+
+  private bool isEncrypted = false;
+  public bool AppSqlPipeIsEncrypted
+  {
+    get { return isEncrypted; }
+  }
+
+  // SqlConnection object
+  private SqlConnection? sqlPipe;
+  public SqlConnection? AppSqlPipe
+  {
+    get { return sqlPipe; }
+  }
+
+  private string sqlStatus = "";
+  public string AppSqlPipeStatus
+  {
+    get { return sqlStatus; }
+  }
+
+  private string sqlErrors = "";
+  public string AppSqlPipeErrors
+  {
+    get { return sqlErrors; }
+  }
+
+  public string ParseConnectionString(string value)
+  {
+    var scsb = new SqlConnectionStringBuilder(value);
+    isEncrypted = scsb.Encrypt;
+    return scsb.ToString();
+  }
+
+  public void Connect()
+  {
+    if (sqlPipe == null)
+    {
+      sqlPipe = new SqlConnection(strPipe);
+    }
+    if (sqlPipe.State == ConnectionState.Closed)
+    {
+      try
+      {
+        sqlPipe.Open();
+        sqlStatus = "Connection Opened.";
+      }
+      catch (SqlException sqlExc)
+      {
+        StringBuilder sbErrors = new StringBuilder("");
+        foreach (SqlError sqlErr in sqlExc.Errors)
+        {
+          sbErrors.AppendLine(sqlErr.ToString());
+          sbErrors.AppendLine(string.Format("Class: {0}; Error: {1}; Line: {2}.<br>", sqlErr.Class, sqlErr.Number, sqlErr.LineNumber));
+          sbErrors.AppendLine(string.Format("Reported by {0} while connected to {1}.</p>", sqlErr.Source, sqlErr.Server));
+        }
+        sqlErrors = sbErrors.ToString();
+        sqlStatus = "Connection Not Opened.";
+      }
+    }
+    else if (sqlPipe.State != ConnectionState.Open)
+    {
+      sqlStatus = sqlPipe.State.ToString();
+    }
+  }
+
+  public void Disconnect()
+  {
+    if (sqlPipe != null)
+    {
+      if (!(sqlPipe.State == ConnectionState.Closed))
+      {
+        sqlPipe.Close();
+      }
+      //TODO: answer this question re Dispose
+      //				sqlCon.Dispose()
+      sqlPipe = null;
+    }
+  }
+
+  // for use with Web Application Settings
+  public const string WebAppSectionName = "ApplicationSettings";
+
+  public static string ParseAppStringSetting(Enum keynam, string defval = "")
+  { return ParseAppStringSetting(keynam.ToString(), defval); }
+
+  public static string ParseAppStringSetting(string keynam, string defval)
+  {
+    var keyval = PdpSiteConfig.GetSection(WebAppSectionName)[keynam];
+    if (string.IsNullOrEmpty(keyval)) { keyval = defval; }
     return keyval;
   }
 
@@ -41,7 +235,7 @@ public static class PdpConfigManager
   {
     string? keyval = null;
     if (!string.IsNullOrWhiteSpace(keynam))
-    { keyval = AppConfig?.GetSection(WebAppSectionName)[keynam].ToLower(); }
+    { keyval = PdpSiteConfig.GetSection(WebAppSectionName)[keynam].ToLower(); }
     if ((keyval == null) || string.IsNullOrWhiteSpace(keyval)) { keyval = defval.ToString().ToLower(); }
     if ((keyval != "true") && (keyval != "false")) { keyval = defval.ToString().ToLower(); }
     bool value;
@@ -49,22 +243,6 @@ public static class PdpConfigManager
     return value;
   }
 
-  // for use with DataBase Connection Strings
-  public static string ParseAppDbConnString(Enum keynam)
-  { return ParseAppDbConnString(keynam.ToString()); }
+} // end class
 
-  public static string ParseAppDbConnString(string keynam)
-  {
-    var keyval = AppConfig?.GetSection(DbConnSectionName)[keynam]; ;
-    if (!string.IsNullOrWhiteSpace(keyval))
-    {
-      // parsing here assumes a SQL Server connection string
-      var strBldr = new SqlConnectionStringBuilder(keyval);
-      var isEncrypted = strBldr.Encrypt;
-      keyval = strBldr.ToString();
-    }
-    keyval = (keyval ?? string.Empty);
-    return keyval;
-  }
-
-}
+// end file
