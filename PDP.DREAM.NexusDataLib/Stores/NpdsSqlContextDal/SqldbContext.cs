@@ -3,18 +3,12 @@
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Net.Http;
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Options;
 
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreDataLib.Types;
 
@@ -42,10 +36,12 @@ public partial class NexusDbsqlContext : CoreDbsqlContext
       optionsBuilder.UseSqlServer(NPDSSD.NpdsDiristryDbconstr);
     }
   }
-
+  // ATTN: default connection method for database only in absence of HttpContext
+  //  cannot use an HttpRequest dependent dynamic selection here which instead 
+  //  must be refactored to a page/view/request dependent reset of the DB connection
   protected void OnInitiatingPdpdc(string? dbcs = null)
   {
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsDiristryDbconstr; }
+    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsDiristryDbconstr; } // for Nexus service
     if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
     var builder = new DbContextOptionsBuilder<NexusDbsqlContext>();
     builder.UseSqlServer(dbcs);
@@ -54,7 +50,7 @@ public partial class NexusDbsqlContext : CoreDbsqlContext
   }
   protected void OnInitiatingPdpdc(SqlConnection? dbconn)
   {
-    if (dbconn == null) { throw new NullReferenceException("dbcs null or empty"); }
+    if (dbconn == null) { throw new NullReferenceException("dbconn null or empty"); }
     var builder = new DbContextOptionsBuilder<NexusDbsqlContext>();
     builder.UseSqlServer(dbconn);
     OnConfiguring(builder);
@@ -62,35 +58,31 @@ public partial class NexusDbsqlContext : CoreDbsqlContext
   }
   protected void OnInitiatingPdpdc(DbContextOptions<NexusDbsqlContext> dbco)
   {
+    if (dbco == null) { throw new NullReferenceException("dbco null or empty"); }
     var builder = new DbContextOptionsBuilder(dbco);
     OnConfiguring(builder);
     OnCreated();
   }
 
   // constructor with typed DbContextOptions required for EntityFrameworkCore
-  public NexusDbsqlContext(DbContextOptions<NexusDbsqlContext> dbco) : base() 
+  public NexusDbsqlContext(DbContextOptions<NexusDbsqlContext> dbco) : base()
   {
     OnInitiatingPdpdc(dbco);
   }
+  // constructor with typed Microsoft.Data.SqlClient.SqlConnection
   public NexusDbsqlContext(SqlConnection? dbconn) : base()
   {
     OnInitiatingPdpdc(dbconn);
   }
-  public NexusDbsqlContext(string dbcs) : base() 
+  // constructor with string intended for the database connection
+  public NexusDbsqlContext(string dbcs) : base()
   {
     OnInitiatingPdpdc(dbcs);
   }
-  public NexusDbsqlContext() : base() 
+  // constructor without any parameter
+  public NexusDbsqlContext() : base()
   {
-    OnInitiatingPdpdc();
-  }
-
-  public override void UsePdpdbDefaultConnection(ref DbContextOptionsBuilder builder)
-  {
-    var dbcs = qebUserRestCntxt?.DbConnectionString; // assume dynamic selection on each request
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsDiristryDbconstr; } // for Nexus service
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; } // for Core service
-    if (!string.IsNullOrEmpty(dbcs)) { builder.UseSqlServer(dbcs); }
+    OnInitiatingPdpdc("");
   }
 
 } // end class

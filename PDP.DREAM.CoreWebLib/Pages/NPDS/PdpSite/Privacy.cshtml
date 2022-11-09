@@ -3,12 +3,13 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/PdpSite/Privacy"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepPdpSitePrivacy)]
 @model PdpSitePrivacy
 @{
   PdpSiteRazorModel psr = Model.PSR;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {
@@ -16,8 +17,8 @@
 }
 
 <p>
-  This website does NOT collect any information identifying persons 
-  who browse the unrestricted website content as anonymous users. 
+  This website does NOT collect any information identifying persons
+  who browse the unrestricted website content as anonymous users.
   Additional website content may be accessed by registering a free user account.
   Information collected for the purpose of identifying persons with registered accounts
   will NOT be shared, redistributed, or sold to any other third party.

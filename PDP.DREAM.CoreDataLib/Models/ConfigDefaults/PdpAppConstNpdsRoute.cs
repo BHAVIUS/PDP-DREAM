@@ -1,5 +1,4 @@
-﻿// NpdsConstRegex.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -10,50 +9,73 @@ public static partial class PdpAppConst
   // https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.razor.razorviewengineoptions?view=aspnetcore-6.0
 
   // DREAM EndPoint (DEP) for NPDS
+  public const string DepEmptyPath = "";
   public const string DepNpdsPath = "/NPDS";
   public const string DepNpdsFolder = "NPDS";
   public const string DepNpdsViews = "/Views/NPDS/{1}/{0}";
 
-  // NPDS paths - initial slash assures path from contentroot
-  public const string DepPdpSiteErrors = "/NPDS/CoreDataLib/MvcErrors";
-  public const string DepPdpSiteRoutes = "/NPDS/CoreDataLib/MvcRoutes";
-  public const string DepQebIdentRequired = "/NPDS/AnonCore/AccessDenied";
-  public const string DepQebIdentLogin = "/NPDS/AnonCore/LoginUser";
-  public const string DepQebIdentLogout = "/NPDS/AuthCore/LogoutUser";
+  public const string DepPdpDream = "PDP-DREAM";
+  public const string DepCoreWebLib = "CoreWebLib";
+  public const string DepNexusWebLib = "NexusWebLib";
+  public const string DepScribeWebLib = "ScribeWebLib";
+  public const string DepAcmsWebLib = "AcmsWebLib";
 
-   public const string DepPdpSiteDesign = DepNpdsPath + "/PdpSite/Design";
+  // NPDS paths - initial slash assures path from contentroot
+  public const string DepQebIdentRequired = DepNpdsPath + "/AnonMode/AccessDenied";
+  public const string DepQebIdentLogin = DepNpdsPath + "/AnonMode/LoginUser";
+  public const string DepQebIdentLogout = DepNpdsPath + "/AuthMode/LogoutUser";
+  public const string DepPdpSiteErrors = DepNpdsPath + "/CwlHome/DotnetErrors";
+  public const string DepPdpSiteRoutes = DepNpdsPath + "/CwlHome/RazorRoutes";
+
+  public const string DepPdpSiteIndex = DepNpdsPath + "/PdpSite/Index";
+  public const string DepPdpSiteDesign = DepNpdsPath + "/PdpSite/Design";
   public const string DepPdpSiteDiristries = DepNpdsPath + "/PdpSite/Diristries";
   public const string DepPdpSiteEntities = DepNpdsPath + "/PdpSite/Entities";
-  public const string DepPdpSiteIndex = DepNpdsPath + "/PdpSite/Index";
   public const string DepPdpSiteInfo = DepNpdsPath + "/PdpSite/Info";
   public const string DepPdpSitePapers = DepNpdsPath + "/PdpSite/Papers";
   public const string DepPdpSitePrivacy = DepNpdsPath + "/PdpSite/Privacy";
 
-  public const string DepAnonCoreConfirmEmail = "/NPDS/AnonCore/ConfirmEmail";
-  public const string DepAnonCoreContactSite = "/NPDS/AnonCore/ContactSite";
-  public const string DepAnonCoreDonateGift = "/NPDS/AnonCore/DonateGift";
-  public const string DepAnonCoreIndex = "/NPDS/AnonCore/Index";
-  public const string DepAnonCoreLoginUser = "/NPDS/AnonCore/LoginUser";
-  public const string DepAnonCoreRegisterUser = "/NPDS/AnonCore/RegisterUser";
+  public const string DepCwlHomeIndex = DepNpdsPath + "/CwlHome/Index";
+  public const string DepCwlHomeCodeConfig = DepNpdsPath + "/CwlHome/CodeConfig";
+  public const string DepCwlHomeDotnetErrors = DepNpdsPath + "/CwlHome/DotnetErrors";
+  public const string DepCwlHomeQurcProperties = DepNpdsPath + "/CwlHome/QurcProperties";
+  public const string DepCwlHomeRazorEndpoints = DepNpdsPath + "/CwlHome/RazorEndpoints";
+  public const string DepCwlHomeRazorFormats = DepNpdsPath + "/CwlHome/RazorFormats";
+  public const string DepCwlHomeRazorRoutes = DepNpdsPath + "/CwlHome/RazorRoutes";
+  public const string DepCwlHomeServerDefaults = DepNpdsPath + "/CwlHome/ServerDefaults";
+  public const string DepCwlHomeSiteSettings = DepNpdsPath + "/CwlHome/SiteSettings";
 
-  public const string DepAuthCoreAddRoleAgent = "/NPDS/AuthCore/AddRoleAgent";
-  public const string DepAuthCoreChangeEmail = "/NPDS/AuthCore/ChangeEmail";
-  public const string DepAuthCoreChangePassword = "/NPDS/AuthCore/ChangePassword";
-  public const string DepAuthCoreChangeProfile = "/NPDS/AuthCore/ChangeProfile";
-  public const string DepAuthCoreChangeUsername = "/NPDS/AuthCore/ChangeUsername";
-  public const string DepAuthCoreCheckSession = "/NPDS/AuthCore/CheckSession";
-  public const string DepAuthCoreDisplayProfile = "/NPDS/AuthCore/DisplayProfile";
-  public const string DepAuthCoreIndex = "/NPDS/AuthCore/Index";
-  public const string DepAuthCoreLogoutUser = "/NPDS/AuthCore/LogoutUser";
+  public const string DepAnonModeIndex = DepNpdsPath + "/AnonMode/Index";
+  public const string DepAnonModeConfirmEmail = DepNpdsPath + "/AnonMode/ConfirmEmail";
+  public const string DepAnonModeContactSite = DepNpdsPath + "/AnonMode/ContactSite";
+  public const string DepAnonModeDonateGift = DepNpdsPath + "/AnonMode/DonateGift";
+  public const string DepAnonModeLoginUser = DepNpdsPath + "/AnonMode/LoginUser";
+  public const string DepAnonModeRegisterUser = DepNpdsPath + "/AnonMode/RegisterUser";
 
-  public const string DepAgentCoreIndex = "/NPDS/AgentCore/Index";
-  public const string DepAgentCoreCheckSession = "/NPDS/AgentCore/CheckSession";
-  public const string DepAgentCoreAddRoleAuthor = "/NPDS/AgentCore/AddRoleAuthor";
-  public const string DepAgentCoreAddRoleEditor = "/NPDS/AgentCore/AddRoleEditor";
-  public const string DepAgentCoreAddRoleAdmin = "/NPDS/AgentCore/AddRoleAdmin";
+  public const string DepAuthModeIndex = DepNpdsPath + "/AuthMode/Index";
+  public const string DepAuthModeChangeEmail = DepNpdsPath + "/AuthMode/ChangeEmail";
+  public const string DepAuthModeChangePassword = DepNpdsPath + "/AuthMode/ChangePassword";
+  public const string DepAuthModeChangeProfile = DepNpdsPath + "/AuthMode/ChangeProfile";
+  public const string DepAuthModeChangeUsername = DepNpdsPath + "/AuthMode/ChangeUsername";
+  public const string DepAuthModeCheckSession = DepNpdsPath + "/AuthMode/CheckSession";
+  public const string DepAuthModeDisplayProfile = DepNpdsPath + "/AuthMode/DisplayProfile";
+  public const string DepAuthModeLogoutUser = DepNpdsPath + "/AuthMode/LogoutUser";
 
+  public const string DepAgentModeIndex = DepNpdsPath + "/AgentMode/Index";
+  public const string DepAgentModeCheckSession = DepNpdsPath + "/AgentMode/CheckSession";
+  public const string DepAgentModeAddRoleAgent = DepNpdsPath + "/AgentMode/AddRoleAgent";
+  public const string DepAgentModeAddRoleAuthor = DepNpdsPath + "/AgentMode/AddRoleAuthor";
+  public const string DepAgentModeAddRoleEditor = DepNpdsPath + "/AgentMode/AddRoleEditor";
+  public const string DepAgentModeAddRoleAdmin = DepNpdsPath + "/AgentMode/AddRoleAdmin";
 
-  // TODO: consider moving from ScribeServer to CoreServer
+  public const string DepAdminModeIndex = DepNpdsPath + "/AdminMode/Index";
+  public const string DepAdminModeCheckSession = DepNpdsPath + "/AdminMode/CheckSession";
+  public const string DepAdminModeEditSiaaRoles = DepNpdsPath + "/AdminMode/EditSiaaRoles";
+  public const string DepAdminModeEditSiaaUsers = DepNpdsPath + "/AdminMode/EditSiaaUsers";
+  public const string DepAdminModeViewSiaaRoles = DepNpdsPath + "/AdminMode/ViewSiaaRoles";
+  public const string DepAdminModeViewSiaaUsers = DepNpdsPath + "/AdminMode/ViewSiaaUsers";
+
+  // TODO: consider moving from ScribeServer to CoreServer ???
   public const string DepScribeServerAuthorAccess = DepNpdsPath + "/ScribeServer/AuthorAccess";
   public const string DepScribeServerEditorAccess = DepNpdsPath + "/ScribeServer/EditorAccess";
   public const string DepScribeServerServiceDefaults = DepNpdsPath + "/ScribeServer/ServiceDefaults";
@@ -71,8 +93,6 @@ public static partial class PdpAppConst
 
   // ScribeServer
   public const string DepScribeServerIndex = DepNpdsPath + "/ScribeServer/Index";
-  // public const string DepScribeServerAnonResreps = DepNpds + "/ScribeServer/AnonResreps";
-  // public const string DepScribeServerUserResreps = DepNpds + "/ScribeServer/UserResreps";
   public const string DepScribeServerAgentResreps = DepNpdsPath + "/ScribeServer/AgentResreps";
   public const string DepScribeServerAuthorResreps = DepNpdsPath + "/ScribeServer/AuthorResreps";
   public const string DepScribeServerEditorResreps = DepNpdsPath + "/ScribeServer/EditorResreps";
@@ -84,11 +104,14 @@ public static partial class PdpAppConst
   public const string DepAcmsServerEditorResreps = DepNpdsPath + "/AcmsServer/EditorResreps";
   public const string DepAcmsServerAdminResreps = DepNpdsPath + "/AcmsServer/AdminResreps";
 
+  // ran = Route App Name for dep = DREAM EndPoint
+  public const string DepRanRazorApi = "PdpDreamApi";
+  public const string DepRanRazorPage = "PdpDreamPage";
+  public const string DepRanRazorView = "PdpDreamView";
   // rao = Route App Order for dep = DREAM EndPoint
   public const int DepRaoRestApi = -3; // for REST apis (with Controller-based controllers)
   public const int DepRaoRazorPage = -2; // for Razor pages (with PageModel-based controllers)
   public const int DepRaoRazorView = -1; // for Razor views (with Controller-based controllers)
-
   // new for Net 6 with migration from convention routing to attribute routing
   // string constants for use in RestApi and WebApp controllers
   // NP is NamePrefix, NS is NameSuffix, TS is TemplateSuffix
@@ -102,6 +125,10 @@ public static partial class PdpAppConst
   public const string TSrgil = "{recordGuid}/{isLimited?}";
 
   // keys for Routing ConstraintMap dictionaries
+  public const string NexusST = "NexusST"; // Nexus ServiceType constraint
+  public const string PortalST = "PortalST"; // PORTAL ServiceType constraint
+  public const string DoorsST = "DoorsST"; // DOORS ServiceType constraint
+  public const string ScribeST = "ScribeST"; // Scribe ServiceType constraint
   public const string NpdsPT = "NpdsPT"; // PrincipalTag constraint
   public const string NpdsIS = "NpdsIS"; // InfosetStatus constraint
 

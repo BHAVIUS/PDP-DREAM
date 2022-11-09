@@ -3,12 +3,13 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/PdpSite/Design"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepPdpSiteDesign)]
 @model PdpSiteDesign
 @{
   PdpSiteRazorModel psr = Model.PSR;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {
@@ -52,9 +53,9 @@
 <h4>Abstract from the original 2006 Blueprint Paper for the PORTAL-DOORS System<a name="blueprint">&nbsp;</a></h4>
 
 <p>
-  Title: 
+  Title:
   <a href="http://www.portaldoors.org/pub/docs/IEEETITB2008v12n2p191-204Taswell_DOORS_to_the_Semantic_Web_and_Grid_with_a_PORTAL_for_Biomedical_Computing.pdf"
-            target="other">DOORS to the Semantic Web and Grid with a PORTAL for Biomedical Computing</a>
+     target="other">DOORS to the Semantic Web and Grid with a PORTAL for Biomedical Computing</a>
 </p>
 <p>
   Abstract: The semantic web remains in the early stages of development. It has not yet achieved the
@@ -70,7 +71,7 @@
   the original web and the semantic web. The Internet Registry Information Service (IRIS) registers domain
   names while the Domain Name System (DNS) publishes domain addresses with mapping of names to addresses
   for the original web. Analogously, PORTAL registers resource labels and tags while DOORS publishes
-  resource locations and descriptions with mapping of labels to locations for the semantic web. Beacon
+  resource locations and descriptions with mapping of labels to locations for the semantic web. BioPORT
   is proposed as a prototype PORTAL registry specific for the problem domain of biomedical computing.
 </p>
 <p>
@@ -474,14 +475,14 @@
 </p>
 <ul>
   <li>
-    Pharmacogenomic molecular imaging (see AMIA 
+    Pharmacogenomic molecular imaging (see AMIA
     <a href="http://www.portaldoors.org/pub/docs/AMIASTB2008Taswell0304P43_PORTAL-DOORS_Infrastructure_System_for_Translational_Biomedical_Informatics_on_the_Semantic_Web_and_Grid.pdf"
-                                                   target="other">STB 2008 poster</a>).
+       target="other">STB 2008 poster</a>).
   </li>
   <li>
-    PET and SPECT brain imaging (see W3C HCLS 
+    PET and SPECT brain imaging (see W3C HCLS
     <a href="http://www.portaldoors.org/pub/docs/W3CHCLS2009Taswell0430S_Biomedical_Informatics_for_Brain_Imaging_and_Gene-Brain-Behavior_Relationships.pdf"
-                                                 target="other">F2F 2009 slides</a>).
+       target="other">F2F 2009 slides</a>).
   </li>
 </ul>
 <p>

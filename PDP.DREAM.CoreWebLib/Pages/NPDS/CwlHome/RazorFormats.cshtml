@@ -3,7 +3,8 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/CwlHome/RazorFormats"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepCwlHomeRazorFormats)]
 @model CwlHomeRazorFormats
 @using Microsoft.AspNetCore.Mvc.Razor
 @using Microsoft.Extensions.Options
@@ -14,7 +15,7 @@
   var viewLocFormats = rveOptions.Value.ViewLocationFormats;
   var viewLocExpanders = rveOptions.Value.ViewLocationExpanders;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {

@@ -2,9 +2,6 @@
 // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public partial class QebUserRestContext
@@ -55,8 +52,9 @@ public partial class QebUserRestContext
     // service type request should reset search filter request
     ServiceTypeReqst = serviceType;
     // service tag request should precede the service type request 
-	// per old notes, but must refactor and retest so not necessary
+    // per old notes, but must refactor and retest so not necessary
     ServiceTagReqst = serviceTag;
+    // TODO: update ServiceGuid ?!? corresponding to ServiceTag
     // service tag and service type should be set before calling ValidateSearchFilter
     // TODO: code an overload of ValidateSearchFilter that accepts service type/tag as input args
     ValidateSearchFilter();
@@ -72,6 +70,11 @@ public partial class QebUserRestContext
 
     if (string.IsNullOrEmpty(infosetStatus)) { InfosetStatus = NpdsInfosetStatus.AnyAndAll; }
     else { InfosetStatusReqst = infosetStatus; }
+
+#if DEBUG
+    Debug.WriteLine($"NPDS path = /{ServiceType}/{ServiceTag}/{EntityTag}");
+    Debug.WriteLine(DbConnectionString);
+#endif
   }
 
 } // end class

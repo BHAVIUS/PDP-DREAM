@@ -24,7 +24,7 @@ public class ScribeServerAgentResreps : TkgsPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Scribe,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
@@ -32,7 +32,7 @@ public class ScribeServerAgentResreps : TkgsPageControllerBase
       AgentModeClientRequired = true,
       QebSessionValueIsRequired = true
     };
-    PSR = new PdpSiteRazorModel("/NPDS/ScribeServer/AgentResreps", PdpSitePathKey);
+    PSR = new PdpSiteRazorModel(DepScribeServerAgentResreps, PdpSitePathKey);
     PSR.InitRazorPageMenus("_ScribeWebLibSpanPageMenu");
     ResetScribeRepository();
     var isVerified = CheckCoreAgentSession();

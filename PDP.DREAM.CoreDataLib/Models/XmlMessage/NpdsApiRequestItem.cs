@@ -1,16 +1,6 @@
 ﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-
 namespace PDP.DREAM.CoreDataLib.Models;
 
 [KnownType(typeof(NpdsClientRequestItem)), XmlSchemaProvider(null, IsAny = true)]

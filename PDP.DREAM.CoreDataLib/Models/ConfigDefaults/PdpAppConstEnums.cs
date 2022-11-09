@@ -49,8 +49,9 @@ public static partial class PdpAppConst
     // site content related
     PdpSetSiteDefArea, PdpSetSiteDefController, PdpSetSiteDefAction, PdpSetSiteDefView,
     PdpSetSiteDefHtml, PdpSetSiteDefPage, PdpSetSiteDefPath,
-    PdpSetPageLayout, PdpSetPageMenu, PdpSetPageTitle,
-    PdpSetViewLayout, PdpSetViewMenu, PdpSetViewTitle,
+    PdpSetPageLayout, PdpSetPageMenu,
+    PdpSetViewLayout, PdpSetViewMenu, 
+    PdpSetBodyTitle,
     PdpSetHeaderImageLogo, PdpSetHeaderTitle, PdpSetHeaderTagLine, PdpSetHeaderSloganLine,
     PdpSetFooterCopyrightLine, PdpSetFooterCrosslinkLine, PdpSetFooterContactLine,
     PdpSetMetatagAuthor, PdpSetMetatagKeywords, PdpSetMetatagDescription,

@@ -1,42 +1,10 @@
 ﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Text;
-
-using PDP.DREAM.CoreDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Utilities.PdpStringFrasFormFile;
-
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public partial class PdpSiteRazorModel
 {
-  private string rzrViewName = string.Empty;
-  protected void DefaultRazorViewName()
-  {
-    if (PDPSS.AppUseViewDefaults)
-    {
-      if (string.IsNullOrEmpty(rzrViewName))
-      { rzrViewName = PDPSS.AppSiteDefView; }
-      if (PDPSS.AppUsePathDefaults)
-      { rzrViewName = rzrViewName.AssureInitialSlash(); }
-    }
-  }
-  public string RazorViewName
-  {
-    set { rzrViewName = value; DefaultRazorViewName(); }
-    get { DefaultRazorViewName(); return rzrViewName; }
-  }
-
-  public string RazorViewPath { get; set; } = string.Empty;
-
-  // properties with defaults from Wspld* series
-
   private string rzrViewLayout = string.Empty;
   protected void DefaultRazorViewLayout()
   {
@@ -48,12 +16,6 @@ public partial class PdpSiteRazorModel
       { rzrViewLayout = string.Empty; }
     }
   }
-  public string RazorViewLayout
-  {
-    set { rzrViewLayout = value; DefaultRazorViewLayout(); }
-    get { DefaultRazorViewLayout(); return rzrViewLayout; }
-  }
-
 
   private string rzrViewMenu = string.Empty;
   protected void DefaultRazorViewMenu()
@@ -66,36 +28,61 @@ public partial class PdpSiteRazorModel
       { rzrViewMenu = string.Empty; }
     }
   }
-  public string RazorViewMenu
-  {
-    set { rzrViewMenu = value; DefaultRazorViewMenu(); }
-    get { DefaultRazorViewMenu(); return rzrViewMenu; }
-  }
 
-
-  private string rzrViewTitle = string.Empty;
-  protected void DefaultRazorViewTitle()
+  private string rzrViewName = string.Empty;
+  protected void DefaultRazorViewName()
   {
     if (PDPSS.AppUseViewDefaults)
     {
-      if ((rzrViewTitle == "path") && PDPSS.AppUsePathDefaults)
-      { rzrViewTitle = RazorViewPath; }
-      if (string.IsNullOrEmpty(rzrViewTitle))
-      { rzrViewTitle = PDPSS.WspldViewTitle; }
-      if (string.IsNullOrEmpty(rzrViewTitle))
-      { rzrViewTitle = PDPSS.WspldHeaderTitle; }
-      if (string.IsNullOrEmpty(rzrViewTitle))
-      { rzrViewTitle = PDPSS.AppSiteTitle; }
-      if (string.IsNullOrEmpty(rzrViewTitle))
-      { rzrViewTitle = PDPSS.AppOwnerLongName; }
-      if (rzrViewTitle == PdpSiteNoneKey)
-      { rzrViewTitle = string.Empty; }
+      if (string.IsNullOrEmpty(rzrViewName))
+      { rzrViewName = PDPSS.AppSiteDefView; }
+      if (PDPSS.AppUsePathDefaults)
+      { rzrViewName = rzrViewName.AssureInitialSlash(); }
     }
   }
-  public string RazorViewTitle
+
+  private string rzrViewPath = string.Empty;
+  protected void DefaultRazorViewPath()
   {
-    set { rzrViewTitle = value; DefaultRazorViewTitle(); }
-    get { DefaultRazorViewTitle(); return rzrViewTitle; }
+    if (PDPSS.AppUsePathDefaults)
+    {
+      if (string.IsNullOrEmpty(rzrViewPath))
+      {
+        // assuming convention that
+        // view names have been expressed as valid url view paths
+        rzrViewPath = RazorViewName;
+      }
+      if (string.IsNullOrEmpty(rzrPagePath))
+      {
+        rzrViewPath = PDPSS.AppSiteDefPath;
+      }
+      rzrViewPath = rzrViewPath.AssureInitialSlash();
+    }
+  }
+
+  public string RazorViewLayout
+  {
+    set { rzrViewLayout = value; DefaultRazorViewLayout(); }
+    get { DefaultRazorViewLayout(); return rzrViewLayout; }
+  }
+
+  public string RazorViewName
+  {
+    set { rzrViewName = value; DefaultRazorViewName(); }
+    get { DefaultRazorViewName(); return rzrViewName; }
+  }
+
+  public string RazorViewPath
+  {
+    set { rzrViewPath = value; DefaultRazorViewPath(); }
+    get { DefaultRazorViewPath(); return rzrViewPath; }
+  }
+
+  public virtual void InitRazorViewMenus(string footerMenu, string headerMenu, string bodyMenu, bool useBodyDefault)
+  {
+    RazorFooterMenu = footerMenu;
+    RazorHeaderMenu = headerMenu;
+    RazorBodyMenu = bodyMenu;
   }
 
   private string rzrController = string.Empty;
@@ -122,9 +109,12 @@ public partial class PdpSiteRazorModel
 
   public virtual void DebugRazorViewStrings()
   {
-    Debug.WriteLine($"viewName = {RazorViewName}; viewMenu = {RazorViewMenu}; viewTitle = {RazorViewTitle}");
+    Debug.WriteLine($"viewName = {RazorViewName}; viewPath = {RazorViewPath}");
+    Debug.WriteLine($"HeaderPart = {RazorHeaderPart}; HeaderMenu = {RazorHeaderMenu}");
+    Debug.WriteLine($"FooterPart = {RazorFooterPart}; FooterMenu = {RazorFooterMenu}");
     Debug.WriteLine($"BodyPart = {RazorBodyPart}; BodyMenu = {RazorBodyMenu}; BodyTitle = {RazorBodyTitle}");
   }
+
 } // end class
 
 // end file

@@ -337,4 +337,12 @@
     <parameter name="AgentGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="SessionGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
   </method>
+  <method name="CoreDefaultServices" p1:procedure="dbo.CoreDefaultServices" p1:Guid="22f89418-9fd5-4e34-a328-4c88d71ba913">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="ServicePTag" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="DiristryGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistryGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DirectoryGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistrarGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+  </method>
 </efcore>

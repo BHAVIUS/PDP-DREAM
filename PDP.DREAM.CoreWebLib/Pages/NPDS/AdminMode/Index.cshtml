@@ -1,0 +1,25 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAdminModeIndex)]
+@model AdminModeIndex
+@{
+  PdpSiteRazorModel psr = Model.PSR;
+  QebUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psr.FormatBodyTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as a site administrator. You may access the following services:
+</p>
+<ul>
+  <li><a asp-page="@DepAdminModeCheckSession">Check Session</a></li>
+  <li><a asp-page="@DepAdminModeViewSiaaRoles">View Roles</a></li>
+  <li><a asp-page="@DepAdminModeEditSiaaRoles">Edit Roles</a></li>
+  <li><a asp-page="@DepAdminModeViewSiaaUsers">View Users</a></li>
+  <li><a asp-page="@DepAdminModeEditSiaaUsers">Edit Users</a></li>
+</ul>

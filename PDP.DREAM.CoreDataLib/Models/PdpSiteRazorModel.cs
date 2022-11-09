@@ -35,7 +35,64 @@ public partial class PdpSiteRazorModel
 
   public PdpSiteInfoModel PdpSiteInfo { get; set; } = new PdpSiteInfoModel();
 
+
+  public string RazorBodyTitle
+  {
+    set { rzrBodyTitle = value; DefaultRazorBodyTitle(); }
+    get { DefaultRazorBodyTitle(); return rzrBodyTitle; }
+  }
+
+  private string rzrBodyTitle = string.Empty;
+  protected void DefaultRazorBodyTitle()
+  {
+    if (PDPSS.AppUsePageDefaults || PDPSS.AppUseViewDefaults)
+    {
+      if ((rzrBodyTitle == "path") && PDPSS.AppUsePathDefaults)
+      {
+        if (PDPSS.AppUsePageDefaults) { rzrBodyTitle = RazorPagePath; }
+        else if (PDPSS.AppUseViewDefaults) { rzrBodyTitle = RazorViewPath; }
+        else { rzrBodyTitle = string.Empty; }
+      }
+      if (string.IsNullOrEmpty(rzrBodyTitle))
+      { rzrBodyTitle = PDPSS.WspldBodyTitle; }
+      if (string.IsNullOrEmpty(rzrBodyTitle))
+      { rzrBodyTitle = PDPSS.WspldHeaderTitle; }
+      if (string.IsNullOrEmpty(rzrBodyTitle))
+      { rzrBodyTitle = PDPSS.AppSiteTitle; }
+      if (string.IsNullOrEmpty(rzrBodyTitle))
+      { rzrBodyTitle = PDPSS.AppOwnerLongName; }
+      if (rzrBodyTitle == PdpSiteNoneKey)
+      { rzrBodyTitle = string.Empty; }
+    }
+  }
+
+  public string RazorHeaderPart { get; set; } = string.Empty;
+  public string RazorHeaderMenu
+  {
+    set { rzrPageMenu = value; DefaultRazorPageMenu(); }
+    get { DefaultRazorPageMenu(); return rzrPageMenu; }
+  }
+
+  public string RazorBodyPart { get; set; } = string.Empty;
+  public string RazorBodyMenu { get; set; } = string.Empty;
+  public string RazorFooterPart { set; get; } = string.Empty;
+  public string RazorFooterMenu { set; get; } = string.Empty;
+
   // methods
+  public virtual void InitRazorBodyStrings(string bodyName, string bodyTitle, string bodyMenu)
+  {
+    RazorBodyPart = bodyName;
+    RazorBodyTitle = bodyTitle;
+    RazorBodyMenu = bodyMenu;
+  }
+
+  public string NpdsRazorBodyTitle(string? serviceTitle)
+  {
+    if (string.IsNullOrEmpty(serviceTitle))
+    { serviceTitle = NPDSSD.NpdsDefaultServiceType.ToString(); }
+    rzrBodyTitle = $"{RazorPageName} from {serviceTitle}";
+    return rzrBodyTitle;
+  }
 
   public string FormatHeaderTitle(string headerTitle = "")
   {
@@ -65,25 +122,7 @@ public partial class PdpSiteRazorModel
   {
     var htmlString = string.Empty;
     if (string.IsNullOrEmpty(bodyTitle)) { bodyTitle = RazorBodyTitle; }
-    if (!string.IsNullOrWhiteSpace(bodyTitle)) { htmlString = $"<h5>{bodyTitle}</h5>"; }
-    return htmlString;
-  }
-
-  // Razor Page vs Razor View
-
-  public string FormatPageTitle(string pageTitle = "")
-  {
-    var htmlString = string.Empty;
-    if (string.IsNullOrEmpty(pageTitle)) { pageTitle = RazorBodyTitle; }
-    if (!string.IsNullOrWhiteSpace(pageTitle)) { htmlString = $"<h3>{pageTitle}</h3>"; }
-    return htmlString;
-  }
-
-  public string FormatViewTitle(string viewTitle = "")
-  {
-    var htmlString = string.Empty;
-    if (string.IsNullOrEmpty(viewTitle)) { viewTitle = RazorViewTitle; }
-    if (!string.IsNullOrWhiteSpace(viewTitle)) { htmlString = $"<h3>{viewTitle}</h3>"; }
+    if (!string.IsNullOrWhiteSpace(bodyTitle)) { htmlString = $"<h3 class='pdpBodyTitle'>{bodyTitle}</h3>"; }
     return htmlString;
   }
 

@@ -1,9 +1,29 @@
 <Project>
+  <ItemGroup>
+    <AssemblyAttribute Include="PDP.DREAM.CoreDataLib.Models.PdpCodeDateAttribute">
+      <_Parameter1>$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
   <PropertyGroup>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
+    <Company>Brain Health Alliance</Company>
+    <Copyright>
+      PORTAL-DOORS Project Copyright © 2007 - $([System.DateTime]::UtcNow.Year) Brain Health Alliance.
+      All rights reserved. Code assembly built $([System.DateTime]::UtcNow.ToString("s"))
+    </Copyright>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <EnableNETAnalyzers>False</EnableNETAnalyzers>
+    <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <Platforms>x64;ARM64;</Platforms>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <RunAnalyzers>false</RunAnalyzers>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <TargetFramework>net6.0</TargetFramework>
-    <Copyright>PORTAL-DOORS Project Copyright © 2007 - $([System.DateTime]::UtcNow.Year) Brain Health Alliance.
-      All rights reserved. Code assembly built $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>

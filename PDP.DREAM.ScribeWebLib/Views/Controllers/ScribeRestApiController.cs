@@ -28,7 +28,7 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // do NOT call base.OnActionExecuting(oaeCntxt);
-    QURC = new QebUserRestContext(oaeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(oaeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Scribe,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,

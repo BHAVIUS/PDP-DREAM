@@ -9,13 +9,17 @@
   // QebUserRestContext qurc = Model.QURC;
 }
 
-@Html.Raw(psr.FormatBodyTitle("CoreWebLib Index Menu"))
-<p><partial name="_CoreWebLibSpanPageMenu" /></p>
+@if (!userAuth)
+{
+  <p>
+    CoreWebLib menus only visible in authorized mode. You may   
+    <a asp-page="/NPDS/AnonMode/LoginUser">login</a> or
+    <a asp-page="/NPDS/AnonMode/RegisterUser">register</a>.
+  </p>
+}
 
 @if (userAuth && PDPSS.AppUseDevtestFeature)
 {
-  @Html.Raw(psr.FormatBodyTitle("CoreWebLib Dev/Test/Debug Menu"))
-  <p><partial name="_CoreWebLibDbugPageMenu" /></p>
   @Html.Raw(psr.FormatBodyTitle("CoreWebLib Project Menus"))
   <partial name="_CoreWebLibListPageMenu" />  
 }

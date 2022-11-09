@@ -24,18 +24,18 @@ public partial class CoreDbsqlContext
     {
       OpenSqlConnection();
       OpenSqlCommand("CoreSessionAgentEdit");
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityAppGuid", PDPSS.AppSecureUiaaGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityUserGuid", qurc.QebUserGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.NVarChar, 64, "@IdentityUserNameDisp", qurc.QebUserNameDisplayed);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentGuid", ParameterDirection.InputOutput, qurc.QebAgentGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@SessionGuid", ParameterDirection.InputOutput, qurc.QebSessionGuid);
-      int errorExists = PdpSql.ExecuteCommand(ref pdpDataCmmnd);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityAppGuid", PDPSS.AppSecureUiaaGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityUserGuid", qurc.QebUserGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.NVarChar, 64, "@IdentityUserNameDisp", qurc.QebUserNameDisplayed);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentGuid", ParameterDirection.InputOutput, qurc.QebAgentGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@SessionGuid", ParameterDirection.InputOutput, qurc.QebSessionGuid);
+      int errorExists = QebSql.ExecuteCommand(ref pdpDataCmmnd);
       // may have same PdpAgentGuid associated with different AspnetUserGuid
       //   and/or may have same AspnetUserGuid associated with different AspnetSystemIid
       if (errorExists == 0)
       {
-        qurc.QebAgentGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@AgentGuid");
-        qurc.QebSessionGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@SessionGuid");
+        qurc.QebAgentGuid = QebSql.GetGuid(ref pdpDataCmmnd, "@AgentGuid");
+        qurc.QebSessionGuid = QebSql.GetGuid(ref pdpDataCmmnd, "@SessionGuid");
       }
       CloseSqlConnection();
       if (errorExists == 0) { return true; }
@@ -49,33 +49,33 @@ public partial class CoreDbsqlContext
     {
       OpenSqlConnection();
       OpenSqlCommand("CoreSessionAgentCheck");
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityAppGuid", PDPSS.AppSecureUiaaGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@SessionValueIsRequired", qurc.QebSessionValueIsRequired);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@SessionGuid", ParameterDirection.InputOutput, qurc.QebSessionGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@UserGuid", ParameterDirection.InputOutput, qurc.QebUserGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentGuid", ParameterDirection.InputOutput, qurc.QebAgentGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentInfosetGuid", ParameterDirection.Output, qurc.QebAgentInfosetGuid);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.NVarChar, 64, "@AgentUserNameDisp", ParameterDirection.Output, qurc.QebUserNameDisplayed);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@AgentIsAuthor", ParameterDirection.Output);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@AgentIsEditor", ParameterDirection.Output);
-      PdpSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@AgentIsAdmin", ParameterDirection.Output);
-      int errorExists = PdpSql.ExecuteCommand(ref pdpDataCmmnd);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityAppGuid", PDPSS.AppSecureUiaaGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@SessionValueIsRequired", qurc.QebSessionValueIsRequired);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@SessionGuid", ParameterDirection.InputOutput, qurc.QebSessionGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@UserGuid", ParameterDirection.InputOutput, qurc.QebUserGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentGuid", ParameterDirection.InputOutput, qurc.QebAgentGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentInfosetGuid", ParameterDirection.Output, qurc.QebAgentInfosetGuid);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.NVarChar, 64, "@AgentUserNameDisp", ParameterDirection.Output, qurc.QebUserNameDisplayed);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@AgentIsAuthor", ParameterDirection.Output);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@AgentIsEditor", ParameterDirection.Output);
+      QebSql.AddParameter(ref pdpDataCmmnd, SqlDbType.Bit, 1, "@AgentIsAdmin", ParameterDirection.Output);
+      int errorExists = QebSql.ExecuteCommand(ref pdpDataCmmnd);
       if (errorExists == 0)
       {
-        qurc.QebSessionGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@SessionGuid");
-        qurc.QebUserGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@UserGuid");
-        qurc.QebAgentGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@AgentGuid");
-        qurc.QebAgentInfosetGuid = PdpSql.GetGuid(ref pdpDataCmmnd, "@AgentInfosetGuid");
+        qurc.QebSessionGuid = QebSql.GetGuid(ref pdpDataCmmnd, "@SessionGuid");
+        qurc.QebUserGuid = QebSql.GetGuid(ref pdpDataCmmnd, "@UserGuid");
+        qurc.QebAgentGuid = QebSql.GetGuid(ref pdpDataCmmnd, "@AgentGuid");
+        qurc.QebAgentInfosetGuid = QebSql.GetGuid(ref pdpDataCmmnd, "@AgentInfosetGuid");
         // next 3 properties implicit by existence of row in table
         // TODO: until or unless privilege revocation implemented
         qurc.ClientIsAuthenticated = true;
         qurc.ClientIsUser = true;
         qurc.ClientIsAgent = true;
         // next 4 properties must check column value
-        qurc.QebUserNameDisplayed = PdpSql.GetChar(ref pdpDataCmmnd, "@AgentUserNameDisp");
-        qurc.ClientIsAuthor = PdpSql.GetBit(ref pdpDataCmmnd, "@AgentIsAuthor");
-        qurc.ClientIsEditor = PdpSql.GetBit(ref pdpDataCmmnd, "@AgentIsEditor");
-        qurc.ClientIsAdmin = PdpSql.GetBit(ref pdpDataCmmnd, "@AgentIsAdmin");
+        qurc.QebUserNameDisplayed = QebSql.GetChar(ref pdpDataCmmnd, "@AgentUserNameDisp");
+        qurc.ClientIsAuthor = QebSql.GetBit(ref pdpDataCmmnd, "@AgentIsAuthor");
+        qurc.ClientIsEditor = QebSql.GetBit(ref pdpDataCmmnd, "@AgentIsEditor");
+        qurc.ClientIsAdmin = QebSql.GetBit(ref pdpDataCmmnd, "@AgentIsAdmin");
         // TODO: enhance PdsAgent table to enable revocation of agent privileges
       }
       CloseSqlConnection();

@@ -3,12 +3,13 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/CwlHome/DotnetErrors"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepCwlHomeDotnetErrors)]
 @model CwlHomeDotnetErrors
 @{
   var psr = (PdpSiteRazorModel)Model.PSR;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {

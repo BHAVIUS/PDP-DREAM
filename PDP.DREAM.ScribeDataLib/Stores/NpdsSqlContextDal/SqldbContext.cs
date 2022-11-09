@@ -3,17 +3,13 @@
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Net.Http;
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Options;
 
-using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Types;
 using PDP.DREAM.NexusDataLib.Stores;
@@ -42,10 +38,12 @@ public partial class ScribeDbsqlContext : NexusDbsqlContext
       optionsBuilder.UseSqlServer(NPDSSD.NpdsRegistrarDbconstr);
     }
   }
-
+  // ATTN: default connection method for database only in absence of HttpContext
+  //  cannot use an HttpRequest dependent dynamic selection here which instead 
+  //  must be refactored to a page/view/request dependent reset of the DB connection
   protected void OnInitiatingPdpdc(string? dbcs = null)
   {
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsRegistrarDbconstr; }
+    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsRegistrarDbconstr; } // for Scribe service
     if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
     var builder = new DbContextOptionsBuilder<ScribeDbsqlContext>();
     builder.UseSqlServer(dbcs);
@@ -54,7 +52,7 @@ public partial class ScribeDbsqlContext : NexusDbsqlContext
   }
   protected void OnInitiatingPdpdc(SqlConnection? dbconn)
   {
-    if (dbconn == null) { throw new NullReferenceException("dbcs null or empty"); }
+    if (dbconn == null) { throw new NullReferenceException("dbconn null or empty"); }
     var builder = new DbContextOptionsBuilder<ScribeDbsqlContext>();
     builder.UseSqlServer(dbconn);
     OnConfiguring(builder);
@@ -62,6 +60,7 @@ public partial class ScribeDbsqlContext : NexusDbsqlContext
   }
   protected void OnInitiatingPdpdc(DbContextOptions<ScribeDbsqlContext> dbco)
   {
+    if (dbco == null) { throw new NullReferenceException("dbco null or empty"); }
     var builder = new DbContextOptionsBuilder(dbco);
     OnConfiguring(builder);
     OnCreated();
@@ -73,28 +72,23 @@ public partial class ScribeDbsqlContext : NexusDbsqlContext
     OnInitiatingPdpdc(dbco);
     bingMaps = new BingMapsService(new HttpClient());
   }
+  // constructor with typed Microsoft.Data.SqlClient.SqlConnection
   public ScribeDbsqlContext(SqlConnection? dbconn) : base()
   {
     OnInitiatingPdpdc(dbconn);
     bingMaps = new BingMapsService(new HttpClient());
   }
+  // constructor with string intended for the database connection
   public ScribeDbsqlContext(string dbcs) : base()
   {
     OnInitiatingPdpdc(dbcs);
     bingMaps = new BingMapsService(new HttpClient());
   }
+  // constructor without any parameter
   public ScribeDbsqlContext() : base()
   {
-    OnInitiatingPdpdc();
+    OnInitiatingPdpdc("");
     bingMaps = new BingMapsService(new HttpClient());
-  }
-
-  public override void UsePdpdbDefaultConnection(ref DbContextOptionsBuilder builder)
-  {
-    var dbcs = qebUserRestCntxt?.DbConnectionString; // assume dynamic selection on each request
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsRegistrarDbconstr; } // for Scribe service
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; } // for Core service
-    if (!string.IsNullOrEmpty(dbcs)) { builder.UseSqlServer(dbcs); }
   }
 
   protected readonly BingMapsService? bingMaps;

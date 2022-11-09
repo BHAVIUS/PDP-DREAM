@@ -1,31 +1,34 @@
-﻿// PdpMvcPageRouteConvention.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.CoreDataLib.Types;
 
 public class PdpRazorPageRouteConvention : IPageRouteModelConvention
 {
-  public PdpRazorPageRouteConvention(string ranpPage = "")
+  private string depRan = DepRanRazorPage; // route app name
+  private int depRao = DepRaoRazorPage; // route app order
+  public PdpRazorPageRouteConvention(string ranPage = "", int raoPage = 0)
   {
-    if (!string.IsNullOrWhiteSpace(ranpPage)) { pdpRanpPage = ranpPage; }
+    if (string.IsNullOrWhiteSpace(ranPage))
+    { depRan = DepRanRazorPage; }
+    else
+    { depRan = ranPage; }
+    if (raoPage == 0)
+    { depRao = DepRaoRazorPage; }
+    else
+    { depRao = raoPage; }
   }
-  string pdpRanpPage = "PdpDreamPage";
   public void Apply(PageRouteModel model)
   {
     var selectorCount = model.Selectors.Count;
     for (var i = 0; i < selectorCount; i++)
     {
       var selector = model.Selectors[i];
-      selector.AttributeRouteModel.Order = DepRaoRazorPage;
+      selector.AttributeRouteModel.Order = depRao;
       var revisedTemplate = selector.AttributeRouteModel.Template.Replace("/", "_");
       var firstBrace = revisedTemplate.IndexOf("_{");
-      if (firstBrace >0 ) { revisedTemplate = revisedTemplate.Substring(0, firstBrace); }
-      selector.AttributeRouteModel.Name = pdpRanpPage + ":" + revisedTemplate;
+      if (firstBrace > 0) { revisedTemplate = revisedTemplate.Substring(0, firstBrace); }
+      selector.AttributeRouteModel.Name = $"{depRan}:{revisedTemplate}";
     }
   }
 

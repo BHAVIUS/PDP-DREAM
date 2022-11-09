@@ -3,13 +3,14 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/CwlHome/SiteSettings"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepCwlHomeSiteSettings)]
 @model CwlHomeSiteSettings
 @{
   var psr = (PdpSiteRazorModel)Model.PSR;
   var propList = PDPSS.GetType().GetProperties().OrderBy(p => p.Name);
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))

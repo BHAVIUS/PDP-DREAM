@@ -3,12 +3,13 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/PdpSite/Entities"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepPdpSiteEntities)]
 @model PdpSiteEntities
 @{
   PdpSiteRazorModel psr = Model.PSR;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {
@@ -21,7 +22,7 @@
     .Name("EntityTypes")
     .DataSource(ds => ds.Ajax()
       .Model(m => m.Id(p => p.CodeKey))
-      .Read(post => post.Url(psr.RazorPagePath+"?handler=Read").Data("kendoToken"))
+      .Read(post => post.Url(psr.RazorPagePath + "?handler=Read").Data("kendoToken"))
     )
     .Columns(col =>
     {

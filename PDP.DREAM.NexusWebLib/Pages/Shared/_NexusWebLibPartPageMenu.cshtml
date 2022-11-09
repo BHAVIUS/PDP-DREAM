@@ -14,8 +14,6 @@
 
 @if (userAuth && PDPSS.AppUseDevtestFeature)
 {
-  @Html.Raw(psr.FormatBodyTitle("CoreDataLib Dev/Test/Debug Menu"))
-  <p><partial name="_CoreWebLibDbugPageMenu" /></p>
   @Html.Raw(psr.FormatBodyTitle("NexusWebLib Project Menus"))
   <partial name="_NexusWebLibListPageMenu" />  
 }

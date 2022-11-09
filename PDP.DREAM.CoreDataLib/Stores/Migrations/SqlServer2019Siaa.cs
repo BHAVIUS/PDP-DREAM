@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.FileProviders;
 
@@ -66,11 +67,11 @@ public static class SqlServer2019Siaa
       // userCntxt.Database.Migrate(); // create database with migrations ? problems! does not work ?!?
       // userCntxt.Database.EnsureCreated(); // add schema to database if not yet added problems! does not work ?!?
       // TODO: move hardcoded strings to options / appsettings
-      var fileInfo = fileProv.GetFileInfo(@"\Migrations\CreatePdpSiaaTahtali.sql");
+      var fileInfo = fileProv.GetFileInfo(@"\Migrations\CreatePdpSiaaAoraki.sql");
       var sqlScript = File.ReadAllText(fileInfo.PhysicalPath, Encoding.UTF8);
       var mstrDbconstr = NPDSSD.NpdsUserDbconstr
-        .Replace("PdpSiaaTahtali", "master");
-      errorMessage = PdpSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
+        .Replace("PdpSiaaAoraki", "master");
+      errorMessage = QebSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
       // renew/reset the context
       try
       {

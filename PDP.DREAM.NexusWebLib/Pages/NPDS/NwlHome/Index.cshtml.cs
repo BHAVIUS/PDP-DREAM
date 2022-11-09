@@ -27,7 +27,7 @@ public class NwlHomeIndex : TkgnPageControllerBase
     PSR = new PdpSiteRazorModel("/NPDS/NwlHome/Index", PdpSitePathKey);
     PSR.InitRazorPageMenus("_NexusWebLibPartPageMenu");
     // do NOT call base.OnActionExecuting();
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,

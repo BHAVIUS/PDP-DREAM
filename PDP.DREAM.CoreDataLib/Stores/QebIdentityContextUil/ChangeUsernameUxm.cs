@@ -17,7 +17,7 @@ public class ChangeUsernameUxm : ConfirmTokenUxm, IFormTaskUxm
 
   public void InitPath()
   {
-    ReturnUrlPath = "/NPDS/AnonCore/ResetUsername";
+    ReturnUrlPath = "/NPDS/AnonMode/ResetUsername";
   }
 
   [Display(Name = "Current password")]

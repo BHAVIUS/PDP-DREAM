@@ -71,7 +71,7 @@ public static class SqlServer2019Nexus
       var sqlScript = File.ReadAllText(fileInfo.PhysicalPath, Encoding.UTF8);
       var mstrDbconstr = NPDSSD.NpdsDiristryDbconstr
         .Replace("PdpNexus10", "master");
-      errorMessage = PdpSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
+      errorMessage = QebSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
       // renew/reset the context
       try
       {

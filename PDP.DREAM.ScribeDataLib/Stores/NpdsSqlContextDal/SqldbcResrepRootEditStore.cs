@@ -15,6 +15,7 @@ public partial class ScribeDbsqlContext
 {
   public NexusResrepEditModel EditResrepRoot(NexusResrepEditModel editObj, bool byStorProc = true)
   {
+    int? errCod = 0;
     var errMsg = string.Empty;
     var recordName = editObj.ItemXnam;
     var recordHandle = editObj.RecordHandle;
@@ -46,19 +47,36 @@ public partial class ScribeDbsqlContext
 
     // begin common insert/update edit
 
-    // tranfer from edit object to store object with known non-null defaults
-    storObj.RecordDiristryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordDiristryGuid, QURC.DiristryGuidDeflt); // Nexus
-    storObj.RecordRegistryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordRegistryGuid, QURC.RegistryGuidDeflt); // PORTAL
-    storObj.RecordDirectoryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordDirectoryGuid, QURC.DirectoryGuidDeflt); // DOORS
-    storObj.RecordRegistrarGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordRegistrarGuid, QURC.RegistrarGuidDeflt); // Scribe
+    //if (QURC.ClientHasAdminAccess)
+    //{
+    //  // allow admin curators to edit values for each of NPDS
+    //  storObj.RecordDiristryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordDiristryGuid, QURC.DiristryGuidDeflt); // Nexus
+    //  storObj.RecordRegistryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordRegistryGuid, QURC.RegistryGuidDeflt); // PORTAL
+    //  storObj.RecordDirectoryGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordDirectoryGuid, QURC.DirectoryGuidDeflt); // DOORS
+    //  storObj.RecordRegistrarGuidRef = PdpGuid.ParseToNonNullable(editObj.RecordRegistrarGuid, QURC.RegistrarGuidDeflt); // Scribe
+    //}
+
+    // do not allow change from current request settings for non-admin curators
+    // get current preferred services for selected diristry from database
+    Guid? diristryGuid = Guid.Empty;
+    Guid? registryGuid = Guid.Empty;
+    Guid? directoryGuid = Guid.Empty;
+    Guid? registrarGuid = Guid.Empty;
+    errCod = CoreDefaultServices(QURC.DiristryTag, ref diristryGuid, ref registryGuid, ref directoryGuid, ref registrarGuid);
+    storObj.RecordDiristryGuidRef = PdpGuid.ParseToNonNullable(diristryGuid, Guid.Empty); // Nexus
+    storObj.RecordRegistryGuidRef = PdpGuid.ParseToNonNullable(registryGuid, Guid.Empty); // PORTAL
+    storObj.RecordDirectoryGuidRef = PdpGuid.ParseToNonNullable(directoryGuid, Guid.Empty); // DOORS
+    storObj.RecordRegistrarGuidRef = PdpGuid.ParseToNonNullable(registrarGuid, Guid.Empty); // Scribe
 
     // TODO: must redesign/rebuild to address current redundancy in NPDS scheme with diristry = directory + registry
     // ATTN: current scheme only resets diristry to registry if registry = directory and if diristry invalid/empty
     // assure consistency of current scheme until rebuilt with consistency checks
-    if (PdpGuid.IsInvalidGuid(storObj.RecordDiristryGuidRef) && (storObj.RecordDirectoryGuidRef == storObj.RecordRegistryGuidRef))
-    {
-      storObj.RecordDiristryGuidRef = storObj.RecordRegistryGuidRef;
-    }
+    if (PdpGuid.IsInvalidGuid(storObj.RecordDiristryGuidRef))
+    { storObj.RecordDiristryGuidRef = storObj.RecordRegistryGuidRef; }
+    if (PdpGuid.IsInvalidGuid(storObj.RecordDiristryGuidRef))
+    { storObj.RecordDiristryGuidRef = storObj.RecordDirectoryGuidRef; }
+    if (PdpGuid.IsInvalidGuid(storObj.RecordDiristryGuidRef))
+    { storObj.RecordDiristryGuidRef = storObj.RecordRegistrarGuidRef; }
 
     // max chars for gridcol display and database store
     // EntityTag 32 / 64 
@@ -93,11 +111,11 @@ public partial class ScribeDbsqlContext
 
     if (byStorProc)
     {
-      var errCod = ScribeResrepRootEdit(agentGuid, storObj.InfosetGuidKey, recordGuid,
-        storObj.EntityTypeCodeRef, storObj.EntityInitialTag, storObj.EntityName, storObj.EntityNature,
-        // storObj.EntityOwnerLabel, storObj.EntityContactLabel, storObj.EntityOtherLabel,
-        storObj.RecordDiristryGuidRef, storObj.RecordRegistryGuidRef, storObj.RecordDirectoryGuidRef, storObj.RecordRegistrarGuidRef,
-        storObj.InfosetIsAuthorPrivate, storObj.InfosetIsAgentShared, storObj.InfosetIsUpdaterLimited, storObj.InfosetIsManagerReleased);
+      errCod = ScribeResrepRootEdit(agentGuid, storObj.InfosetGuidKey, recordGuid,
+       storObj.EntityTypeCodeRef, storObj.EntityInitialTag, storObj.EntityName, storObj.EntityNature,
+       // storObj.EntityOwnerLabel, storObj.EntityContactLabel, storObj.EntityOtherLabel,
+       storObj.RecordDiristryGuidRef, storObj.RecordRegistryGuidRef, storObj.RecordDirectoryGuidRef, storObj.RecordRegistrarGuidRef,
+       storObj.InfosetIsAuthorPrivate, storObj.InfosetIsAgentShared, storObj.InfosetIsUpdaterLimited, storObj.InfosetIsManagerReleased);
       if (errCod < 0) { errMsg = $"Error code = {errCod} while writing to database {recordName} record with handle {recordHandle}"; }
     }
     else

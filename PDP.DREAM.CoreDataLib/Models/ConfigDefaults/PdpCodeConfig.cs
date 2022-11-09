@@ -2,14 +2,6 @@
 // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-
 namespace PDP.DREAM.CoreDataLib.Models;
 
 [AttributeUsage(AttributeTargets.Assembly)]
@@ -17,7 +9,7 @@ public class PdpCodeDateAttribute : Attribute
 {
   public PdpCodeDateAttribute(string value)
   {
-    DateTime = DateTime.ParseExact(value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None);
+    DateTime = DateTime.ParseExact(value, PdpDateTimeNowSortFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
   }
 
   public DateTime DateTime { get; }

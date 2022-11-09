@@ -10,7 +10,7 @@
   PdpSiteInfoModel psi = psr.PdpSiteInfo;
   QebUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 <p><partial name="@psr.RazorBodyMenu" /></p>
 
 <p>
@@ -21,7 +21,7 @@
 
 <h5>Admin Manage SIAA Users and Roles</h5>
 
-<p><partial name="_AdminCoreSpanPageMenu" /></p>
+<p><partial name="_AdminModeSpanPageMenu" /></p>
 
 
 <h5>Admin Manage NPDS Records</h5>

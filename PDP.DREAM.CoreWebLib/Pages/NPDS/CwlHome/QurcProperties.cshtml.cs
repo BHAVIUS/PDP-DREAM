@@ -24,7 +24,7 @@ public class CwlHomeQurcProperties : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
@@ -32,9 +32,9 @@ public class CwlHomeQurcProperties : CoreDataRazorPageControllerBase
       UserModeClientRequired = false,
       QebSessionValueIsRequired = false
     };
-    PSR = new PdpSiteRazorModel("/NPDS/CwlHome/QurcProperties", $"{PDPSS.AppOwnerShortName}: QurcProperties");
+    PSR = new PdpSiteRazorModel(DepCwlHomeQurcProperties, $"{DepPdpDream}: QurcProperties");
     PSR.InitRazorBodyStrings("", $"Qeb User Rest Context ({nameof(QURC)}) table of object properties.", "");
-    PSR.InitRazorPageMenus("_CoreWebLibSpanPageMenu");
+    PSR.InitRazorPageMenus("_CwlHomeSpanPageMenu");
     ResetCoreRepository();
   }
 

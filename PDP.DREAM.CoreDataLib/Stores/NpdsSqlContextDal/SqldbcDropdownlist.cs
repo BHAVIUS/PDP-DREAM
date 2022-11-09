@@ -1,5 +1,4 @@
-﻿// SqldbcUilDropdownlist.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System.Collections.Generic;
@@ -8,6 +7,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 using PDP.DREAM.CoreDataLib.Models;
+
+using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
+using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreDataLib.Stores;
 
@@ -25,7 +27,7 @@ public partial class CoreDbsqlContext
     // query to EntityTypeListItem
     IEnumerable<EntityTypeListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.CodeKey == PdpAppConst.DefaultEntityTypeCode)
+        let itemSelected = (dali.CodeKey == DefaultEntityTypeCode)
         select new EntityTypeListItem
         {
           EntityTypeName = dali.TypeName,
@@ -47,7 +49,7 @@ public partial class CoreDbsqlContext
     // query to FieldFormatListItem
     IEnumerable<FieldFormatListItem> uilItems =
       from dali in dalItems
-      let itemSelected = (dali.CodeKey == PdpAppConst.DefaultFieldFormatCode)
+      let itemSelected = (dali.CodeKey == DefaultFieldFormatCode)
       select new FieldFormatListItem
       {
         FieldFormatName = dali.FormatName,
@@ -70,7 +72,7 @@ public partial class CoreDbsqlContext
     // query to InfosetPortalStatusListItem
     IEnumerable<InfosetPortalStatusListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.CodeKey == PdpAppConst.DefaultInfosetStatusCode)
+        let itemSelected = (dali.CodeKey == DefaultInfosetStatusCode)
         select new InfosetPortalStatusListItem
         {
           InfosetPortalStatusName = dali.StatusName,
@@ -93,7 +95,7 @@ public partial class CoreDbsqlContext
     // query to InfosetDoorsStatusListItem
     IEnumerable<InfosetDoorsStatusListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.CodeKey == PdpAppConst.DefaultInfosetStatusCode)
+        let itemSelected = (dali.CodeKey == DefaultInfosetStatusCode)
         select new InfosetDoorsStatusListItem
         {
           InfosetDoorsStatusName = dali.StatusName,
@@ -114,7 +116,7 @@ public partial class CoreDbsqlContext
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
       (dali.DefRegistrarGuid == QURC.RegistrarGuid) &&
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDiristry)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServiceName);
     // query to SelectListItem
     IEnumerable<SelectListItem> uilItems
@@ -136,7 +138,7 @@ public partial class CoreDbsqlContext
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
       (dali.DefRegistrarGuid == QURC.RegistrarGuid) &&
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDiristry)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServiceName);
     // query to RecordDiristryListItem
     IEnumerable<RecordDiristryListItem> uilItems
@@ -157,8 +159,8 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRoot) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDiristry)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRoot) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServiceName);
     // query to SelectListItem
     IEnumerable<SelectListItem> uilItems
@@ -179,8 +181,8 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRoot) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDiristry)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRoot) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServicePTag);
     // query to RecordDiristryListItem
     IEnumerable<RecordDiristryListItem> uilItems
@@ -201,9 +203,9 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRoot) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRegistry) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDiristry)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRoot) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRegistry) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServicePTag);
     // query to RecordRegistryListItem
     IEnumerable<RecordRegistryListItem> uilItems
@@ -223,9 +225,9 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRoot) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDirectory) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsDiristry)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRoot) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDirectory) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServicePTag);
     // query to RecordDirectoryListItem
     IEnumerable<RecordDirectoryListItem> uilItems
@@ -246,8 +248,8 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRoot) ||
-      (dali.ServiceTCode == (short)PdpAppConst.NpdsEntityType.NpdsRegistrar)
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRoot) ||
+      (dali.ServiceTCode == (short)NpdsEntityType.NpdsRegistrar)
       )).OrderBy(dali => dali.ServicePTag);
     // query to RecordRegistrarListItem
     IEnumerable<RecordRegistrarListItem> uilItems
@@ -284,7 +286,7 @@ public partial class CoreDbsqlContext
   public void LoadNpdsServiceCache()
   {
     // cache of NPDS Services PrincipalTags and InfosetGuids (not ResourceGuids)
-    var npdsCache = PdpAppStatus.NPDSSD.NpdsServiceCache;
+    var npdsCache = NPDSSD.NpdsServiceCache;
     var npdsList = GetCoreServiceSelectList();
     foreach (RecordServiceListItem uili in npdsList)
     {

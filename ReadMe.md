@@ -2,10 +2,10 @@
 
 ### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
-Current Version: Aoraki 10.1.9  
-Required Package: Telerik.UI.for.AspNet.Core.2022.3.913.nupkg  
+Current Version: Aoraki 10.1.10  
+Required Package: Telerik.UI.for.AspNet.Core.2022.3.1012.nupkg  
 Required Database: Microsoft SQL Server 2019 v15.0.4249.2  
-Current DotNet Target: .NET 6.0.9 with SDK 6.0.401 and Visual Studio 17.3.5  
+Current DotNet Target: .NET 6.0.10 with SDK 6.0.403 and Visual Studio 17.4.0  
 Planned DotNet Target: maintain in most recent preview of Net 6, 7, 8  
 Dev/Test Focus Net 6 Aoraki: web apps with Telerik UI for ASP.Net Core MVC Views     
 Dev/Test Focus Net 7 Cervin: web apps with Telerik UI for ASP.Net Core Razor Pages  

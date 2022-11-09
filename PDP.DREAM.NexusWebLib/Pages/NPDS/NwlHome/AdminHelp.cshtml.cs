@@ -28,7 +28,7 @@ public class NwlHomeAdminHelp : TkgnPageControllerBase
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
     // do NOT call base.OnActionExecuting();
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadOnly,

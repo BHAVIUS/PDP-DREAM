@@ -1,24 +1,13 @@
 ﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.CoreDataLib.Models;
-
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public class NpdsXmlWrappingWriter : XmlWriter
 {
   public NpdsXmlWrappingWriter(XmlWriter writer)
   {
-    CatchNull(writer, "baseWriter");
+    writer.CatchNullObject(nameof(writer), nameof(BaseXmlWriter), nameof(NpdsXmlWrappingWriter));
     BaseXmlWriter = writer;
   }
 
@@ -52,7 +41,7 @@ public class NpdsXmlWrappingWriter : XmlWriter
   {
     get { return this.baseXmlWriter; }
     set {
-      CatchNull(value, "value");
+      value.CatchNullObject(nameof(baseXmlWriter), nameof(BaseXmlWriter), nameof(NpdsXmlWrappingWriter));
       this.baseXmlWriter = value;
     }
   }
