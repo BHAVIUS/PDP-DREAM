@@ -31,13 +31,13 @@
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
   </environment>
   <!-- css styles before js scripts -->
-  <link href="~/lib/kendo/2022.3.913/styles/kendo.classic-opal.min.css" rel="stylesheet" type="text/css" />
+  <link href="~/lib/kendo/2022.3.1012/styles/kendo.classic-opal.min.css" rel="stylesheet" type="text/css" />
   <link href="~/PdpSiteStyle.css" rel="stylesheet" type="text/css" asp-append-version="true" />
   <!-- Kendo scripts after jQuery scripts -->
-  <script src="~/lib/kendo/2022.3.913/js/jquery.min.js"></script>
-  <script src="~/lib/kendo/2022.3.913/js/jszip.min.js"></script>
-  <script src="~/lib/kendo/2022.3.913/js/kendo.all.min.js"></script>
-  <script src="~/lib/kendo/2022.3.913/js/kendo.aspnetmvc.min.js"></script>
+  <script src="~/lib/kendo/2022.3.1012/js/jquery.min.js"></script>
+  <script src="~/lib/kendo/2022.3.1012/js/jszip.min.js"></script>
+  <script src="~/lib/kendo/2022.3.1012/js/kendo.all.min.js"></script>
+  <script src="~/lib/kendo/2022.3.1012/js/kendo.aspnetmvc.min.js"></script>
 </head>
 <body>
   <div class="pdpPage k-content container-fluid">
@@ -49,7 +49,7 @@
         <a asp-controller="@psr.RazorControllerName" asp-action="@psr.RazorActionName">@Html.Raw(psr.FormatHeaderTitle())</a>
         @Html.Raw(psr.FormatHeaderTagLine())
         @Html.Raw(psr.FormatHeaderSloganLine())
-        <partial name="@psr.RazorViewMenu" />
+        <partial name="@psr.RazorHeaderMenu" />
       </nav>
     </header>
     <div class="pdpClear"><hr /></div>

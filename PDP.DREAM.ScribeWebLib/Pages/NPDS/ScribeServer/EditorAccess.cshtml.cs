@@ -25,7 +25,7 @@ public class ScribeServerEditorAccess : TkgsPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Scribe,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,

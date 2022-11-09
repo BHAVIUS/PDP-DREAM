@@ -10,7 +10,7 @@
   PdpSiteInfoModel psi = psr.PdpSiteInfo;
   QebUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 <p><partial name="@psr.RazorBodyMenu" /></p>
 
 <p>
@@ -23,11 +23,11 @@
 
 <div>
   NexusWebLib Admin:
-  <a asp-page="/NPDS/AdminCore/Index">Index</a> |
-  <a asp-page="/NPDS/AdminCore/ViewSiaaRoles">View Roles</a> |
-  <a asp-page="/NPDS/AdminCore/EditSiaaRoles">Edit Roles</a> |
-  <a asp-page="/NPDS/AdminCore/ViewSiaaUsers">View Users</a> |
-  <a asp-page="/NPDS/AdminCore/EditSiaaUsers">Edit Users</a>
+  <a asp-page="/NPDS/AdminMode/Index">Index</a> |
+  <a asp-page="/NPDS/AdminMode/ViewSiaaRoles">View Roles</a> |
+  <a asp-page="/NPDS/AdminMode/EditSiaaRoles">Edit Roles</a> |
+  <a asp-page="/NPDS/AdminMode/ViewSiaaUsers">View Users</a> |
+  <a asp-page="/NPDS/AdminMode/EditSiaaUsers">Edit Users</a>
 </div>
 
 <h5>URLs in href attributes</h5>

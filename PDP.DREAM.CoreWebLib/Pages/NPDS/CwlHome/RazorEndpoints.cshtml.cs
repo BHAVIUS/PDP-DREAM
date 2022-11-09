@@ -24,7 +24,7 @@ public class CwlHomeRazorEndpoints : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
@@ -32,9 +32,8 @@ public class CwlHomeRazorEndpoints : CoreDataRazorPageControllerBase
       UserModeClientRequired = false,
       QebSessionValueIsRequired = false
     };
-    PSR = new PdpSiteRazorModel("/NPDS/CwlHome/RazorEndpoints",
-      $"{PDPSS.AppOwnerShortName}: RazorEndpoints");
-    PSR.InitRazorPageMenus("_CoreWebLibSpanPageMenu");
+    PSR = new PdpSiteRazorModel(DepCwlHomeRazorEndpoints, $"{DepPdpDream}: RazorEndpoints");
+    PSR.InitRazorPageMenus("_CwlHomeSpanPageMenu");
     ResetCoreRepository();
   }
 

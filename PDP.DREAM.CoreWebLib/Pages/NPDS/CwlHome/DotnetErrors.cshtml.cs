@@ -26,7 +26,7 @@ public class CwlHomeDotnetErrors : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
@@ -34,9 +34,8 @@ public class CwlHomeDotnetErrors : CoreDataRazorPageControllerBase
       UserModeClientRequired = false,
       QebSessionValueIsRequired = false
     };
-    PSR = new PdpSiteRazorModel("/NPDS/CwlHome/DotnetErrors",
-       $"{PDPSS.AppOwnerShortName}: DotnetErrors");
-    PSR.InitRazorPageMenus("_CoreWebLibSpanPageMenu");
+    PSR = new PdpSiteRazorModel(DepCwlHomeDotnetErrors, $"{DepPdpDream}: DotnetErrors");
+    PSR.InitRazorPageMenus("_CwlHomeSpanPageMenu");
     ResetCoreRepository();
   }
 

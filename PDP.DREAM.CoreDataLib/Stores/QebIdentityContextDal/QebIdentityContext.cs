@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
 
 using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
@@ -44,7 +43,7 @@ public partial class QebIdentityContext : PdpDataContext, IQebIdentityContext
 
   protected void OnInitiatingPdpdc(string? dbcs = null)
   {
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsUserDbconstr; }
+    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsUserDbconstr; } // for User Service
     if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
     var builder = new DbContextOptionsBuilder<QebIdentityContext>();
     builder.UseSqlServer(dbcs);
@@ -53,7 +52,7 @@ public partial class QebIdentityContext : PdpDataContext, IQebIdentityContext
   }
   protected void OnInitiatingPdpdc(SqlConnection? dbconn)
   {
-    if (dbconn == null) { throw new NullReferenceException("dbcs null or empty"); }
+    if (dbconn == null) { throw new NullReferenceException("dbconn null or empty"); }
     var builder = new DbContextOptionsBuilder<CoreDbsqlContext>();
     builder.UseSqlServer(dbconn);
     OnConfiguring(builder);
@@ -61,27 +60,31 @@ public partial class QebIdentityContext : PdpDataContext, IQebIdentityContext
   }
   protected void OnInitiatingPdpdc(DbContextOptions<QebIdentityContext> dbco)
   {
+    if (dbco == null) { throw new NullReferenceException("dbco null or empty"); }
     var builder = new DbContextOptionsBuilder(dbco);
     OnConfiguring(builder);
     OnCreated();
   }
 
   // constructor with typed DbContextOptions required for EntityFrameworkCore
-  public QebIdentityContext(DbContextOptions<QebIdentityContext> dbco) : base() 
+  public QebIdentityContext(DbContextOptions<QebIdentityContext> dbco) : base()
   {
     OnInitiatingPdpdc(dbco);
   }
+  // constructor with typed Microsoft.Data.SqlClient.SqlConnection
   public QebIdentityContext(SqlConnection? dbconn) : base()
   {
     OnInitiatingPdpdc(dbconn);
   }
+  // constructor with string intended for the database connection
   public QebIdentityContext(string dbcs) : base()
   {
     OnInitiatingPdpdc(dbcs);
   }
+  // constructor without any parameter
   public QebIdentityContext() : base()
   {
-    OnInitiatingPdpdc();
+    OnInitiatingPdpdc("");
   }
 
   public bool DataContextHasAppGuid()

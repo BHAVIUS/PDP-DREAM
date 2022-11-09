@@ -103,7 +103,15 @@ public partial class NexusDbsqlContext
         switch (QURC.SearchFilter)
         {
           case PdpAppConst.NpdsSearchFilter.Diristry:
-            if (QURC.DiristryGuid.HasValue && (QURC.DiristryGuid.Value != Guid.Empty))
+            if (!string.IsNullOrEmpty(QURC.DiristryTag))
+            {
+              dalQueryStorableResrep =
+                from INexusResrepRoot rr in dalQueryStorableResrep
+                let recordDiristryTag = rr.RecordDiristryTag
+                where (EF.Functions.Like(recordDiristryTag, QURC.DiristryTag))
+                select rr;
+            }
+            else if (QURC.DiristryGuid.HasValue && (QURC.DiristryGuid.Value != Guid.Empty))
             {
               if (QURC.ClientHasEditorAccess)
               {
@@ -134,25 +142,10 @@ public partial class NexusDbsqlContext
                   select rr;
               }
             }
-            else if (!string.IsNullOrEmpty(QURC.DiristryTag))
-            {
-              dalQueryStorableResrep =
-                from INexusResrepRoot rr in dalQueryStorableResrep
-                let recordDiristryTag = rr.RecordDiristryTag
-                where (EF.Functions.Like(recordDiristryTag, QURC.DiristryTag))
-                select rr;
-            }
             break;
 
           case PdpAppConst.NpdsSearchFilter.Registry:
-            if (QURC.RegistryGuid.HasValue && (QURC.RegistryGuid.Value != Guid.Empty))
-            {
-              dalQueryStorableResrep =
-                 from INexusResrepRoot rr in dalQueryStorableResrep
-                 where (rr.RecordRegistryGuidRef == QURC.RegistryGuid.Value)
-                 select rr;
-            }
-            else if (!string.IsNullOrEmpty(QURC.RegistryTag))
+            if (!string.IsNullOrEmpty(QURC.RegistryTag))
             {
               dalQueryStorableResrep =
                  from INexusResrepRoot rr in dalQueryStorableResrep
@@ -160,17 +153,17 @@ public partial class NexusDbsqlContext
                  where (EF.Functions.Like(recordRegistryTag, QURC.RegistryTag))
                  select rr;
             }
-            break;
-
-          case PdpAppConst.NpdsSearchFilter.Directory:
-            if (QURC.DirectoryGuid.HasValue && (QURC.DirectoryGuid.Value != Guid.Empty))
+            else if (QURC.RegistryGuid.HasValue && (QURC.RegistryGuid.Value != Guid.Empty))
             {
               dalQueryStorableResrep =
                  from INexusResrepRoot rr in dalQueryStorableResrep
-                 where (rr.RecordDirectoryGuidRef == QURC.DirectoryGuid.Value)
+                 where (rr.RecordRegistryGuidRef == QURC.RegistryGuid.Value)
                  select rr;
             }
-            else if (!string.IsNullOrEmpty(QURC.DirectoryTag))
+            break;
+
+          case PdpAppConst.NpdsSearchFilter.Directory:
+            if (!string.IsNullOrEmpty(QURC.DirectoryTag))
             {
               dalQueryStorableResrep =
                  from INexusResrepRoot rr in dalQueryStorableResrep
@@ -178,22 +171,29 @@ public partial class NexusDbsqlContext
                  where (EF.Functions.Like(recordDirectoryTag, QURC.DirectoryTag))
                  select rr;
             }
-            break;
-
-          case PdpAppConst.NpdsSearchFilter.Registrar:
-            if (QURC.RegistrarGuid.HasValue && (QURC.RegistrarGuid.Value != Guid.Empty))
+            else if (QURC.DirectoryGuid.HasValue && (QURC.DirectoryGuid.Value != Guid.Empty))
             {
               dalQueryStorableResrep =
                  from INexusResrepRoot rr in dalQueryStorableResrep
-                 where (rr.RecordRegistrarGuidRef == QURC.RegistrarGuid.Value)
+                 where (rr.RecordDirectoryGuidRef == QURC.DirectoryGuid.Value)
                  select rr;
             }
-            else if (!string.IsNullOrEmpty(QURC.RegistrarTag))
+            break;
+
+          case PdpAppConst.NpdsSearchFilter.Registrar:
+            if (!string.IsNullOrEmpty(QURC.RegistrarTag))
             {
               dalQueryStorableResrep =
                  from INexusResrepRoot rr in dalQueryStorableResrep
                  let recordRegistrarTag = rr.RecordRegistrarTag
                  where EF.Functions.Like(recordRegistrarTag, QURC.RegistrarTag)
+                 select rr;
+            }
+            else if (QURC.RegistrarGuid.HasValue && (QURC.RegistrarGuid.Value != Guid.Empty))
+            {
+              dalQueryStorableResrep =
+                 from INexusResrepRoot rr in dalQueryStorableResrep
+                 where (rr.RecordRegistrarGuidRef == QURC.RegistrarGuid.Value)
                  select rr;
             }
             break;

@@ -24,7 +24,7 @@ public class CwlHomeServerDefaults : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
@@ -32,9 +32,9 @@ public class CwlHomeServerDefaults : CoreDataRazorPageControllerBase
       AdminModeClientRequired = true,
       QebSessionValueIsRequired = true
     };
-    PSR = new PdpSiteRazorModel("/NPDS/CwlHome/ServerDefaults", $"{PDPSS.AppOwnerShortName}: ServerDefaults");
+    PSR = new PdpSiteRazorModel(DepCwlHomeServerDefaults, $"{DepPdpDream}: ServerDefaults");
     PSR.InitRazorBodyStrings("", $"NPDS ServerDefaults ({nameof(NPDSSD)}) table of object properties.", "");
-    PSR.InitRazorPageMenus("_CoreWebLibSpanPageMenu");
+    PSR.InitRazorPageMenus("_CwlHomeSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }

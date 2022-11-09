@@ -24,7 +24,7 @@ public class NexusServerAnonResreps : TkgnPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
@@ -34,10 +34,9 @@ public class NexusServerAnonResreps : TkgnPageControllerBase
     };
     PSR = new PdpSiteRazorModel(DepNexusServerAnonResreps, PdpSitePathKey);
     PSR.InitRazorPageMenus("_NexusWebLibSpanPageMenu");
-    ResetNexusRepository();
 #if DEBUG
-    QURC.DebugClientAccess();
     PSR.DebugRazorPageStrings();
+    QURC.DebugClientAccess();
 #endif
   }
 
@@ -54,8 +53,9 @@ public class NexusServerAnonResreps : TkgnPageControllerBase
     PSR.NpdsRazorBodyTitle(QURC.ServiceTitle);
     ResetNexusRepository();
 #if DEBUG
-    QURC.DebugClientAccess();
     PSR.DebugRazorPageStrings();
+    QURC.DebugClientAccess();
+    QURC.DebugNpdsParams();
 #endif
     return Page();
   }

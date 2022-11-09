@@ -1,12 +1,6 @@
 ﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System.Diagnostics;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Utilities.PdpStringFrasFormFile;
-
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public partial class PdpSiteRazorModel
@@ -66,26 +60,6 @@ public partial class PdpSiteRazorModel
     }
   }
 
-  private string rzrPageTitle = string.Empty;
-  protected void DefaultRazorPageTitle()
-  {
-    if (PDPSS.AppUsePageDefaults)
-    {
-      if ((rzrPageTitle == "path") && PDPSS.AppUsePathDefaults)
-      { rzrPageTitle = RazorPagePath; }
-      if (string.IsNullOrEmpty(rzrPageTitle))
-      { rzrPageTitle = PDPSS.WspldPageTitle; }
-      if (string.IsNullOrEmpty(rzrPageTitle))
-      { rzrPageTitle = PDPSS.WspldHeaderTitle; }
-      if (string.IsNullOrEmpty(rzrPageTitle))
-      { rzrPageTitle = PDPSS.AppSiteTitle; }
-      if (string.IsNullOrEmpty(rzrPageTitle))
-      { rzrPageTitle = PDPSS.AppOwnerLongName; }
-      if (rzrPageTitle == PdpSiteNoneKey)
-      { rzrPageTitle = string.Empty; }
-    }
-  }
-
   public string RazorPageLayout
   {
     set { rzrPageLayout = value; DefaultRazorPageLayout(); }
@@ -104,38 +78,6 @@ public partial class PdpSiteRazorModel
     get { DefaultRazorPagePath(); return rzrPagePath; }
   }
 
-  public string RazorBodyTitle
-  {
-    set { rzrPageTitle = value; DefaultRazorPageTitle(); }
-    get { DefaultRazorPageTitle(); return rzrPageTitle; }
-  }
-
-  public string NpdsRazorBodyTitle(string? serviceTitle)
-  {
-    if (string.IsNullOrEmpty(serviceTitle))
-    { serviceTitle = NPDSSD.NpdsDefaultServiceType.ToString(); }
-    rzrPageTitle = $"{RazorPageName} from {serviceTitle}";
-    return rzrPageTitle;
-  }
-
-  public string RazorHeaderPart { get; set; } = string.Empty;
-  public string RazorHeaderMenu
-  {
-    set { rzrPageMenu = value; DefaultRazorPageMenu(); }
-    get { DefaultRazorPageMenu(); return rzrPageMenu; }
-  }
-  public string RazorBodyPart { get; set; } = string.Empty;
-  public string RazorBodyMenu { get; set; } = string.Empty;
-  public string RazorFooterPart { set; get; } = string.Empty;
-  public string RazorFooterMenu { set; get; } = string.Empty;
-
-  public virtual void InitRazorBodyStrings(string bodyName, string bodyTitle, string bodyMenu)
-  {
-    RazorBodyPart = bodyName;
-    RazorBodyTitle = bodyTitle;
-    RazorBodyMenu = bodyMenu;
-  }
-
   public virtual void InitRazorPageMenus(string footerMenu, string headerMenu, string bodyMenu, bool useBodyDefault)
   {
     RazorFooterMenu = footerMenu;
@@ -143,11 +85,11 @@ public partial class PdpSiteRazorModel
     RazorBodyMenu = bodyMenu;
     if (useBodyDefault && string.IsNullOrEmpty(RazorBodyMenu))
     {
-      if (!string.IsNullOrEmpty(headerMenu)) { RazorBodyMenu = headerMenu; }
-      else if (!string.IsNullOrEmpty(footerMenu)) { RazorBodyMenu = footerMenu; }
+      if (!string.IsNullOrEmpty(footerMenu)) { RazorBodyMenu = footerMenu; }
+      else if (!string.IsNullOrEmpty(headerMenu)) { RazorBodyMenu = headerMenu; }
     }
   }
-  public virtual void InitRazorPageMenus(string footerMenu, string headerMenu, bool useBodyDefault = false)
+  public virtual void InitRazorPageMenus(string footerMenu, string headerMenu, bool useBodyDefault = true)
   {
     InitRazorPageMenus(footerMenu, headerMenu, "", useBodyDefault);
   }

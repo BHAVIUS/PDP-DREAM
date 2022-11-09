@@ -3,21 +3,13 @@
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Security.Claims;
-using System.Net.Http;
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Options;
 
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
 
 using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
@@ -46,7 +38,7 @@ public partial class CoreDbsqlContext : PdpDataContext, INpdsDataService
 
   protected void OnInitiatingPdpdc(string? dbcs = null)
   {
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; }
+    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; } // for Core service
     if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
     var builder = new DbContextOptionsBuilder<CoreDbsqlContext>();
     builder.UseSqlServer(dbcs);
@@ -55,7 +47,7 @@ public partial class CoreDbsqlContext : PdpDataContext, INpdsDataService
   }
   protected void OnInitiatingPdpdc(SqlConnection? dbconn)
   {
-    if (dbconn == null) { throw new NullReferenceException("dbcs null or empty"); }
+    if (dbconn == null) { throw new NullReferenceException("dbconn null or empty"); }
     var builder = new DbContextOptionsBuilder<CoreDbsqlContext>();
     builder.UseSqlServer(dbconn);
     OnConfiguring(builder);
@@ -63,6 +55,7 @@ public partial class CoreDbsqlContext : PdpDataContext, INpdsDataService
   }
   protected void OnInitiatingPdpdc(DbContextOptions<CoreDbsqlContext> dbco)
   {
+    if (dbco == null) { throw new NullReferenceException("dbco null or empty"); }
     var builder = new DbContextOptionsBuilder(dbco);
     OnConfiguring(builder);
     OnCreated();
@@ -73,26 +66,22 @@ public partial class CoreDbsqlContext : PdpDataContext, INpdsDataService
   {
     OnInitiatingPdpdc(dbco);
   }
+  // constructor with typed Microsoft.Data.SqlClient.SqlConnection
   public CoreDbsqlContext(SqlConnection? dbconn) : base()
   {
     OnInitiatingPdpdc(dbconn);
   }
+  // constructor with string intended for the database connection
   public CoreDbsqlContext(string dbcs) : base()
   {
     OnInitiatingPdpdc(dbcs);
   }
+  // constructor without any parameter
   public CoreDbsqlContext() : base()
   {
-    OnInitiatingPdpdc();
+    OnInitiatingPdpdc("");
   }
-
-  public override void UsePdpdbDefaultConnection(ref DbContextOptionsBuilder builder)
-  {
-    var dbcs = qebUserRestCntxt?.DbConnectionString; // assume dynamic selection on each request
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; } // for Core service
-    if (!string.IsNullOrEmpty(dbcs)) { builder.UseSqlServer(dbcs); }
-  }
-
+ 
 } // end class
 
 // end file

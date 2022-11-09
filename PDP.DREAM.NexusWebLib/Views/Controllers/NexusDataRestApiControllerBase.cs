@@ -1,17 +1,14 @@
-﻿// NexusDataLibControllerBase.cs 
+﻿// NexusDataRestApiControllerBase.cs 
 // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-using PDP.DREAM.CoreWebLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreDataLib.Types;
+using PDP.DREAM.CoreWebLib.Controllers;
 using PDP.DREAM.NexusDataLib.Stores;
 
 using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
@@ -33,16 +30,25 @@ public abstract class NexusDataRestApiControllerBase : CoreDataRazorViewControll
   protected NexusDbsqlContext pdpNexusDataCntxt;
   public NexusDbsqlContext PNDC
   {
-    get { return pdpNexusDataCntxt; }
-    set { pdpNexusDataCntxt = value; ResetNexusRepository(); }
+    set {
+      value.CatchNullObject(nameof(pdpNexusDataCntxt), nameof(PNDC), nameof(NexusDataRestApiControllerBase));
+      pdpNexusDataCntxt = value;
+      ResetNexusRepository();
+    }
+    get {
+      pdpNexusDataCntxt.CatchNullObject(nameof(pdpNexusDataCntxt), nameof(PNDC), nameof(NexusDataRestApiControllerBase));
+      return pdpNexusDataCntxt;
+    }
   }
   // reset repository with current PDP Rest Context and current PDP Data Context
   // protected so not visible as public action for controller routes
+  // TODO: Reset Repository methods in controllers or data contexts or both ???
+  //  prefer data contexts independent of QURC and HttpContext !!!
   protected void ResetNexusRepository()
   {
-    // reset repository with current PDP Rest Context and current PDP Data Context
-    if (QURC == null) { throw new NullReferenceException("PDP REST Context"); }
-    if (PNDC != null) { pdpNexusDataCntxt.ResetRestContext(QURC); }
+    QURC.CatchNullObject(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
+    PNDC.CatchNullObject(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
+    pdpNexusDataCntxt.ResetQebiContext(QURC);
   }
 
   public NexusDataRestApiControllerBase()
@@ -95,7 +101,7 @@ public abstract class NexusDataRestApiControllerBase : CoreDataRazorViewControll
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // new PdpRestContext() calls ParseQueryCollection
-    qebUserRestCntxt = new QebUserRestContext(oaeCntxt.HttpContext.Request)
+    qebUserRestCntxt = new QebUserRestContext(oaeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,

@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-using PDP.DREAM.CoreWebLib.Controllers;
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
+using PDP.DREAM.CoreWebLib.Controllers;
 
 using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
@@ -27,7 +27,7 @@ public class CwlHomeIndex : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(exeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
@@ -35,7 +35,7 @@ public class CwlHomeIndex : CoreDataRazorPageControllerBase
       UserModeClientRequired = false,
       QebSessionValueIsRequired = false
     };
-    PSR = new PdpSiteRazorModel("/NPDS/CwlHome/Index", $"{PDPSS.AppOwnerShortName}: CoreWebLib Index");
+    PSR = new PdpSiteRazorModel(DepCwlHomeIndex, $"{DepPdpDream}: CoreWebLib Index");
     PSR.InitRazorPageMenus("", "", "_CoreWebLibPartPageMenu", true);
     ResetCoreRepository();
   }

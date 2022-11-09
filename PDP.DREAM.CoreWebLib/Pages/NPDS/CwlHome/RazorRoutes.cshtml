@@ -3,7 +3,8 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/CwlHome/RazorRoutes"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepCwlHomeRazorRoutes)]
 @model CwlHomeRazorRoutes
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Http
@@ -20,7 +21,7 @@
   var rrepList = epDataSources.SelectMany(s => s.Endpoints)
     .OfType<RouteEndpoint>().OrderBy(p => p.Order).ThenBy(p => p.DisplayName).ToList();
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {

@@ -1,60 +1,48 @@
-﻿// PdpRazorViewRouteAttribute.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Microsoft.AspNetCore.Mvc.Routing;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.CoreDataLib.Types;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class PdpRazorViewRouteAttribute : Attribute, IRouteTemplateProvider
 {
-  // for use with private fields, prefix acronym pmr for PDP MVC Route 
+  private string pdpRanpView = "PdpDreamView";
+  private string pdpRanpApi = "PdpDreamApi";
 
-  public PdpRazorViewRouteAttribute(string routeTemplateSuffix = "")
+  // for use with private fields, prefix acronym prr for PDP Razor Route 
+
+  public PdpRazorViewRouteAttribute(string routeTemplateSuffix = "", string routeNamePrefix = "")
   {
-    InitNameTemplateOrder("", routeTemplateSuffix);
-  }
-  public PdpRazorViewRouteAttribute(string routeNamePrefix, string routeTemplateSuffix)
-  {
-    InitNameTemplateOrder(routeNamePrefix, routeTemplateSuffix);
-  }
-  private void InitNameTemplateOrder(string routeNamePrefix, string routeTemplateSuffix)
-  {
-    if (string.IsNullOrEmpty(routeNamePrefix))
-    { routeNamePrefix = "PdpDreamView"; }
+    if (string.IsNullOrWhiteSpace(routeNamePrefix))
+    { routeNamePrefix = pdpRanpView; }
     if (string.IsNullOrEmpty(DepNpdsFolder))
     {
-      pmrTemplate = "/[controller]/[action]";
-      pmrName = $"{routeNamePrefix}:[controller]_[action]";
+      prrTemplate = "/[controller]/[action]";
+      prrName = $"{routeNamePrefix}:[controller]_[action]";
     }
     else
     {
-      pmrTemplate = $"/{DepNpdsFolder}/[controller]/[action]";
-      pmrName = $"{routeNamePrefix}:{DepNpdsFolder}_[controller]_[action]";
+      prrTemplate = $"/{DepNpdsFolder}/[controller]/[action]";
+      prrName = $"{routeNamePrefix}:{DepNpdsFolder}_[controller]_[action]";
     }
-    if (!string.IsNullOrEmpty(routeTemplateSuffix)) { pmrTemplate += $"/{routeTemplateSuffix}"; }
-    pmrOrder = DepRaoRazorView;
-
+    if (!string.IsNullOrWhiteSpace(routeTemplateSuffix)) 
+    { prrTemplate += $"/{routeTemplateSuffix}"; }
+    prrOrder = DepRaoRazorView;
   }
 
   // intended for REST API routes
   public PdpRazorViewRouteAttribute(string routeTemplate, string routeName, bool withFolder)
   {
-    var routeNamePrefix = "PdpDreamApi";
-    pmrTemplate = routeTemplate;
-    pmrName = $"{routeNamePrefix}:{routeName}";
-    pmrOrder = DepRaoRestApi;
+    var routeNamePrefix = pdpRanpApi;
+    prrTemplate = routeTemplate;
+    prrName = $"{routeNamePrefix}:{routeName}";
+    prrOrder = DepRaoRestApi;
   }
   public PdpRazorViewRouteAttribute(string routeTemplate, string routeName, bool withFolder, int routeOrder)
   {
-    pmrTemplate = PatternTemplateWithDepFolder(routeTemplate, withFolder);
-    pmrName = routeName;
-    pmrOrder = routeOrder;
+    prrTemplate = PatternTemplateWithDepFolder(routeTemplate, withFolder);
+    prrName = routeName;
+    prrOrder = routeOrder;
   }
 
   // DREAM EndPoint Folder = DepFolder
@@ -62,21 +50,21 @@ public class PdpRazorViewRouteAttribute : Attribute, IRouteTemplateProvider
   {
     if (withDepFolder && string.IsNullOrEmpty(DepNpdsFolder))
     { throw new NullReferenceException("DepNpdsFolder is null or empty"); }
-    var pmrPattern = ((withDepFolder) ? $"/{DepNpdsFolder}/{routeTemplate}" : routeTemplate);
-    if (string.IsNullOrEmpty(pmrPattern)) { pmrPattern = "/"; };
-    return pmrPattern;
+    var prrPattern = ((withDepFolder) ? $"/{DepNpdsFolder}/{routeTemplate}" : routeTemplate);
+    if (string.IsNullOrEmpty(prrPattern)) { prrPattern = "/"; };
+    return prrPattern;
   }
 
   string? IRouteTemplateProvider.Template
-  { get { return pmrTemplate; } }
-  private string? pmrTemplate = null;
+  { get { return prrTemplate; } }
+  private string? prrTemplate = null;
 
   string? IRouteTemplateProvider.Name
-  { get { return pmrName; } }
-  private string? pmrName = null;
+  { get { return prrName; } }
+  private string? prrName = null;
   int? IRouteTemplateProvider.Order
-  { get { return pmrOrder; } }
-  private int? pmrOrder = null;
+  { get { return prrOrder; } }
+  private int? prrOrder = null;
 
 } // end class
 

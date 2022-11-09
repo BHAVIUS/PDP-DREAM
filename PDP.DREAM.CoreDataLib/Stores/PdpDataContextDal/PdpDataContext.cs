@@ -5,6 +5,7 @@
 using System;
 using System.Data;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,26 +19,46 @@ namespace PDP.DREAM.CoreDataLib.Stores;
 
 public class PdpDataContext : DbContext
 {
+  protected readonly IHttpContextAccessor hcAccessor;
+
   // PDP Data Context = PDPDC
+
+  // TODO: build data contexts without http context
+  // the data context should require injection of any dependencies
+  // from http context without being directly dependent on the http context
+  // so there should be an independent mediator for any required parameters
+  // then can use with either desktop app or web app
+  // so QURC needs to be split and refactored
+
   public PdpDataContext()
   {
+    hcAccessor = new HttpContextAccessor();
     PdpdcInitialize();
   }
-  public PdpDataContext(string dbcstr)
+  public PdpDataContext(IHttpContextAccessor hca)
   {
-    pdpDataCnstr = dbcstr;
+    hcAccessor = hca;
     PdpdcInitialize();
   }
-  public PdpDataContext(SqlConnection dbconn)
+  public PdpDataContext(QebUserRestContext qurc, IHttpContextAccessor hca)
   {
-    pdpDataCnctn = dbconn;
-    PdpdcInitialize();
+    hcAccessor = hca;
+    PdpdcInitialize(qurc);
   }
 
-  protected virtual void PdpdcInitialize()
+  protected virtual void PdpdcInitialize(QebUserRestContext? qurc = null)
   {
+    if (qurc != null)
+    {
+      qebUserRestCntxt = qurc;
+    }
+    else if (PdcSqlSiteContext != null)
+    {
+      qebUserRestCntxt = new QebUserRestContext(PdcSqlSiteContext);
+    }
     AppSiaaGuid = PdpGuid.ParseToNonNullable(AppSiaaGuid, PDPSS.AppSecureUiaaGuid);
   }
+
   public Guid AppSiaaGuid { get; set; }
   public bool DataContextHasSchema()
   {
@@ -51,19 +72,54 @@ public class PdpDataContext : DbContext
 
   //  QEB User REST Context = QURC 
   protected QebUserRestContext qebUserRestCntxt;
-  public QebUserRestContext QURC { get { return qebUserRestCntxt; } }
-  public void ResetRestContext(QebUserRestContext qurc)
-  { qebUserRestCntxt = qurc; }
-
-  public virtual void UsePdpdbDefaultConnection(ref DbContextOptionsBuilder optionsBuilder)
+  public QebUserRestContext QURC
   {
-    var dbcs = qebUserRestCntxt?.DbConnectionString; // assume dynamic selection on each request
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; } // for Core service
-    if (!string.IsNullOrEmpty(dbcs)) { optionsBuilder.UseSqlServer(dbcs); }
+    set {
+      value.CatchNullObject(nameof(qebUserRestCntxt), nameof(QURC), nameof(PdpDataContext));
+      qebUserRestCntxt = value;
+    }
+    get {
+      if ((qebUserRestCntxt == null) && (PdcSqlSiteContext != null))
+      {
+        qebUserRestCntxt = new QebUserRestContext(PdcSqlSiteContext);
+      }
+      qebUserRestCntxt.CatchNullObject(nameof(qebUserRestCntxt), nameof(QURC), nameof(PdpDataContext));
+      return qebUserRestCntxt;
+    }
+  }
+  // TODO: update to allow for request-dependent connection string
+  //  check for change of the dbcs and update the connection if different
+  // TODO: an alternative would be to deprecate this void method
+  //  and replace with a new constructor that takes the QURC
+  // thereby always creating a new instance and
+  // eliminating the old vs new connection string comparison
+  public void ResetQebiContext(QebUserRestContext qurc)
+  {
+    qebUserRestCntxt = qurc;
+    var dbcs = qebUserRestCntxt.DbConnectionString;
+    if (!string.Equals(dbcs, pdpDataCnstr, StringComparison.OrdinalIgnoreCase))
+    {
+      pdpDataCnstr = dbcs;
+      CloseSqlConnection(); // close current connection
+      OpenSqlConnection(); // re-open new connection
+    }
+  }
+
+  public HttpContext PdcSqlSiteContext
+  {
+    get { return hcAccessor?.HttpContext; }
+  }
+  public HttpRequest PdcSqlSiteRequest
+  {
+    get { return hcAccessor?.HttpContext?.Request; }
+  }
+  public HttpResponse PdcSqlSiteResponse
+  {
+    get { return hcAccessor?.HttpContext?.Response; }
   }
 
   public string PdcSqlcstr // PDC SQL Connection String
-  {     get { return pdpDataCnstr; }  }
+  { get { return pdpDataCnstr; } }
   protected string pdpDataCnstr = string.Empty;
   public SqlConnection PdcSqlconn // PDC SQL Data Connection
   {
@@ -108,6 +164,7 @@ public class PdpDataContext : DbContext
     try
     {
       if (pdpDataCnctn == null) { pdpDataCnctn = this.Database.GetDbConnection() as SqlConnection; }
+      if (pdpDataCnctn == null) { pdpDataCnctn = new SqlConnection(pdpDataCnstr); }
       if (pdpDataCnctn == null) { pdpDataCnctn = new SqlConnection(qebUserRestCntxt.DbConnectionString); }
       if (pdpDataCnctn.State != ConnectionState.Open) { pdpDataCnctn.Open(); }
       return string.Empty;
@@ -127,7 +184,7 @@ public class PdpDataContext : DbContext
       CommandType = CommandType.StoredProcedure
     };
     // add int return value to the command
-    PdpSql.AddRetVal(ref pdpDataCmmnd);
+    QebSql.AddRetVal(ref pdpDataCmmnd);
   }
 
   public string CloseSqlConnection()

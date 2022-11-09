@@ -5,22 +5,18 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-using PDP.DREAM.CoreWebLib.Controllers;
 using PDP.DREAM.CoreDataLib.Services;
 using PDP.DREAM.CoreDataLib.Stores;
+using PDP.DREAM.CoreWebLib.Controllers;
 using PDP.DREAM.NexusDataLib.Stores;
 
 using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
 // convention: name abstract controllers with suffix ControllerBase
 public abstract class NexusDataRazorPageControllerBase : CoreDataRazorPageControllerBase
 {
-  // ranp = Route App NamePrefix
-  public const string NwlRanpPage = "NexusWebLibPage"; // by Razor page
-
   // data contexts: QEB User REST/Data, PDP NPDS Data/Metadata
   // QEB User REST Context = QURC for user config settings and web api requests
   // QEB User Data Context = QUDC for user identification, authentication, authorization
@@ -32,9 +28,14 @@ public abstract class NexusDataRazorPageControllerBase : CoreDataRazorPageContro
   protected NexusDbsqlContext pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NpdsDiristryDbconstr);
   public NexusDbsqlContext PNDC
   {
-    set { pdpNexusDataCntxt = value; ResetNexusRepository(); }
+    set {
+      value.CatchNullObject(nameof(pdpNexusDataCntxt), nameof(PNDC), nameof(NexusDataRazorPageControllerBase));
+      pdpNexusDataCntxt = value;
+      ResetNexusRepository();
+    }
     get {
-      if (pdpNexusDataCntxt == null) { pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NpdsDiristryDbconstr); }
+      // if (pdpNexusDataCntxt == null) { pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NpdsDiristryDbconstr); }
+      pdpNexusDataCntxt.CatchNullObject(nameof(pdpNexusDataCntxt), nameof(PNDC), nameof(NexusDataRazorPageControllerBase));
       return pdpNexusDataCntxt;
     }
   }
@@ -42,12 +43,12 @@ public abstract class NexusDataRazorPageControllerBase : CoreDataRazorPageContro
   // protected so not visible as public action for controller routes
   protected void ResetNexusRepository()
   {
-    // reset repository with current QEB User Rest Context
-    if (QURC == null) { NullRefException(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRazorPageControllerBase)); }
+    // reset ViewData with current QEB User Rest Context
+    QURC.CatchNullObject(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRazorPageControllerBase));
     ViewData[nameof(QURC)] = QURC;
-    // reset repository with current PDP Nexus Data Context
-    if (PNDC == null) { NullRefException(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRazorPageControllerBase)); }
-    pdpNexusDataCntxt.ResetRestContext(QURC);
+    // reset PDP Nexus Data Context with current QEB User Rest Context
+    PNDC.CatchNullObject(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRazorPageControllerBase));
+    pdpNexusDataCntxt.ResetQebiContext(QURC); // resets data connection with current QURC.DbConnectionString
   }
 
   public NexusDataRazorPageControllerBase()
@@ -102,8 +103,7 @@ public abstract class NexusDataRazorPageControllerBase : CoreDataRazorPageContro
 
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    if (QURC == null)
-    { NullRefException(nameof(QURC), nameof(OnPageHandlerExecuting), nameof(NexusDataRazorPageControllerBase)); }
+    QURC.CatchNullObject(nameof(QURC), nameof(OnPageHandlerExecuting), nameof(NexusDataRazorPageControllerBase));
     // PSR.RazorAreaName = DepNpdsPath;
     // PSR.RazorControllerName = nameof(NexusDataRazorPageControllerBase);
     ViewData[nameof(QURC)] = QURC;

@@ -18,6 +18,10 @@ var hasAuthorAccess = qurc.ClientHasAuthorAccess;
 var hasEditorAccess = qurc.ClientHasEditorAccess;
 var hasAdminAccess = qurc.ClientHasAdminAccess;
 var hasScribeEditAccess = qurc.ClientHasScribeEditAccess;
+var diristryGuid = qurc.DiristryGuid;
+var registryGuid = qurc.RegistryGuid;
+var directoryGuid = qurc.DirectoryGuid;
+var registrarGuid = qurc.RegistrarGuid;
 // correct path remains critical for Razor routing
 var TkgResrepParstr = $"/{qurc.ServiceType}/{qurc.ServiceTag}/{qurc.EntityType}/{qurc.RecordAccess}";
 var TkgFgroupQrystr = $"&recordGuid=#=RRRecordGuid#&isLimited=#=InfosetIsUpdaterLimited#";
@@ -31,10 +35,11 @@ var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
 
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
-@(Html.Kendo()
+@(
+Html.Kendo()
 .Grid<NexusResrepEditModel>()
 .Name("ResrepRecordGrid").HtmlAttributes(new { style = "float:left;" })
 .DataSource(ds => ds.Ajax().PageSize(5)
@@ -43,6 +48,10 @@ m.Field<Guid?>(p => p.RRInfosetGuid).Editable(false).DefaultValue(Guid.Empty);
 m.Field<Guid?>(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
 m.Id<Guid?>(p => p.RRRecordGuid);
 m.Field(p => p.RecordHandle).Editable(false);
+m.Field<Guid?>(p => p.RecordDiristryGuid).Editable(false).DefaultValue(diristryGuid);
+m.Field<Guid?>(p => p.RecordRegistryGuid).Editable(false).DefaultValue(registryGuid);
+m.Field<Guid?>(p => p.RecordDirectoryGuid).Editable(false).DefaultValue(directoryGuid);
+m.Field<Guid?>(p => p.RecordRegistrarGuid).Editable(false).DefaultValue(registrarGuid);
 m.Field(p => p.EntityTypeCode).Editable(hasScribeEditAccess).DefaultValue(PdpAppConst.DefaultEntityTypeCode);
 m.Field(p => p.EntityTypeName).Editable(false);
 m.Field(p => p.EntityName).Editable(hasScribeEditAccess);
@@ -153,12 +162,12 @@ m.Id<Guid?>(p => p.RRFgroupGuid);
 m.Field<Guid?>(p => p.RRFgroupGuid).Editable(false).DefaultValue(Guid.Empty);
 m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
 m.Field(p => p.HasPriority).Editable(hasScribeEditAccess).DefaultValue(0);
-m.Field(p => p.IsGenerating).Editable(hasScribeEditAccess).DefaultValue(false);
+m.Field(p => p.IsGenerating).Editable(hasAdminAccess).DefaultValue(false);
 m.Field(p => p.IsMarked).Editable(hasScribeEditAccess).DefaultValue(false);
 m.Field(p => p.IsResolvable).Editable(hasScribeEditAccess).DefaultValue(false);
 m.Field(p => p.IsPrincipal).Editable(hasScribeEditAccess).DefaultValue(false);
 m.Field(p => p.IsPrivate).Editable(hasScribeEditAccess).DefaultValue(false);
-m.Field(p => p.ServiceTypeCode).Editable(hasScribeEditAccess).DefaultValue(2);
+m.Field(p => p.ServiceTypeCode).Editable(hasAdminAccess).DefaultValue(2);
 m.Field(p => p.TagToken).Editable(hasScribeEditAccess).DefaultValue(string.Empty);
 m.Field(p => p.LabelUri).Editable(hasAdminAccess).DefaultValue(string.Empty);
 m.Field(p => p.EntityLabel).Editable(false).DefaultValue(string.Empty);
@@ -230,7 +239,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine).Enabled(hasScribeEditAccess))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("EntityLabelToolbar"))
-.ToClientTemplate()) </text>);  
+.ToClientTemplate()) </text>);
 // end EntityLabel
 
 itm.Add().Text("SupportingTags").Content(@<text>
@@ -293,7 +302,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("SupportingTagToolbar"))
-.ToClientTemplate()) </text>);  
+.ToClientTemplate()) </text>);
 // end SupportingTag
 
 itm.Add().Text("SupportingLabels").Content(@<text>
@@ -356,7 +365,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToolBar(tlb => tlb.ClientTemplateId("SupportingLabelToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end SupportingLabel
 
 itm.Add().Text("CrossReferences").Content(@<text>
@@ -419,7 +428,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("CrossReferenceToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end CrossReference
 
 itm.Add().Text("OtherTexts").Content(@<text>
@@ -493,7 +502,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("OtherTextToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end OtherText
 
 itm.Add().Text("Locations").Content(@<text>
@@ -579,7 +588,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("LocationToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Location
 
 itm.Add().Text("Descriptions").Content(@<text>
@@ -654,7 +663,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("DescriptionToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Description
 
 itm.Add().Text("Provenances").Content(@<text>
@@ -729,7 +738,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("ProvenanceToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Provenance
 
 itm.Add().Text("Distributions").Content(@<text>
@@ -804,7 +813,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("DistributionToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Distribution
 
 itm.Add().Text("FairMetrics").Content(@<text>
@@ -894,7 +903,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
 .Editable(edt => edt.Mode(GridEditMode.InLine))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .ToolBar(tlb => tlb.ClientTemplateId("FairMetricToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end FairMetric
 
 itm.Add().Text("Services").Content(@<text>
@@ -985,7 +994,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToolBar(tlb => tlb.ClientTemplateId("ServiceDefaultToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end ServiceDefault
 
 itm.Add().Text("Snapshots").Content(@<text>
@@ -1039,7 +1048,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .Pageable(pgb => pgb.Refresh(true))    .Sortable()
 .ToolBar(tlb => tlb.ClientTemplateId("SnapshotToolbar"))
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Snapshot
 
 itm.Add().Text("Status").LoadContentFrom(Url.Content(TkgPath + "?handler=CheckResrepLeaf" + TkgFgroupQrystr));

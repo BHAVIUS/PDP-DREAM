@@ -50,11 +50,11 @@ public abstract class ScribeDataRazorViewControllerBase : NexusDataRazorViewCont
   protected void ResetScribeRepository(bool dropDownLists = false)
   {
     // reset repository with current QEB User Rest Context
-    if (QURC == null) { NullRefException(nameof(QURC), nameof(ResetScribeRepository), nameof(ScribeDataRazorViewControllerBase)); }
+    QURC.CatchNullObject(QurcKey, nameof(ResetScribeRepository), nameof(ScribeDataRazorViewControllerBase));
     ViewData[QurcKey] = QURC;
     // reset repository with current PDP Scribe Data Context
-    if (PSDC == null) { NullRefException(nameof(PSDC), nameof(ResetScribeRepository), nameof(ScribeDataRazorViewControllerBase)); }
-    PSDC.ResetRestContext(QURC);
+    PSDC.CatchNullObject(nameof(PSDC), nameof(ResetScribeRepository), nameof(ScribeDataRazorViewControllerBase));
+    PSDC.ResetQebiContext(QURC);
     // reset dropdownlists in ViewData if needed for front-end client
     if (dropDownLists)
     {

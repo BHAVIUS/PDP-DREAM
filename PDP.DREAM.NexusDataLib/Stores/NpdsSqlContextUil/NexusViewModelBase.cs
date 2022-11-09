@@ -9,7 +9,7 @@ using PDP.DREAM.CoreDataLib.Models;
 
 using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 using static PDP.DREAM.CoreDataLib.Types.PdpGuid;
-using static PDP.DREAM.CoreDataLib.Utilities.PdpStringFrasFormFile;
+using static PDP.DREAM.CoreDataLib.Utilities.PdpStringPhraseFormFile;
 
 namespace PDP.DREAM.NexusDataLib.Models;
 
@@ -168,7 +168,7 @@ public abstract class NexusViewModelBase : CoreResrepModelBase, ICoreResrepViewM
 
       statSumm.AppendLine("<div class='pdpGridCell3'>");
       statSumm.AppendLine($"<div><label>RecordHandle:</label>&nbsp;{RecordHandle}&nbsp;</div>");
-      statSumm.AppendLine($"<div><label>RecordManagedByAgent:</label>&nbsp;{ManagedByAgentName}&nbsp;</div>");
+      statSumm.AppendLine($"<div class='pdpStatusValid'><label>RecordManagedByAgent:</label>&nbsp;{ManagedByAgentName}&nbsp;</div>");
       statSumm.AppendLine($"<div><label>RecordCreatedOn:</label>&nbsp;{CreatedOn}&nbsp;</div>");
       statSumm.AppendLine($"<div><label>RecordCreatedByAgent:</label>&nbsp;{CreatedByAgentName}&nbsp;</div>");
       statSumm.AppendLine($"<div><label>RecordUpdatedOn:</label>&nbsp;{UpdatedOn}&nbsp;</div>");

@@ -12,6 +12,8 @@ public static partial class PdpAppConst
   public const string NLMMESHNOTICE = "US National Library of Medicine is the creator, maintainer, and provider of the NLM MeSH Descriptor Records contained in the NPDS Resource Representations. No modifications have been made to the original source Descriptor Records from NLM MeSH other than incorporation within the NPDS Message wrapper.";
   public const string NLMMICADNOTICE = "US National Library of Medicine is the creator, maintainer, and provider of the NLM MICAD metadata records contained in the NPDS Resource Representations. No modifications have been made to the original record metadata from NLM MICAD other than incorporation within the NPDS Message wrapper.";
 
+  public const string PdpDateTimeNowSortFormat = "yyyyMMddHHmmss";
+
   // TODO: eliminate redundancy with NpdsServiceDefaults
   public const string PdpIdentityDbConnName = "NpdsUserDbserver";
   // Used for cookie session authorization

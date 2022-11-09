@@ -3,7 +3,6 @@
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 using System;
-using System.Linq;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +26,7 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // do NOT call base.OnActionExecuting(oaeCntxt);
-    QURC = new QebUserRestContext(oaeCntxt.HttpContext.Request)
+    QURC = new QebUserRestContext(oaeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
@@ -53,7 +52,8 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
 
   // "nexus/agents/" constrained route for iaguid selected individual agent
   [HttpGet, Authorize]
-  [PdpRazorViewRoute("nexus/agents/{iaguid:guid}", $"Nexus{nameof(AgentsByGuid)}", false)]
+  [PdpRazorViewRoute("nexus/agents/{iaguid:guid}",
+    $"Nexus{nameof(AgentsByGuid)}", false)]
   public IActionResult AgentsByGuid(Guid iaguid)
   {
     throw new NotImplementedException();
@@ -66,7 +66,8 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   //   TODO: add regex constraint rrlistxnam = NpdsConst.RegexResRepListXnams
   //       examples show "{parameter:regex(theRegexPattern)}" where the RegexPattern is hardcoded
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/resreps/{rrguid:guid}/{rrlistxnam?}/{rritemguid:guid?}", $"Nexus{nameof(ResrepsByGuid)}", false)]
+  [PdpRazorViewRoute("nexus/resreps/{rrguid:guid}/{rrlistxnam?}/{rritemguid:guid?}",
+    $"Nexus{nameof(ResrepsByGuid)}", false)]
   public IActionResult ResrepsByGuid(Guid rrguid, string? rrlistxnam = "", Guid? rritemguid = null)
   {
     throw new NotImplementedException();
@@ -76,7 +77,8 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
 
   // 4-segment route with entityType selected collection of resreps
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/{serviceTag:NpdsPT}/{entityType:NpdsPT}/{infosetStatus:NpdsIS}", $"Nexus{nameof(ResrepsByEntityType)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/{serviceTag:NpdsPT}/{entityType:NpdsPT}/{infosetStatus:NpdsIS}",
+    $"Nexus{nameof(ResrepsByEntityType)}", false)]
   public IActionResult ResrepsByEntityType(string serviceType, string serviceTag, string entityType, string infosetStatus)
   {
     var es = string.Empty;
@@ -88,7 +90,8 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
 
   // 3-segment route with entityTag selected collection of resreps
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/{serviceTag:NpdsPT}/{entityTag:NpdsPT}/{entityVersion?}", $"Nexus{nameof(ResrepsByEntityTag)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/{serviceTag:NpdsPT}/{entityTag:NpdsPT}/{entityVersion?}",
+    $"Nexus{nameof(ResrepsByEntityTag)}", false)]
   public IActionResult ResrepsByEntityTag(string serviceType, string serviceTag, string entityTag, string entityVersion = "")
   {
     QURC.ParseNpdsUrlSegments(serviceType, serviceTag, entityTag, entityVersion);
@@ -99,7 +102,8 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
 
   // 2-segment route with serviceTag selected collection of resreps
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/{serviceTag:NpdsPT}", $"Nexus{nameof(ResrepsByServiceTag)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/{serviceTag:NpdsPT}",
+    $"Nexus{nameof(ResrepsByServiceTag)}", false)]
   public IActionResult ResrepsByServiceTag(string serviceType, string serviceTag)
   {
     QURC.ParseNpdsUrlSegments(serviceType, serviceTag);

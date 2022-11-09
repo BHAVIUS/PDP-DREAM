@@ -15,7 +15,8 @@ using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.NexusWebLib.Pages;
 
-[RequireHttps, Authorize(Roles = NpdsUser)]
+// TODO: clarify use of NpdsUser role
+[RequireHttps, Authorize]
 public class NwlHomeUserHelp : TkgnPageControllerBase
 {
   private const string rzrCntrllr = nameof(NwlHomeUserHelp);

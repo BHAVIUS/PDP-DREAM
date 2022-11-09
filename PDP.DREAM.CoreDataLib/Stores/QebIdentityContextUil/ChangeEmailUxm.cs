@@ -31,7 +31,7 @@ public class ChangeEmailUxm : ConfirmTokenUxm, IConfirmEmail, IFormTaskUxm
 
   public void InitPath()
   {
-    ReturnUrlPath = "/NPDS/AnonCore/ConfirmEmail";
+    ReturnUrlPath = "/NPDS/AnonMode/ConfirmEmail";
   }
 
   public string? OldEmail { get; set; } = string.Empty;

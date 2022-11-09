@@ -2,10 +2,10 @@
 
 ### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
-Current Version: Cervin 10.2.0  
-Required Package: Telerik.UI.for.AspNet.Core.2022.3.913.nupkg  
+Current Version: Aoraki 10.1.10  
+Required Package: Telerik.UI.for.AspNet.Core.2022.3.1012.nupkg  
 Required Database: Microsoft SQL Server 2019 v15.0.4249.2  
-Current DotNet Target: .NET 7.0.100-rc.1 with SDK 7.0.100-rc.1 and Visual Studio 17.4.0 Preview 2.1  
+Current DotNet Target: .NET 6.0.10 with SDK 6.0.403 and Visual Studio 17.4.0  
 Planned DotNet Target: maintain in most recent preview of Net 6, 7, 8  
 Dev/Test Focus Net 6 Aoraki: web apps with Telerik UI for ASP.Net Core MVC Views     
 Dev/Test Focus Net 7 Cervin: web apps with Telerik UI for ASP.Net Core Razor Pages  
@@ -15,12 +15,12 @@ Public Release: Initial 24 June 2021 in repository github.com/BHAVIUS/PDP-DREAM
 Visual Studio Solution of DotNet Projects and Assemblies  
 (stack dependencies configured as chain from top to bottom)  
 
-* PDP.DREAM.ScribeWebLib (PDP.Cervin.ScribeWebLib) for ACGT
-* PDP.DREAM.ScribeDataLib (PDP.Cervin.ScribeDataLib) for ACGT
-* PDP.DREAM.NexusWebLib (PDP.Cervin.NexusWebLib) for ACGT
-* PDP.DREAM.NexusDataLib (PDP.Cervin.NexusDataLib) for ACGT
-* PDP.DREAM.CoreWebLib (PDP.Cervin.CoreWebLib) for ACGT
-* PDP.DREAM.CoreDataLib (PDP.Cervin.CoreDataLib) for ACGT
+* PDP.DREAM.ScribeWebLib (PDP.Aoraki.ScribeWebLib) for ACGT
+* PDP.DREAM.ScribeDataLib (PDP.Aoraki.ScribeDataLib) for ACGT
+* PDP.DREAM.NexusWebLib (PDP.Aoraki.NexusWebLib) for ACGT
+* PDP.DREAM.NexusDataLib (PDP.Aoraki.NexusDataLib) for ACGT
+* PDP.DREAM.CoreWebLib (PDP.Aoraki.CoreWebLib) for ACGT
+* PDP.DREAM.CoreDataLib (PDP.Aoraki.CoreDataLib) for ACGT
 
 where A is Aoraki (Net 6), C is Cervin (Net 7), G is Gangkhar (Net 8), T is Tahtali (current)
 

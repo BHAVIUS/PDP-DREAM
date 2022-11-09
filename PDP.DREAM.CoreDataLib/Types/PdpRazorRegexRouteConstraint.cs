@@ -2,15 +2,6 @@
 // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-
-using PDP.DREAM.CoreDataLib.Models;
-
 namespace PDP.DREAM.CoreDataLib.Types;
 
 public abstract class PdpRazorRegexRouteConstraint : IRouteConstraint

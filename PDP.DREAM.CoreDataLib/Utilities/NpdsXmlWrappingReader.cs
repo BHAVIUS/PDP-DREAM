@@ -1,17 +1,6 @@
 ﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.IO;
-using System.Xml;
-
-using Newtonsoft.Json.Linq;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.CoreDataLib.Models;
-
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public class NpdsXmlWrappingReader : XmlReader, IXmlLineInfo
@@ -40,11 +29,12 @@ public class NpdsXmlWrappingReader : XmlReader, IXmlLineInfo
   private XmlReader baseXmlReader;
   protected XmlReader BaseXmlReader
   {
-    get { 
-      CatchNull(baseXmlReader, nameof(BaseXmlReader));
-      return baseXmlReader; }
+    get {
+      baseXmlReader.CatchNullObject(nameof(baseXmlReader), nameof(BaseXmlReader), nameof(NpdsXmlWrappingReader));
+      return baseXmlReader;
+    }
     set {
-      CatchNull(value, nameof(BaseXmlReader));
+      value.CatchNullObject(nameof(baseXmlReader), nameof(BaseXmlReader), nameof(NpdsXmlWrappingReader));
       baseXmlReader = value;
     }
   }

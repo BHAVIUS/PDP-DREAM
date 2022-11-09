@@ -43,11 +43,11 @@ public abstract class NexusDataRazorViewControllerBase : CoreDataRazorViewContro
   protected void ResetNexusRepository()
   {
     // reset repository with current QEB User Rest Context
-    if (QURC == null) { NullRefException(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRazorViewControllerBase)); }
+    QURC.CatchNullObject(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRazorViewControllerBase));
     ViewData[nameof(QURC)] = QURC;
     // reset repository with current PDP Nexus Data Context
-    if (PNDC == null) { NullRefException(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRazorViewControllerBase)); }
-    pdpNexusDataCntxt.ResetRestContext(QURC);
+    PNDC.CatchNullObject(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRazorViewControllerBase));
+    pdpNexusDataCntxt.ResetQebiContext(QURC);
   }
 
   public NexusDataRazorViewControllerBase()

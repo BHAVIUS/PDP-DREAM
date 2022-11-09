@@ -5,6 +5,11 @@
   // Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
 *@
 
+@{
+  QebUserRestContext qurc = Model.QURC;
+  var hasAdminAccess = qurc.ClientHasAdminAccess;
+}
+
 <script id="ResrepRecordToolbar" type="text/x-kendo-template">
   <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
   <span id="ResrepRootStatus" class="pdpResrepStatus"></span>
@@ -68,7 +73,10 @@
 </script>
 
 <script id="ServiceDefaultToolbar" type="text/x-kendo-template">
-  <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
+  @if (hasAdminAccess)
+  {
+    <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
+  }
   <span id="ServiceDefaultStatus" class="pdpResrepStatus"></span>
 </script>
   

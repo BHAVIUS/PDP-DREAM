@@ -26,7 +26,7 @@ var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
 
-@Html.Raw(psr.FormatPageTitle(qurc.RecordAccess.ToString() + " Manage Requests for NPDS Resrep Author"))
+@Html.Raw(psr.FormatBodyTitle(qurc.RecordAccess.ToString() + " Manage Requests for NPDS Resrep Author"))
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
 @(Html.Kendo()

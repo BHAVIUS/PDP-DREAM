@@ -2,17 +2,9 @@
 // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.IO;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
 namespace PDP.DREAM.CoreDataLib.Models;
 
-public class PdpSiteSettings : PdpConfigManager // , IPdpSiteSettings
+public class PdpSiteSettings : PdpConfigManager
 {
   public PdpSiteSettings(string projCodedir) : base(projCodedir)
   {
@@ -56,10 +48,9 @@ public class PdpSiteSettings : PdpConfigManager // , IPdpSiteSettings
 
     WspldPageLayout = ParseAppStringSetting(NamesForSiteSettings.PdpSetPageLayout);
     WspldPageMenu = ParseAppStringSetting(NamesForSiteSettings.PdpSetPageMenu);
-    WspldPageTitle = ParseAppStringSetting(NamesForSiteSettings.PdpSetPageTitle);
     WspldViewLayout = ParseAppStringSetting(NamesForSiteSettings.PdpSetViewLayout);
     WspldViewMenu = ParseAppStringSetting(NamesForSiteSettings.PdpSetViewMenu);
-    WspldViewTitle = ParseAppStringSetting(NamesForSiteSettings.PdpSetViewTitle);
+    WspldBodyTitle = ParseAppStringSetting(NamesForSiteSettings.PdpSetBodyTitle);
 
     WspldHeaderImageLogo = ParseAppStringSetting(NamesForSiteSettings.PdpSetHeaderImageLogo);
     WspldHeaderTitle = ParseAppStringSetting(NamesForSiteSettings.PdpSetHeaderTitle);
@@ -123,7 +114,8 @@ public class PdpSiteSettings : PdpConfigManager // , IPdpSiteSettings
   public string AppSiteTitle { get; init; } = string.Empty;
 
 
-  // Wspld = Web Site Page Layout Defaults should be settable
+  // Wspld = Web Site Razor Page/View Layout Defaults should be settable
+  public string WspldBodyTitle { get; set; } = string.Empty;
   public string WspldFooterCodebuildLine { get; set; } = string.Empty;
   public string WspldFooterContactLine { get; set; } = string.Empty;
   public string WspldFooterCopyrightLine { get; set; } = string.Empty;
@@ -137,10 +129,8 @@ public class PdpSiteSettings : PdpConfigManager // , IPdpSiteSettings
   public string WspldMetatagKeywords { get; set; } = string.Empty;
   public string WspldPageLayout { get; set; } = string.Empty;
   public string WspldPageMenu { get; set; } = string.Empty;
-  public string WspldPageTitle { get; set; } = string.Empty;
   public string WspldViewLayout { get; set; } = string.Empty;
   public string WspldViewMenu { get; set; } = string.Empty;
-  public string WspldViewTitle { get; set; } = string.Empty;
 
 
   // boolean properties in alphabetic order

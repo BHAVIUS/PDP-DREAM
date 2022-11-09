@@ -3,15 +3,12 @@
 
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-
 using PDP.DREAM.CoreDataLib.Models;
 using PDP.DREAM.CoreDataLib.Stores;
 using PDP.DREAM.CoreWebLib.Controllers;
-
 using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
@@ -21,21 +18,23 @@ namespace PDP.DREAM.CoreWebLib.Pages;
 public class PdpSiteEntities : CoreDataRazorPageControllerBase
 {
   private const string rzrCntrllr = nameof(PdpSiteEntities);
+
   public PdpSiteEntities(QebIdentityContext? userCntxt = null,
-    CoreDbsqlContext? npdsCntxt = null) : base(userCntxt, npdsCntxt) { }
+    CoreDbsqlContext? npdsCntxt = null) : base(userCntxt, npdsCntxt)
+  {
+  }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext.Request)
-    {
+    QURC = new QebUserRestContext(exeCntxt.HttpContext) {
       DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
       RecordAccess = NpdsRecordAccess.AnonUser,
       UserModeClientRequired = false,
       QebSessionValueIsRequired = false
     };
-    PSR = new PdpSiteRazorModel(DepPdpSiteEntities, $"{PDPSS.AppOwnerShortName}: PdpSite Entities");
+    PSR = new PdpSiteRazorModel(DepPdpSiteEntities, $"{DepPdpDream}: PdpSite Entities");
     PSR.InitRazorPageMenus("_PdpSiteSpanPageMenu");
     ResetCoreRepository();
   }
@@ -65,7 +64,6 @@ public class PdpSiteEntities : CoreDataRazorPageControllerBase
     DataSourceResult result = PCDC.ListViewableEntityTypes().ToDataSourceResult(request);
     return new JsonResult(result);
   }
-
 } // end class
 
 // end file

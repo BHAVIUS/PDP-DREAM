@@ -102,7 +102,7 @@ public partial class TkgsPageControllerBase
   {
     QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, "Edit");
     ResetScribeRepository();
-    foreach (var rrr in PSDC.ListEditableResrepStems())
+    foreach (var rrr in PSDC.ListEditableResrepRoots())
     {
       var recordGuid = PdpGuid.ParseToNonNullable(rrr.RRRecordGuid, Guid.Empty);
       if (!PdpGuid.IsInvalidGuid(recordGuid))

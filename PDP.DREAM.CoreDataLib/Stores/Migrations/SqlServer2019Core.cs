@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.FileProviders;
 
@@ -71,7 +72,7 @@ public static class SqlServer2019Core
       var sqlScript = File.ReadAllText(fileInfo.PhysicalPath, Encoding.UTF8);
       var mstrDbconstr = NPDSSD.NpdsCoreDbconstr
         .Replace("PdpCore10", "master");
-      errorMessage = PdpSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
+      errorMessage = QebSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
       // renew/reset the context
       try
       {

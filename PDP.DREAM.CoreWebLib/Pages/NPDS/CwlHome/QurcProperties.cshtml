@@ -3,14 +3,15 @@
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/CwlHome/QurcProperties"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepCwlHomeQurcProperties)]
 @model CwlHomeQurcProperties
 @{
   PdpSiteRazorModel psr = Model.PSR;
   QebUserRestContext qurc = Model.QURC;
   var propList = qurc.GetType().GetProperties().OrderBy(p => p.Name);
 }
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psr.FormatBodyTitle())
 
 @if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
 {

@@ -2,26 +2,20 @@
 
   <!-- project declaration -->
   <PropertyGroup>
-    <AssemblyName>PDP.Cervin.CoreWebLib</AssemblyName>
+    <AssemblyName>PDP.Aoraki.CoreWebLib</AssemblyName>
     <RootNamespace>PDP.DREAM.CoreWebLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
-    <AssemblyVersion>10.1.9</AssemblyVersion>
-    <FileVersion>10.1.9</FileVersion>
-    <Version>10.1.9</Version>
-    <Platforms>x64;ARM64;</Platforms>
+    <AssemblyVersion>10.1.10</AssemblyVersion>
+    <FileVersion>10.1.10</FileVersion>
+    <Version>10.1.10</Version>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <!-- dev/test/build/debug configuration -->
   <PropertyGroup>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <NoWarn>CS0168;CS8032;CS8070;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8629;CS8765;CS8767;IDE0047;IDE0059;</NoWarn>
-    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <!-- required references -->

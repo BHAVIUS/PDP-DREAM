@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
@@ -91,12 +89,12 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   {
 #if DEBUG
     CatchNullQurc(nameof(ResetCoreRepository), rzrCntrllr);
-    if (PCDC == null) { NullRefException(PcdcKey, nameof(ResetCoreRepository), rzrCntrllr); }
+    if (PCDC == null) { PCDC.CatchNullObject(PcdcKey, nameof(ResetCoreRepository), rzrCntrllr); }
 #endif
     // reset ViewData with current QEB User Rest Context
     ViewData[QurcKey] = QURC;
     // reset repository with current PDP Core Data Context
-    pdpCoreDataCntxt.ResetRestContext(QURC);
+    pdpCoreDataCntxt.ResetQebiContext(QURC);
   }
 
   public CoreDataRazorViewControllerBase()
@@ -206,17 +204,10 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 
   protected QebUserRestContext InitRestContext()
   {
-    var baseUrl = PdpHttpContextAccessor.BaseUrl;
-    var httpRqst = PdpHttpContextAccessor.Current.Request;
-    return InitRestContext(httpRqst);
-  }
-  protected QebUserRestContext InitRestContext(HttpRequest httpRqst)
-  {
-    if (httpRqst == null)
-    { NullRefException(nameof(httpRqst), nameof(InitRestContext), rzrCntrllr); }
-    var qurc = new QebUserRestContext(httpRqst);
+    var qurc = new QebUserRestContext(HttpContext);
     return qurc;
   }
+
   protected virtual ILogger InitLogger<TLogger>(ILoggerFactory? lgrFtry = null)
   {
     if (lgrFtry == null) { lgrFtry = new LoggerFactory(); }
@@ -226,8 +217,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 
   protected virtual void CatchNullQurc(string methodName, string className)
   {
-    if (QURC == null)
-    { NullRefException(QurcKey, methodName, className); }
+    QURC.CatchNullObject(QurcKey, methodName, className);
   }
   protected virtual void DebugQurcData(object thing)
   {
@@ -274,7 +264,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     switch (NpdsUserRoleRequired)
     {
       case NamesForIdentityRoles.NpdsAdmin:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
@@ -286,7 +276,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
         roleIsVerified = CheckCoreUserSession();
         break;
       case NamesForIdentityRoles.NpdsEditor:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
@@ -298,7 +288,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
         roleIsVerified = CheckCoreUserSession();
         break;
       case NamesForIdentityRoles.NpdsAuthor:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
@@ -310,7 +300,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
         roleIsVerified = CheckCoreUserSession();
         break;
       case NamesForIdentityRoles.NpdsAgent:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
@@ -322,7 +312,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
         roleIsVerified = CheckCoreUserSession();
         break;
       case NamesForIdentityRoles.NpdsUser:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
@@ -334,7 +324,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
         roleIsVerified = CheckCoreUserSession();
         break;
       case NamesForIdentityRoles.NpdsAuth:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
@@ -346,7 +336,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
         if (OnlineUserIsAuthenticated) { roleIsVerified = true; }
         break;
       case NamesForIdentityRoles.NpdsAnon:
-        QURC = new QebUserRestContext(httpReqst)
+        QURC = new QebUserRestContext(HttpContext)
         {
           NpdsUserRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
