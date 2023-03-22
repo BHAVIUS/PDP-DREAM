@@ -1,55 +1,39 @@
 ﻿// LoginUser.cshtml.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
 public class AnonModeLoginUser : CoreDataRazorPageControllerBase
 {
-  private const string rzrCntrllr = nameof(AnonModeLoginUser);
-  public AnonModeLoginUser(QebIdentityContext? userCntxt = null, CoreDbsqlContext? npdsCntxt = null,
-    IEmailSender? emlSndr = null, ISmsSender? smsSndr = null, ILoggerFactory? lgrFtry = null)
-    : base(userCntxt, npdsCntxt, emlSndr, smsSndr, lgrFtry) { }
+  private const string rzrClass = nameof(AnonModeLoginUser);
+  public AnonModeLoginUser(ILoggerFactory lgrFtry,
+    IEmailSender emlSndr, ISmsSender smsSndr)
+    : base(lgrFtry, emlSndr, smsSndr) { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext)
+    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
       RecordAccess = NpdsRecordAccess.AnonUser,
       UserModeClientRequired = false,
-      QebSessionValueIsRequired = false
+      SessionClientRequired = false
     };
-    PSR = new PdpSiteRazorModel(DepAnonModeLoginUser, $"{PDPSS.AppOwnerShortName}: Login User");
-    PSR.InitRazorPageMenus("_AnonModeSpanPageMenu");
+    PSRM = new PdpSiteRazorModel(DepAnonModeLoginUser, $"{PDPSS.AppOwnerShortName}: Login User");
+    PSRM.InitRazorPageMenus("_AnonModeSpanPageMenu");
+    ResetQebiRepository();
     ResetCoreRepository();
   }
 
   // OnGet before OnPageHandlerExecuted
-  public IActionResult OnGet(string? returnUrl = null) // TODO: null vs ""
+  public IActionResult OnGet(string? returnUrl) // TODO: null vs ""
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnGet), rzrCntrllr);
-    PSR.DebugRazorPageStrings();
+    CatchNullQurc(nameof(OnGet), rzrClass);
+    PSRM.DebugRazorPageStrings();
 #endif
     returnUrl = ArgCheckReturnUrl(returnUrl);
     if (OnlineUserIsAuthenticated)
@@ -59,23 +43,14 @@ public class AnonModeLoginUser : CoreDataRazorPageControllerBase
     else
     {
       QebUserSignoutAsync(); // clear authentication cookie
-      UXM = new LoginUserUxm()
-      {
-        ReturnUrl = returnUrl
-      };
-
+      UXM = new LoginUserUxm() { ReturnUrl = returnUrl };
       return Page();
     }
   }
 
   // OnPageHandlerExecuted before the [RazorPage].cshtml
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
-  {
-#if DEBUG
-    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrCntrllr);
-    DebugQurcData(exeCntxt.Result);
-#endif
-  }
+
+  // Other page handlers and properties
 
   [BindProperty]
   public LoginUserUxm UXM { get; set; } = new LoginUserUxm();
@@ -128,22 +103,22 @@ public class AnonModeLoginUser : CoreDataRazorPageControllerBase
       {
         // create/update PDP Agent Session
         List<string>? qebUsrRoles = QUDC.GetUserRoleNamesByUserGuid(qebUsr.UserGuidKey);
-        if (qebUsrRoles.Contains(NamesForIdentityRoles.NpdsAgent.ToString()))
+        if (qebUsrRoles.Contains(NamesForClientRoles.NpdsAgent.ToString()))
         {
-          var agentGuid = (Guid?)QURC.QebAgentGuid;
-          var sessionGuid = (Guid?)QURC.QebSessionGuid;
+          var agentGuid = (Guid?)QURC.ClientAgentGuid;
+          var sessionGuid = (Guid?)QURC.ClientSessionGuid;
           var errorCode = PCDC.CoreSessionAgentEdit(PDPSS.AppSecureUiaaGuid, qebUsr.UserGuidKey,
             qebUsr.UserNameDisplayed, ref agentGuid, ref sessionGuid);
           if (errorCode == 0)
           {
-            QURC.QebAgentGuid = agentGuid ?? Guid.Empty;
-            QURC.QebSessionGuid = sessionGuid ?? Guid.Empty;
-            errorCode = QUDC.QebIdentityAppUserStamp(PDPSS.AppSecureUiaaGuid, qebUsr.UserGuidKey, QURC.QebSessionGuid);
+            QURC.ClientAgentGuid = agentGuid ?? Guid.Empty;
+            QURC.ClientSessionGuid = sessionGuid ?? Guid.Empty;
+            errorCode = QUDC.QebIdentityAppUserStamp(PDPSS.AppSecureUiaaGuid, qebUsr.UserGuidKey, QURC.ClientSessionGuid);
           }
           if (errorCode == 0)
           {
             // Signin with user roles and agent session
-            qebSignin = QebUserSignin(qebUsr.UserName, qebUsr.UserGuidKey, QURC.QebAgentGuid, QURC.QebSessionGuid, qebUsrRoles);
+            qebSignin = QebUserSignin(qebUsr.UserName, qebUsr.UserGuidKey, QURC.ClientAgentGuid, QURC.ClientSessionGuid, qebUsrRoles);
             // uxm.ReturnUrl = AppendKeys(uxm.ReturnUrl, agt.SessionGuidKey, agt.AgentGuidKey, agt.IdentityUserGuidRef);
           }
         }

@@ -1,0 +1,244 @@
+﻿/* ----------------------------------------------------------
+-- Classes have strings preceded by a period (use snake casing)
+-- Ids have strings preceded by a hash (use camel Casing)
+-- Use pdp prefix for  PORTAL-DOORS Project
+-- Size properties with 4 values: top, right, bottom, left
+-- Size properties with 3 values: top, right/left, bottom
+-- Size properties with 2 values: top/bottom, right/left
+-----------------------------------------------------------*/
+
+/* HTML element default attributes */
+
+a {
+  text-decoration: none;
+  color: blue;
+}
+
+  a:hover {
+    text-decoration: underline;
+    color: blue;
+  }
+
+body {
+  color: black;
+  font-size: medium;
+  font-weight: 500;
+}
+
+blockquote {
+  border-left: 0.3em solid powderblue;
+  padding: 1em;
+}
+
+dl dt, h1, h2, h3, h4, h5, h6 {
+  color: navy;
+}
+
+em {
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* Set width on the form input elements since they're 100% wide by default
+  leave input and textarea at 100% but set max-width of select */
+select {
+  max-width: 22em;
+}
+
+table, th, td {
+  border: 1px solid navy;
+  border-collapse: collapse;
+}
+
+/* HTML class attributes */
+
+.pdpPage {
+  border: 0 none;
+  clear: both;
+  margin-bottom: 1.0rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.0rem;
+}
+
+.pdpClear {
+  border: 0 none;
+  clear: both;
+  margin: 0;
+  padding: 0;
+}
+
+.pdpHead {
+  border: 0 none;
+  clear: both;
+  margin: 0 1.0em;
+  padding: 0;
+}
+
+.pdpBody {
+  border: 0 none;
+  clear: both;
+  margin: 0 1.0em;
+  padding: 0;
+}
+
+.pdpBodyTitle {
+  padding-bottom: 0.5em;
+}
+
+.pdpFoot {
+  border: 0 none;
+  clear: both;
+  font-size: small;
+  margin: 0 1.0em;
+  padding: 0;
+}
+
+.pdpCenter {
+  text-align: center;
+  vertical-align: middle;
+  width: auto;
+}
+
+.pdpFontDefault {
+  font-size: medium;
+  font-weight: 500;
+}
+
+.pdpGrid1x3 {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto;
+}
+
+.pdpGrid1x4 {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto auto;
+}
+
+.pdpGridCell1 {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.pdpGridCell2 {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.pdpGridCell3 {
+  grid-row: 1;
+  grid-column: 3;
+}
+
+.pdpGridCell4 {
+  grid-row: 1;
+  grid-column: 4;
+}
+
+.pdpImageLeft {
+  float: left;
+  padding-right: 1em;
+}
+
+.pdpImageRight {
+  float: right;
+  padding-left: 1em;
+}
+
+.pdpRecordStatus {
+  padding-left: 1em;
+  color: blue;
+}
+
+.pdpResrepStatus {
+  padding-left: 1em;
+  color: navy;
+}
+
+.pdpFgroupStatus {
+  padding-left: 1em;
+  color: navy;
+}
+
+.pdpTaskPassed {
+  color: forestgreen;
+}
+
+.pdpTaskFailed {
+  color: orangered;
+}
+
+.pdpStatusPending {
+  color: blue;
+}
+
+.pdpStatusPartial {
+  color: darkgreen;
+}
+
+.pdpStatusUnknown {
+  color: darkorange;
+}
+
+.pdpStatusInvalid {
+  color: red;
+}
+
+.pdpStatusValid {
+  color: green;
+}
+
+.pdpTable {
+  border: 1px solid navy;
+  border-collapse: collapse;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+}
+
+/* HTML element ids */
+
+#NpdsGrid {
+  padding-bottom: 1em;
+}
+
+
+/* override Telerik defaults */
+
+.k-content {
+  color: black;
+}
+
+.k-grid a {
+  color: blue;
+}
+
+.k-pager-numbers .k-link {
+  color: navy;
+}
+
+  .k-pager-numbers .k-link.k-state-selected {
+    color: navy;
+  }
+
+  .k-pager-numbers .k-button-flat-primary {
+    color: blue;
+  }
+
+/* override Bootstrap defaults */
+@media (min-width: 1200px) {
+  .container-fluid {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Override default bootstrap behavior where horizontal description lists
+   truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+  white-space: normal;
+}

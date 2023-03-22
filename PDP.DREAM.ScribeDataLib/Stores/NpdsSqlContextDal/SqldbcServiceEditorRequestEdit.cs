@@ -1,14 +1,6 @@
 ﻿// SqldbcUilServiceEditorRequestEdit.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Models;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -100,10 +92,10 @@ public partial class ScribeDbsqlContext
     try
     {
       IQueryable<NexusServiceEditorRequest> qry = this.NexusServiceEditorRequests;
-      if (QURC.ClientHasAuthorOrEditorAccess && !QURC.ClientHasAdminAccess)
+      if (NPDSCP.ClientHasAuthorOrEditorAccess && !NPDSCP.ClientHasAdminAccess)
       {
         qry = qry.Where(r => (r.IsDeleted == false) &&
-          (r.AccessRequestedForAgentGuidRef == QURC.QebAgentGuid));
+          (r.AccessRequestedForAgentGuidRef == NPDSCP.ClientAgentGuid));
       }
       result = qry.OrderBy(r => r.ResrepEntityName).ToEditable().ToList();
     }
@@ -135,16 +127,16 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var infosetGuid = PdpGuid.ParseToNonNullable(editObj.RRInfosetGuid, Guid.Empty);
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     NexusServiceEditorRequest storObj;
     if (isNewRecord)
     {
       // insert new record
-      internalGuid = Guid.NewGuid();
+      fgroupGuid = Guid.NewGuid();
       storObj = new NexusServiceEditorRequest()
       {
         AccessRequestedForAgentGuidRef = agentGuid,
@@ -152,15 +144,15 @@ public partial class ScribeDbsqlContext
         UpdatedByAgentGuidRef = agentGuid,
         ResrepIGuidRef = infosetGuid,
         ResrepRGuidRef = recordGuid,
-        FgroupGuidKey = internalGuid
+        FgroupGuidKey = fgroupGuid
       };
     }
     else
     {
       // update existing record
-      storObj = GetStorableServiceEditorRequestByKey(internalGuid);
+      storObj = GetStorableServiceEditorRequestByKey(fgroupGuid);
       storObj.UpdatedByAgentGuidRef = agentGuid;
-      if (QURC.ClientHasAdminAccess)
+      if (NPDSCP.ClientHasAdminAccess)
       {
         storObj.RequestIsApproved = editObj.RequestIsApproved;
         storObj.RequestIsDenied = editObj.RequestIsDenied;
@@ -174,7 +166,7 @@ public partial class ScribeDbsqlContext
     {
       var errCod = ScribeServiceEditorRequestEdit(
         storObj.AccessRequestedForAgentGuidRef,
-        agentGuid, infosetGuid, recordGuid, internalGuid,
+        agentGuid, infosetGuid, recordGuid, fgroupGuid,
         storObj.RequestIsApproved, storObj.RequestIsDenied);
       if (errCod < 0) { errMsg = $"Error code = {errCod} while writing to database {recordName} record with index {recordIndex}"; }
     }
@@ -184,7 +176,7 @@ public partial class ScribeDbsqlContext
       errMsg = StoreChanges();
     }
     // refresh the edit object
-    editObj = GetEditableServiceEditorRequestByKey(internalGuid);
+    editObj = GetEditableServiceEditorRequestByKey(fgroupGuid);
     if (editObj == null) { editObj = new ServiceEditorRequestEditModel(); }
     // refresh the recordIndex
     recordIndex = editObj.HasIndex;
@@ -204,14 +196,14 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var agentGuid = NPDSCP.ClientAgentGuid;
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     if (!isNewRecord) // delete existing record
     {
-      var storObj = GetStorableServiceEditorRequestByKey(internalGuid);
+      var storObj = GetStorableServiceEditorRequestByKey(fgroupGuid);
       storObj.DeletedByAgentGuidRef = agentGuid;
-      storObj.IsDeleted = QURC.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
+      storObj.IsDeleted = NPDSCP.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
       if (byStorProc)
       {
         var errCod = ScribeServiceEditorRequestDelete(
@@ -225,7 +217,7 @@ public partial class ScribeDbsqlContext
         errMsg = StoreChanges();
       }
       // refresh the edit object
-      editObj = GetEditableServiceEditorRequestByKey(internalGuid);
+      editObj = GetEditableServiceEditorRequestByKey(fgroupGuid);
       if (editObj == null) { editObj = new ServiceEditorRequestEditModel(); }
       // update the status message
       if (string.IsNullOrEmpty(errMsg)) { editObj.PdpStatusMessage = $"{recordName} record with index {recordIndex} deleted from database"; }

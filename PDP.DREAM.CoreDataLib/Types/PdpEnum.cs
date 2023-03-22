@@ -1,5 +1,5 @@
 ﻿// PdpEnum.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Types;
@@ -12,11 +12,20 @@ namespace PDP.DREAM.CoreDataLib.Types;
 public static class PdpEnum<TEnum>
   where TEnum : notnull
 {
-  public static readonly Type GetEnumType = typeof(TEnum);
-  public static readonly Type GetBaseType = Enum.GetUnderlyingType(GetEnumType);
+  public static readonly Type theEnumType = typeof(TEnum);
+  public static readonly Type theBaseType = Enum.GetUnderlyingType(theEnumType);
 
   public static IList<TEnum> PdpEnumList;
   public static Dictionary<TEnum, string> PdpEnumDict;
+
+  public static bool Exists(TEnum enmValue)
+  {
+    return Enum.IsDefined(theEnumType, enmValue);
+  }
+  public static bool Exists(string strValue)
+  {
+    return Enum.IsDefined(theEnumType, strValue);
+  }
 
   // byte numValue to typed enum
   //public static TEnum ParseNumeric(byte numValue)
@@ -74,6 +83,10 @@ public static class PdpEnum<TEnum>
     return enmValue;
   }
 
+  public static IEnumerable<TEnum> GetValues()
+  {
+    return Enum.GetValues(theEnumType).Cast<TEnum>();
+  }
   public static IList<TEnum> CreateList()
   {
     PdpEnumList = new List<TEnum>();
@@ -110,9 +123,9 @@ public static class PdpEnum<TEnum>
   public static Dictionary<string, string> CreateStringKeyDictionary()
   {
     var dict = new Dictionary<string, string>();
-    foreach (object enmItem in Enum.GetValues(GetEnumType))
+    foreach (object enmItem in Enum.GetValues(theEnumType))
     {
-      var key = Convert.ChangeType(enmItem, GetBaseType).ToString();
+      var key = Convert.ChangeType(enmItem, theBaseType).ToString();
       var val = enmItem.ToString();
       dict.Add(key, val);
     }

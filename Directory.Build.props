@@ -2,6 +2,7 @@
   <ItemGroup>
     <AssemblyAttribute Include="PDP.DREAM.CoreDataLib.Models.PdpCodeDateAttribute">
       <_Parameter1>$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</_Parameter1>
+      <_Parameter1_TypeName>System.String</_Parameter1_TypeName>
     </AssemblyAttribute>
   </ItemGroup>
   <PropertyGroup>
@@ -23,7 +24,7 @@
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 </Project>

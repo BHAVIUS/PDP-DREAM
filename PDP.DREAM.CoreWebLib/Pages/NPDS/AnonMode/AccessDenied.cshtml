@@ -1,15 +1,15 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page "/NPDS/AnonMode/AccessDenied"
 @model AnonModeAccessDenied
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  // QebUserRestContext qurc = Model.QURC;
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatBodyTitle())
+@Html.Raw(psrm.FormatBodyTitle())
 
 <p>Access denied to requested resource. Authorization required.</p>
 

@@ -1,13 +1,6 @@
 ﻿// SqldbcUilResrepRootEdit.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Models;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -19,7 +12,7 @@ public partial class ScribeDbsqlContext
     var errMsg = string.Empty;
     var recordName = editObj.ItemXnam;
     var recordHandle = editObj.RecordHandle;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var infosetGuid = PdpGuid.ParseToNonNullable(editObj.RRInfosetGuid, Guid.Empty);
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
     var isNewRecord = recordGuid.IsEmpty();
@@ -62,7 +55,7 @@ public partial class ScribeDbsqlContext
     Guid? registryGuid = Guid.Empty;
     Guid? directoryGuid = Guid.Empty;
     Guid? registrarGuid = Guid.Empty;
-    errCod = CoreDefaultServices(QURC.DiristryTag, ref diristryGuid, ref registryGuid, ref directoryGuid, ref registrarGuid);
+    errCod = CoreDefaultServices(NPDSCP.DiristryTag, ref diristryGuid, ref registryGuid, ref directoryGuid, ref registrarGuid);
     storObj.RecordDiristryGuidRef = PdpGuid.ParseToNonNullable(diristryGuid, Guid.Empty); // Nexus
     storObj.RecordRegistryGuidRef = PdpGuid.ParseToNonNullable(registryGuid, Guid.Empty); // PORTAL
     storObj.RecordDirectoryGuidRef = PdpGuid.ParseToNonNullable(directoryGuid, Guid.Empty); // DOORS
@@ -87,7 +80,7 @@ public partial class ScribeDbsqlContext
     storObj.EntityNature = editObj.EntityNature.ParseLeft(1024);
 
     // not allowed for Agents
-    if (QURC.ClientHasScribeEditAccess)
+    if (NPDSCP.ClientHasScribeEditAccess)
     {
       // when not already initialized elsewhere
       if (string.IsNullOrWhiteSpace(editObj.EntityInitialTag))
@@ -142,7 +135,7 @@ public partial class ScribeDbsqlContext
   {
     var errorMessage = string.Empty;
     var recordMessage = $" {editObj.ItemXnam} record ";
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
     var isNewRecord = recordGuid.IsEmpty();
     NexusResrepRoot storObj;
@@ -154,7 +147,7 @@ public partial class ScribeDbsqlContext
       {
         recordMessage = $" {recordMessage} with handle {storObj.RecordHandle} ";
         storObj.RecordDeletedByAgentGuidRef = agentGuid;
-        storObj.RecordIsDeleted = QURC.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
+        storObj.RecordIsDeleted = NPDSCP.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
         if (byStorProc)
         {
           var errorCode = ScribeResrepRootDelete(
@@ -184,7 +177,7 @@ public partial class ScribeDbsqlContext
     var reqrel = string.Empty;
     var recordName = editObj.ItemXnam;
     var recordHandle = editObj.RecordHandle;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var infosetGuid = PdpGuid.ParseToNonNullable(editObj.RRInfosetGuid, Guid.Empty);
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
     var isNewRecord = recordGuid.IsEmpty();
@@ -195,7 +188,7 @@ public partial class ScribeDbsqlContext
 
       if (string.IsNullOrEmpty(errMsg))
       {
-        reqrel = ((editObj.ManagedByAgentGuid == QURC.QebAgentGuid) ? "released" : "requested");
+        reqrel = ((editObj.ManagedByAgentGuid == NPDSCP.ClientAgentGuid) ? "released" : "requested");
         editObj.PdpStatusLabel = reqrel;
         editObj.PdpStatusMessage = $"Authorship for record {recordHandle} has been {reqrel}";
       }
@@ -212,7 +205,7 @@ public partial class ScribeDbsqlContext
     var errMsg = string.Empty;
     var recordName = editObj.ItemXnam;
     var recordHandle = editObj.RecordHandle;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
     var isNewRecord = recordGuid.IsEmpty();
     if (isNewRecord)

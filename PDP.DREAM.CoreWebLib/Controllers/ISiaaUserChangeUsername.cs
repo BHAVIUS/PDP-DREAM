@@ -1,12 +1,6 @@
 ﻿// ISiaaUserChangeUsername.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
 
@@ -18,11 +12,11 @@ public partial interface ISiaaUser
     uxm.PassWord = password;
     uxm.SecurityToken = securitytoken;
     uxm.NewUsername = newusername;
-    uxm = ChangeUsernameWithToken(uxm, new QebIdentityContext());
+    uxm = ChangeUsernameWithToken(uxm, new QebiDbsqlContext());
     return uxm;
   }
 
-  protected static ChangeUsernameUxm ChangeUsernameWithToken(ChangeUsernameUxm uxm, QebIdentityContext qudc)
+  protected static ChangeUsernameUxm ChangeUsernameWithToken(ChangeUsernameUxm uxm, QebiDbsqlContext qudc)
   {
     try
     {
@@ -72,7 +66,7 @@ public partial interface ISiaaUser
   }
 
   // requires authenticated login to change Username
-  protected static ChangeUsernameUxm ChangeUsernameWithOld(ChangeUsernameUxm uxm, QebIdentityContext qudc)
+  protected static ChangeUsernameUxm ChangeUsernameWithOld(ChangeUsernameUxm uxm, QebiDbsqlContext qudc)
   {
     uxm.ErrorOccurred = false;
     uxm.DbfieldReset = false;
@@ -115,7 +109,7 @@ public partial interface ISiaaUser
     return uxm;
   }
 
-  protected static ChangeUsernameUxm StoreUsername(ChangeUsernameUxm uxm, QebIdentityAppUser usr, QebIdentityContext qudc)
+  protected static ChangeUsernameUxm StoreUsername(ChangeUsernameUxm uxm, QebIdentityAppUser usr, QebiDbsqlContext qudc)
   {
     var errorCode = qudc.QebIdentityAppUserUpdateUsername(usr.AppGuidRef,
       usr.UserGuidKey, usr.UserName, usr.UserNameDisplayed, usr.SecurityToken,

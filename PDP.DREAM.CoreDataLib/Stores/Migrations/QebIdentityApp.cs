@@ -1,8 +1,4 @@
-﻿using System;
-
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace PDP.DREAM.CoreDataLib.Migrations;
+﻿namespace PDP.DREAM.CoreDataLib.Migrations;
 
 public partial class CreateQebIdentityApp : Migration
 {

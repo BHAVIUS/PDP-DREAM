@@ -1,0 +1,71 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "{recordAccess?}"
+@attribute [PdpRazorPageRoute(DepScribeWebLib, DepScribeServerImportNpdsQuads)]
+@model ScribeServerImportNpdsQuads
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+  // TODO: convert DiristryList to some analogous equivalent usable by GetEnumSelectList
+  // TODO: write a PDP variant of GetEnumSelectList
+  IEnumerable<SelectListItem>? DiristryList;
+  try { DiristryList = (IEnumerable<SelectListItem>)ViewData["CoreDiristryListMvc"]; }
+  catch { DiristryList = null; }
+  var DiristryLabel = "Select diristry";
+  // var BcrFormatList = Html.GetEnumSelectList<BcrConstants.BbnewtFormatName>();
+  // var BcrFormatLabel = "Select format";
+  // column formatting
+  var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
+  var Numf3Format = "{0:n3}";
+  var labelNormal = "control-label col-md-3";
+  var controlNormal = "form-control col-md-3";
+  var warningMessage = labelNormal + " text-danger";
+  var labelWide = "control-label col-md-6";
+  var controlWide = "form-control col-md-6";
+}
+@Html.Raw(psrm.FormatBodyTitle(qurc.RecordAccess + " Import Metadata Records by BibCitRef File"))
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<p>
+  This form must be used with selection of a Nexus diristry.
+</p>
+
+<form id="frmScribeServer"
+  method="post" role="form" class="form-horizontal"
+  asp-page="@psrm.RazorPageName">
+  <div class="form-group">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UXM.RRRecordAccess)
+    @Html.ValidationSummary("", new { @class = warningMessage })
+  </div>
+  <br />
+  <button id="btnScribeServer" type="submit" class="btn btn-outline-primary">Import Metadata Records</button>
+</form>
+
+<style>
+  #bcrFormFiles {
+      display: inline-block;
+  }
+
+  .k-upload {
+      border-width: 0;
+  }
+
+  .k-upload-status-total {
+      display: none;
+  }
+</style>
+<script>
+  function RemoveKdropzone() {
+      $("#bcrFormFiles").closest(".k-dropzone").removeClass("k-dropzone").addClass("form-control").addClass("col-md-3");
+  }
+  $("#bcrFormFiles").ready(function () {
+      RemoveKdropzone();
+  });
+</script>

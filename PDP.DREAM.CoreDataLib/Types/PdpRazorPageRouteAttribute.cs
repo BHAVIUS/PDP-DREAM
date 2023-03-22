@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Types;
@@ -6,7 +6,7 @@ namespace PDP.DREAM.CoreDataLib.Types;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class PdpRazorPageRouteAttribute : Attribute, IRouteTemplateProvider
 {
-  // for use with private fields, prefix acronym prr for PDP Razor Route 
+  // for use with private fields, prefix acronym prr for Pdp Razor Route 
 
   public PdpRazorPageRouteAttribute(string? routeNamePrefix, string? routeTemplate, string? routeTemplateSuffix = "", int routeOrder = 0)
   {

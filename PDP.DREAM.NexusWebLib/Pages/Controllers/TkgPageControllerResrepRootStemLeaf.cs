@@ -1,57 +1,42 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// TkgPageControllerResrepRootStemLeaf.cs 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.NexusDataLib.Models;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
-public partial class TkgnPageControllerBase
+public partial class TkgnPageController
 {
   private const string eidResrepRootStatus = "span#ResrepRootStatus";
   private const string eidResrepStemStatus = "span#ResrepStemStatus";
   private const string eidResrepLeafStatus = "span#ResrepLeafStatus";
 
-  public virtual JsonResult OnPostReadResrepRoots([DataSourceRequest] DataSourceRequest request, 
-    string serviceType, string serviceTag, string entityType, string recordAccess)
+  public virtual JsonResult OnPostReadResrepRoots([DataSourceRequest] DataSourceRequest dsRequest,
+   string searchFilter, string serviceTag, string entityType)
   {
-    QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, recordAccess);
-    ResetNexusRepository();  // use PNDC
-    var resreps = PNDC.ListViewableResrepRoots(request, out int numResreps);
-    var result = new DataSourceResult() { Data = resreps, Total = numResreps };
-    return new JsonResult(result);
-  }
-
-  public virtual ContentResult OnPostCheckResrepRoot(Guid recordGuid)
-  {
-    ResetNexusRepository();  // use PNDC
-    NexusResrepViewModel? nre = PNDC.GetViewableResrepRootByKey(recordGuid);
-    var result = string.Empty;
-    if (nre?.RRRecordGuid == recordGuid) { result = nre.NexusStatusSummary; }
-    return Content(result);
-  }
-
-  public virtual ContentResult OnPostCheckResrepStem(Guid recordGuid)
-  {
-    ResetNexusRepository();  // use PNDC
-    NexusResrepViewModel? nre = PNDC.GetViewableResrepStemByKey(recordGuid);
-    var result = string.Empty;
-    if (nre?.RRRecordGuid == recordGuid) { result = nre.NexusStatusSummary; }
-    return Content(result);
-  }
-
-  public virtual ContentResult OnPostCheckResrepLeaf(Guid recordGuid)
-  {
-    ResetNexusRepository();  // use PNDC
-    NexusResrepViewModel? nre = PNDC.GetViewableResrepLeafByKey(recordGuid);
-    var result = string.Empty;
-    if (nre?.RRRecordGuid == recordGuid) { result = nre.NexusStatusSummary; }
-    return Content(result);
+    var rzrHndlr = nameof(OnPostReadResrepRoots);
+    QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenNexusConnection(); // use PNDC
+#if DEBUG
+    DebugNexusRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      IList<NexusResrepViewModel?> resreps; int numResreps;
+      resreps = PNDC.ListViewableResrepRoots(dsRequest, out numResreps);
+      dsResult = new DataSourceResult() { Data = resreps, Total = numResreps };
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseNexusConnection();
+    return jsonData;
   }
 
 } // end class

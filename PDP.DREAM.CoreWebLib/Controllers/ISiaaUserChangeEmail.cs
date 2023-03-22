@@ -1,18 +1,12 @@
 ﻿// ISiaaUserChangeEmail.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
 
 public partial interface ISiaaUser
 {
-  protected static ChangeEmailUxm ChangeEmailWithToken(ChangeEmailUxm uxm, QebIdentityContext qudc)
+  protected static ChangeEmailUxm ChangeEmailWithToken(ChangeEmailUxm uxm, QebiDbsqlContext qudc)
   {
     try
     {
@@ -58,7 +52,7 @@ public partial interface ISiaaUser
   }
 
   // requires authenticated login to change Email
-  protected static ChangeEmailUxm ChangeEmailWithOld(ChangeEmailUxm uxm, QebIdentityContext qudc)
+  protected static ChangeEmailUxm ChangeEmailWithOld(ChangeEmailUxm uxm, QebiDbsqlContext qudc)
   {
     uxm.ErrorOccurred = false;
     uxm.DbfieldReset = false;
@@ -103,7 +97,7 @@ public partial interface ISiaaUser
     return uxm;
   }
 
-  protected static ChangeEmailUxm StoreEmail(ChangeEmailUxm uxm, QebIdentityAppUser usr, QebIdentityContext qudc)
+  protected static ChangeEmailUxm StoreEmail(ChangeEmailUxm uxm, QebIdentityAppUser usr, QebiDbsqlContext qudc)
   {
     var errorCode = qudc.QebIdentityAppUserUpdateEmail(usr.AppGuidRef, usr.UserGuidKey,
       usr.EmailAddress, usr.EmailAlternate, usr.SecurityToken, usr.DateTokenExpired,

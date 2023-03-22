@@ -1,15 +1,5 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-using PDP.DREAM.CoreDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreDataLib.Stores;
 
@@ -20,9 +10,9 @@ public partial class CoreDbsqlContext
     // query from CoreEntityTypeItem
     IEnumerable<CoreEntityTypeItem> dalItems = this.CoreEntityTypeItems.AsEnumerable()
       .Where(dali => (
-      (dali.TypeEditedByAuthor == true && QURC.ClientHasAuthorAccess == true && dali.TypeIsComponent == false) ||
-      (dali.TypeEditedByEditor == true && QURC.ClientHasEditorAccess == true && dali.TypeIsComponent == false) ||
-      (dali.TypeEditedByAdmin == true && QURC.ClientHasAdminAccess == true)
+      (dali.TypeEditedByAuthor == true && NPDSCP.ClientHasAuthorAccess == true && dali.TypeIsComponent == false) ||
+      (dali.TypeEditedByEditor == true && NPDSCP.ClientHasEditorAccess == true && dali.TypeIsComponent == false) ||
+      (dali.TypeEditedByAdmin == true && NPDSCP.ClientHasAdminAccess == true)
       )).OrderBy(dali => dali.TypeName);
     // query to EntityTypeListItem
     IEnumerable<EntityTypeListItem> uilItems
@@ -65,9 +55,9 @@ public partial class CoreDbsqlContext
     // query from CoreInfosetStatusItem
     IEnumerable<CoreInfosetStatusItem> dalItems = this.CoreInfosetStatusItems.AsEnumerable()
       .Where(dali => (
-      (dali.StatusEditedByAuthor == true && QURC.ClientHasAuthorAccess == true) ||
-      (dali.StatusEditedByEditor == true && QURC.ClientHasEditorAccess == true) ||
-      (dali.StatusEditedByAdmin == true && QURC.ClientHasAdminAccess == true)
+      (dali.StatusEditedByAuthor == true && NPDSCP.ClientHasAuthorAccess == true) ||
+      (dali.StatusEditedByEditor == true && NPDSCP.ClientHasEditorAccess == true) ||
+      (dali.StatusEditedByAdmin == true && NPDSCP.ClientHasAdminAccess == true)
       )).OrderBy(dali => dali.StatusName);
     // query to InfosetPortalStatusListItem
     IEnumerable<InfosetPortalStatusListItem> uilItems
@@ -88,9 +78,9 @@ public partial class CoreDbsqlContext
     // query from CoreInfosetStatusItem
     IEnumerable<CoreInfosetStatusItem> dalItems = this.CoreInfosetStatusItems.AsEnumerable()
       .Where(dali => (
-      (dali.StatusEditedByAuthor == true && QURC.ClientHasAuthorAccess == true) ||
-      (dali.StatusEditedByEditor == true && QURC.ClientHasEditorAccess == true) ||
-      (dali.StatusEditedByAdmin == true && QURC.ClientHasAdminAccess == true)
+      (dali.StatusEditedByAuthor == true && NPDSCP.ClientHasAuthorAccess == true) ||
+      (dali.StatusEditedByEditor == true && NPDSCP.ClientHasEditorAccess == true) ||
+      (dali.StatusEditedByAdmin == true && NPDSCP.ClientHasAdminAccess == true)
       )).OrderBy(dali => dali.StatusName);
     // query to InfosetDoorsStatusListItem
     IEnumerable<InfosetDoorsStatusListItem> uilItems
@@ -115,13 +105,13 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.DefRegistrarGuid == QURC.RegistrarGuid) &&
+      (dali.DefRegistrarGuid == NPDSCP.RegistrarGuid) &&
       (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServiceName);
     // query to SelectListItem
     IEnumerable<SelectListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.ServiceIGuid == QURC.DiristryGuidDeflt)
+        let itemSelected = (dali.ServiceIGuid == NPDSSD.DiristryGuidDefault)
         select new SelectListItem
         {
           Text = dali.ServicePTag,
@@ -137,13 +127,13 @@ public partial class CoreDbsqlContext
     // query from CoreServiceDefault
     IEnumerable<CoreServiceDefault> dalItems = this.CoreServiceDefaults.AsEnumerable()
       .Where(dali => (
-      (dali.DefRegistrarGuid == QURC.RegistrarGuid) &&
+      (dali.DefRegistrarGuid == NPDSCP.RegistrarGuid) &&
       (dali.ServiceTCode == (short)NpdsEntityType.NpdsDiristry)
       )).OrderBy(dali => dali.ServiceName);
     // query to RecordDiristryListItem
     IEnumerable<RecordDiristryListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.ServiceIGuid == QURC.DiristryGuidDeflt)
+        let itemSelected = (dali.ServiceIGuid == NPDSSD.DiristryGuidDefault)
         select new RecordDiristryListItem
         {
           RecordDiristryName = dali.ServicePTag,
@@ -165,7 +155,7 @@ public partial class CoreDbsqlContext
     // query to SelectListItem
     IEnumerable<SelectListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.ServiceIGuid == QURC.DiristryGuidDeflt)
+        let itemSelected = (dali.ServiceIGuid == NPDSSD.DiristryGuidDefault)
         select new SelectListItem
         {
           Text = dali.ServicePTag,
@@ -187,7 +177,7 @@ public partial class CoreDbsqlContext
     // query to RecordDiristryListItem
     IEnumerable<RecordDiristryListItem> uilItems
       = from dali in dalItems
-        let itemSelected = (dali.ServiceIGuid == QURC.DiristryGuidDeflt)
+        let itemSelected = (dali.ServiceIGuid == NPDSSD.DiristryGuidDefault)
         select new RecordDiristryListItem
         {
           RecordDiristryName = dali.ServicePTag,
@@ -214,7 +204,7 @@ public partial class CoreDbsqlContext
         {
           RecordRegistryName = dali.ServicePTag,
           RecordRegistryGuid = dali.ServiceIGuid,
-          Selected = (dali.ServiceIGuid == QURC.RegistryGuidDeflt)
+          Selected = (dali.ServiceIGuid == NPDSSD.RegistryGuidDefault)
         };
     var uilList = uilItems.ToList();
     return uilList;
@@ -237,7 +227,7 @@ public partial class CoreDbsqlContext
         {
           RecordDirectoryName = dali.ServicePTag,
           RecordDirectoryGuid = dali.ServiceIGuid,
-          Selected = (dali.ServiceIGuid == QURC.DirectoryGuidDeflt)
+          Selected = (dali.ServiceIGuid == NPDSSD.DirectoryGuidDefault)
         };
     var uilList = uilItems.ToList();
     return uilList;
@@ -258,7 +248,7 @@ public partial class CoreDbsqlContext
         {
           RecordRegistrarName = dali.ServicePTag,
           RecordRegistrarGuid = dali.ServiceIGuid,
-          Selected = (dali.ServiceIGuid == QURC.RegistrarGuidDeflt)
+          Selected = (dali.ServiceIGuid == NPDSSD.RegistrarGuidDefault)
         };
     var uilList = uilItems.ToList();
     return uilList;

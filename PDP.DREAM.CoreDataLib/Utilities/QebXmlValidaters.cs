@@ -1,5 +1,5 @@
 ﻿// PdpXml.Validaters.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -83,17 +83,17 @@ public static partial class QebXml
     }
     catch (XmlException exc)
     {
-      Console.WriteLine($"XmlException: {exc.Message}");
+      Debug.WriteLine($"XmlException: {exc.Message}");
       xmlIsValid = false;
     }
     catch (XmlSchemaValidationException exc)
     {
-      Console.WriteLine($"XmlSchemaValidationException : {exc.Message}");
+      Debug.WriteLine($"XmlSchemaValidationException : {exc.Message}");
       xmlIsValid = false;
     }
     catch (Exception exc)
     {
-      Console.WriteLine($"Exception: {exc.Message}");
+      Debug.WriteLine($"Exception: {exc.Message}");
       xmlIsValid = false;
     }
     return xmlIsValid;
@@ -103,11 +103,11 @@ public static partial class QebXml
   {
     if (evtargs.Severity == XmlSeverityType.Error)
     {
-      Console.WriteLine($"Error: {evtargs.Message}");
+      Debug.WriteLine($"Error: {evtargs.Message}");
     }
     else if (evtargs.Severity == XmlSeverityType.Warning)
     {
-      Console.WriteLine($"Warning: {evtargs.Message}");
+      Debug.WriteLine($"Warning: {evtargs.Message}");
     }
   }
 

@@ -1,93 +1,143 @@
 ﻿// TkgPageControllerResrepRootStemLeaf.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
   private const string eidResrepRootStatus = "span#ResrepRootStatus";
   private const string eidResrepStemStatus = "span#ResrepStemStatus";
   private const string eidResrepLeafStatus = "span#ResrepLeafStatus";
 
   public virtual JsonResult OnPostReadResrepRoots([DataSourceRequest] DataSourceRequest dsRequest,
-    string serviceType, string serviceTag, string entityType, string recordAccess)
+   string searchFilter, string serviceTag, string entityType)
   {
-    QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, recordAccess);
-    ResetScribeRepository();  // use PSDC
-    var resreps = PSDC.ListEditableResrepRoots(dsRequest, out int numResreps);
-    var dsResult = new DataSourceResult() { Data = resreps, Total = numResreps };
+    var rzrHndlr = nameof(OnPostReadResrepRoots);
+    QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection(true);  // use PSDC
+#if DEBUG
+    DebugScribeRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      IList<NexusResrepEditModel?> resreps; int numResreps;
+      resreps = PSDC.ListEditableResrepRoots(dsRequest, out numResreps);
+      dsResult = new DataSourceResult() { Data = resreps, Total = numResreps };
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteResrepRoot([DataSourceRequest] DataSourceRequest dsRequest,
-    NexusResrepEditModel rrr, string serviceType, string serviceTag, string entityType, string recordAccess)
+    NexusResrepEditModel rrr, string searchFilter, string serviceTag, string entityType)
   {
-    QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, recordAccess);
-    ResetScribeRepository();  // use PSDC
-    if (ModelState.IsValid) { rrr = PSDC.EditResrepRoot(rrr); rrr.PdpStatusElement = eidResrepRootStatus; }
-    DataSourceResult dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
+    QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection();  // use PSDC
+#if DEBUG
+    DebugScribeRepo(nameof(OnPostReadResrepRoots));
+    QURC.DebugNpdsParams();
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (ModelState.IsValid)
+      {
+        rrr = PSDC.EditResrepRoot(rrr);
+      }
+      rrr.PdpStatusElement = eidResrepRootStatus;
+      dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostDeleteResrepRoot([DataSourceRequest] DataSourceRequest dsRequest,
-    NexusResrepEditModel rrr, string serviceType, string serviceTag, string entityType, string recordAccess)
+    NexusResrepEditModel rrr, string searchFilter, string serviceTag, string entityType)
   {
-    QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, recordAccess);
-    ResetScribeRepository();  // use PSDC
-    if (ModelState.IsValid) { rrr = PSDC.DeleteResrepRoot(rrr); rrr.PdpStatusElement = eidResrepRootStatus; }
-    DataSourceResult dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
+    QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection();  // use PSDC
+#if DEBUG
+    DebugScribeRepo(nameof(OnPostReadResrepRoots));
+    QURC.DebugNpdsParams();
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (ModelState.IsValid)
+      {
+        using (var psdc = new ScribeDbsqlContext((INpdsClient)QURC))
+        { rrr = psdc.DeleteResrepRoot(rrr); }
+      }
+      rrr.PdpStatusElement = eidResrepRootStatus;
+      dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
+  // Telerik .LoadcontentFrom() requires Get handler
   public virtual ContentResult OnGetCheckResrepRoot(Guid recordGuid)
   {
-    ResetScribeRepository();  // use PSDC
+    OpenScribeConnection();  // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepRootByKey(recordGuid);
     var dsResult = string.Empty;
     if (rrr?.RRRecordGuid == recordGuid) { dsResult = rrr.NexusStatusSummary; }
     var htmCntnt = Content(dsResult);
+    CloseScribeConnection();
     return htmCntnt;
   }
-
+  // Telerik .LoadcontentFrom() requires Get handler
   public virtual ContentResult OnGetCheckResrepStem(Guid recordGuid)
   {
-    ResetScribeRepository();  // use PSDC
+    OpenScribeConnection();  // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepStemByKey(recordGuid);
     var dsResult = string.Empty;
     if (rrr?.RRRecordGuid == recordGuid) { dsResult = rrr.NexusStatusSummary; }
     var htmCntnt = Content(dsResult);
+    CloseScribeConnection();
     return htmCntnt;
   }
-
+  // Telerik .LoadcontentFrom() requires Get handler
   public virtual ContentResult OnGetCheckResrepLeaf(Guid recordGuid)
   {
-    ResetScribeRepository();  // use PSDC
+    OpenScribeConnection();  // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepLeafByKey(recordGuid);
     var dsResult = string.Empty;
     if (rrr?.RRRecordGuid == recordGuid) { dsResult = rrr.NexusStatusSummary; }
     var htmCntnt = Content(dsResult);
+    CloseScribeConnection();
     return htmCntnt;
   }
 
   public virtual JsonResult OnPostRefreshResrepStatus([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid)
   {
-    ResetScribeRepository();  // use PSDC
+    OpenScribeConnection();  // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepLeafByRKey(recordGuid);
     if (rrr?.RRRecordGuid == recordGuid)
     {
@@ -97,13 +147,14 @@ public partial class TkgsPageControllerBase
     }
     DataSourceResult dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostValidateResrepStatus([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid)
   {
-    ResetScribeRepository();  // use PSDC
+    OpenScribeConnection();  // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepLeafByRKey(recordGuid);
     if (rrr?.RRRecordGuid == recordGuid)
     {
@@ -114,13 +165,14 @@ public partial class TkgsPageControllerBase
     }
     DataSourceResult dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostReqRelResrepRecord([DataSourceRequest] DataSourceRequest dsRequest,
   Guid recordGuid)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepLeafByKey(recordGuid);
     if (rrr?.RRRecordGuid == recordGuid)
     {
@@ -131,14 +183,15 @@ public partial class TkgsPageControllerBase
     }
     DataSourceResult dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostArchiveResrepSnapshot([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid)
   {
-    QURC.ArchiveFormatReqst = true;
-    ResetScribeRepository();  // use PSDC
+    QURC.ArchiveFormat = true;
+    OpenScribeConnection();  // use PSDC
     NexusResrepEditModel? rrr = PSDC.GetEditableResrepLeafByKey(recordGuid);
     if (rrr?.RRRecordGuid == recordGuid)
     {
@@ -149,6 +202,7 @@ public partial class TkgsPageControllerBase
     }
     DataSourceResult dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 

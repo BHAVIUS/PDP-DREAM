@@ -1,28 +1,16 @@
 ﻿// TkgViewControllerServiceDefault.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsViewControllerBase
+public partial class TkgsViewController
 {
   private const string eidServiceDefaultStatus = "span#ServiceDefaultStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeSelectServiceDefaults), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeSelectServiceDefaults([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -32,7 +20,7 @@ public partial class TkgsViewControllerBase
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeUpsertServiceDefault), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeUpsertServiceDefault([DataSourceRequest] DataSourceRequest dsr, ServiceDefaultEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -44,7 +32,7 @@ public partial class TkgsViewControllerBase
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeDeleteServiceDefault), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeDeleteServiceDefault([DataSourceRequest] DataSourceRequest dsr, ServiceDefaultEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -56,7 +44,7 @@ public partial class TkgsViewControllerBase
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeCheckServiceDefault), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute(TSrg)]
+  [PdpRazorViewRoute(depTSrg)]
   public JsonResult ScribeCheckServiceDefault([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository(); // use PSDC

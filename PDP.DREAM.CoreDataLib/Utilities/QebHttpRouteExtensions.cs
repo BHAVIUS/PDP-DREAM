@@ -1,4 +1,4 @@
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // Portions of code and/or ideas for code adapted from
@@ -16,7 +16,8 @@ public static class QebHttpRouteExtensions
   public const string RouteExamplesKey = "Examples";
   public const string RouteNamespacesKey = "Namespaces";
 
-  public static Route SetMvcRouteDataToken(this Route r, string dataTokenKey, object dataTokenValue)
+  public static Microsoft.AspNetCore.Routing.Route SetMvcRouteDataToken(this
+    Microsoft.AspNetCore.Routing.Route r, string dataTokenKey, object dataTokenValue)
   {
     if (r == null)
     {
@@ -35,7 +36,8 @@ public static class QebHttpRouteExtensions
     return r;
   }
 
-  public static string GetMvcRouteDataTokenString(this Route r, string dataTokenKey)
+  public static string GetMvcRouteDataTokenString(this
+    Microsoft.AspNetCore.Routing.Route r, string dataTokenKey)
   {
     if (r == null) { return string.Empty; }
     return r.DataTokens.GetMvcRouteDataTokenString(dataTokenKey);
@@ -54,7 +56,8 @@ public static class QebHttpRouteExtensions
     return dataTokenValue as string;
   }
 
-  public static string[] GetMvcRouteDataTokenStringArray(this Route r, string dataTokenKey)
+  public static string[] GetMvcRouteDataTokenStringArray(this 
+    Microsoft.AspNetCore.Routing.Route r, string dataTokenKey)
   {
     if (r == null) { return new string[0]; }
     return r.DataTokens.GetMvcRouteDataTokenStringArray(dataTokenKey);

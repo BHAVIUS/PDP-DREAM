@@ -1,5 +1,5 @@
 ﻿// NpdsConstantsXml.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -83,7 +83,7 @@ public static partial class PdpAppConst
 
   // TODO: ListCountDefaults ? a part of NPDS or convert to PDP site defaults???
   // TODO: and what about paging within a list???
-  public const int ListCountDeflt = 10;
+  public const int ListCountMinDeflt = 10;
   public const int ListCountMaxDeflt = 100;
   public const int ListCountSuperMaxDeflt = 1000;
 
@@ -98,6 +98,9 @@ public static partial class PdpAppConst
   public const string ResponseAnswerXnam = "Answer";
   public const string ResponseRelatedXnam = "Related";
   public const string ResponseReferredXnam = "Referred";
+
+  public const string NpdsQuadItemXnam = "NpdsQuad";
+  public const string NpdsQuadListXnam = "NpdsQuads";
 
   // EntityMetadata items
 

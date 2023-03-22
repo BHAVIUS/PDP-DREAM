@@ -1,25 +1,45 @@
-﻿// TkgnPageControllerBase
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// TkgPageControllerProvenance.cs
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
-public partial class TkgnPageControllerBase
+public partial class TkgnPageController
 {
   private const string eidProvenanceStatus = "span#ProvenanceStatus";
 
-  public virtual JsonResult OnPostReadProvenances([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
+  public virtual JsonResult OnPostReadProvenances([DataSourceRequest] DataSourceRequest dsRequest,
+  // string searchFilter, string serviceTag, string entityType,
+   Guid recordGuid, bool isLimited = false)
   {
-    ResetNexusRepository(); // use PNDC
-    DataSourceResult result = PNDC.ListViewableProvenances(recordGuid, isLimited).ToDataSourceResult(request);
-    return new JsonResult(result);
+    var rzrHndlr = nameof(OnPostReadProvenances);
+    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenNexusConnection(); // use PNDC
+#if DEBUG
+    DebugNexusRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (recordGuid.IsInvalid())
+      { ModelState.AddModelError("Provenances", "RRRecordGuid invalid."); }
+      else
+      {
+        dsResult = PNDC.ListViewableProvenances(recordGuid, isLimited)
+        .ToDataSourceResult(dsRequest);
+      }
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseNexusConnection();
+    return jsonData;
   }
 
 } // end class

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -7,6 +7,9 @@ public partial class PdpSiteRazorModel
 {
   // constructors
 
+  // TODO: add a RazorRedirect property to PSRM
+  // TODO: for use with BhaDocs, BhaviDocs and BrainiacsDocs
+  //   must rebuild unified collections of documents for versatile flexible extensible use
   // TODO: compare property name used in LaTeX templates "edocptag, edocrhan, edocalab"
   // TODO: extend for object with properties matching those used in LaTeX templates
   // TODO: make QURC properties for "edocptag, edocrhan, edocalab"
@@ -66,6 +69,7 @@ public partial class PdpSiteRazorModel
     }
   }
 
+  // for use in header content with <partial name="@RazorHeaderPart" /> 
   public string RazorHeaderPart { get; set; } = string.Empty;
   public string RazorHeaderMenu
   {
@@ -73,23 +77,20 @@ public partial class PdpSiteRazorModel
     get { DefaultRazorPageMenu(); return rzrPageMenu; }
   }
 
+  // for use in body content with <partial name="@RazorBodyPart" /> 
   public string RazorBodyPart { get; set; } = string.Empty;
   public string RazorBodyMenu { get; set; } = string.Empty;
+
+  // for use in footer content with <partial name="@RazorFooterPart" /> 
   public string RazorFooterPart { set; get; } = string.Empty;
   public string RazorFooterMenu { set; get; } = string.Empty;
 
   // methods
-  public virtual void InitRazorBodyStrings(string bodyName, string bodyTitle, string bodyMenu)
-  {
-    RazorBodyPart = bodyName;
-    RazorBodyTitle = bodyTitle;
-    RazorBodyMenu = bodyMenu;
-  }
 
   public string NpdsRazorBodyTitle(string? serviceTitle)
   {
     if (string.IsNullOrEmpty(serviceTitle))
-    { serviceTitle = NPDSSD.NpdsDefaultServiceType.ToString(); }
+    { serviceTitle = NPDSSD.ServiceTypeDefault.ToString(); }
     rzrBodyTitle = $"{RazorPageName} from {serviceTitle}";
     return rzrBodyTitle;
   }

@@ -1,12 +1,12 @@
 ﻿@{
-  var psr = (PdpSiteRazorModel)ViewData["PSR"];
-  var qurc = (QebUserRestContext)ViewData["QURC"];
+  var psrm = (PdpSiteRazorModel)ViewData["PSR"];
+  var qurc = (QebiUserRestContext)ViewData["QURC"];
   var NpdsController = "NexusAnonResreps";
   var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
   var Numf3Format = "{0:n3}";
 }
 
-@Html.Raw(psr.FormatBodyTitle())
+@Html.Raw(psrm.FormatBodyTitle())
 
 <div id="NpdsGrid">
   @(Html.Kendo().Grid<NexusResrepViewModel>()

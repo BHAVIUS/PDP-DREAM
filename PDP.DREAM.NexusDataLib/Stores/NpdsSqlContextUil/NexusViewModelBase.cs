@@ -1,17 +1,10 @@
 ﻿// NexusViewModelBase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.Text;
-
-using PDP.DREAM.CoreDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Types.PdpGuid;
-using static PDP.DREAM.CoreDataLib.Utilities.PdpStringPhraseFormFile;
-
 namespace PDP.DREAM.NexusDataLib.Models;
+
+// TODO: re-eval migration of properties from NexusViewModelBase to CoreResrepModelBase
 
 public abstract class NexusViewModelBase : CoreResrepModelBase, ICoreResrepViewModel
 {
@@ -49,37 +42,37 @@ public abstract class NexusViewModelBase : CoreResrepModelBase, ICoreResrepViewM
   public bool InfosetIsManagerReleased { get; set; } = false;
 
   // enum codes may be byte in UIL and short/smallint in DAL
-  public short InfosetPortalStatusCode { get; set; } = (short)default(PdpAppConst.NpdsInfosetStatus);
+  public short InfosetPortalStatusCode { get; set; } = (short)default(NpdsInfosetStatus);
   public string? InfosetPortalStatusName { get; set; } = string.Empty;
 
   // enum codes may be byte in UIL and short/smallint in DAL
-  public short InfosetDoorsStatusCode { get; set; } = (short)default(PdpAppConst.NpdsInfosetStatus);
+  public short InfosetDoorsStatusCode { get; set; } = (short)default(NpdsInfosetStatus);
   public string? InfosetDoorsStatusName { get; set; } = string.Empty;
 
 
   // Nexus DiristryGuid & DiristryName
-  private Guid? diristryGuid = NPDSSD.NpdsDefaultDiristryGuid;
+  private Guid? diristryGuid = NPDSSD.DiristryGuidDefault;
   public Guid? RecordDiristryGuid
   { get { return diristryGuid; } set { diristryGuid = value; } }
   public string? RecordDiristryTag { get; set; } = string.Empty;
   public string? RecordDiristryName { get; set; } = string.Empty;
 
   // PORTAL RegistryGuid & RegistryName
-  private Guid? registryGuid = NPDSSD.NpdsDefaultRegistryGuid;
+  private Guid? registryGuid = NPDSSD.RegistryGuidDefault;
   public Guid? RecordRegistryGuid
   { get { return registryGuid; } set { registryGuid = value; } }
   public string? RecordRegistryTag { get; set; } = string.Empty;
   public string? RecordRegistryName { get; set; } = string.Empty;
 
   // DOORS DirectoryGuid & DirectoryName
-  private Guid? directoryGuid = NPDSSD.NpdsDefaultDirectoryGuid;
+  private Guid? directoryGuid = NPDSSD.DirectoryGuidDefault;
   public Guid? RecordDirectoryGuid
   { get { return directoryGuid; } set { directoryGuid = value; } }
   public string? RecordDirectoryTag { get; set; } = string.Empty;
   public string? RecordDirectoryName { get; set; } = string.Empty;
 
   // Scribe RegistrarGuid & RegistrarName
-  private Guid? registrarGuid = NPDSSD.NpdsDefaultRegistrarGuid;
+  private Guid? registrarGuid = NPDSSD.RegistrarGuidDefault;
   public Guid? RecordRegistrarGuid
   { get { return registrarGuid; } set { registrarGuid = value; } }
   public string? RecordRegistrarTag { get; set; } = string.Empty;
@@ -95,6 +88,12 @@ public abstract class NexusViewModelBase : CoreResrepModelBase, ICoreResrepViewM
 
   public short ResrepInfosetStatusCode { get; set; } = 0; // short/smallint in DAL
   public string? ResrepInfosetStatusName { get; set; } = string.Empty;
+
+
+  // TODO: re-eval vocab terminology "ServiceDefaults" vs "CoreDefaults" vs alternative
+  public int ServiceDefaultsCount { get; set; } = 0;
+  public short ServiceDefaultsStatusCode { get; set; } = 0; // short/smallint in DAL
+  public string? ServiceDefaultsStatusName { get; set; } = string.Empty;
 
 
   public int EntityLabelsCount { get; set; } = 0;
@@ -114,7 +113,6 @@ public abstract class NexusViewModelBase : CoreResrepModelBase, ICoreResrepViewM
   public short OtherTextsStatusCode { get; set; } = 0; // short/smallint in DAL
   public string? OtherTextsStatusName { get; set; } = string.Empty;
 
-  // TODO: clone the FormatCode/FormatName to Locations, Descriptions, Provenances, Distributions
   public short OtherTextsFormatCode { get; set; } = 0; // short/smallint in DAL
   public string? OtherTextsFormatName { get; set; } = string.Empty;
 

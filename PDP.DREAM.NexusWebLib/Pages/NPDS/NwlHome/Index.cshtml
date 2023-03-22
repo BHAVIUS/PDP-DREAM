@@ -1,25 +1,48 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/NwlHome/Index"
+@page
+@attribute [PdpRazorPageRoute(DepNexusWebLib, DepNwlHomeIndex)]
 @model NwlHomeIndex
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  // PdpSiteInfoModel psi = psr.PdpSiteInfo;
-  // QebUserRestContext qurc = Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatBodyTitle())
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 
 <h5>Help Info and Examples by NPDS RecordAccess</h5>
 
 <ul>
-  <li>Anon: <a asp-page="/NPDS/NwlHome/AnonHelp">/NPDS/NwlHome/AnonHelp</a></li>
-  <li>User: <a asp-page="/NPDS/NwlHome/UserHelp">/NPDS/NwlHome/UserHelp</a></li>
-  <li>Agent: <a asp-page="/NPDS/NwlHome/AgentHelp">/NPDS/NwlHome/AgentHelp</a></li>
-  <li>Author: <a asp-page="/NPDS/NwlHome/AuthorHelp">/NPDS/NwlHome/AuthorHelp</a></li>
-  <li>Editor: <a asp-page="/NPDS/NwlHome/EditorHelp">/NPDS/NwlHome/EditorHelp</a></li>
-  <li>Admin: <a asp-page="/NPDS/NwlHome/AdminHelp">/NPDS/NwlHome/AdminHelp</a></li>
+  <li>
+    Anon: <a asp-page="@DepNwlHomeAnonHelp">@DepNwlHomeAnonHelp</a> |
+    <a asp-page="@DepNexusServerAnonResreps">@DepNexusServerAnonResreps</a>
+  </li>
+  <li>
+    User: <a asp-page="@DepNwlHomeUserHelp">@DepNwlHomeUserHelp</a> |
+    <a asp-page="@DepNexusServerUserResreps">@DepNexusServerUserResreps</a>
+  </li>
+  <li>
+    Agent: <a asp-page="@DepNwlHomeAgentHelp">@DepNwlHomeAgentHelp</a> |
+    <a asp-page="@DepNexusServerAgentResreps">@DepNexusServerAgentResreps</a>
+  </li>
+  <li>
+    Author: <a asp-page="@DepNwlHomeAuthorHelp">@DepNwlHomeAuthorHelp</a> |
+    <a asp-page="@DepNexusServerAuthorResreps">@DepNexusServerAuthorResreps</a>
+  </li>
+  <li>
+    Editor: <a asp-page="@DepNwlHomeEditorHelp">@DepNwlHomeEditorHelp</a> |
+    <a asp-page="@DepNexusServerEditorResreps">@DepNexusServerEditorResreps</a>
+  </li>
+  <li>
+    Admin: <a asp-page="@DepNwlHomeAdminHelp">@DepNwlHomeAdminHelp</a> |
+    <a asp-page="@DepNexusServerAdminResreps">@DepNexusServerAdminResreps</a>
+  </li>
 </ul>

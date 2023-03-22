@@ -1,68 +1,57 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Stores;
-using PDP.DREAM.ScribeWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.ScribeWebLib.Pages;
 
-[RequireHttps, Authorize(Roles = NpdsAdmin)]
-public class ScribeServerAuthorAccess : TkgsPageControllerBase
+[RequireHttps, PdpAuthorizeRoles(NpdsAuthor, NpdsEditor, NpdsAdmin)]
+public class ScribeServerAuthorAccess : TkgsPageController
 {
-  private const string rzrCntrllr = nameof(ScribeServerAuthorAccess);
-  public ScribeServerAuthorAccess(QebIdentityContext userCntxt, 
-    ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+  private const string rzrClass = nameof(ScribeServerAuthorAccess);
+  public ScribeServerAuthorAccess() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext)
+    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Scribe,
+      ServiceType = NpdsServiceType.Scribe,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
       RecordAccess = NpdsRecordAccess.Author,
       AuthenticatedClientRequired = true,
-      QebSessionValueIsRequired = true
+      SessionClientRequired = true
     };
-    // PSR = new PdpSiteRazorModel(NpdsPageAuthorAccess, PdpSitePathKey);
-    PSR = new PdpSiteRazorModel("/NPDS/ScribeServer/AuthorAccess");
-    ResetScribeRepository();
+    PSRM = new PdpSiteRazorModel(DepScribeServerAuthorAccess, PdpSitePathKey);
+    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    ResetScribeRepository();
+#if DEBUG
+    var rzrHndlr = nameof(OnPageHandlerExecuting);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+#endif
   }
 
   // OnGet before OnPageHandlerExecuted
   public IActionResult OnGet(string recordAccess)
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnGet), rzrCntrllr);
-    PSR.DebugRazorPageStrings();
+    var rzrHndlr = nameof(OnGet);
+    CatchNullQurc(rzrHndlr, rzrClass);
 #endif
     // SelectFilter properties
-    if (string.IsNullOrEmpty(recordAccess)) { recordAccess = NpdsRecordAccess.Author.ToString(); }
-    QURC.RecordAccessReqst = recordAccess;
+    if (!string.IsNullOrEmpty(recordAccess) &&  recordAccess.ToLower() != "author") 
+    { QURC.RecordAccessReqst = recordAccess; }
     ResetScribeRepository(true);
+#if DEBUG
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
+#endif
     return Page();
   }
 
-  // OnPageHandlerExecuted before the [RazorPage].cshtml
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
-  {
-#if DEBUG
-    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrCntrllr);
-    DebugQurcData(exeCntxt.Result);
-#endif
-  }
+  // OnPageHandlerExecuted after [RazorPage].cshtml but before result
 
 } // end class
 

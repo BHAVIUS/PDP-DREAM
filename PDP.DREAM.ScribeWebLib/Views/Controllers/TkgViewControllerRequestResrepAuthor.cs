@@ -1,26 +1,13 @@
 ﻿// TkgViewControllerRequestResrepAuthor.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsViewControllerBase
+public partial class TkgsViewController
 {
   [HttpGet]
-  // [PdpMvcRoute(nameof(NpdsRequestResrepAuthor), "", "", SrlRanpView)]
-  [PdpRazorViewRoute]
+   [PdpRazorViewRoute]
   public IActionResult NpdsRequestResrepAuthor()
   {
     BuildScribeDropDownLists();
@@ -28,8 +15,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeSelectResrepAuthorRequests), "", "", SrlRanpView)]
-  [PdpRazorViewRoute]
+   [PdpRazorViewRoute]
   public JsonResult ScribeSelectResrepAuthorRequests([DataSourceRequest] DataSourceRequest dsr)
   {
     ResetScribeRepository(); // use PSDC
@@ -38,8 +24,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeUpsertResrepAuthorRequest), "", "", SrlRanpView)]
-  [PdpRazorViewRoute]
+   [PdpRazorViewRoute]
   public JsonResult ScribeUpsertResrepAuthorRequest([DataSourceRequest] DataSourceRequest dsr, ResrepAuthorRequestEditModel rem)
   {
     ResetScribeRepository(); // use PSDC
@@ -63,7 +48,6 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeDeleteResrepAuthorRequest), "", "", SrlRanpView)]
   [PdpRazorViewRoute]
   public JsonResult ScribeDeleteResrepAuthorRequest([DataSourceRequest] DataSourceRequest dsr, ResrepAuthorRequestEditModel rem)
   {
@@ -74,8 +58,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpPost]
-  // [PdpMvcRoute(nameof(ScribeReqRelNpdsResRepRecord), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+   [PdpRazorViewRoute( depTSrg)]
   public JsonResult ScribeReqRelNpdsResRepRecord([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository(); // use PSDC

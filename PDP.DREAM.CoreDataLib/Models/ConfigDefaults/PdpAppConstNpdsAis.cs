@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -9,8 +9,9 @@ public static partial class PdpAppConst
   // PdpRestContext AI System
 
   // DatabaseType is focused on structure of backend database
+  // DatabaseType determines database connection strings
   // DatabaseType determines possible ServiceTypes and ResRepFormats
-  public enum NpdsDatabaseType { Core = 0, Nexus = 1, PORTAL = 2, DOORS = 3, Scribe = 4 };
+  public enum NpdsDatabaseType { Core = 0, Nexus = 1, PORTAL = 2, DOORS = 3, Scribe = 4, ACMS = 5, SIAA = 6, Vocab = 7, Cache = 8 };
 
   // DatabaseAccess determines service-based read/write access to entire database
   // Anonymous versus Authenticated and ReadOnly versus ReadWrite
@@ -42,7 +43,7 @@ public static partial class PdpAppConst
   //    resource representations in response to requests
   // proper-named service with generic-termed server yields NPDS components with
   // Core root, Nexus diristry, PORTAL registry, DOORS directory, Scribe registrar
-  public enum NpdsServiceType { Core = 0, Nexus = 1, PORTAL = 2, DOORS = 3, Scribe = 4 };
+  public enum NpdsServiceType { Core = 0, Nexus = 1, PORTAL = 2, DOORS = 3, Scribe = 4, ACMS = 5 };
   public enum NpdsServerType { Root = 0, Diristry = 1, Registry = 2, Directory = 3, Registrar = 4 };
 
   // Network SearchScope determines extent of distributed network nodes

@@ -1,0 +1,35 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? string.Empty);
+  PdpSiteRazorModel psrm = Model.PSRM;
+}
+
+@Html.Raw(psrm.FormatBodyTitle("Razor Header Menu"))
+<p><partial name="@psrm.RazorHeaderMenu" /></p>
+
+@Html.Raw(psrm.FormatBodyTitle("Razor Footer Menu"))
+<p><partial name="@psrm.RazorFooterMenu" /></p>
+
+@Html.Raw(psrm.FormatBodyTitle("CoreWebLib Index Menu"))
+<p><partial name="_CwlHomeSpanPageMenu" /></p>
+
+@Html.Raw(psrm.FormatBodyTitle("CoreWebLib Project Menus"))
+
+@if (!userAuth)
+{
+  <p>
+    CoreWebLib Project Menus only visible in authorized mode. You may
+    <a asp-page="@DepAnonModeLoginUser">login</a> or
+    <a asp-page="@DepAnonModeRegisterUser">register</a>.
+  </p>
+}
+
+@if (userAuth && PDPSS.AppUseDevtestFeature)
+{
+  <partial name="_CoreWebLibListPageMenu" />
+}

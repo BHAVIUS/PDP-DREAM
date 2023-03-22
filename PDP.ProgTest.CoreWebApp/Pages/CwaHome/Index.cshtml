@@ -1,0 +1,24 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model CwaHomeIndex
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<h5>Thank you for supporting the PORTAL-DOORS Project</h5>
+
+<p>
+  All of us at Brain Health Alliance wish to thank our financial contributors for their
+  <a asp-page="@DepAnonModeDonateGift">donations</a>
+  without whom our education and research work would not be possible.
+</p>

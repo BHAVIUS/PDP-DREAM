@@ -1,5 +1,7 @@
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -31,6 +33,17 @@ public static class QebSql
   private static string lstErr;
   public static string LastError
   { get { return lstErr; } }
+
+  public static SqlCommand? OpenSqlCommand(string? namStorProc, SqlConnection? dbsqlCnctn)
+  {
+    if (string.IsNullOrEmpty(namStorProc) || (dbsqlCnctn == null))
+    { throw new NoNullAllowedException(); }
+    var dbsqlCmmnd = new SqlCommand(namStorProc, dbsqlCnctn)
+    { CommandType = CommandType.StoredProcedure };
+    // add int return value to the command
+    QebSql.AddRetVal(ref dbsqlCmmnd);
+    return dbsqlCmmnd;
+  }
 
   public static void AddParameter(ref SqlCommand sqlCom, SqlDbType parTyp, int parSiz, string parNam, object? parVal)
   {
@@ -112,7 +125,6 @@ public static class QebSql
   }
 
   //***************************************************************************************************************************
-
 
   public static SqlDateTime GetDateTime(ref SqlDataReader sqlRdr, int intOrd)
   {
@@ -467,6 +479,123 @@ public static class QebSql
 
     return errorMessage;
   }
+
+  public static string ParseSqlException(SqlException sqlExc)
+  {
+    var sbErrors = new StringBuilder("");
+    foreach (SqlError sqlErr in sqlExc.Errors)
+    {
+      sbErrors.AppendLine(sqlErr.ToString());
+      sbErrors.AppendLine(string.Format("Class: {0}; Error: {1}; Line: {2}.<br>", sqlErr.Class, sqlErr.Number, sqlErr.LineNumber));
+      sbErrors.AppendLine(string.Format("Reported by {0} while connected to {1}.</p>", sqlErr.Source, sqlErr.Server));
+    }
+    return sbErrors.ToString();
+  }
+
+  public static SqlConnection? CreateConnection(string? cnstr)
+  {
+    var cnctn = new SqlConnection(cnstr);
+    return cnctn;
+  }
+  public static SqlConnection? OpenConnection(string? cnstr = null)
+  {
+    SqlConnection? cnctn = null;
+    try
+    {
+      if (string.IsNullOrEmpty(cnstr)) { cnstr = PdpSiteDefaultDbconstr; }
+      if (!string.IsNullOrEmpty(cnstr)) { cnctn = new SqlConnection(cnstr); }
+      if (cnctn.State != ConnectionState.Open) { cnctn.Open(); }
+    }
+    catch (SqlException exc)
+    {
+      Debug.WriteLine(ParseSqlException(exc));
+      cnctn = new SqlConnection();
+    }
+    return cnctn;
+  }
+  public static bool CloseConnection(SqlConnection? cnctn)
+  {
+    bool dbcClosed = false;
+    try
+    {
+
+      if (cnctn?.State != ConnectionState.Closed)
+      { cnctn.Close(); dbcClosed = true; }
+    }
+    catch (SqlException exc)
+    {
+      Debug.WriteLine(ParseSqlException(exc));
+    }
+    return dbcClosed;
+  }
+  public static bool CheckConnection(string? cnstr)
+  {
+    var dbcValid = false;
+    try
+    {
+      using (var cnctn = new SqlConnection(cnstr))
+      {
+        var dbServer = cnctn.DataSource;
+        var dbName = cnctn.Database;
+        cnctn.Open();
+        cnctn.Close();
+      }
+      dbcValid = true;
+    }
+    catch (SqlException ex)
+    {
+      Debug.WriteLine($"{ex.Number} = {ex.Message}\n");
+      throw;
+    }
+    return dbcValid;
+  }
+
+
+  // ATTN: do not use
+  // TODO: solve problem of triggering the call to OnConfiguring
+  public static string? ContextCnstr(this DbContext? cntxt)
+  {
+    // ATTN: when type is DbContext
+    // calling Database facade triggers call to OnConfiguring method
+    // TODO: how to avoid this problem??? change type to DbsqlContextBase ???
+    // still calls the OnConfiguring method!!!
+    return cntxt.Database.GetConnectionString(); 
+  }
+  // TODO: solve problem of triggering the call to OnConfiguring
+  public static SqlConnection? ContextCnctn(this DbContext? cntxt)
+  {
+    // ATTN: when type is DbContext
+    // calling Database facade triggers call to OnConfiguring method
+    // TODO: how to avoid this problem??? change type to DbsqlContextBase ???
+    // still calls the OnConfiguring method!!!
+    return (SqlConnection?)cntxt.Database.GetDbConnection(); 
+  }
+
+  public static bool ContextHasSchema(this DbContext? cntxt)
+  {
+    var dbHasSchema = false;
+    if (cntxt != null)
+    {
+      if (!cntxt.Database.CanConnect()) { return dbHasSchema; }
+      var dbsqlCnctn = cntxt.Database.GetDbConnection();
+      if (dbsqlCnctn == null) { return dbHasSchema; }
+      if (dbsqlCnctn.State != ConnectionState.Open) { dbsqlCnctn.Open(); }
+      var schemaDataTable = dbsqlCnctn.GetSchema();
+      if (schemaDataTable != null) { dbHasSchema = true; }
+      if (dbsqlCnctn.State != ConnectionState.Closed) { dbsqlCnctn.Close(); }
+    }
+    return dbHasSchema;
+  }
+  public static bool ContextHasChanges(this DbContext? cntxt)
+  {
+    bool hasChanges = false;
+    if (cntxt != null)
+    {
+      hasChanges = cntxt.ChangeTracker.Entries().Any(e => e.State == Microsoft.EntityFrameworkCore.EntityState.Added || e.State == Microsoft.EntityFrameworkCore.EntityState.Modified || e.State == Microsoft.EntityFrameworkCore.EntityState.Deleted);
+    }
+    return hasChanges;
+  }
+
 
 } // end class
 

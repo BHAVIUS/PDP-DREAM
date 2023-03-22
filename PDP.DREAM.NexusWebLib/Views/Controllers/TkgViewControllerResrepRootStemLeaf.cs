@@ -1,29 +1,17 @@
 ﻿// TkgViewControllerResrepRootStemLeaf.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
-public partial class TkgnViewControllerBase
+public partial class TkgnViewController
 {
   private const string eidResrepRootStatus = "span#ResrepRootStatus";
   private const string eidResrepStemStatus = "span#ResrepStemStatus";
   private const string eidResrepLeafStatus = "span#ResrepLeafStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(NexusSelectResrepRoots), "", PdpRatsStstet, NrlRanpView)]
-  [PdpRazorViewRoute(TSststet)]
+  [PdpRazorViewRoute(depTSststet)]
   public JsonResult NexusSelectResrepRoots([DataSourceRequest] DataSourceRequest request,
     string serviceType, string serviceTag, string entityType, string userRole)
   {
@@ -35,8 +23,7 @@ public partial class TkgnViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(NexusCheckResrepRoot), "", PdpRatsRg, NrlRanpView)]
-  [PdpRazorViewRoute(TSrg)]
+  [PdpRazorViewRoute(depTSrg)]
   public ActionResult<string?> NexusCheckResrepRoot(Guid recordGuid)
   {
     ResetNexusRepository();  // use PNDC
@@ -47,8 +34,7 @@ public partial class TkgnViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(NexusCheckResrepStem), "", PdpRatsRg, NrlRanpView)]
-  [PdpRazorViewRoute(TSrg)]
+  [PdpRazorViewRoute(depTSrg)]
   public ActionResult<string?> NexusCheckResrepStem(Guid recordGuid)
   {
     ResetNexusRepository();  // use PNDC
@@ -59,8 +45,7 @@ public partial class TkgnViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(NexusCheckResrepLeaf), "", PdpRatsRg, NrlRanpView)]
-  [PdpRazorViewRoute(TSrg)]
+  [PdpRazorViewRoute(depTSrg)]
   public ActionResult<string?> NexusCheckResrepLeaf(Guid recordGuid)
   {
     ResetNexusRepository();  // use PNDC

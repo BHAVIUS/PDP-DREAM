@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<efcore context-namespace="PDP.DREAM.CoreDataLib.Stores" namespace="PDP.DREAM.CoreDataLib.Stores" p1:name="QebiDbsqlContext" p1:Guid="238100f6-8021-493c-9563-a76e922f5468" p1:ContextBase="PDP.DREAM.CoreDataLib.Stores.DbsqlContextBase" p1:DoNotGenerateDefaultConstructor="True" p1:DoNotGenerateConstructorWithDbContextOptionsArgument="True" p1:UseGenericDbContextOptionsConstructorArgument="False" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+  <class name="QebIdentityAppRole" entity-set="QebIdentityAppRoles" table="QebIdentityAppRole" schema="dbo" p1:Guid="b97c6de7-585d-4325-9b45-f2471349e2d3">
+    <id name="RoleGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="577c3fa1-6e92-4561-9106-47ee7439d8d8">
+      <column name="RoleGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="AppGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="ae79be8f-aafc-44ca-adcc-90b35b0cdbbb">
+      <column name="AppGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="RoleName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="ac8125b8-3eb0-460a-b4b0-5794005759d7">
+      <column name="RoleName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="RoleDescription" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="0929cb22-6792-4ae6-a7fe-b69fae1e68ce">
+      <column name="RoleDescription" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ConcurrencyStamp" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="3f62b791-7e61-43ca-84f1-586a618ca8dc">
+      <column name="ConcurrencyStamp" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="QebIdentityApp" entity-set="QebIdentityApps" table="QebIdentityApp" schema="dbo" p1:Guid="26c3cf9d-e84e-4106-97a0-cd291b38aa1e">
+    <id name="AppGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="efeaebb5-9024-47d4-ba41-268b84a6966d">
+      <column name="AppGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="AppName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="1a0d6eba-0477-4c51-bc18-1e34f488a4f5">
+      <column name="AppName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="AppDescription" type="String" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateMaxLength="128" p1:ValidateRequired="false" p1:Guid="a9400b51-e5bf-44ea-aabe-7acf6189e545">
+      <column name="AppDescription" not-null="False" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ConcurrencyStamp" type="String" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateMaxLength="64" p1:ValidateRequired="false" p1:Guid="9d6ba7b4-6744-46e3-806a-3a9bc5d84cbf">
+      <column name="ConcurrencyStamp" not-null="False" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="QebIdentityAppUserRole" entity-set="QebIdentityAppUserRoles" table="QebIdentityAppUserRole" schema="dbo" p1:Guid="870103e5-2490-4983-acdf-3919c400a930">
+    <id name="LinkGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="816c6a19-1136-4cd4-9871-88a00a161492">
+      <column name="LinkGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="UserGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="070acdfa-5f58-43ec-94b8-6feca7ba9b4d">
+      <column name="UserGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="UserName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="8c569557-4e19-4c79-aa40-d913ca5a1d29">
+      <column name="UserName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="UserNameDisplayed" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="e722ef96-ad84-4690-9bd6-dc436d364b02">
+      <column name="UserNameDisplayed" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="RoleGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="974d0778-949c-4571-81bf-0627019f219e">
+      <column name="RoleGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="RoleName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="eae1a943-669b-41d2-a7ba-2b6552a3b739">
+      <column name="RoleName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="RoleDescription" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="fc7c5f2c-ab97-4afe-98b9-eee39f7af4c4">
+      <column name="RoleDescription" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="AppGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="58df5005-b6d5-45b8-96ee-871201adfa10">
+      <column name="AppGuidRef" not-null="False" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AppName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="1cdafda9-7751-499a-8f52-4465a2e61710">
+      <column name="AppName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="AppDescription" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="2495f5c9-900a-4c93-ac8b-bf94f40cd8f1">
+      <column name="AppDescription" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ConcurrencyStamp" type="String" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateMaxLength="64" p1:ValidateRequired="false" p1:Guid="f7fb294f-f370-4e0d-93be-cd8672a41231">
+      <column name="ConcurrencyStamp" not-null="False" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="QebIdentityAppUser" entity-set="QebIdentityAppUsers" table="QebIdentityAppUser" schema="dbo" p1:Guid="bb7f171b-10f3-4de0-afc9-a14703b44eab">
+    <id name="UserGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="6b135003-f11e-4589-87dd-b330a85d92d6">
+      <column name="UserGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="SessionGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="f1286458-d12a-4f49-a1da-a5e3fb72b2c3">
+      <column name="SessionGuidRef" not-null="False" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AppGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="25af5e7b-bb5c-4d29-b9ef-f0534b5b9dd9">
+      <column name="AppGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AccessFailedCount" type="Int32" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="69fcfc1e-fac2-4d3c-9c5a-5cbd9e273016">
+      <column name="AccessFailedCount" not-null="True" precision="10" scale="0" sql-type="int" p1:unicode="False" />
+    </property>
+    <property name="ConcurrencyStamp" type="String" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateMaxLength="64" p1:ValidateRequired="false" p1:Guid="5973bc46-33d2-4594-9392-15448ac678a4">
+      <column name="ConcurrencyStamp" not-null="False" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="DateEmailConfirmed" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="65c53469-4788-4f8e-9bf0-47ffe7ef94f7">
+      <column name="DateEmailConfirmed" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateLastEdit" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="6f835360-8cca-4d76-8c25-9ff871c3ca1d">
+      <column name="DateLastEdit" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateLastLockout" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="3fec1472-652c-45d1-ac1c-316e19e94733">
+      <column name="DateLastLockout" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateLastLogin" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="cfe67308-2f81-43bc-a92c-b3d8df1de282">
+      <column name="DateLastLogin" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DatePasswordChanged" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="02b2e26f-d29e-4785-8a69-bc1d7d43faeb">
+      <column name="DatePasswordChanged" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateProfileChanged" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="754ba806-8190-4c0a-b51b-29fdd0890ae6">
+      <column name="DateProfileChanged" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateTokenExpired" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="084e13fb-f191-4de1-a9bb-b52605354195">
+      <column name="DateTokenExpired" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateUserCreated" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="80e220e5-e7e7-4d66-abb8-f59bfc57e1c7">
+      <column name="DateUserCreated" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="DateUserNameChanged" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="4769783e-2426-4667-aea4-7e73451f44fb">
+      <column name="DateUserNameChanged" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="EmailAddress" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="69e9f891-cae6-4a58-bec4-3d6066b1b435">
+      <column name="EmailAddress" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="EmailAlternate" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="df6dc541-aa58-4f1a-9bb8-7b7144029eea">
+      <column name="EmailAlternate" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="EmailConfirmed" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="c0dcf955-31e2-4cf6-b1fb-cdc6c62689ef">
+      <column name="EmailConfirmed" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="FirstName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="27370a42-0f3e-43a4-8724-59d3ad026690">
+      <column name="FirstName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="LastName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="0f88f548-6bf8-44f7-b2e6-ca04e562d052">
+      <column name="LastName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="LockoutEnabled" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="afd0dc3d-a166-4d0e-bdcd-5b7d97366b8a">
+      <column name="LockoutEnabled" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="LockoutEnd" type="DateTimeOffset" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="c4f9c26a-55bf-464c-b408-95d196b477fe">
+      <column name="LockoutEnd" not-null="False" sql-type="datetimeoffset" p1:unicode="False" />
+    </property>
+    <property name="LockoutEndDateUtc" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="482e240b-ca34-4970-b636-fab5a16f1700">
+      <column name="LockoutEndDateUtc" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="Organization" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="fc836498-b13f-42ac-998e-578192b7398d">
+      <column name="Organization" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="PasswordHash" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="1024" p1:ValidateRequired="true" p1:Guid="ec6bfe57-3c7b-4a66-bc79-b0a9e703be54">
+      <column name="PasswordHash" not-null="True" length="1024" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="PhoneNumber" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="b8f5851c-fccb-4975-a815-6f95590cbf92">
+      <column name="PhoneNumber" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="PhoneNumberConfirmed" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="f11b2263-c276-4b43-89fe-ad0761fc01b5">
+      <column name="PhoneNumberConfirmed" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="SecurityAnswer" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="978e3c10-d80d-4ac5-916e-9d1d4c360cfe">
+      <column name="SecurityAnswer" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="SecurityQuestion" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="f7260f8a-8173-4623-b9dd-15195a43f25f">
+      <column name="SecurityQuestion" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="SecurityStamp" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="24f8691a-9e72-44e9-9a23-5d31c49b71e8">
+      <column name="SecurityStamp" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="SecurityToken" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="f260324c-47b6-4dd5-8712-eb51e5157df7">
+      <column name="SecurityToken" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="TwoFactorEnabled" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="9995e938-0030-463a-a4ab-3b2f371cade1">
+      <column name="TwoFactorEnabled" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="UserIsApproved" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="a4d071b1-29a8-4c1e-b663-dbed5c96c6db">
+      <column name="UserIsApproved" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="UserName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="90f836bf-d610-4cb2-90fc-af45601b7fbe">
+      <column name="UserName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="UserNameDisplayed" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="1cb2de22-5e49-4217-8fe3-858d542ebcbd">
+      <column name="UserNameDisplayed" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="WebsiteAddress" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="256" p1:ValidateRequired="true" p1:Guid="650d234a-74a9-4320-a05d-d180e2ee1bd4">
+      <column name="WebsiteAddress" not-null="True" length="256" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="QebIdentityAppUserRoleLink" entity-set="QebIdentityAppUserRoleLinks" table="QebIdentityAppUserRoleLink" schema="dbo" p1:Guid="b76e7804-962e-4ab1-af7a-df08692f22e9">
+    <id name="LinkGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="0265d599-24e3-454a-a87a-7c93b5b4bb8c">
+      <column name="LinkGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="UserGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="e50bd9c2-c58c-46c5-a252-1ecd4fc2d256">
+      <column name="UserGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="RoleGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="ad781cdb-7954-4049-90cb-15836a56818d">
+      <column name="RoleGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AppGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="69094287-c8f3-4978-9413-35f80dbbcea5">
+      <column name="AppGuidRef" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="ConcurrencyStamp" type="String" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateMaxLength="64" p1:ValidateRequired="false" p1:Guid="e1bf8760-7f13-47c1-8d12-29ff60449079">
+      <column name="ConcurrencyStamp" not-null="False" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <class name="QebIdentityAppUserSession" entity-set="QebIdentityAppUserSessions" table="QebIdentityAppUserSession" schema="dbo" p1:Guid="3aec1ab9-2df2-4ad9-8e8e-5bcde29983c1">
+    <id name="SessionGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="672d838e-a1cd-492c-a313-38793d0ea0e9">
+      <column name="SessionGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </id>
+    <property name="SessionDateCreated" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="a39fa1ad-99a1-42f1-843b-5d112a0ad196">
+      <column name="SessionDateCreated" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="SessionDateAccessed" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="17efe736-b27e-4df9-ac1d-e83683ae0d03">
+      <column name="SessionDateAccessed" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="SessionDateExpired" type="DateTime" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="fed0d2b8-4b36-4435-b262-24774fa982b9">
+      <column name="SessionDateExpired" not-null="False" sql-type="datetime2" p1:unicode="False" />
+    </property>
+    <property name="UserGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="df6c7396-a316-450c-8ff3-dd60edd7ed0b">
+      <column name="UserGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="UserName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="ca41587b-8df3-4a1f-a4bd-0faeca3f7d4d">
+      <column name="UserName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="UserNameDisplayed" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="47214744-bb45-4a4e-b638-80be98a8d869">
+      <column name="UserNameDisplayed" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="UserIsApproved" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="f0ecaaad-9c35-4d80-b5d6-90bc1e35ada9">
+      <column name="UserIsApproved" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="UserIsAgent" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="deb9476f-2bc5-42d3-8682-23f2df4a1a30">
+      <column name="UserIsAgent" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="AgentGuidRef" type="Guid" p1:inheritance-modifier="Virtual" p1:nullable="True" p1:ValidateRequired="false" p1:Guid="bf35d3fa-41eb-4870-8edd-1e4e122bd643">
+      <column name="AgentGuidRef" not-null="False" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AgentIsAuthor" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="2c37399c-0aef-4261-b281-b2a95a7f5962">
+      <column name="AgentIsAuthor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="AgentIsEditor" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="7150a69f-2033-469c-b58a-7055e065d216">
+      <column name="AgentIsEditor" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="AgentIsAdmin" type="Boolean" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="8694f38a-b4c9-4939-8768-fd62522eb7db">
+      <column name="AgentIsAdmin" not-null="True" sql-type="bit" p1:unicode="False" />
+    </property>
+    <property name="AppGuidKey" type="Guid" p1:inheritance-modifier="Virtual" p1:ValidateRequired="true" p1:Guid="d6b2ad72-c02e-4d4b-aaa5-2c85baa05dca">
+      <column name="AppGuidKey" not-null="True" sql-type="uniqueidentifier" p1:unicode="False" />
+    </property>
+    <property name="AppName" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="cdf033f1-3982-4497-a908-287df09c3997">
+      <column name="AppName" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="AppDescription" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="128" p1:ValidateRequired="true" p1:Guid="b2fc6b8f-4d0c-4092-91a1-89326efb184d">
+      <column name="AppDescription" not-null="True" length="128" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+    <property name="ConcurrencyStamp" type="String" p1:inheritance-modifier="Virtual" p1:ValidateMaxLength="64" p1:ValidateRequired="true" p1:Guid="d5978b20-4c79-4b7c-b7e9-5083a5f66da3">
+      <column name="ConcurrencyStamp" not-null="True" length="64" sql-type="nvarchar" p1:unicode="True" />
+    </property>
+  </class>
+  <associations>
+    <association name="QebIdentityApp_QebIdentityAppUser" cardinality="OneToMany" p1:Guid="32d1973d-9a6d-4aaa-aa56-1008fd1a475d" p1:Nullable="True">
+      <end1 multiplicity="One" name="QebIdentityApp" class="QebIdentityAppUser" relation-class="QebIdentityApp" constrained="True" lazy="False" p1:Guid="b69aaa7f-1153-4e9f-96b8-80f4280edacd">
+        <property name="AppGuidKey" />
+      </end1>
+      <end2 multiplicity="Many" name="QebIdentityAppUsers" class="QebIdentityApp" relation-class="QebIdentityAppUser" lazy="False" p1:Guid="be185e9b-6f81-4264-9daa-235c30b3c99f">
+        <property name="AppGuidRef" />
+      </end2>
+    </association>
+    <association name="QebIdentityApp_QebIdentityAppRole" cardinality="OneToMany" p1:Guid="819b9653-c874-474c-8a51-a8cbcf70e8b6" p1:Nullable="True">
+      <end1 multiplicity="One" name="QebIdentityApp" class="QebIdentityAppRole" relation-class="QebIdentityApp" constrained="True" lazy="False" p1:Guid="12b7248d-e1c9-48cb-a64a-86e6b6b3d34b">
+        <property name="AppGuidKey" />
+      </end1>
+      <end2 multiplicity="Many" name="QebIdentityAppRoles" class="QebIdentityApp" relation-class="QebIdentityAppRole" lazy="False" p1:Guid="526d6c0a-4447-42ef-989f-29ea0d04db27">
+        <property name="AppGuidRef" />
+      </end2>
+    </association>
+    <association name="QebIdentityAppUser_QebIdentityAppUserRole" cardinality="OneToMany" p1:Guid="d4f9145b-adee-4bef-a561-5ec5759eefaa" p1:Nullable="True">
+      <end1 multiplicity="One" name="QebIdentityAppUser" class="QebIdentityAppUserRole" relation-class="QebIdentityAppUser" constrained="True" lazy="False" p1:Guid="5f0a3f68-3833-469f-866a-5660b2bb9732">
+        <property name="UserGuidKey" />
+      </end1>
+      <end2 multiplicity="Many" name="QebIdentityAppUserRoles" class="QebIdentityAppUser" relation-class="QebIdentityAppUserRole" lazy="False" p1:Guid="cbf0c4a6-54fe-4d60-a1b9-83ee9f91521b">
+        <property name="UserGuidRef" />
+      </end2>
+    </association>
+    <association name="QebIdentityAppRole_QebIdentityAppUserRole" cardinality="OneToMany" p1:Guid="d96892ab-09dc-486c-9ab9-1d007a421d8b" p1:Nullable="True">
+      <end1 multiplicity="One" name="QebIdentityAppRole" class="QebIdentityAppUserRole" relation-class="QebIdentityAppRole" constrained="True" lazy="False" p1:Guid="69739b00-0893-4014-a460-a3bb7946fb72">
+        <property name="RoleGuidKey" />
+      </end1>
+      <end2 multiplicity="Many" name="QebIdentityAppUserRoles" class="QebIdentityAppRole" relation-class="QebIdentityAppUserRole" lazy="False" p1:Guid="bf41a557-6c5d-414a-8535-a2dd1a9c134d">
+        <property name="RoleGuidRef" />
+      </end2>
+    </association>
+    <association name="QebIdentityApp_QebIdentityAppUserRole" cardinality="OneToMany" p1:Guid="471aec9b-f298-4bc0-9d81-b0449cf3c962" p1:Nullable="True">
+      <end1 multiplicity="One" name="QebIdentityApp" class="QebIdentityAppUserRole" relation-class="QebIdentityApp" constrained="True" lazy="False" p1:Guid="c13d21cf-a47b-41b7-850f-d64056298b7c">
+        <property name="AppGuidKey" />
+      </end1>
+      <end2 multiplicity="Many" name="QebIdentityAppUserRoles" class="QebIdentityApp" relation-class="QebIdentityAppUserRole" lazy="False" p1:Guid="d653f5bc-ecf8-4303-8b88-7534c15a9658">
+        <property name="AppGuidRef" />
+      </end2>
+    </association>
+  </associations>
+  <method name="QebIdentityAppEdit" p1:procedure="dbo.QebIdentityAppEdit" p1:Guid="505240f2-cdf1-4a5f-9632-c5f83da8eecc">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AppName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="AppDescription" type="String" sql-type="nvarchar" length="128" />
+  </method>
+  <method name="QebIdentityAppRoleEdit" p1:procedure="dbo.QebIdentityAppRoleEdit" p1:Guid="015dff40-473d-49d9-94dc-8ac6dc1118e8">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RoleGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RoleName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="RoleDescription" type="String" sql-type="nvarchar" length="128" />
+  </method>
+  <method name="QebIdentityAppDelete" p1:procedure="dbo.QebIdentityAppDelete" p1:Guid="03ba2b97-d6e0-4c3b-bdca-1ca72c40e374">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidKey" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebIdentityAppRoleDelete" p1:procedure="dbo.QebIdentityAppRoleDelete" p1:Guid="887927d3-356d-435d-8439-8cb704e3acad">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RoleGuidKey" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebIdentityAppUserDelete" p1:procedure="dbo.QebIdentityAppUserDelete" p1:Guid="bf10b285-e966-46d7-9f1e-ab5e29ebfd2e">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebIdentityAppUserEdit" p1:procedure="dbo.QebIdentityAppUserEdit" p1:Guid="fda1490a-58ba-4c86-8322-0e374a96a6fd">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FirstName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="LastName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="UserName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="EmailAddress" type="String" sql-type="nvarchar" length="64" />
+  </method>
+  <method name="QebIdentityAppUserStamp" p1:procedure="dbo.QebIdentityAppUserStamp" p1:Guid="4aa007fd-f206-40b1-bc8a-ba401c8ca545">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="SessionGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebIdentityAppUserRegister" p1:procedure="dbo.QebIdentityAppUserRegister" p1:Guid="e5bfcb98-aede-438a-bfc6-72c7a3c76478">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="UserNameDisplayed" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="FirstName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="LastName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="PhoneNumber" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="EmailAddress" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="EmailAlternate" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="WebsiteAddress" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="Organization" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="SecurityQuestion" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityAnswer" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityStamp" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityToken" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="PasswordHash" type="String" sql-type="nvarchar" length="1024" />
+    <parameter name="DateUserCreated" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateTokenExpired" type="DateTime" sql-type="datetime2" />
+  </method>
+  <method name="QebIdentityAppLinkEdit" p1:procedure="dbo.QebIdentityAppLinkEdit" p1:Guid="c4ce29cb-083f-446d-b676-221b0e3364d3">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="LinkGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RoleGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebIdentityAppUserUpdateEmail" p1:procedure="dbo.QebIdentityAppUserUpdateEmail" p1:Guid="b254a287-3372-4188-848a-b416e13e5638">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="EmailAddress" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="EmailAlternate" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityToken" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DateTokenExpired" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateEmailConfirmed" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
+    <parameter name="EmailConfirmed" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="QebIdentityAppUserUpdatePassword" p1:procedure="dbo.QebIdentityAppUserUpdatePassword" p1:Guid="5625a3f9-24ad-460a-aae7-f2571542031f">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="PasswordHash" type="String" sql-type="nvarchar" length="1024" />
+    <parameter name="SecurityToken" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DateTokenExpired" type="DateTime" sql-type="datetime2" />
+    <parameter name="DatePasswordChanged" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
+  </method>
+  <method name="QebIdentityAppUserUpdateProfile" p1:procedure="dbo.QebIdentityAppUserUpdateProfile" p1:Guid="c7fed4fe-3562-466b-b816-2262e82f5eb1">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserNameDisplayed" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="FirstName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="LastName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="Organization" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="PhoneNumber" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityAnswer" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityQuestion" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="WebsiteAddress" type="String" sql-type="nvarchar" length="256" />
+    <parameter name="DateProfileChanged" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
+  </method>
+  <method name="QebIdentityAppUserUpdateUsername" p1:procedure="dbo.QebIdentityAppUserUpdateUsername" p1:Guid="8d850770-266b-44f3-aa3d-77c8ae4aa722">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserName" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="UserNameDisplayed" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="SecurityToken" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DateTokenExpired" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateUserNameChanged" type="DateTime" sql-type="datetime2" />
+    <parameter name="DateLastEdit" type="DateTime" sql-type="datetime2" />
+  </method>
+  <method name="QebIdentityAppUserApprove" p1:procedure="dbo.QebIdentityAppUserApprove" p1:Guid="80653377-e54b-4391-99be-2c660f00081a">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserIsApproved" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="QebIdentityAppLinkDelete" p1:procedure="dbo.QebIdentityAppLinkDelete" p1:Guid="7b731869-becf-4511-8523-04dca8701709">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="LinkGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AppGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebiAppUserSessionCheck" p1:procedure="dbo.QebiAppUserSessionCheck" p1:Guid="22533acd-5da5-4ec2-bdb5-9625a31f4b17" p1:GenerateAsync="False">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="SessionValueIsRequired" type="Boolean" sql-type="bit" />
+    <parameter name="SessionGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AgentGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserNameDisp" p1:parameter-direction="InOut" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="UserIsAgent" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsAuthor" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsEditor" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsAdmin" p1:parameter-direction="InOut" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="QebiAppUserSessionEdit" p1:procedure="dbo.QebiAppUserSessionEdit" p1:Guid="94cfe9ae-c3f6-486d-9b0e-ce9dd5e72865" p1:GenerateAsync="False">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="SessionGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebiAppUserSessionTimestamp" p1:procedure="dbo.QebiAppUserSessionTimestamp" p1:Guid="f4fbf203-c534-41a3-9c87-e11aea17b671" p1:GenerateAsync="False">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="UserGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="SessionGuid" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="QebiAppUserAgentRoleEdit" p1:procedure="dbo.QebiAppUserAgentRoleEdit" p1:Guid="19b409bb-8499-41a6-a4d9-97c0b3dba633" p1:GenerateAsync="False">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AppGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="AgentGuid" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="UserIsAgent" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsAuthor" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsEditor" type="Boolean" sql-type="bit" />
+    <parameter name="AgentIsAdmin" type="Boolean" sql-type="bit" />
+  </method>
+</efcore>

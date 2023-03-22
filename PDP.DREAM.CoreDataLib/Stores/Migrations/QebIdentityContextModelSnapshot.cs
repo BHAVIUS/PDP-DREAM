@@ -10,7 +10,7 @@ using PDP.DREAM.CoreDataLib.Stores;
 
 namespace PDP.DREAM.CoreDataLib.Migrations;
 
-[DbContext(typeof(QebIdentityContext))]
+[DbContext(typeof(QebiDbsqlContext))]
 partial class QebIdentityContextModelSnapshot : ModelSnapshot
 {
   protected override void BuildModel(ModelBuilder modelBuilder)

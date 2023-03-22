@@ -1,12 +1,6 @@
 ﻿// QebCryptoService.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Security.Cryptography;
 
 namespace PDP.DREAM.CoreDataLib.Services;
 

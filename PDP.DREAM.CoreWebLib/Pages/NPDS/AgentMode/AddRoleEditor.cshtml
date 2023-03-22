@@ -1,20 +1,22 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
-  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
 @attribute [PdpRazorPageRoute(DepCoreWebLib, DepAgentModeAddRoleEditor)]
 @model AgentModeAddRoleEditor
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  PdpSiteInfoModel psi = psr.PdpSiteInfo;
-  QebUserRestContext qurc = Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
   var clientIsEditor = qurc.ClientIsEditor;
-  var userIsEditor = User.IsInRole(NamesForIdentityRoles.NpdsEditor.ToString());
+  var userIsEditor = User.IsInRole(NamesForClientRoles.NpdsEditor.ToString());
 }
-@Html.Raw(psr.FormatBodyTitle())
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
 
 @if (userIsEditor)
 {
@@ -28,7 +30,7 @@ else
     You are registered as a Site User but not yet as a member of any other roles. Please note that you
     must add the NPDS Resource Agent role to your account before you can register resource labels and publish
     resource descriptions in any of the NEXUS diristries, PORTAL registries and DOORS directories managed by
-    @psi.SiteOwnerName.
+    @psim.SiteOwnerName.
       Adding the Agent Editor role automatically confers read/write
       privileges as an NPDS Editor (registry scope); 
       other higher read/write privilege levels include NPDS Admin (registrar scope).
@@ -43,7 +45,7 @@ else
     However, the term <em>agent</em> refers to the person who manages and edits the information about the
     resource. The <em>agent</em> is assumed to be acting on behalf of the <em>registrant</em>, <em>contact</em>,
     and other kinds of owners described in the metadata for the resource. Please note that registration
-    of resource metadata by an agent entering data at @psi.SiteOwnerName Registrar
+    of resource metadata by an agent entering data at @psim.SiteOwnerName Registrar
     does not confer legal ownership.
   </p>
   <p>
@@ -52,27 +54,27 @@ else
   </p>
   <ul>
     <li>
-      @psi.SiteOwnerName Registrar reserves the right to revoke privileges
+      @psim.SiteOwnerName Registrar reserves the right to revoke privileges
       from any person acting as a NPDS Resource Agent who submits inappropriate and/or offensive content.
       Please report any abuses.
     </li>
     <li>
-      @psi.SiteOwnerName Registrar does not confer any legal ownership rights
+      @psim.SiteOwnerName Registrar does not confer any legal ownership rights
       for any content submitted by any person acting as a NPDS Resource Agent. All rights previously held
       by you and/or others, such as trade and service marks, will be retained by their respective owners.
     </li>
     <li>
-      @psi.SiteOwnerName Registrar will defer to other recognized organizations
+      @psim.SiteOwnerName Registrar will defer to other recognized organizations
       such as the USPTO and similar international organizations in the event of any questions or disputes
       concerning trade and service marks.
     </li>
     <li>
-      @psi.SiteOwnerName Registrar services remain under development. Alternative
+      @psim.SiteOwnerName Registrar services remain under development. Alternative
       resource record management models may be explored including restricted, unrestricted, and hybrid models
       with respect to editing privileges by Agents. The initial current default model is restricted, ie,
       any record entered by you as an Agent can only be edited by you as the Author for that resource record
       albeit possibly subject to review by the Registry Editor and/or Registrar Admin. Unsupervised anonymous
-      editing as practiced in some wikis is NOT permitted. @psi.SiteOwnerName
+      editing as practiced in some wikis is NOT permitted. @psim.SiteOwnerName
       Registrar reserves the right to change this policy to allow for concurrent use of the hybrid and unrestricted
       models for managing various classes of resource records with the goal of facilitating productive collaborative
       development of the PORTAL-DOORS System for the benefit of all users.

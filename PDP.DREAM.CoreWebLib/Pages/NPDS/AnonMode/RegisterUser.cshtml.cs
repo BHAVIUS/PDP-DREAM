@@ -1,45 +1,30 @@
 ﻿// RegisterUser.cshtml.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
 public class AnonModeRegisterUser : CoreDataRazorPageControllerBase
 {
-  private const string rzrCntrllr = nameof(AnonModeRegisterUser);
-  public AnonModeRegisterUser(QebIdentityContext? userCntxt = null, CoreDbsqlContext? npdsCntxt = null,
-    IEmailSender? emlSndr = null, ISmsSender? smsSndr = null, ILoggerFactory? lgrFtry = null)
-    : base(userCntxt, npdsCntxt, emlSndr, smsSndr, lgrFtry) { }
+  private const string rzrClass = nameof(AnonModeRegisterUser);
+  public AnonModeRegisterUser(ILoggerFactory lgrFtry,
+    IEmailSender emlSndr, ISmsSender smsSndr)
+    : base(lgrFtry, emlSndr, smsSndr) { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext)
+    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
       RecordAccess = NpdsRecordAccess.AnonUser,
       UserModeClientRequired = false,
-      QebSessionValueIsRequired = false
+      SessionClientRequired = false
     };
-    PSR = new PdpSiteRazorModel(DepAnonModeRegisterUser, $"{PDPSS.AppOwnerShortName}: Register User");
-    PSR.InitRazorPageMenus("_AnonModeSpanPageMenu");
+    PSRM = new PdpSiteRazorModel(DepAnonModeRegisterUser, $"{PDPSS.AppOwnerShortName}: Register User");
+    PSRM.InitRazorPageMenus("_AnonModeSpanPageMenu");
+    ResetQebiRepository();
     ResetCoreRepository();
   }
 
@@ -47,8 +32,8 @@ public class AnonModeRegisterUser : CoreDataRazorPageControllerBase
   public IActionResult OnGet()
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnGet), rzrCntrllr);
-    PSR.DebugRazorPageStrings();
+    CatchNullQurc(nameof(OnGet), rzrClass);
+    PSRM.DebugRazorPageStrings();
 #endif
     UXM = new RegisterUserUxm();
     return Page();
@@ -58,10 +43,12 @@ public class AnonModeRegisterUser : CoreDataRazorPageControllerBase
   public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrCntrllr);
+    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrClass);
     DebugQurcData(exeCntxt.Result);
 #endif
   }
+
+  // Other page handlers and properties
 
   [BindProperty]
   public RegisterUserUxm UXM { get; set; } = new RegisterUserUxm();

@@ -11,7 +11,7 @@ using PDP.DREAM.CoreDataLib.Stores;
 
 namespace PDP.DREAM.CoreDataLib.Migrations;
 
-[DbContext(typeof(QebIdentityContext))]
+[DbContext(typeof(QebiDbsqlContext))]
 [Migration("20210726225136_CreateQebIdentityApp")]
 partial class CreateQebIdentityApp
 {

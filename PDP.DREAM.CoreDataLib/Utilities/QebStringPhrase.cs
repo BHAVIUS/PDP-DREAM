@@ -1,10 +1,10 @@
-﻿// PdpStringPhrase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// QebStringPhrase.cs 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
-public static partial class PdpStringPhraseFormFile
+public static partial class QebString
 {
   public static string[] PdpGramArtPrepConj
     = { "A", "AN", "AND", "AT", "BY", "FOR", "FROM", "IN", "OF", "THE", "TO", "WITH" };
@@ -74,12 +74,10 @@ public static partial class PdpStringPhraseFormFile
   }
 
 
-
   public static string CleanPhrase(this string phrase)
   {
     return phrase.RemoveBraces().RemoveBrackets().RemoveAngles().RemoveParens();
   }
-
   public static string CreateAcronym(this string phrase, int minChars = 5, int maxChars = 9)
   {
     string acronym = "";
@@ -142,7 +140,7 @@ public static partial class PdpStringPhraseFormFile
     return partPhrase;
   }
 
-  public static string ToDigitNumberString(this string? str, int digits = 2)
+  public static string ToDigitNumberString(this string? str, int digits)
   {
     var num = 0;
     try { num = int.Parse(str); }

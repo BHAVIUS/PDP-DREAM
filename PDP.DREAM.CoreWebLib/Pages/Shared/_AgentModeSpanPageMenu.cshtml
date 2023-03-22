@@ -1,14 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
   bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
   string userName = (User?.Identity?.Name ?? string.Empty);
-  PdpSiteRazorModel psr = Model.PSR;
-  QebUserRestContext qurc = Model.QURC;
-  var keys = new Dictionary<string, string>() { ["ugk"] = qurc.QebUserKey, ["agk"] = qurc.QebAgentKey, ["sgk"] = qurc.QebSessionKey };
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+  var keys = new Dictionary<string, string>() { ["ugk"] = qurc.ClientUserKey, ["agk"] = qurc.ClientAgentKey, ["sgk"] = qurc.ClientSessionKey };
   if (userAuth)
   {
     <span>
@@ -25,7 +25,7 @@
         <span> | </span>
         <a asp-page="/NPDS/AgentMode/AddRoleAdmin">Add Role Admin</a>
         <span> | </span>
-        <a asp-page="/NPDS/AgentMode/CheckSession" asp-route-ugk="@qurc.QebUserKey" asp-route-sgk="@qurc.QebSessionKey">Check Session</a>
+        <a asp-page="/NPDS/AgentMode/CheckSession" asp-route-ugk="@qurc.ClientUserKey" asp-route-sgk="@qurc.ClientSessionKey">Check Session</a>
       }
     </span>
   }

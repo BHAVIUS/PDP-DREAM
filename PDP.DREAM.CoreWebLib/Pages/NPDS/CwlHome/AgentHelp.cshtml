@@ -1,0 +1,60 @@
+@*  
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model CwlHomeAgentHelp
+@{
+  var psrm = (PdpSiteRazorModel)Model.PSRM;
+  var psim = (PdpSiteInfoModel)psrm.PdpSiteInfo;
+  var qurc = (QebiUserRestContext)Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+<p><partial name="@psrm.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as an NPDS Record Agent
+  and may request and/or release resource metadata records on this server.
+</p>
+
+<h5>
+  Resource Metadata Records
+</h5>
+<p>
+  Record Requests/Releases:
+  You may request authorship for the resource record from the current author;
+  or if you are the current author for the record, then you may release authorship for transfer to another agent;
+  all requests/releases are mediated by the registry editor.
+</p>
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/NPDS-Root">/NPDS/NexusServer/AgentResreps/Diristry/NPDS-Root</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/PDP-Nexus">/NPDS/NexusServer/AgentResreps/Diristry/PDP-Nexus</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Registry/PDP-PORTAL">/NPDS/NexusServer/AgentResreps/Registry/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Directory/PDP-DOORS">/NPDS/NexusServer/AgentResreps/Directory/PDP-DOORS</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Registrar/PDP-Scribe">/NPDS/NexusServer/AgentResreps/Registrar/PDP-Scribe</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/PDP-DREAM">/NPDS/NexusServer/AgentResreps/Diristry/PDP-DREAM</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Ashurbanipal">/NPDS/NexusServer/AgentResreps/Diristry/Ashurbanipal</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Avicenna">/NPDS/NexusServer/AgentResreps/Diristry/Avicenna</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Beacon">/NPDS/NexusServer/AgentResreps/Diristry/Beacon</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/BioPORT">/NPDS/NexusServer/AgentResreps/Diristry/BioPORT</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/BrainIACS">/NPDS/NexusServer/AgentResreps/Diristry/BrainIACS</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/BrainWatch">/NPDS/NexusServer/AgentResreps/Diristry/BrainWatch</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/CTGaming">/NPDS/NexusServer/AgentResreps/Diristry/CTGaming</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/DaVinci">/NPDS/NexusServer/AgentResreps/Diristry/DaVinci</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Eywa">/NPDS/NexusServer/AgentResreps/Diristry/Eywa</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Fidentinus">/NPDS/NexusServer/AgentResreps/Diristry/Fidentinus</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Gaia">/NPDS/NexusServer/AgentResreps/Diristry/Gaia</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/GeneScene">/NPDS/NexusServer/AgentResreps/Diristry/GeneScene</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/HELPME">/NPDS/NexusServer/AgentResreps/Diristry/HELPME</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Jubatus">/NPDS/NexusServer/AgentResreps/Diristry/Jubatus</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Knuth">/NPDS/NexusServer/AgentResreps/Diristry/Knuth</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Martialis">/NPDS/NexusServer/AgentResreps/Diristry/Martialis</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/ManRay">/NPDS/NexusServer/AgentResreps/Diristry/ManRay</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Osler">/NPDS/NexusServer/AgentResreps/Diristry/Osler</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/Socrates">/NPDS/NexusServer/AgentResreps/Diristry/Socrates</a></li>
+  <li><a href="/NPDS/NexusServer/AgentResreps/Diristry/SOLOMON">/NPDS/NexusServer/AgentResreps/Diristry/SOLOMON</a></li>
+</ul>

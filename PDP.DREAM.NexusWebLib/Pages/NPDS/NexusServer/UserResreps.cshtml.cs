@@ -1,76 +1,57 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.NexusWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.NexusWebLib.Pages;
 
-[RequireHttps, Authorize(Roles = NpdsUser)]
-public class NexusServerUserResreps : TkgnPageControllerBase
+[RequireHttps, Authorize]
+public class NexusServerUserResreps : TkgnPageController
 {
-  private const string rzrCntrllr = nameof(NexusServerUserResreps);
-  public NexusServerUserResreps(QebIdentityContext userCntxt,
-    NexusDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+  private const string rzrClass = nameof(NexusServerUserResreps);
+  public NexusServerUserResreps() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext)
+    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Nexus,
+      ServiceType = NpdsServiceType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadOnly,
       RecordAccess = NpdsRecordAccess.AuthUser,
       UserModeClientRequired = true,
-      QebSessionValueIsRequired = true
+      SessionClientRequired = true
     };
-    PSR = new PdpSiteRazorModel(DepNexusServerUserResreps, PdpSitePathKey);
-    PSR.InitRazorPageMenus("_NexusWebLibSpanPageMenu");
-    ResetNexusRepository();
+    PSRM = new PdpSiteRazorModel(DepNexusServerUserResreps, PdpSitePathKey);
+    PSRM.InitRazorPageMenus("_NexusServerSpanPageMenu");
+    ResetCoreRepository();
     var isVerified = CheckCoreUserSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    ResetNexusRepository();
 #if DEBUG
-    QURC.DebugClientAccess();
-    PSR.DebugRazorPageStrings();
+    var rzrHndlr = nameof(OnPageHandlerExecuting);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
   }
 
   // OnGet before OnPageHandlerExecuted
-  public IActionResult OnGet(string serviceType, string serviceTag, string entityType)
+  public IActionResult OnGet(string searchFilter, string serviceTag, string entityType)
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnGet), rzrCntrllr);
-    PSR.DebugRazorPageStrings();
+    var rzrHndlr = nameof(OnGet);
+    CatchNullQurc(rzrHndlr, rzrClass);
 #endif
     // SelectFilter properties
-    var recordAccess = NpdsRecordAccess.AuthUser.ToString();
-    QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, recordAccess);
-    PSR.NpdsRazorBodyTitle(QURC.ServiceTitle);
+    QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    PSRM.NpdsRazorBodyTitle(QURC.ServiceTitle);
     ResetNexusRepository();
 #if DEBUG
-    QURC.DebugClientAccess();
-    PSR.DebugRazorPageStrings();
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     return Page();
   }
 
-  // OnPageHandlerExecuted before the [RazorPage].cshtml
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
-  {
-#if DEBUG
-    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrCntrllr);
-    DebugQurcData(exeCntxt.Result);
-    QURC.DebugClientAccess();
-#endif
-  }
+  // OnPageHandlerExecuted after [RazorPage].cshtml but before result
 
 } // end class
 

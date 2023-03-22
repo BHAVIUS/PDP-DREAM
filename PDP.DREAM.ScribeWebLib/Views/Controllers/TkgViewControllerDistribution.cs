@@ -1,28 +1,16 @@
 ﻿// TkgViewControllerDistribution.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsViewControllerBase
+public partial class TkgsViewController
 {
   private const string eidDistributionStatus = "span#DistributionStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeSelectDistributions), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeSelectDistributions([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -32,7 +20,7 @@ public partial class TkgsViewControllerBase
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeUpsertDistribution), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeUpsertDistribution([DataSourceRequest] DataSourceRequest dsr, DistributionEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -44,7 +32,7 @@ public partial class TkgsViewControllerBase
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeDeleteDistribution), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeDeleteDistribution([DataSourceRequest] DataSourceRequest dsr, DistributionEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -56,7 +44,7 @@ public partial class TkgsViewControllerBase
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeCheckDistribution), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeCheckDistribution([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -68,7 +56,7 @@ public partial class TkgsViewControllerBase
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeReseqDistribution), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeReseqDistribution([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC

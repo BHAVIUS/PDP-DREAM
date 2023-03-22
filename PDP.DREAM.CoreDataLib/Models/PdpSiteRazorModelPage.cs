@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -78,28 +78,38 @@ public partial class PdpSiteRazorModel
     get { DefaultRazorPagePath(); return rzrPagePath; }
   }
 
-  public virtual void InitRazorPageMenus(string footerMenu, string headerMenu, string bodyMenu, bool useBodyDefault)
+  public virtual void InitRazorPageMenus(string footerMenu, string bodyMenu, string headerMenu, bool useBodyDefault)
   {
-    RazorFooterMenu = footerMenu;
-    RazorHeaderMenu = headerMenu;
-    RazorBodyMenu = bodyMenu;
+    if (!string.IsNullOrEmpty(footerMenu))
+    { RazorFooterMenu = footerMenu; }
+    if (!string.IsNullOrEmpty(bodyMenu))
+    { RazorBodyMenu = bodyMenu; }
+    if (!string.IsNullOrEmpty(headerMenu))
+    { RazorHeaderMenu = headerMenu; }
+    // useBodyDefault only if also RazorBodyMenu is empty
     if (useBodyDefault && string.IsNullOrEmpty(RazorBodyMenu))
     {
+      // prioritize footerMenu over headerMenu as default for bodyMenu 
       if (!string.IsNullOrEmpty(footerMenu)) { RazorBodyMenu = footerMenu; }
       else if (!string.IsNullOrEmpty(headerMenu)) { RazorBodyMenu = headerMenu; }
     }
   }
-  public virtual void InitRazorPageMenus(string footerMenu, string headerMenu, bool useBodyDefault = true)
+  public virtual void InitRazorPageMenus(string footerMenu, string bodyMenu, string headerMenu)
   {
-    InitRazorPageMenus(footerMenu, headerMenu, "", useBodyDefault);
+    InitRazorPageMenus(footerMenu, bodyMenu, headerMenu, false);
+  }
+  public virtual void InitRazorPageMenus(string footerMenu, string bodyMenu)
+  {
+    InitRazorPageMenus(footerMenu, bodyMenu, "", false);
   }
   public virtual void InitRazorPageMenus(string footerMenu, bool useBodyDefault = true)
   {
     InitRazorPageMenus(footerMenu, "", "", useBodyDefault);
   }
 
-  public virtual void DebugRazorPageStrings()
+  public virtual void DebugRazorPageStrings(string methodName = "", string className = "")
   {
+    Debug.WriteLine($"{nameof(DebugRazorPageStrings)} called from Class = '{className}'; Method = '{methodName}';");
     Debug.WriteLine($"PageName = {RazorPageName}; PagePath = {RazorPagePath}");
     Debug.WriteLine($"HeaderPart = {RazorHeaderPart}; HeaderMenu = {RazorHeaderMenu}");
     Debug.WriteLine($"FooterPart = {RazorFooterPart}; FooterMenu = {RazorFooterMenu}");

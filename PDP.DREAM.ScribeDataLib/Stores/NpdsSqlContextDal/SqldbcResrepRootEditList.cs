@@ -1,19 +1,8 @@
 ﻿// SqldbcUilResrepRootEditList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Kendo.Mvc;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.EntityFrameworkCore;
-
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Models;
+using Kendo.Mvc.UI; // do not use global because of conflict on System.Data.CommandType
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -22,13 +11,13 @@ public partial class ScribeDbsqlContext
   // ListEditables //
   public IList<NexusResrepEditModel?> ListEditableResrepRoots()
   {
-    IQueryable<INexusResrepRoot> query = InitQueryStorableNexusRoot();
+    IQueryable<INexusResrepRoot> query = InitDataQueryStorableNexusRoot();
     IList<NexusResrepEditModel?> list = query.ToEditable().ToList();
     return list;
   }
   public IList<NexusResrepEditModel?> ListEditableResrepRoots(int pageSize, int pageNumber, out int listCount)
   {
-    IQueryable<INexusResrepRoot> query = InitQueryStorableNexusRoot();
+    IQueryable<INexusResrepRoot> query = InitDataQueryStorableNexusRoot();
     listCount = (from INexusResrepRoot rr in query select rr).Count();
     if (pageSize > 0)
     {
@@ -46,7 +35,7 @@ public partial class ScribeDbsqlContext
     IList<NexusResrepEditModel?> resreps;
     var pageSize = dsRequest.PageSize;
     var pageNumber = dsRequest.Page;
-    IQueryable<INexusResrepRoot> query = InitQueryStorableNexusRoot();
+    IQueryable<INexusResrepRoot> query = InitDataQueryStorableNexusRoot();
     foreach (FilterDescriptor filterDescriptor in dsRequest.Filters)
     {
       var filterMember = filterDescriptor.Member;
@@ -144,7 +133,7 @@ public partial class ScribeDbsqlContext
         query = query.Take(pageSize);
       }
     }
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     resreps = query.ToEditable(agentGuid).ToList();
     return resreps;
   }

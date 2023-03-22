@@ -1,74 +1,100 @@
-﻿// TkgPageControllerDistribution.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// TkgPageControllerDistribution.cs
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
   private const string eidDistributionStatus = "span#DistributionStatus";
 
   public virtual JsonResult OnPostReadDistributions([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid recordGuid, bool isLimited = false)
+   // string searchFilter, string serviceTag, string entityType,
+   Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
-    DataSourceResult dsResult = PSDC.ListEditableDistributions(recordGuid, isLimited).ToDataSourceResult(dsRequest);
+    var rzrHndlr = nameof(OnPostReadDistributions);
+    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection(); // use PSDC
+#if DEBUG
+    DebugScribeRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (recordGuid.IsInvalid())
+      { ModelState.AddModelError("Distributions", "RRRecordGuid invalid."); }
+      else
+      {
+        dsResult = PSDC.ListEditableDistributions(recordGuid, isLimited)
+        .ToDataSourceResult(dsRequest);
+      }
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteDistribution([DataSourceRequest] DataSourceRequest dsRequest,
     DistributionEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.EditDistribution(fgr); fgr.PdpStatusElement = eidDistributionStatus; }
+    if (fgr.RRRecordGuid.IsInvalid())
+    { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
+    if (ModelState.IsValid) { fgr = PSDC.EditDistribution(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidDistributionStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostDeleteDistribution([DataSourceRequest] DataSourceRequest dsRequest,
     DistributionEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteDistribution(fgr); fgr.PdpStatusElement = eidDistributionStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.DeleteDistribution(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidDistributionStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostCheckDistribution([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     DistributionEditModel? fgr = PSDC.GetEditableDistributionByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.CheckDistribution(fgr); fgr.PdpStatusElement = eidDistributionStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.CheckDistribution(fgr); fgr.PdpStatusElement = eidDistributionStatus; }
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostReseqDistribution([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     DistributionEditModel? fgr = PSDC.GetEditableDistributionByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.ReseqDistribution(fgr); fgr.PdpStatusElement = eidDistributionStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.ReseqDistribution(fgr); fgr.PdpStatusElement = eidDistributionStatus; }
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 

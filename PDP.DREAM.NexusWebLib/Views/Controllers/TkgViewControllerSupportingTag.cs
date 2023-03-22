@@ -1,27 +1,15 @@
 ﻿// TkgViewControllerSupportingTag.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
-public partial class TkgnViewControllerBase
+public partial class TkgnViewController
 {
   private const string eidSupportingTagStatus = "span#SupportingTagStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(NexusSelectSupportingTags), "", PdpRatsRgil, NrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult NexusSelectSupportingTags([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetNexusRepository(); // use PNDC

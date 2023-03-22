@@ -1,6 +1,6 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
-  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
@@ -8,18 +8,19 @@
 @model AdminModeCheckSession
 @{
   bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
-  PdpSiteRazorModel psr = Model.PSR;
-  QebUserRestContext qurc = Model.QURC;
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatBodyTitle())
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
 
 @if (userAuth && PDPSS.AppUseDevtestFeature)
 {
   <h5>AspNetCore ViewData Test</h5>
 
   <p>Guids from webapp cookies, keys from request querystring.</p>
-  <p>User: Guid = @qurc.QebUserGuid, Key = @qurc.QebUserKey</p>
-  <p>Agent: Guid = @qurc.QebAgentGuid, Key = @qurc.QebAgentKey</p>
-  <p>Session: Guid = @qurc.QebSessionGuid, Key = @qurc.QebSessionKey</p>
+  <p>User: Guid = @qurc.ClientUserGuid, Key = @qurc.ClientUserKey</p>
+  <p>Agent: Guid = @qurc.ClientAgentGuid, Key = @qurc.ClientAgentKey</p>
+  <p>Session: Guid = @qurc.ClientSessionGuid, Key = @qurc.ClientSessionKey</p>
 }

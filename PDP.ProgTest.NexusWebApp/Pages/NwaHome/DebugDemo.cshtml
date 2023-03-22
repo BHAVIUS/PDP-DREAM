@@ -1,0 +1,22 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model NwaHomeDebugDemo
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<h1>H1 Section Title</h1>
+<h2>H2 Section Title</h2>
+<h3>H3 Section Title</h3>
+<h4>H4 Section Title</h4>
+<h5>H5 Section Title</h5>
+<h6>H6 Section Title</h6>

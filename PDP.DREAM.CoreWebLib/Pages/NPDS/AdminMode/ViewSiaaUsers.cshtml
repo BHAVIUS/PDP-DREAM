@@ -1,5 +1,5 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -7,13 +7,13 @@
 @attribute [PdpRazorPageRoute(DepCoreWebLib, DepAdminModeViewSiaaUsers)]
 @model AdminModeViewSiaaUsers
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  QebUserRestContext qurc = Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
 }
-
-@Html.Raw(psr.FormatBodyTitle())
-
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
 
 <div id="SiaaGrid">
 @(Html.Kendo()
@@ -24,7 +24,7 @@
 .Model(m => {
 m.Id(p => p.UserGuid);
 }) // end Model
-.Read(post => post.Url(psr.RazorPagePath + "?handler=ReadSiaaUsers").Data("kendoToken"))
+.Read(post => post.Url(psrm.RazorPagePath + "?handler=ReadSiaaUsers").Data("kendoToken"))
 .Events(e => e.Error("HandleAjaxErrors"))
 ) // end DataSource
 .Columns(col => {

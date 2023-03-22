@@ -1,21 +1,16 @@
 ﻿// INexusDataService.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-
-using PDP.DREAM.CoreDataLib.Models;
 
 namespace PDP.DREAM.NexusDataLib.Models;
 
 public interface INexusDataService
 {
-  QebUserRestContext PRC { get; set; }
+  QebiUserRestContext PRC { get; set; }
 
   // User Interface/Interaction Layer (with acronym "uil") for viewable ViewModel objects and editable EditModel objects
 
-  void SetRestContext(ref QebUserRestContext qurc);
+  void SetRestContext(ref QebiUserRestContext qurc);
 
   bool CreatePdpAgent();
 

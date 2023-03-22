@@ -1,15 +1,6 @@
 ﻿// SqldbcUilOtherTextEditList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.EntityFrameworkCore;
-
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Models;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -21,14 +12,14 @@ public partial class ScribeDbsqlContext
     try
     {
       IQueryable<NexusOtherText> qry = this.NexusOtherTexts;
-      if (QURC.ClientHasAdminAccess || QURC.ClientHasEditorAccess)
+      if (NPDSCP.ClientHasAdminAccess || NPDSCP.ClientHasEditorAccess)
       { qry = qry.Where(rr => (rr.RecordGuidRef == guidKey)); }
       else
       {
         if (isLimited)
         {
           qry = qry.Where(ss => (ss.RecordGuidRef == guidKey) &&
-            (ss.IsDeleted == false) && (ss.UpdatedByAgentGuidRef == QURC.QebAgentGuid));
+            (ss.IsDeleted == false) && (ss.UpdatedByAgentGuidRef == NPDSCP.ClientAgentGuid));
         }
         else
         {
@@ -50,7 +41,7 @@ public partial class ScribeDbsqlContext
   public IEnumerable<NexusOtherText?> ListStorableOtherTexts(Guid diristryGuid, short entityTypeCode, short fieldFormatCode, int listCount = 0)
   {
     // TODO: re-eval defaults, make available as settable option for each of 3 including supermax
-    if (listCount == 0) { listCount = QURC.ListCount; }
+    if (listCount == 0) { listCount = NPDSCP.PageListCount; }
     IEnumerable<NexusOtherText?> result;
     try
     {

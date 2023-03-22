@@ -1,89 +1,37 @@
 ﻿// SqldbContext.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Linq;
-
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreDataLib.Types;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.NexusDataLib.Stores;
 
+// PDP.DREAM.NexusDataLib.Stores.NexusDbsqlContext
 public partial class NexusDbsqlContext : CoreDbsqlContext
 {
-  // partial void OnCreated for use with Devart Entity Developer generated code
-  partial void OnCreated()
+  // ATTN: OnConfiguring method required with DbContextOptionsBuilder required for EF Core 
+  // ATTN: if use Entity Developer, then must delete generated redundant copy of OnConfiguring()
+  // ATTN: if use Entity Developer with base-derived class, then must delete generated redundant copy of HasChanges()
+  protected override void OnConfiguring(DbContextOptionsBuilder dbcob)
   {
-    if (base.AppSiaaGuid.IsEmpty()) { base.AppSiaaGuid = PDPSS.AppSecureUiaaGuid; }
-  }
-
-  // OnConfiguring method with DbContextOptionsBuilder required for EntityFrameworkCore
-  // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  // partial void CustomizeConfiguration for use with Devart Entity Developer generated code
-  partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder)
-  {
-    if (!optionsBuilder.IsConfigured ||
-        (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
-         !optionsBuilder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
+    if (NPDSCP == null) { NPDSCP = new NpdsClient(NpdsDatabaseType.Nexus); }
+    if (!dbcob.IsConfigured) { dbcob.UseSqlServer(NPDSCP.DatabaseConstr); }
+    if (dbcob.IsConfigured)
     {
-      optionsBuilder.UseSqlServer(NPDSSD.NpdsDiristryDbconstr);
+      if (NPDSCP.ClientAppSiaaGuid.IsNullOrEmpty() && !PDPSS.AppSecureUiaaGuid.IsEmpty())
+      { NPDSCP.ClientAppSiaaGuid = PDPSS.AppSecureUiaaGuid; }
+    }
+    else
+    {
+      throw new Exception("DbContext builder with NPDSCP has not been configured");
     }
   }
-  // ATTN: default connection method for database only in absence of HttpContext
-  //  cannot use an HttpRequest dependent dynamic selection here which instead 
-  //  must be refactored to a page/view/request dependent reset of the DB connection
-  protected void OnInitiatingPdpdc(string? dbcs = null)
-  {
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsDiristryDbconstr; } // for Nexus service
-    if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
-    var builder = new DbContextOptionsBuilder<NexusDbsqlContext>();
-    builder.UseSqlServer(dbcs);
-    OnConfiguring(builder);
-    OnCreated();
-  }
-  protected void OnInitiatingPdpdc(SqlConnection? dbconn)
-  {
-    if (dbconn == null) { throw new NullReferenceException("dbconn null or empty"); }
-    var builder = new DbContextOptionsBuilder<NexusDbsqlContext>();
-    builder.UseSqlServer(dbconn);
-    OnConfiguring(builder);
-    OnCreated();
-  }
-  protected void OnInitiatingPdpdc(DbContextOptions<NexusDbsqlContext> dbco)
-  {
-    if (dbco == null) { throw new NullReferenceException("dbco null or empty"); }
-    var builder = new DbContextOptionsBuilder(dbco);
-    OnConfiguring(builder);
-    OnCreated();
-  }
 
-  // constructor with typed DbContextOptions required for EntityFrameworkCore
-  public NexusDbsqlContext(DbContextOptions<NexusDbsqlContext> dbco) : base()
-  {
-    OnInitiatingPdpdc(dbco);
-  }
-  // constructor with typed Microsoft.Data.SqlClient.SqlConnection
-  public NexusDbsqlContext(SqlConnection? dbconn) : base()
-  {
-    OnInitiatingPdpdc(dbconn);
-  }
-  // constructor with string intended for the database connection
-  public NexusDbsqlContext(string dbcs) : base()
-  {
-    OnInitiatingPdpdc(dbcs);
-  }
-  // constructor without any parameter
-  public NexusDbsqlContext() : base()
-  {
-    OnInitiatingPdpdc("");
-  }
+  // constructor with typed and untyped DbContextOptionsBuilder required for EntityFrameworkCore 
+  public NexusDbsqlContext(DbContextOptionsBuilder dbcob) : base(dbcob) { }
+  public NexusDbsqlContext(DbContextOptionsBuilder<NexusDbsqlContext> dbcob) : base(dbcob) { }
+
+  // constructors with typed NpdsClient or database connection strings
+  public NexusDbsqlContext(INpdsClient npdsc) : base(npdsc) { }
+  public NexusDbsqlContext() : this(new NpdsClient(NpdsDatabaseType.Nexus)) { }
 
 } // end class
 

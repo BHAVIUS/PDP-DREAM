@@ -1,40 +1,54 @@
 ﻿// TkgPageControllerEntityLabel.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Text.RegularExpressions;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
   private const string eidEntityLabelStatus = "span#EntityLabelStatus";
 
   public virtual JsonResult OnPostReadEntityLabels([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid recordGuid, bool isLimited = false)
+   // string searchFilter, string serviceTag, string entityType,
+   Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
-    DataSourceResult dsResult = PSDC.ListEditableEntityLabels(recordGuid, isLimited).ToDataSourceResult(dsRequest);
+    var rzrHndlr = nameof(OnPostReadEntityLabels);
+    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection(); // use PSDC
+#if DEBUG
+    DebugScribeRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (recordGuid.IsInvalid())
+      { ModelState.AddModelError("EntityLabels", "RRRecordGuid invalid."); }
+      else
+      {
+        dsResult = PSDC.ListEditableEntityLabels(recordGuid, isLimited)
+        .ToDataSourceResult(dsRequest);
+      }
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteEntityLabel([DataSourceRequest] DataSourceRequest dsRequest,
     EntityLabelEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
+    if (fgr.RRRecordGuid.IsInvalid())
+    { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
     if (!string.IsNullOrWhiteSpace(fgr.LabelUri))
     {
       var rgx = new Regex(PdpAppConst.RegexLabelUri);
@@ -42,42 +56,54 @@ public partial class TkgsPageControllerBase
       if (!isMatch)
       { ModelState.AddModelError(fgr.ItemXnam, $"String is not a valid {fgr.ItemXnam}."); }
     }
-    if (ModelState.IsValid) { fgr = PSDC.EditEntityLabel(fgr); fgr.PdpStatusElement = eidEntityLabelStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.EditEntityLabel(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidEntityLabelStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostDeleteEntityLabel([DataSourceRequest] DataSourceRequest dsRequest,
     EntityLabelEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteEntityLabel(fgr); fgr.PdpStatusElement = eidEntityLabelStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.DeleteEntityLabel(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidEntityLabelStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostCheckEntityLabel([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     EntityLabelEditModel? fgr = PSDC.GetEditableEntityLabelByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.CheckEntityLabel(fgr); fgr.PdpStatusElement = eidEntityLabelStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.CheckEntityLabel(fgr); }
+    fgr.PdpStatusElement = eidEntityLabelStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostReseqEntityLabel([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     EntityLabelEditModel? fgr = PSDC.GetEditableEntityLabelByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.ReseqEntityLabel(fgr); fgr.PdpStatusElement = eidEntityLabelStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.ReseqEntityLabel(fgr); }
+    fgr.PdpStatusElement = eidEntityLabelStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 

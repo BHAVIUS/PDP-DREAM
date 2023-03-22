@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- project declaration -->
+  <PropertyGroup>
+    <AssemblyName>PDP.ProgTest.CoreWebApp</AssemblyName>
+    <RootNamespace>PDP.DREAM.CoreWebApp</RootNamespace>
+    <AssemblyVersion>10.3.*</AssemblyVersion>
+    <FileVersion>10.3.4</FileVersion>
+    <Version>10.3.4</Version>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- dev/test/build/debug configuration -->
+  <PropertyGroup>
+    <Deterministic>false</Deterministic>
+    <NoWarn>CS0168;CS8032;CS8070;CS8357;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8620;CS8622;CS8629;CS8669;CS8765;CS8767;IDE0047;IDE0059;</NoWarn>
+  </PropertyGroup>
+
+  <!-- required references -->
+  <ItemGroup>
+    <ProjectReference Include="..\PDP.DREAM.CoreWebLib\PDP.DREAM.CoreWebLib.csproj" />
+  </ItemGroup>
+
+</Project>
+

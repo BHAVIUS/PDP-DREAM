@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -51,9 +51,6 @@ public static partial class QebFile
     return bytOut;
   }
 
-
-
-
   public static void ConsoleContinue(bool needPause = false, bool needExtraLine = false)
   {
     Console.WriteLine();
@@ -68,4 +65,56 @@ public static partial class QebFile
     }
   }
 
-}
+  // TODO: extend to additional overloads to handle filenames with relative paths
+  public static string[] FileReadAllLines(this string fileName)
+  {
+    string[] contents = Array.Empty<string>();
+    if (File.Exists(fileName)) // requires full absolute path
+    {
+      contents = File.ReadAllLines(fileName, Encoding.UTF8);
+    }
+    return contents;
+  }
+  public static bool FileWriteAllLines(this string fileName, string[] contents)
+  {
+    var fileWritten = false;
+    if (!string.IsNullOrEmpty(fileName) && !File.Exists(fileName))
+    {
+      try
+      {
+        File.WriteAllLines(fileName, contents, Encoding.UTF8);
+        fileWritten = true;
+      }
+      catch (IOException exc)
+      {
+        Debug.WriteLine("IOException source: {0}", exc.Source);
+      }
+    }
+    return fileWritten;
+  }
+  public static bool FileWriteAllLines(this string fileName, IList<string[]>? page)
+  {
+    var fileWritten = false;
+    string[] contents = Array.Empty<string>();
+    foreach (string[] part in page)
+    {
+      contents = contents.ArrayAppendArray(part);
+    }
+    fileWritten = fileName.FileWriteAllLines(contents);
+    return fileWritten;
+  }
+  public static bool FileWriteAllLines(this string fileName, IDictionary<int, string[]>? book)
+  {
+    string[] contents = Array.Empty<string>();
+    foreach (KeyValuePair<int, string[]> page in book)
+    {
+      var pageKey = page.Key;
+      var pageValue = page.Value;
+      contents = contents.ArrayAppendArray(pageValue);
+    }
+    return fileName.FileWriteAllLines(contents);
+  }
+
+} // end class
+
+// end file

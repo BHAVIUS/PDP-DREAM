@@ -1,5 +1,5 @@
 ﻿// PdpXml.Serializers.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities
@@ -69,7 +69,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return serObj;
     }
 
-    public static string PdpSerialize(QebUserRestContext qurc, IXmlSerializable ixs, XmlWriterSettings? xws = null)
+    public static string PdpSerialize(QebiUserRestContext qurc, IXmlSerializable ixs, XmlWriterSettings? xws = null)
     {
       if (qurc == null) { throw new ArgumentNullException("qurc in SerializeToString"); }
       if (ixs == null) { throw new ArgumentNullException("ixs in SerializeToString"); }
@@ -92,7 +92,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       }
       catch (Exception ex)
       {
-        Console.WriteLine(ex.Message);
+        Debug.WriteLine(ex.Message);
       }
       finally
       {
@@ -102,7 +102,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return xml;
     }
 
-    public static T PdpDeserialize<T>(QebUserRestContext qurc, string xmlStr, T serObj) where T : class, IXmlSerializable, new()
+    public static T PdpDeserialize<T>(QebiUserRestContext qurc, string xmlStr, T serObj) where T : class, IXmlSerializable, new()
     {
       XmlDocument xd = new XmlDocument();
       xd.LoadXml(xmlStr);
@@ -124,13 +124,13 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       serObj2 = XmlDeserialize(str, serObj2);
       pairAreEquiv = serObj1.Equals(serObj2);
 
-      Console.WriteLine(str);
-      Console.WriteLine(pairName + " String Pair Equivalence = " + pairAreEquiv.ToString());
+      Debug.WriteLine(str);
+      Debug.WriteLine(pairName + " String Pair Equivalence = " + pairAreEquiv.ToString());
 
       return pairAreEquiv;
     }
 
-    public static bool RoundTripX2<T>(QebUserRestContext qurc, T serObj1, T serObj2, string pairName = "",
+    public static bool RoundTripX2<T>(QebiUserRestContext qurc, T serObj1, T serObj2, string pairName = "",
       XmlWriterSettings? xws = null) where T : class, IXmlSerializable, new()
     {
       if (xws == null) { xws = CreateXmlWriterSettings(); }
@@ -144,24 +144,24 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       if (qurc == null)
       {
         str1 = XmlSerialize(serObj1, xws);
-        Console.WriteLine(str1);
+        Debug.WriteLine(str1);
 
         serObj2 = XmlDeserialize(str1, serObj2);
         str2 = XmlSerialize(serObj2, xws);
-        Console.WriteLine(str2);
+        Debug.WriteLine(str2);
       }
       else
       {
         str1 = PdpSerialize(qurc, serObj1, xws);
-        Console.WriteLine(str1);
+        Debug.WriteLine(str1);
 
         serObj2 = PdpDeserialize(qurc, str1, serObj2);
         str2 = PdpSerialize(qurc, serObj2, xws);
-        Console.WriteLine(str2);
+        Debug.WriteLine(str2);
       }
 
       pairAreEquiv = string.Equals(str1, str2, strcomp);
-      Console.WriteLine(pairName + " String Pair Equivalence = " + pairAreEquiv.ToString());
+      Debug.WriteLine(pairName + " String Pair Equivalence = " + pairAreEquiv.ToString());
 
       return pairAreEquiv;
     }

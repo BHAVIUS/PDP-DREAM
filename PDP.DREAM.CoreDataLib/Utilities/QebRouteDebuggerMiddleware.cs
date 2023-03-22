@@ -1,4 +1,4 @@
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // 2019 info on AspNetCore Routing
@@ -217,7 +217,7 @@ public class QebRouteDebuggerMiddleware
     var sb = new StringBuilder(string.Empty);
     sb.Append(@"<h1>Help Information:</h1><table>");
     sb.Append(@"<tr><th>Name</th><th>Route</th><th>Help</th><th>Examples</th></tr>");
-    foreach (Route r in theRouters)
+    foreach (Microsoft.AspNetCore.Routing.Route r in theRouters)
     {
       bool onlyHelpWhenDebug = false;
       string rHelp = r.GetMvcRouteDataTokenString(QebHttpRouteExtensions.RouteHelpKey);
@@ -265,10 +265,10 @@ public class QebRouteDebuggerMiddleware
     sb.Append(@"<tr><th>Name</th><th>Route</th><th>Defaults</th><th>Constraints</th></tr>");
 
     bool routeFound = false;
-    Route foundRoute = null;
+    Microsoft.AspNetCore.Routing.Route foundRoute = null;
     string foundRouteUrl = string.Empty;
     string foundRouteName = string.Empty;
-    foreach (Route r in theRouters)
+    foreach (Microsoft.AspNetCore.Routing.Route r in theRouters)
     {
       string rUrl = r.ToString(); // URL template for the route
       string rName = r.Name.ToString(); // name for the route

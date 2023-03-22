@@ -1,41 +1,54 @@
-﻿// TkgPageControllerLocation.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// TkgPageControllerLocation.cs
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Text.RegularExpressions;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
   private const string eidLocationStatus = "span#LocationStatus";
 
   public virtual JsonResult OnPostReadLocations([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid recordGuid, bool isLimited = false)
+   // string searchFilter, string serviceTag, string entityType,
+   Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
-    DataSourceResult dsResult = PSDC.ListEditableLocations(recordGuid, isLimited).ToDataSourceResult(dsRequest);
+    var rzrHndlr = nameof(OnPostReadLocations);
+    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection(); // use PSDC
+#if DEBUG
+    DebugScribeRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (recordGuid.IsInvalid())
+      { ModelState.AddModelError("Locations", "RRRecordGuid invalid."); }
+      else
+      {
+          dsResult = PSDC.ListEditableLocations(recordGuid, isLimited)
+          .ToDataSourceResult(dsRequest);
+      }
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteLocation([DataSourceRequest] DataSourceRequest dsRequest,
     LocationEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
+    if (fgr.RRRecordGuid.IsInvalid())
+    { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
     Regex? rgx = null; bool isMatch = false;
     if (!string.IsNullOrWhiteSpace(fgr.DisplayImageUrl))
     {
@@ -58,50 +71,60 @@ public partial class TkgsPageControllerBase
       if (!isMatch)
       { ModelState.AddModelError(fgr.ItemXnam, "String not a valid EmailAddress."); }
     }
-    if (ModelState.IsValid) { fgr = PSDC.EditLocation(fgr); fgr.PdpStatusElement = eidLocationStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.EditLocation(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidLocationStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostDeleteLocation([DataSourceRequest] DataSourceRequest dsRequest,
     LocationEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteLocation(fgr); fgr.PdpStatusElement = eidLocationStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.DeleteLocation(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidLocationStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostCheckLocation([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     LocationEditModel? fgr = PSDC.GetEditableLocationByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.CheckLocation(fgr); fgr.PdpStatusElement = eidLocationStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.CheckLocation(fgr); fgr.PdpStatusElement = eidLocationStatus; }
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostReseqLocation([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     LocationEditModel? fgr = PSDC.GetEditableLocationByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.ReseqLocation(fgr); fgr.PdpStatusElement = eidLocationStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.ReseqLocation(fgr); fgr.PdpStatusElement = eidLocationStatus; }
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   // TODO: deprecate or refactor/reconfigure
-  public virtual IActionResult OnPostCheckLocations(string serviceType, string serviceTag, string entityType = "")
+  public virtual IActionResult OnPostCheckLocations(string searchFilter, string serviceTag, string entityType = "")
   {
-    QURC.ParseNpdsSelectFilterForPage(serviceType, serviceTag, entityType, "Edit");
-    ResetScribeRepository();
+    QURC.ParseNpdsSelectFilterForPage(searchFilter, serviceTag, entityType, "Edit");
+    OpenScribeConnection();
     foreach (var rrr in PSDC.ListEditableResrepRoots())
     {
       var recordGuid = PdpGuid.ParseToNonNullable(rrr.RRRecordGuid, Guid.Empty);
@@ -113,6 +136,7 @@ public partial class TkgsPageControllerBase
         }
       }
     }
+    CloseScribeConnection();
     return Page();
   }
 

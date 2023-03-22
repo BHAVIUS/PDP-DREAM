@@ -1,48 +1,35 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, Authorize]
 public class AuthModeChangeEmail : CoreDataRazorPageControllerBase
 {
-  private const string rzrCntrllr = nameof(AuthModeChangeEmail);
-  public AuthModeChangeEmail(QebIdentityContext? userCntxt = null, CoreDbsqlContext? npdsCntxt = null,
-    IEmailSender? emlSndr = null, ISmsSender? smsSndr = null, ILoggerFactory? lgrFtry = null)
-    : base(userCntxt, npdsCntxt, emlSndr, smsSndr, lgrFtry) { }
+  private const string rzrClass = nameof(AuthModeChangeEmail);
+  public AuthModeChangeEmail(ILoggerFactory lgrFtry,
+    IEmailSender emlSndr, ISmsSender smsSndr)
+    : base(lgrFtry, emlSndr, smsSndr) { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebUserRestContext(exeCntxt.HttpContext)
+    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Core,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
       RecordAccess = NpdsRecordAccess.AuthUser,
       UserModeClientRequired = true,
-      QebSessionValueIsRequired = true
+      SessionClientRequired = true
     };
-    PSR = new PdpSiteRazorModel(DepAuthModeChangeEmail,
-      $"{PDPSS.AppOwnerShortName}: Change Email");
-    PSR.InitRazorPageMenus("_AuthModeSpanPageMenu");
+    PSRM = new PdpSiteRazorModel(DepAuthModeChangeEmail, $"{PDPSS.AppOwnerShortName}: Change Email");
+    PSRM.InitRazorPageMenus("_AuthModeSpanPageMenu");
+    ResetQebiRepository();
     ResetCoreRepository();
     var isVerified = CheckCoreUserSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
   }
 
+  // OnGet before OnPageHandlerExecuted
   public IActionResult OnGet()
   {
     UXM = new ChangeEmailUxm();
@@ -53,6 +40,10 @@ public class AuthModeChangeEmail : CoreDataRazorPageControllerBase
     }
     return Page();
   }
+
+  // OnPageHandlerExecuted before the [RazorPage].cshtml
+
+  // Other page handlers and properties
 
   [BindProperty]
   public ChangeEmailUxm UXM { get; set; } = new ChangeEmailUxm();

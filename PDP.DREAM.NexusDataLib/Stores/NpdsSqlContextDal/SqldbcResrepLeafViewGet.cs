@@ -1,17 +1,6 @@
 ﻿// SqldbcUilResrepLeafViewGet.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Kendo.Mvc.Extensions;
-
-using Microsoft.EntityFrameworkCore;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Models;
 
 namespace PDP.DREAM.NexusDataLib.Stores;
 
@@ -62,24 +51,52 @@ public partial class NexusDbsqlContext
   {
     return GetViewableResrepLeafByKeyAsync(PdpGuid.ParseToNonNullable(guidKey), isInfosetKey);
   }
-  
+
   // GetStorables //
   public INexusResrepLeaf GetStorableNexusLeafByRKey(Guid guidKey)
   { return QueryStorableNexusLeafByRKey(guidKey).SingleOrDefault(); }
   public INexusResrepLeaf GetStorableNexusLeafByIKey(Guid guidKey)
   { return QueryStorableNexusLeafByIKey(guidKey).SingleOrDefault(); }
+  public INexusResrepLeaf GetStorableNexusLeafByDiristryEntityTag(Guid diristryGuid, string entityTag)
+  { return QueryStorableNexusLeafByDiristryEntityTag(diristryGuid, entityTag).FirstOrDefault(); }
+
+  public INexusResrepLeaf GetStorableNexusLeafWithFacets(Guid guidKey)
+  {
+    IQueryable<INexusResrepLeaf> query = this.NexusResrepLeafs;
+    query = query.Where(r => (r.RecordGuidKey == guidKey));
+    query = query.Select((INexusResrepLeaf rr) => rr)
+      .Include((INexusResrepLeaf rr) => rr.NexusEntityLabels)
+      .Include((INexusResrepLeaf rr) => rr.NexusSupportingTags)
+      .Include((INexusResrepLeaf rr) => rr.NexusSupportingLabels)
+      .Include((INexusResrepLeaf rr) => rr.NexusCrossReferences)
+      .Include((INexusResrepLeaf rr) => rr.NexusOtherTexts)
+      .Include((INexusResrepLeaf rr) => rr.NexusLocations)
+      .Include((INexusResrepLeaf rr) => rr.NexusDescriptions)
+      .Include((INexusResrepLeaf rr) => rr.NexusProvenances)
+      .Include((INexusResrepLeaf rr) => rr.NexusDistributions)
+      .Include((INexusResrepLeaf rr) => rr.NexusFairMetrics);
+    INexusResrepLeaf resrep = query.SingleOrDefault();
+    return resrep;
+  }
 
   // QueryStorables //
   public IQueryable<INexusResrepLeaf> QueryStorableNexusLeafByRKey(Guid guidKey)
   {
     IQueryable<INexusResrepLeaf> qry = this.NexusResrepLeafs;
-    qry = qry.Where(r => (r.RecordGuidKey == guidKey));
+    qry = qry.Where(rr => (rr.RecordGuidKey == guidKey));
     return qry;
   }
   public IQueryable<INexusResrepLeaf> QueryStorableNexusLeafByIKey(Guid guidKey)
   {
     IQueryable<INexusResrepLeaf> qry = this.NexusResrepLeafs;
-    qry = qry.Where(r => (r.InfosetGuidKey == guidKey));
+    qry = qry.Where(rr => (rr.InfosetGuidKey == guidKey));
+    return qry;
+  }
+  public IQueryable<INexusResrepLeaf> QueryStorableNexusLeafByDiristryEntityTag(Guid diristryGuid, string entityTag)
+  {
+    IQueryable<INexusResrepLeaf> qry = this.NexusResrepLeafs;
+    qry = qry.Where(rr => (rr.RecordDiristryGuidRef == diristryGuid) &&
+    ((rr.EntityInitialTag == entityTag) || (rr.EntityPrincipalTag == entityTag)));
     return qry;
   }
 
