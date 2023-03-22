@@ -1,0 +1,26 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAdminModeCheckSession)]
+@model AdminModeCheckSession
+@{
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+
+@if (userAuth && PDPSS.AppUseDevtestFeature)
+{
+  <h5>AspNetCore ViewData Test</h5>
+
+  <p>Guids from webapp cookies, keys from request querystring.</p>
+  <p>User: Guid = @qurc.ClientUserGuid, Key = @qurc.ClientUserKey</p>
+  <p>Agent: Guid = @qurc.ClientAgentGuid, Key = @qurc.ClientAgentKey</p>
+  <p>Session: Guid = @qurc.ClientSessionGuid, Key = @qurc.ClientSessionKey</p>
+}

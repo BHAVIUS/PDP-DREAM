@@ -1,15 +1,6 @@
 ﻿// CoreResrepModelBase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Text;
-
-using PDP.DREAM.CoreDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Types.PdpGuid;
-using static PDP.DREAM.CoreDataLib.Utilities.PdpStringFrasFormFile;
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
@@ -31,8 +22,8 @@ public abstract class CoreResrepModelBase : ICoreResrepModelBase
   public bool PdpStatusItemStored { get; set; } = false;
 
   // TODO: migrate to TkgrNpdsModel
-  // TKGR tracking for Admin/Editor/Author/Agent in shared views/pages
-  public string? TkgrRecordAccess { get; set; } = string.Empty;
+  // TKGR tracking for Admin/Editor/Author/Agent in shared views/pages/forms
+  public string? RRRecordAccess { get; set; } = string.Empty;
   //public string? TkgrFormAction { get; set; } = string.Empty;
   //public string? TkgrArea { get; set; } = string.Empty;
   //public string? TkgrController { get; set; } = string.Empty;
@@ -50,9 +41,9 @@ public abstract class CoreResrepModelBase : ICoreResrepModelBase
   // independent parent table //
 
   public Guid? RRRecordGuid { get; set; } = Guid.Empty; // ResRep Record guid
-  public string? RRRecordGuidStr { get { return RRRecordGuid.ToPdpGuidString(); } }
+  // public string? RRRecordGuidStr { get { return RRRecordGuid.ToPdpGuidString(); } }
   public Guid? RRInfosetGuid { get; set; } = Guid.Empty; // ResRep Infoset guid
-  public string? RRInfosetGuidStr { get { return RRInfosetGuid.ToPdpGuidString(); } }
+  // public string? RRInfosetGuidStr { get { return RRInfosetGuid.ToPdpGuidString(); } }
   public string? RecordHandle { get; set; } = string.Empty;
   public bool RecordIsDeleted { get; set; } = false;
 

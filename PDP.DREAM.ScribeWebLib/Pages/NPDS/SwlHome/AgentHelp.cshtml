@@ -1,53 +1,27 @@
 @*  
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/SwlHome/AgentHelp"
+@page
+@attribute [PdpRazorPageRoute(DepScribeWebLib, DepSwlHomeAgentHelp)]
 @model SwlHomeAgentHelp
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  PdpSiteInfoModel psi = psr.PdpSiteInfo;
-  QebUserRestContext qurc = Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatPageTitle())
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 
 <p>
   You are registered as an NPDS Record Agent
   and may request and/or release resource metadata records on this server.
 </p>
-
-<h5>URLs in href attributes</h5>
-
-<ul>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/NPDS-Root">/NPDS/ScribeServer/AuthorResreps/Nexus/NPDS-Root</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/PDP-Nexus">/NPDS/ScribeServer/AuthorResreps/Nexus/PDP-Nexus</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/PORTAL/PDP-PORTAL">/NPDS/ScribeServer/AuthorResreps/PORTAL/PDP-PORTAL</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/DOORS/PDP-DOORS">/NPDS/ScribeServer/AuthorResreps/DOORS/PDP-DOORS</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Scribe/PDP-Scribe">/NPDS/ScribeServer/AuthorResreps/Scribe/PDP-Scribe</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/PDP-DREAM">/NPDS/ScribeServer/AuthorResreps/Nexus/PDP-DREAM</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Ashurbanipal">/NPDS/ScribeServer/AuthorResreps/Nexus/Ashurbanipal</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Avicenna">/NPDS/ScribeServer/AuthorResreps/Nexus/Avicenna</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Beacon">/NPDS/ScribeServer/AuthorResreps/Nexus/Beacon</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/BioPORT">/NPDS/ScribeServer/AuthorResreps/Nexus/BioPORT</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/BrainIACS">/NPDS/ScribeServer/AuthorResreps/Nexus/BrainIACS</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/BrainWatch">/NPDS/ScribeServer/AuthorResreps/Nexus/BrainWatch</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/CTGaming">/NPDS/ScribeServer/AuthorResreps/Nexus/CTGaming</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/DaVinci">/NPDS/ScribeServer/AuthorResreps/Nexus/DaVinci</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Eywa">/NPDS/ScribeServer/AuthorResreps/Nexus/Eywa</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Fidentinus">/NPDS/ScribeServer/AuthorResreps/Nexus/Fidentinus</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Gaia">/NPDS/ScribeServer/AuthorResreps/Nexus/Gaia</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/GeneScene">/NPDS/ScribeServer/AuthorResreps/Nexus/GeneScene</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/HELPME">/NPDS/ScribeServer/AuthorResreps/Nexus/HELPME</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Jubatus">/NPDS/ScribeServer/AuthorResreps/Nexus/Jubatus</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Knuth">/NPDS/ScribeServer/AuthorResreps/Nexus/Knuth</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Martialis">/NPDS/ScribeServer/AuthorResreps/Nexus/Martialis</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/ManRay">/NPDS/ScribeServer/AuthorResreps/Nexus/ManRay</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Osler">/NPDS/ScribeServer/AuthorResreps/Nexus/Osler</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/Socrates">/NPDS/ScribeServer/AuthorResreps/Nexus/Socrates</a></li>
-  <li><a href="/NPDS/ScribeServer/AuthorResreps/Nexus/SOLOMON">/NPDS/ScribeServer/AuthorResreps/Nexus/SOLOMON</a></li>
-</ul>
 
 <h5>
   Resource Metadata Records
@@ -58,3 +32,36 @@
   or if you are the current author for the record, then you may release authorship for transfer to another agent;
   all requests/releases are mediated by the registry editor.
 </p>
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/NPDS-Root">/NPDS/ScribeServer/AgentResreps/Diristry/NPDS-Root</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/PDP-Nexus">/NPDS/ScribeServer/AgentResreps/Diristry/PDP-Nexus</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Registry/PDP-PORTAL">/NPDS/ScribeServer/AgentResreps/Registry/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Directory/PDP-DOORS">/NPDS/ScribeServer/AgentResreps/Directory/PDP-DOORS</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Registrar/PDP-Scribe">/NPDS/ScribeServer/AgentResreps/Registrar/PDP-Scribe</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/PDP-DREAM">/NPDS/ScribeServer/AgentResreps/Diristry/PDP-DREAM</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Ashurbanipal">/NPDS/ScribeServer/AgentResreps/Diristry/Ashurbanipal</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Avicenna">/NPDS/ScribeServer/AgentResreps/Diristry/Avicenna</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Beacon">/NPDS/ScribeServer/AgentResreps/Diristry/Beacon</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/BioPORT">/NPDS/ScribeServer/AgentResreps/Diristry/BioPORT</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/BrainIACS">/NPDS/ScribeServer/AgentResreps/Diristry/BrainIACS</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/BrainWatch">/NPDS/ScribeServer/AgentResreps/Diristry/BrainWatch</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/CTGaming">/NPDS/ScribeServer/AgentResreps/Diristry/CTGaming</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/DaVinci">/NPDS/ScribeServer/AgentResreps/Diristry/DaVinci</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Eywa">/NPDS/ScribeServer/AgentResreps/Diristry/Eywa</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Fidentinus">/NPDS/ScribeServer/AgentResreps/Diristry/Fidentinus</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Gaia">/NPDS/ScribeServer/AgentResreps/Diristry/Gaia</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/GeneScene">/NPDS/ScribeServer/AgentResreps/Diristry/GeneScene</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/HELPME">/NPDS/ScribeServer/AgentResreps/Diristry/HELPME</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Jubatus">/NPDS/ScribeServer/AgentResreps/Diristry/Jubatus</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Knuth">/NPDS/ScribeServer/AgentResreps/Diristry/Knuth</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Martialis">/NPDS/ScribeServer/AgentResreps/Diristry/Martialis</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/ManRay">/NPDS/ScribeServer/AgentResreps/Diristry/ManRay</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Osler">/NPDS/ScribeServer/AgentResreps/Diristry/Osler</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/Socrates">/NPDS/ScribeServer/AgentResreps/Diristry/Socrates</a></li>
+  <li><a href="/NPDS/ScribeServer/AgentResreps/Diristry/SOLOMON">/NPDS/ScribeServer/AgentResreps/Diristry/SOLOMON</a></li>
+</ul>
+
+<partial name="_CuratorHelp" />

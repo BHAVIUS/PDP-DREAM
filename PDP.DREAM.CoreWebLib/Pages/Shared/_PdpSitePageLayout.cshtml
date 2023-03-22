@@ -1,12 +1,12 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  PdpSiteInfoModel psi = psr.PdpSiteInfo;
-  QebUserRestContext qurc = Model.QURC;
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
 }
 
 <!doctype html>
@@ -16,42 +16,42 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- The above 3 meta tags must come first in the head; any other head content must come after these tags -->
-  <meta name="author" content="@Html.Raw(psi.MetatagAuthor)" />
-  <meta name="keywords" content="@Html.Raw(psi.MetatagKeywords)" />
-  <meta name="description" content="@Html.Raw(psi.MetatagDescription)" />
-  <title>@Html.Raw(psi.SiteTitle)</title>
+  <meta name="author" content="@Html.Raw(psim.MetatagAuthor)" />
+  <meta name="keywords" content="@Html.Raw(psim.MetatagKeywords)" />
+  <meta name="description" content="@Html.Raw(psim.MetatagDescription)" />
+  <title>@Html.Raw(psim.SiteTitle)</title>
   <link href="~/PdpSiteIcon20101123.ico" rel="icon" type="image/x-icon" />
   <environment include="Development">
-    <link href="~/lib/bootstrap/dist521/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist522/css/bootstrap.css" rel="stylesheet" />
   </environment>
   <environment exclude="Development">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
           rel="stylesheet" crossorigin="anonymous"
-          asp-fallback-href="~/lib/bootstrap/dist521/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist522/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
   </environment>
   <!-- css styles before js scripts -->
-  <link href="~/lib/kendo/2022.3.913/styles/kendo.classic-opal.min.css" rel="stylesheet" type="text/css" />
+  <link href="~/lib/kendo/2023.1.314/styles/classic-opal.css" rel="stylesheet" type="text/css" />
   <link href="~/PdpSiteStyle.css" rel="stylesheet" type="text/css" asp-append-version="true" />
   <!-- Kendo scripts after jQuery scripts -->
-  <script src="~/lib/kendo/2022.3.913/js/jquery.min.js"></script>
-  <script src="~/lib/kendo/2022.3.913/js/jszip.min.js"></script>
-  <script src="~/lib/kendo/2022.3.913/js/kendo.all.min.js"></script>
-  <script src="~/lib/kendo/2022.3.913/js/kendo.aspnetmvc.min.js"></script>
+  <script src="~/lib/kendo/2023.1.314/js/jquery.min.js"></script>
+  <script src="~/lib/kendo/2023.1.314/js/jszip.min.js"></script>
+  <script src="~/lib/kendo/2023.1.314/js/kendo.all.min.js"></script>
+  <script src="~/lib/kendo/2023.1.314/js/kendo.aspnetmvc.min.js"></script>
 </head>
 <body>
   <div class="pdpPage k-content container-fluid">
     <header class="pdpHead row nav navbar navbar-left">
       <nav class="col-md-4">
-        <img @Html.Raw(psi.HeaderImageLogo) />
+        <img @Html.Raw(psim.HeaderImageLogo) />
       </nav>
       <nav class="col-md-8">
-        <a asp-page="@psr.RazorPageName">@Html.Raw(psr.FormatHeaderTitle())</a>
-        @Html.Raw(psr.FormatHeaderTagLine())
-        @Html.Raw(psr.FormatHeaderSloganLine())
-        @if (!string.IsNullOrEmpty(psr.RazorHeaderMenu))
+        <a asp-page="@psrm.RazorPageName">@Html.Raw(psrm.FormatHeaderTitle())</a>
+        @Html.Raw(psrm.FormatHeaderTagLine())
+        @Html.Raw(psrm.FormatHeaderSloganLine())
+        @if (!string.IsNullOrEmpty(psrm.RazorHeaderMenu))
         {
-          <partial name="@psr.RazorHeaderMenu" />
+          <partial name="@psrm.RazorHeaderMenu" />
         }
       </nav>
     </header>
@@ -64,25 +64,25 @@
     <div class="pdpClear"><hr /></div>
     <footer class="pdpFoot row nav navbar navbar-left">
       <nav class="col-md-12">
-        @if (!string.IsNullOrEmpty(psr.RazorFooterMenu))
+        @if (!string.IsNullOrEmpty(psrm.RazorFooterMenu))
         {
-          <partial name="@psr.RazorFooterMenu" /><br />
+          <partial name="@psrm.RazorFooterMenu" /><br />
         }
-        Served @DateTime.Now by @psi.SiteAppNameVersion<br />
-        @Html.Raw(psi.FooterCodebuildLine)
-        @Html.Raw(psi.FooterCopyrightLine)
-        @Html.Raw(psi.FooterCrosslinkLine)
-        @Html.Raw(psi.FooterContactLine)
+        Served @DateTime.Now by @psim.SiteAppNameVersion<br />
+        <!-- @Html.Raw(psim.FooterCodebuildLine) -->
+        @Html.Raw(psim.FooterCopyrightLine)
+        @Html.Raw(psim.FooterCrosslinkLine)
+        @Html.Raw(psim.FooterContactLine)
       </nav>
     </footer>
   </div>
   <environment include="Development">
-    <script src="~/lib/bootstrap/dist521/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist522/js/bootstrap.js"></script>
   </environment>
   <environment exclude="Development">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"
-            asp-fallback-src="~/lib/bootstrap/dist521/js/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist522/js/bootstrap.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
   </environment>
   @RenderSection("Scripts", required: false)

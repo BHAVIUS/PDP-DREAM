@@ -1,17 +1,6 @@
 ﻿// SqldbcUilLocationEditCheck.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -23,10 +12,10 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    if (!internalGuid.IsEmpty())
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    if (!fgroupGuid.IsEmpty())
     {
       if (!string.IsNullOrWhiteSpace(editObj.StreetAddress + editObj.CityLocality + editObj.StateRegion + editObj.Country + editObj.PostalCode))
       {
@@ -105,7 +94,7 @@ public partial class ScribeDbsqlContext
   public LocationEditModel ReseqLocation(LocationEditModel ssEdit)
   {
     var errMsg = string.Empty;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var rrRecordGuid = PdpGuid.ParseToNonNullable(ssEdit.RRRecordGuid, Guid.Empty);
     var ssRecordGuid = PdpGuid.ParseToNonNullable(ssEdit.RRFgroupGuid, Guid.Empty);
     var ssRecordName = ssEdit.ItemXnam;

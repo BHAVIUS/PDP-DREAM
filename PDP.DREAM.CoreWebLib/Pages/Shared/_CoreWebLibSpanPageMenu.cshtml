@@ -1,24 +1,27 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
   bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? string.Empty);
 }
 
 <span>
   CoreWebLib:
-  <a asp-page="/NPDS/PdpSite/Index">PdpSite</a>
+  <a asp-page="@DepPdpSiteIndex">PdpSite</a>
   <span> | </span>
   @if (userAuth)
   {
-    <a asp-page="/NPDS/AuthCore/Index">AuthUser</a>
+    <a asp-page="@DepAuthModeIndex">AuthMode</a>
   }
   else
   {
-    <a asp-page="/NPDS/AnonCore/Index">AnonUser</a>
+    <a asp-page="@DepAnonModeIndex">AnonMode</a>
   }
   <span> | </span>
-  <a asp-page="/NPDS/CwlHome/Index">CoreWebLib</a>
+  <a asp-page="@DepCoreServerIndex">CoreServer</a>
+  <span> | </span>
+  <a asp-page="@DepCwlHomeIndex">CoreWebLib</a>
 </span>

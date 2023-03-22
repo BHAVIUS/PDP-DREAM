@@ -1,12 +1,19 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
   //
   // Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
 *@
 
+@{
+  QebiUserRestContext qurc = Model.QURC;
+}
+
 <script id="ResrepRecordToolbar" type="text/x-kendo-template">
-  <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
+  @if (qurc.ClientHasScribeEditAccess)
+  {
+    <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
+  }
   <span id="ResrepRootStatus" class="pdpResrepStatus"></span>
   <span id="ResrepStemStatus" class="pdpResrepStatus"></span>
   <span id="ResrepLeafStatus" class="pdpResrepStatus"></span>
@@ -68,7 +75,10 @@
 </script>
 
 <script id="ServiceDefaultToolbar" type="text/x-kendo-template">
-  <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
+  @if (qurc.ClientHasAdminAccess)
+  {
+    <a class="k-button k-grid-add" role="button"><span class="k-icon k-i-plus" />Add new record</a>
+  }
   <span id="ServiceDefaultStatus" class="pdpResrepStatus"></span>
 </script>
   

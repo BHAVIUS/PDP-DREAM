@@ -1,25 +1,16 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.IO;
-using System.Net;
-using System.Xml;
-using System.Xml.Schema;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.CoreDataLib.Models;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public class NpdsXmlValidater
 {
-  public NpdsXmlValidater(QebUserRestContext qurc, XmlReaderSettings? xrs = null)
+  public NpdsXmlValidater(QebiUserRestContext qurc, XmlReaderSettings? xrs = null)
   {
     if (qurc == null) 
     { throw new ArgumentNullException("qurc in PdpPrcXmlValidater"); }
     QURC = qurc;
-    XRS = xrs ?? PdpXml.CreateXmlReaderSettings(true);
+    XRS = xrs ?? QebXml.CreateXmlReaderSettings(true);
     // Create the XmlSchemaSet class.
     // note that default XmlResolver for resolving external entities, schema locations,
     //  and xs:include or xs:import elements is the XmlUrlResolver with no user credentials
@@ -31,7 +22,7 @@ public class NpdsXmlValidater
   }
 
   // the QEB User REST Context
-  public QebUserRestContext QURC { set; get; }
+  public QebiUserRestContext QURC { set; get; }
 
   // the XML Reader and Settings
   public NpdsXmlWrappingReader NXWR { set; get; }

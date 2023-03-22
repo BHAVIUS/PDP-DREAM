@@ -1,20 +1,18 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// NpdsServerDefaults.cs
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public class NpdsServerDefaults : PdpConfigManager
 {
-  public NpdsServerDefaults(string projCodedir) : base(projCodedir)
+  public NpdsServerDefaults() : base(true) { }
+  public NpdsServerDefaults(string? projCodedir) : base(false)
   {
-    if (pdpSiteCnfgMngr == null) { throw new NullReferenceException(); }
+    if (pdpCodeCnfgMngr == null) { throw new NullReferenceException(); }
+    if (string.IsNullOrEmpty(projCodedir)) { projCodedir = Environment.CurrentDirectory; }
+    Configure(projCodedir); // configures pdpSiteConfig
+    if (pdpSiteConfig == null) { throw new NullReferenceException(); }
 
     // TODO: recode Enums and the Enum parsing to assure that error thrown for invalid arguments
 
@@ -46,141 +44,110 @@ public class NpdsServerDefaults : PdpConfigManager
     conDiristryTag = ParseAppStringSetting(NamesForServiceConstraints.NpdsConDiristryTag);
 
     // required database connection strings
-    userDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsUserDbserver);
-    agentDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsAgentDbserver);
+    qebiDbcsForUser = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsSiaaDbserver);
     coreDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsCoreDbserver);
-    diristryDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsNexusDiristry);
-    registryDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsPortalRegistry);
-    directoryDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsDoorsDirectory);
-    registrarDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsScribeRegistrar);
+    nexusDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsNexusDiristry);
+    portalDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsPortalRegistry);
+    doorsDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsDoorsDirectory);
+    scribeDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsScribeRegistrar);
+    acmsDbcsForAgent = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsAcmsDbserver);
 
-    // permitted datatbase connection strings
-    portalAuth1Dbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsRegistryAuth1Dbserver);
-    doorsAuth1Dbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsDirectoryAuth1Dbserver);
-    nexusAuth1Dbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsDiristryAuth1Dbserver);
-    portalCacheDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsRegistryCacheDbserver);
-    doorsCacheDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsDirectoryCacheDbserver);
-    nexusCacheDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsDiristryCacheDbserver);
-
-    // optional database connection strings
-    nlmmeshDbcs = ParseAppDbConnString(NamesForOptionalDbConnStrings.NpdsNlmmeshDbserver);
-    nlmmicadDbcs = ParseAppDbConnString(NamesForOptionalDbConnStrings.NpdsNlmmicadDbserver);
+    // permitted database connection strings
+    vocabDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsVocabDbserver);
+    cacheDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsCacheDbserver);
   }
 
-  // NPDS service connection strings
-  public string NpdsUserDbconstr
-  { get { return userDbcs; } }
-  private string userDbcs;
-  public string NpdsAgentDbconstr
-  { get { return agentDbcs; } }
-  private string agentDbcs;
-  public string NpdsCoreDbconstr
+  private string qebiDbcsForUser = string.Empty;
+  public string QebiDbconstr
+  { get { return qebiDbcsForUser; } }
+
+  private string acmsDbcsForAgent = string.Empty;
+  public string AcmsDbconstr
+  { get { return acmsDbcsForAgent; } }
+
+  private string coreDbcs = string.Empty;
+  public string CoreDbconstr
   { get { return coreDbcs; } }
-  private string coreDbcs;
-  public string NpdsDiristryDbconstr
-  { get { return diristryDbcs; } }
-  private string diristryDbcs;
-  public string NpdsRegistryDbconstr
-  { get { return registryDbcs; } }
-  private string registryDbcs;
-  public string NpdsDirectoryDbconstr
-  { get { return directoryDbcs; } }
-  private string directoryDbcs;
-  public string NpdsRegistrarDbconstr
-  { get { return registrarDbcs; } }
-  private string registrarDbcs;
 
-  // NPDS PORTAL DataBase Connection String
+  private string nexusDbcs = string.Empty;
+  public string NexusDbconstr
+  { get { return nexusDbcs; } }
 
-  public string NpdsPortalAuth1Dbconstr
-  { get { return portalAuth1Dbcs; } }
-  private string portalAuth1Dbcs;
+  private string portalDbcs = string.Empty;
+  public string PortalDbconstr
+  { get { return portalDbcs; } }
 
-  public string NpdsPortalCacheDbconstr
-  { get { return portalCacheDbcs; } }
-  private string portalCacheDbcs;
+  private string doorsDbcs = string.Empty;
+  public string DoorsDbconstr
+  { get { return doorsDbcs; } }
 
-  // NPDS DOORS DataBase Connection String
+  private string scribeDbcs = string.Empty;
+  public string ScribeDbconstr
+  { get { return scribeDbcs; } }
 
-  public string NpdsDoorsAuth1Dbconstr
-  { get { return doorsAuth1Dbcs; } }
-  private string doorsAuth1Dbcs;
+  private string vocabDbcs = string.Empty;
+  public string VocabDbconstr
+  { get { return vocabDbcs; } }
 
-  public string NpdsDoorsCacheDbconstr
-  { get { return doorsCacheDbcs; } }
-  private string doorsCacheDbcs;
+  private string cacheDbcs = string.Empty;
+  public string CacheDbconstr
+  { get { return cacheDbcs; } }
 
-  // NPDS Nexus DataBase Connection Strings
-  public string NpdsNexusAuth1Dbconstr
-  { get { return nexusAuth1Dbcs; } }
-  private string nexusAuth1Dbcs;
+  // NpdsClient related defaults
 
-  public string NpdsNexusCacheDbconstr
-  { get { return nexusCacheDbcs; } }
-  private string nexusCacheDbcs;
-
-  // NPDS NLM MeSH and MICAD DataBase Connection Strings
-  public string NpdsNlmmeshDbconstr
-  { get { return nlmmeshDbcs; } }
-  private string nlmmeshDbcs;
-  public string NpdsNlmmicadDbconstr
-  { get { return nlmmicadDbcs; } }
-  private string nlmmicadDbcs;
-
-
-  public NpdsSearchFilter NpdsDefaultSearchFilter
-  { get { return defSearchFilter; } }
   private NpdsSearchFilter defSearchFilter;
+  public NpdsSearchFilter SearchFilterDefault
+  { get { return defSearchFilter; } }
 
-  public NpdsSearchScope NpdsDefaultSearchScope
-  { get { return defSearchScope; } }
   private NpdsSearchScope defSearchScope;
+  public NpdsSearchScope SearchScopeDefault
+  { get { return defSearchScope; } }
 
-  public NpdsNodeType NpdsDefaultNodeType
-  { get { return defNodeType; } }
   private NpdsNodeType defNodeType;
+  public NpdsNodeType NodeTypeDefault
+  { get { return defNodeType; } }
 
-  public NpdsServiceType NpdsDefaultServiceType
-  { get { return defServiceType; } }
   private NpdsServiceType defServiceType;
+  public NpdsServiceType ServiceTypeDefault
+  { get { return defServiceType; } }
 
-  public NpdsServerType NpdsDefaultServerType
-  { get { return sitDefServerType; } }
   private NpdsServerType sitDefServerType;
+  public NpdsServerType ServerTypeDefault
+  { get { return sitDefServerType; } }
 
-  public NpdsDatabaseType NpdsDefaultDatabaseType
-  { get { return defDatabaseType; } }
   private NpdsDatabaseType defDatabaseType;
+  public NpdsDatabaseType DatabaseTypeDefault
+  { get { return defDatabaseType; } }
 
-  public NpdsDatabaseAccess NpdsDefaultDatabaseAccess
-  { get { return defDatabaseAccess; } }
   private NpdsDatabaseAccess defDatabaseAccess;
+  public NpdsDatabaseAccess DatabaseAccessDefault
+  { get { return defDatabaseAccess; } }
 
-  public NpdsRecordAccess NpdsDefaultRecordAccess
-  { get { return defRecordAccess; } }
   private NpdsRecordAccess defRecordAccess;
+  public NpdsRecordAccess RecordAccessDefault
+  { get { return defRecordAccess; } }
 
-  public NpdsResrepFormat NpdsDefaultResrepFormat
-  { get { return defResrepFormat; } }
   private NpdsResrepFormat defResrepFormat;
+  public NpdsResrepFormat ResrepFormatDefault
+  { get { return defResrepFormat; } }
 
-  public NpdsMessageFormat NpdsDefaultMessageFormat
-  { get { return defMessageFormat; } }
   private NpdsMessageFormat defMessageFormat;
+  public NpdsMessageFormat MessageFormatDefault
+  { get { return defMessageFormat; } }
 
-  public bool NpdsDefaultQueryFormat
-  { get { return defQueryFormat; } }
   private bool defQueryFormat = false;
+  public bool QueryFormatDefault
+  { get { return defQueryFormat; } }
 
   // for use as filter when searching/selecting records
-  public NpdsEntityType NpdsDefaultEntityType
-  { get { return defEntityType; } }
   private NpdsEntityType defEntityType;
+  public NpdsEntityType EntityTypeDefault
+  { get { return defEntityType; } }
 
   // for use as default when creating new records
-  public NpdsEntityType NpdsDefaultNewEntityType
-  { get { return defNewEntityType; } }
   private NpdsEntityType defNewEntityType;
+  public NpdsEntityType NewEntityTypeDefault
+  { get { return defNewEntityType; } }
 
   // NPDS cyberinfrastructure root service tag
   public string NpdsRootServiceTag { get { return NpdsRoot; } }
@@ -190,51 +157,51 @@ public class NpdsServerDefaults : PdpConfigManager
 
   // diristry/registry/directory/registrar defaults with tags and guids
 
-  public string NpdsDefaultDiristryTag
+  public string DiristryTagDefault
   { get { return defDiristryTag; } }
-  private string defDiristryTag;
+  private string defDiristryTag = string.Empty;
 
-  public Guid NpdsDefaultDiristryGuid
-  { get { return NpdsServiceCache.GetByTag(NpdsDefaultDiristryTag); } }
+  public Guid DiristryGuidDefault
+  { get { return NpdsServiceCache.GetByTag(DiristryTagDefault); } }
 
-  public string NpdsDefaultRegistryTag
+  public string RegistryTagDefault
   { get { return defRegistryTag; } }
-  private string defRegistryTag;
+  private string defRegistryTag = string.Empty;
 
-  public Guid NpdsDefaultRegistryGuid
-  { get { return NpdsServiceCache.GetByTag(NpdsDefaultRegistryTag); } }
+  public Guid RegistryGuidDefault
+  { get { return NpdsServiceCache.GetByTag(RegistryTagDefault); } }
 
-  public string NpdsDefaultDirectoryTag
+  public string DirectoryTagDefault
   { get { return defDirectoryTag; } }
-  private string defDirectoryTag;
+  private string defDirectoryTag = string.Empty;
 
-  public Guid NpdsDefaultDirectoryGuid
-  { get { return NpdsServiceCache.GetByTag(NpdsDefaultDirectoryTag); } }
+  public Guid DirectoryGuidDefault
+  { get { return NpdsServiceCache.GetByTag(DirectoryTagDefault); } }
 
-  public string NpdsDefaultRegistrarTag
+  public string RegistrarTagDefault
   { get { return defRegistrarTag; } }
-  private string defRegistrarTag;
+  private string defRegistrarTag = string.Empty;
 
-  public Guid NpdsDefaultRegistrarGuid
-  { get { return NpdsServiceCache.GetByTag(NpdsDefaultRegistrarTag); } }
+  public Guid RegistrarGuidDefault
+  { get { return NpdsServiceCache.GetByTag(RegistrarTagDefault); } }
 
   // diristry/registry/directory/registrar constraints with tags only
 
-  public string NpdsConstraintDiristryTag
+  public string DiristryTagConstraint
   { get { return conDiristryTag; } }
-  private string conDiristryTag;
+  private string conDiristryTag = string.Empty;
 
-  public string NpdsConstraintRegistryTag
+  public string RegistryTagConstraint
   { get { return conRegistryTag; } }
-  private string conRegistryTag;
+  private string conRegistryTag = string.Empty;
 
-  public string NpdsConstraintDirectoryTag
+  public string DirectoryTagConstraint
   { get { return conDirectoryTag; } }
-  private string conDirectoryTag;
+  private string conDirectoryTag = string.Empty;
 
-  public string NpdsConstraintRegistrarTag
+  public string RegistrarTagConstraint
   { get { return conRegistrarTag; } }
-  private string conRegistrarTag;
+  private string conRegistrarTag = string.Empty;
 
 } // end class
 

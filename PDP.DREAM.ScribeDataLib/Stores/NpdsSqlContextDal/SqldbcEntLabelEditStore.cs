@@ -1,12 +1,6 @@
 ﻿// SqldbcUilEntLabelEdit.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Models;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -18,28 +12,28 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var infosetGuid = PdpGuid.ParseToNonNullable(editObj.RRInfosetGuid, Guid.Empty);
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     NexusEntityLabel storObj;
     if (isNewRecord)
     {
       // insert new record
-      internalGuid = Guid.NewGuid();
+      fgroupGuid = Guid.NewGuid();
       storObj = new NexusEntityLabel()
       {
         CreatedByAgentGuidRef = agentGuid,
         UpdatedByAgentGuidRef = agentGuid,
         RecordGuidRef = recordGuid,
-        FgroupGuidKey = internalGuid
+        FgroupGuidKey = fgroupGuid
       };
     }
     else
     {
       // update existing record
-      storObj = GetStorableEntityLabelByKey(internalGuid);
+      storObj = GetStorableEntityLabelByKey(fgroupGuid);
       storObj.UpdatedByAgentGuidRef = agentGuid;
     }
 
@@ -58,7 +52,7 @@ public partial class ScribeDbsqlContext
     if (byStorProc)
     {
       var errCod = ScribeEntityLabelEdit(
-         agentGuid, infosetGuid, recordGuid, internalGuid,
+         agentGuid, infosetGuid, recordGuid, fgroupGuid,
          null, null, null, null, 
          storObj.ServiceTypeCodeRef, storObj.TagToken, storObj.LabelUri,
          storObj.HasPriority, storObj.IsMarked, storObj.IsPrincipal,
@@ -71,7 +65,7 @@ public partial class ScribeDbsqlContext
       errMsg = StoreChanges();
     }
     // refresh the edit object
-    editObj = GetEditableEntityLabelByKey(internalGuid);
+    editObj = GetEditableEntityLabelByKey(fgroupGuid);
     if (editObj == null) { editObj = new EntityLabelEditModel(); }
     // refresh the recordIndex
     recordIndex = editObj.HasIndex;
@@ -91,14 +85,14 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var agentGuid = NPDSCP.ClientAgentGuid;
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     if (!isNewRecord) // delete existing record
     {
-      var storObj = GetStorableEntityLabelByKey(internalGuid);
+      var storObj = GetStorableEntityLabelByKey(fgroupGuid);
       storObj.DeletedByAgentGuidRef = agentGuid;
-      storObj.IsDeleted = QURC.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
+      storObj.IsDeleted = NPDSCP.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
       if (byStorProc)
       {
         var errCod = ScribeEntityLabelDelete(
@@ -112,7 +106,7 @@ public partial class ScribeDbsqlContext
         errMsg = StoreChanges();
       }
       // refresh the edit object
-      editObj = GetEditableEntityLabelByKey(internalGuid);
+      editObj = GetEditableEntityLabelByKey(fgroupGuid);
       if (editObj == null) { editObj = new EntityLabelEditModel(); }
       // update the status message
       if (string.IsNullOrEmpty(errMsg)) { editObj.PdpStatusMessage = $"{recordName} record with index {recordIndex} deleted from database"; }

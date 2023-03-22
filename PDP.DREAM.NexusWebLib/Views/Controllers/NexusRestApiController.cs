@@ -1,39 +1,24 @@
 ﻿// NexusRestApiController.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Linq;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.NexusDataLib.Stores;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
 [RequireHttps, AllowAnonymous]
 public class NexusRestApiController : NexusDataRazorViewControllerBase
 {
-  public NexusRestApiController(QebIdentityContext userCntxt, NexusDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+  public NexusRestApiController() { }
 
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // do NOT call base.OnActionExecuting(oaeCntxt);
-    QURC = new QebUserRestContext(oaeCntxt.HttpContext.Request)
+    QURC = new QebiUserRestContext(oaeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
       RecordAccess = NpdsRecordAccess.AnonUser,
       UserModeClientRequired = false,
-      QebSessionValueIsRequired = false
+      SessionClientRequired = false
     };
     ResetNexusRepository();
     // TODO: split this controller into two controllers 
@@ -45,15 +30,13 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
     //}
   }
 
-  //
-  // Index/Help/Examples first, then rest alphabetical
-  //
   // both "agents" and "resreps" should be considered reserved keywords
   //    that cannot be used as ServiceTags in second segment of routes
 
   // "nexus/agents/" constrained route for iaguid selected individual agent
   [HttpGet, Authorize]
-  [PdpRazorViewRoute("nexus/agents/{iaguid:guid}", $"Nexus{nameof(AgentsByGuid)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/agents/{iaguid:guid}",
+    $"Nexus{nameof(AgentsByGuid)}", false)]
   public IActionResult AgentsByGuid(Guid iaguid)
   {
     throw new NotImplementedException();
@@ -66,7 +49,8 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   //   TODO: add regex constraint rrlistxnam = NpdsConst.RegexResRepListXnams
   //       examples show "{parameter:regex(theRegexPattern)}" where the RegexPattern is hardcoded
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/resreps/{rrguid:guid}/{rrlistxnam?}/{rritemguid:guid?}", $"Nexus{nameof(ResrepsByGuid)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/resreps/{rrguid:guid}/{rrlistxnam?}/{rritemguid:guid?}",
+    $"Nexus{nameof(ResrepsByGuid)}", false)]
   public IActionResult ResrepsByGuid(Guid rrguid, string? rrlistxnam = "", Guid? rritemguid = null)
   {
     throw new NotImplementedException();
@@ -76,34 +60,36 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
 
   // 4-segment route with entityType selected collection of resreps
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/{serviceTag:NpdsPT}/{entityType:NpdsPT}/{infosetStatus:NpdsIS}", $"Nexus{nameof(ResrepsByEntityType)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/{serviceTag:NpdsPT}/{entityType:NpdsPT}/{infosetStatus:NpdsIS}",
+    $"Nexus{nameof(ResrepsByEntityType)}", false)]
   public IActionResult ResrepsByEntityType(string serviceType, string serviceTag, string entityType, string infosetStatus)
   {
     var es = string.Empty;
-    QURC.ParseNpdsUrlSegments(serviceType, serviceTag, es, es, entityType, infosetStatus);
-    ResetNexusRepository();
+    QURC.ParseNpdsService(serviceType, serviceTag, es, es, entityType, infosetStatus);
     var msgNexus = NexusRestApiMessage();
     return msgNexus;
   }
 
   // 3-segment route with entityTag selected collection of resreps
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/{serviceTag:NpdsPT}/{entityTag:NpdsPT}/{entityVersion?}", $"Nexus{nameof(ResrepsByEntityTag)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/{serviceTag:NpdsPT}/{entityTag:NpdsPT}/{entityVersion?}",
+    $"Nexus{nameof(ResrepsByEntityTag)}", false)]
   public IActionResult ResrepsByEntityTag(string serviceType, string serviceTag, string entityTag, string entityVersion = "")
   {
-    QURC.ParseNpdsUrlSegments(serviceType, serviceTag, entityTag, entityVersion);
-    ResetNexusRepository();
+    // TODO; hardcoded strings must be updated
+    QURC.ParseNpdsService("diristry", serviceTag, "nexus", entityTag, entityVersion);
     var msgNexus = NexusRestApiMessage();
     return msgNexus;
   }
 
   // 2-segment route with serviceTag selected collection of resreps
   [HttpGet, AllowAnonymous]
-  [PdpRazorViewRoute("nexus/{serviceTag:NpdsPT}", $"Nexus{nameof(ResrepsByServiceTag)}", false)]
+  [PdpRazorViewRoute("{serviceType:NexusST}/{serviceTag:NpdsPT}",
+    $"Nexus{nameof(ResrepsByServiceTag)}", false)]
   public IActionResult ResrepsByServiceTag(string serviceType, string serviceTag)
   {
-    QURC.ParseNpdsUrlSegments(serviceType, serviceTag);
-    ResetNexusRepository();
+    // TODO; hardcoded strings must be updated
+    QURC.ParseNpdsService("diristry", serviceTag,"nexus");
     var msgNexus = NexusRestApiMessage();
     return msgNexus;
   }
@@ -111,9 +97,22 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   protected IActionResult NexusRestApiMessage(bool xsdValidate = false)
   {
     IActionResult response = null;
-
-    var rrStems = PNDC.ListStorableNexusStemsWithFacets();
-    var rrListXml = PNDC.CreateResrepListXml(rrStems);
+    // stage 1 check of current service
+    ResetNexusRepository(); // NPDSSD.NexusDbconstr
+    var rrRoots = PNDC.ListStorableNexusRoots();
+    // stage 2 check of vocabulary service
+    if (rrRoots?.Count == 0)  {
+      ResetNexusRepository(false, NPDSSD.VocabDbconstr);
+      rrRoots = PNDC.ListStorableNexusRoots();
+    }
+    // stage 3 check of NPDS cache service 
+    if (rrRoots?.Count == 0)
+    {
+      ResetNexusRepository(false, NPDSSD.CacheDbconstr);
+      rrRoots = PNDC.ListStorableNexusRoots();
+    }
+    // generate XML message from item list
+    var rrListXml = PNDC.CreateNexusResrepListXml(rrRoots);
     // PRC.ResponseAnswer = rrListXml; // alternative format response
     QURC.NexusRecords = rrListXml;
 

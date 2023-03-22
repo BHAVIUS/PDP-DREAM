@@ -1,11 +1,6 @@
 ﻿// EntityLabelViewModel.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Utilities;
-
-using static PDP.DREAM.CoreDataLib.Utilities.PdpStringFrasFormFile;
 
 namespace PDP.DREAM.NexusDataLib.Models;
 
@@ -20,8 +15,8 @@ public class EntityLabelViewModel : CoreResrepModelBase
   public bool IsGenerating { get; set; }
   public short ServiceTypeCode { get; set; }
 
-  public string? TagToken { get; set; } = string.Empty;
-  public string? LabelUri { get; set; } = string.Empty;
+  public virtual string? TagToken { get; set; } = string.Empty;
+  public virtual string? LabelUri { get; set; } = string.Empty;
 
   // not input by user, should be ReadOnly in UIL
   public string? EntityLabel { get; set; } = string.Empty;

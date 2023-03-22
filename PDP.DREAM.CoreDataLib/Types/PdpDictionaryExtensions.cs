@@ -1,13 +1,6 @@
 ﻿// PdpDictionaryExtensions.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using System.Collections.Generic;
-using System.ComponentModel;
-
-using Microsoft.AspNetCore.Routing;
 
 namespace PDP.DREAM.CoreDataLib.Types;
 
@@ -49,11 +42,8 @@ public static class PdpDictionaryExtensions
 
   public static IDictionary<string, T> ToDictionary<T>(this object source)
   {
-    if (source == null)
-      throw new ArgumentNullException(nameof(source));
-
+    if (source == null) { throw new ArgumentNullException(nameof(source)); }
     var dictionary = new Dictionary<string, T>();
-
     foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(source))
     {
       AddPropertyToDictionary(property, source, dictionary);

@@ -1,44 +1,29 @@
 ﻿// ScribeRestApiController.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Linq;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.ScribeDataLib.Stores;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
 [RequireHttps, Authorize]
 public class ScribeRestApiController : ScribeDataRazorViewControllerBase
 {
-  public ScribeRestApiController(QebIdentityContext userCntxt, ScribeDbsqlContext npdsCntxt) : base(userCntxt, npdsCntxt) { }
+  public ScribeRestApiController() : base() { }
 
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // do NOT call base.OnActionExecuting(oaeCntxt);
-    QURC = new QebUserRestContext(oaeCntxt.HttpContext.Request)
+    QURC = new QebiUserRestContext(oaeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Scribe,
       DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
       RecordAccess = NpdsRecordAccess.AuthUser,
       UserModeClientRequired = true,
-      QebSessionValueIsRequired = true
+      SessionClientRequired = true
     };
     ResetScribeRepository();
     // TODO: split this controller into two controllers 
-    // one for anonymous and one for authorized
+    // one for anonymous and one for authorized, 
+    // then deprecate the QebRazorAnonList
     if (!QebRazorAnonList.Contains(oaeCntxt.ActionName()))
     {
       var isVerified = CheckCoreAgentSession();
@@ -81,7 +66,8 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
   public IActionResult ResrepsByEntityType(string serviceType, string serviceTag, string entityType, string infosetStatus)
   {
     var es = string.Empty;
-    QURC.ParseNpdsUrlSegments(serviceType, serviceTag, es, es, entityType, infosetStatus);
+    // TODO: hardcoded strings must be updated
+    QURC.ParseNpdsService("diristry", serviceTag, "scribe", es, es, entityType, infosetStatus);
     ResetScribeRepository();
     var msgScribe = ScribeRestApiMessage();
     return msgScribe;
@@ -92,7 +78,8 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
   [PdpRazorViewRoute("scribe/{serviceTag:NpdsPT}/{entityTag:NpdsPT}/{entityVersion?}", $"Scribe{nameof(ResrepsByEntityTag)}", false)]
   public IActionResult ResrepsByEntityTag(string serviceType, string serviceTag, string entityTag, string entityVersion = "")
   {
-    QURC.ParseNpdsUrlSegments(serviceType, serviceTag, entityTag, entityVersion);
+    // TODO: hardcoded strings must be updated
+    QURC.ParseNpdsService("diristry", serviceTag, "scribe", entityTag, entityVersion);
     ResetScribeRepository();
     var msgScribe = ScribeRestApiMessage();
     return msgScribe;
@@ -103,7 +90,8 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
   [PdpRazorViewRoute("scribe/{serviceTag:NpdsPT}", $"Scribe{nameof(ResrepsByServiceTag)}", false)]
   public IActionResult ResrepsByServiceTag(string serviceType, string serviceTag)
   {
-    QURC.ParseNpdsUrlSegments(serviceType, serviceTag);
+    // TODO: hardcoded strings must be updated
+    QURC.ParseNpdsService("diristry", serviceTag, "scribe");
     ResetScribeRepository();
     var msgScribe = ScribeRestApiMessage();
     return msgScribe;
@@ -113,8 +101,8 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
   {
     IActionResult response = null;
 
-    var rrStems = PSDC.ListStorableNexusStemsWithFacets();
-    var rrListXml = PSDC.CreateResrepListXml(rrStems);
+    var rrRoots = PSDC.ListStorableNexusRootsWithFacets();
+    var rrListXml = PSDC.CreateNexusResrepListXml(rrRoots);
     // PRC.ResponseAnswer = rrListXml; // alternative format response
     QURC.NexusRecords = rrListXml;
 
@@ -147,7 +135,7 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
 
     return response;
   }
-  
+
 } // end class
 
 // end file

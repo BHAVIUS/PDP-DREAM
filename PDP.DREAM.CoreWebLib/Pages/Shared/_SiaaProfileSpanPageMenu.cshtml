@@ -1,5 +1,5 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -9,31 +9,31 @@
   if (userAuth)
   {
     <span>
-      AuthUser:
-      <a asp-page="/AuthCore/LogoutUser">Logout User</a>
+      AuthMode:
+      <a asp-page="/NPDS/AuthMode/LogoutUser">Logout User</a>
       <span> | </span>
-      <a asp-page="/AuthCore/DisplayProfile">userName</a>
+      <a asp-page="/NPDS/AuthMode/DisplayProfile">@userName</a>
       <span> | </span>
-      <a asp-page="/AuthCore/ChangeProfile">Change Profile</a>
+      <a asp-page="/NPDS/AuthMode/ChangeProfile">Change Profile</a>
       <span> | </span>
-      <a asp-page="/AuthCore/ChangeEmail">Change Email</a>
+      <a asp-page="/NPDS/AuthMode/ChangeEmail">Change Email</a>
       <span> | </span>
-      <a asp-page="/AuthCore/ChangePassword">Change Password</a>
+      <a asp-page="/NPDS/AuthMode/ChangePassword">Change Password</a>
       <span> | </span>
-      <a asp-page="/AuthCore/ChangeUsername">Change Username</a>
+      <a asp-page="/NPDS/AuthMode/ChangeUsername">Change Username</a>
     </span>
   }
   else
   {
     <span>
-      AnonUser:
-      <a asp-page="/AnonCore/Index">Index</a>
+      AnonMode:
+      <a asp-page="/NPDS/AnonMode/Index">Index</a>
       <span> | </span>
-      <a asp-page="/AnonCore/ContactSite">Contact Site</a>
+      <a asp-page="/NPDS/AnonMode/ContactSite">Contact Site</a>
       <span> | </span>
-      <a asp-page="/AnonCore/RegisterUser">Register User</a>
+      <a asp-page="/NPDS/AnonMode/RegisterUser">Register User</a>
       <span> | </span>
-      <a asp-page="/AnonCore/LoginUser">Login User</a>
+      <a asp-page="/NPDS/AnonMode/LoginUser">Login User</a>
     </span>
   }
 }

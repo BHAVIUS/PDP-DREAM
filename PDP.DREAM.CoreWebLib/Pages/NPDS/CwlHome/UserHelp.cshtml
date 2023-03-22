@@ -1,0 +1,61 @@
+@*  
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model CwlHomeUserHelp
+@{
+  var psrm = (PdpSiteRazorModel)Model.PSRM;
+  var psim = (PdpSiteInfoModel)psrm.PdpSiteInfo;
+  var qurc = (QebiUserRestContext)Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+<p><partial name="@psrm.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as an NPDS Record User.
+</p>
+
+<h5>
+  Resource Metadata Records
+</h5>
+<p>
+  Record Requests/Releases:
+  You may request authorship for the resource record from the current author;
+  or if you are the current author for the record, then you may release authorship for transfer to another agent;
+  all requests/releases are mediated by the registry editor.
+</p>
+
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/NPDS-Root">/NPDS/NexusServer/UserResreps/Diristry/NPDS-Root</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/PDP-Nexus">/NPDS/NexusServer/UserResreps/Diristry/PDP-Nexus</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Registry/PDP-PORTAL">/NPDS/NexusServer/UserResreps/Registry/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Directory/PDP-DOORS">/NPDS/NexusServer/UserResreps/Directory/PDP-DOORS</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Registrar/PDP-Scribe">/NPDS/NexusServer/UserResreps/Registrar/PDP-Scribe</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/PDP-DREAM">/NPDS/NexusServer/UserResreps/Diristry/PDP-DREAM</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Ashurbanipal">/NPDS/NexusServer/UserResreps/Diristry/Ashurbanipal</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Avicenna">/NPDS/NexusServer/UserResreps/Diristry/Avicenna</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Beacon">/NPDS/NexusServer/UserResreps/Diristry/Beacon</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/BioPORT">/NPDS/NexusServer/UserResreps/Diristry/BioPORT</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/BrainIACS">/NPDS/NexusServer/UserResreps/Diristry/BrainIACS</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/BrainWatch">/NPDS/NexusServer/UserResreps/Diristry/BrainWatch</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/CTGaming">/NPDS/NexusServer/UserResreps/Diristry/CTGaming</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/DaVinci">/NPDS/NexusServer/UserResreps/Diristry/DaVinci</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Eywa">/NPDS/NexusServer/UserResreps/Diristry/Eywa</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Fidentinus">/NPDS/NexusServer/UserResreps/Diristry/Fidentinus</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Gaia">/NPDS/NexusServer/UserResreps/Diristry/Gaia</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/GeneScene">/NPDS/NexusServer/UserResreps/Diristry/GeneScene</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/HELPME">/NPDS/NexusServer/UserResreps/Diristry/HELPME</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Jubatus">/NPDS/NexusServer/UserResreps/Diristry/Jubatus</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Knuth">/NPDS/NexusServer/UserResreps/Diristry/Knuth</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Martialis">/NPDS/NexusServer/UserResreps/Diristry/Martialis</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/ManRay">/NPDS/NexusServer/UserResreps/Diristry/ManRay</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Osler">/NPDS/NexusServer/UserResreps/Diristry/Osler</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/Socrates">/NPDS/NexusServer/UserResreps/Diristry/Socrates</a></li>
+  <li><a href="/NPDS/NexusServer/UserResreps/Diristry/SOLOMON">/NPDS/NexusServer/UserResreps/Diristry/SOLOMON</a></li>
+</ul>
+

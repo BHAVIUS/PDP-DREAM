@@ -1,34 +1,23 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
   public virtual JsonResult OnPostReadResrepAuthorRequests([DataSourceRequest] DataSourceRequest dsRequest)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     DataSourceResult dsResult = PSDC.ListEditableResrepAuthorRequests().ToDataSourceResult(dsRequest);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteResrepAuthorRequest([DataSourceRequest] DataSourceRequest dsRequest,
    ResrepAuthorRequestEditModel rem)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     var recordName = rem.ItemXnam;
     var recordGuid = PdpGuid.ParseToNonNullable(rem.RRRecordGuid, Guid.Empty);
     if (recordGuid == Guid.Empty) // assure presence of valid resouceGuid
@@ -45,16 +34,18 @@ public partial class TkgsPageControllerBase
     }
     rem.PdpStatusElement = eidResrepRootStatus;
     DataSourceResult dsResult = (new[] { rem }).ToDataSourceResult(dsRequest, ModelState);
+    CloseScribeConnection();
     return new JsonResult(dsResult);
   }
 
   public virtual JsonResult OnPostDeleteResrepAuthorRequest([DataSourceRequest] DataSourceRequest dsRequest,
    ResrepAuthorRequestEditModel rem)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     if (ModelState.IsValid) { rem = PSDC.DeleteResrepAuthorRequest(rem); rem.PdpStatusElement = eidResrepRootStatus; }
     DataSourceResult dsResult = (new[] { rem }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 

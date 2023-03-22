@@ -1,17 +1,22 @@
 @*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/NwlHome/AuthorHelp"
+@page
+@attribute [PdpRazorPageRoute(DepNexusWebLib, DepNwlHomeAuthorHelp)]
 @model NwlHomeAuthorHelp
 @{
-  var psr = (PdpSiteRazorModel)Model.PSR;
-  var psi = (PdpSiteInfoModel)psr.PdpSiteInfo;
-  var qurc = (QebUserRestContext)Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatPageTitle())
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 
 <p>
   You are registered as an NPDS Record Author
@@ -22,32 +27,32 @@
 <h5>URLs in href attributes</h5>
 
 <ul>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/NPDS-Root">/NPDS/NexusServer/AuthorResreps/Nexus/NPDS-Root</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/PDP-Nexus">/NPDS/NexusServer/AuthorResreps/Nexus/PDP-Nexus</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/PORTAL/PDP-PORTAL">/NPDS/NexusServer/AuthorResreps/PORTAL/PDP-PORTAL</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/DOORS/PDP-DOORS">/NPDS/NexusServer/AuthorResreps/DOORS/PDP-DOORS</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Scribe/PDP-Scribe">/NPDS/NexusServer/AuthorResreps/Scribe/PDP-Scribe</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/PDP-DREAM">/NPDS/NexusServer/AuthorResreps/Nexus/PDP-DREAM</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Ashurbanipal">/NPDS/NexusServer/AuthorResreps/Nexus/Ashurbanipal</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Avicenna">/NPDS/NexusServer/AuthorResreps/Nexus/Avicenna</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Beacon">/NPDS/NexusServer/AuthorResreps/Nexus/Beacon</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/BioPORT">/NPDS/NexusServer/AuthorResreps/Nexus/BioPORT</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/BrainIACS">/NPDS/NexusServer/AuthorResreps/Nexus/BrainIACS</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/BrainWatch">/NPDS/NexusServer/AuthorResreps/Nexus/BrainWatch</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/CTGaming">/NPDS/NexusServer/AuthorResreps/Nexus/CTGaming</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/DaVinci">/NPDS/NexusServer/AuthorResreps/Nexus/DaVinci</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Eywa">/NPDS/NexusServer/AuthorResreps/Nexus/Eywa</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Fidentinus">/NPDS/NexusServer/AuthorResreps/Nexus/Fidentinus</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Gaia">/NPDS/NexusServer/AuthorResreps/Nexus/Gaia</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/GeneScene">/NPDS/NexusServer/AuthorResreps/Nexus/GeneScene</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/HELPME">/NPDS/NexusServer/AuthorResreps/Nexus/HELPME</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Jubatus">/NPDS/NexusServer/AuthorResreps/Nexus/Jubatus</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Knuth">/NPDS/NexusServer/AuthorResreps/Nexus/Knuth</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Martialis">/NPDS/NexusServer/AuthorResreps/Nexus/Martialis</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/ManRay">/NPDS/NexusServer/AuthorResreps/Nexus/ManRay</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Osler">/NPDS/NexusServer/AuthorResreps/Nexus/Osler</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/Socrates">/NPDS/NexusServer/AuthorResreps/Nexus/Socrates</a></li>
-  <li><a href="/NPDS/NexusServer/AuthorResreps/Nexus/SOLOMON">/NPDS/NexusServer/AuthorResreps/Nexus/SOLOMON</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/NPDS-Root">/NPDS/NexusServer/AuthorResreps/Diristry/NPDS-Root</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/PDP-Nexus">/NPDS/NexusServer/AuthorResreps/Diristry/PDP-Nexus</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Registry/PDP-PORTAL">/NPDS/NexusServer/AuthorResreps/Registry/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Directory/PDP-DOORS">/NPDS/NexusServer/AuthorResreps/Directory/PDP-DOORS</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Registrar/PDP-Scribe">/NPDS/NexusServer/AuthorResreps/Registrar/PDP-Scribe</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/PDP-DREAM">/NPDS/NexusServer/AuthorResreps/Diristry/PDP-DREAM</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Ashurbanipal">/NPDS/NexusServer/AuthorResreps/Diristry/Ashurbanipal</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Avicenna">/NPDS/NexusServer/AuthorResreps/Diristry/Avicenna</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Beacon">/NPDS/NexusServer/AuthorResreps/Diristry/Beacon</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/BioPORT">/NPDS/NexusServer/AuthorResreps/Diristry/BioPORT</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/BrainIACS">/NPDS/NexusServer/AuthorResreps/Diristry/BrainIACS</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/BrainWatch">/NPDS/NexusServer/AuthorResreps/Diristry/BrainWatch</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/CTGaming">/NPDS/NexusServer/AuthorResreps/Diristry/CTGaming</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/DaVinci">/NPDS/NexusServer/AuthorResreps/Diristry/DaVinci</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Eywa">/NPDS/NexusServer/AuthorResreps/Diristry/Eywa</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Fidentinus">/NPDS/NexusServer/AuthorResreps/Diristry/Fidentinus</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Gaia">/NPDS/NexusServer/AuthorResreps/Diristry/Gaia</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/GeneScene">/NPDS/NexusServer/AuthorResreps/Diristry/GeneScene</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/HELPME">/NPDS/NexusServer/AuthorResreps/Diristry/HELPME</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Jubatus">/NPDS/NexusServer/AuthorResreps/Diristry/Jubatus</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Knuth">/NPDS/NexusServer/AuthorResreps/Diristry/Knuth</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Martialis">/NPDS/NexusServer/AuthorResreps/Diristry/Martialis</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/ManRay">/NPDS/NexusServer/AuthorResreps/Diristry/ManRay</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Osler">/NPDS/NexusServer/AuthorResreps/Diristry/Osler</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Socrates">/NPDS/NexusServer/AuthorResreps/Diristry/Socrates</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/SOLOMON">/NPDS/NexusServer/AuthorResreps/Diristry/SOLOMON</a></li>
 </ul>
 
 
@@ -59,14 +64,14 @@
   The main entry form for initial registration of resources has two dropdown menus. There is a menu for
   the entity type which defaults to "untyped"; please select the most appropriate type for the entity
   to be registered. There is another menu for the registry which defaults to the registry that was selected
-  from the page menu or to the @psi.SiteOwnerAcronym Registry if "All Resources" was selected
+  from the page menu or to the @psim.SiteOwnerAcronym Registry if "All Resources" was selected
   on the page menu. The main entry form also has four text boxes which have help with mouse-over tooltips.
 </p>
 <p>
-  It is recommended to enter at least Name and Nature in the @psi.SiteOwnerAcronym Registrar
+  It is recommended to enter at least Name and Nature in the @psim.SiteOwnerAcronym Registrar
   implementation of PDS (although technically per the PDS design specification neither is required) to
   take advantage of their dual use as special automatic Restricted Supporting Tags (see below). OtherMetadata
-  and Description are also optional both in the PDS design spec and the @psi.SiteOwnerAcronym
+  and Description are also optional both in the PDS design spec and the @psim.SiteOwnerAcronym
   Registrar implementation. Also, note that if you wish to re-assign a resource record from one PORTAL
   registry to a different PORTAL registry, you must access the record via the "All Resources" page in
   order to use the form with the dropdownlist of registries.
@@ -113,7 +118,7 @@
   Priority values to assure a unique ordering of the Labels. Also, please note that the US National Library
   of Medicine makes a strong argument for the benefits of maintaining arbitrary identifiers (such as
   randomly generated character keys) in addition to any identifiers intended to serve as human readable
-  words or acronyms. Thus, @psi.SiteOwnerAcronym Registrar recommends (but does not require)
+  words or acronyms. Thus, @psim.SiteOwnerAcronym Registrar recommends (but does not require)
   that if randomly generated initial Canonical Labels are replaced by a preferred Canonical Label of
   the Author's choice, that these initial random Canonical Labels be retained as Alias Labels with a
   Priority in the range 1 to 255 rather than being deleted.
@@ -158,7 +163,7 @@
   Clicking on the green check mark icon for the record performs a validation test for the entry, and
   should not be attempted until all relevant data for the record has been entered. Validation of the
   representation for a resource entity performs a test of PORTAL validity and DOORS validity separately
-  but both tests are triggered when clicking on the check mark icon at the @psi.SiteOwnerAcronym
+  but both tests are triggered when clicking on the check mark icon at the @psim.SiteOwnerAcronym
   Registrar which is a NEXUS server (ie, implements the functionality of both a PORTAL server and a DOORS
   server).
 </p>
@@ -214,7 +219,7 @@
   (reaches version 0.8 or 0.9 on the PDS Development Roadmap), it is likely that there will be a 14-day
   timer by which records must be properly validated or otherwise be purged from the registry. Another
   possible action for invalid records will be to transfer them to an open and unrestricted PORTAL Registry
-  such as the @psi.SiteOwnerAcronym Registry.
+  such as the @psim.SiteOwnerAcronym Registry.
 </p>
 <p>
   The PORTAL validity test now operates on the Restricted Supporting Tags, and also automatically on
@@ -222,7 +227,7 @@
   with their additional intended purposes. So if there are no Restricted Supporting Tags and no Name
   or Nature, then the test will surely fail unless the record has been entered in an open PORTAL for
   which there are no restrictions. At the present time, the only prototype PORTAL Registry without any
-  problem oriented domain restrictions is the @psi.SiteOwnerAcronym Registry. The PORTAL validity
+  problem oriented domain restrictions is the @psim.SiteOwnerAcronym Registry. The PORTAL validity
   test will be modified soon so that Restricted Supporting Labels can also be tested. Note that if a
   Supporting Tag or a Supporting Label is not marked as Restricted, then it will not be evaluated in
   the Validity Test. However, the Entity Name and Entity Nature are always tested and do not need to
@@ -248,7 +253,7 @@
 </h5>
 <p>
   Please contact Carl Taswell with any questions each of which will be answered with new documentation
-  on this page. Also any suggestions for improvements to the interface for the @psi.SiteOwnerAcronym
+  on this page. Also any suggestions for improvements to the interface for the @psim.SiteOwnerAcronym
   Registrar are always appreciated including any suggestions for additional entity types to be added
   to the list of entity types. Though regarding the latter, keep in mind that the list of entity types
   must remain generic with each entity type applicable across all problem oriented domains declared as

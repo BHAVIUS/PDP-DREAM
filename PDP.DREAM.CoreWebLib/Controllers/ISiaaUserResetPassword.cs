@@ -1,12 +1,6 @@
 ﻿// ISiaaUserResetPassword.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
 
@@ -18,12 +12,12 @@ public partial interface ISiaaUser
     var uxm = new ChangePasswordUxm();
     uxm.UserName = username;
     uxm.SecurityAnswer = securityanswer;
-    uxm = ResetPasswordWithToken(uxm, new QebIdentityContext());
+    uxm = ResetPasswordWithToken(uxm, new QebiDbsqlContext());
     return uxm;
   }
 
   // requires known current UserName and Security Q&A to reset forgotten PassWord
-  protected static ChangePasswordUxm ResetPasswordWithToken(ChangePasswordUxm uxm, QebIdentityContext qudc)
+  protected static ChangePasswordUxm ResetPasswordWithToken(ChangePasswordUxm uxm, QebiDbsqlContext qudc)
   {
     uxm.DbtestPassed = false;
     uxm.DbfieldReset = false;

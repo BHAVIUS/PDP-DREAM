@@ -1,0 +1,28 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? string.Empty);
+  if (userAuth)
+  {
+    <span>
+      AuthMode:
+      <a asp-page="/NPDS/AuthMode/Index">Index</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AuthMode/DisplayProfile">Display Profile</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AuthMode/ChangeProfile">Change Profile</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AuthMode/ChangeEmail">Change Email</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AuthMode/ChangePassword">Change Password</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AuthMode/ChangeUsername">Change Username</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AuthMode/LogoutUser">Logout User</a>
+    </span>
+  }
+}

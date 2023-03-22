@@ -1,9 +1,6 @@
 ﻿// INexusResrepStem.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
 
 namespace PDP.DREAM.NexusDataLib.Stores;
 
@@ -11,7 +8,6 @@ namespace PDP.DREAM.NexusDataLib.Stores;
 
 public interface INexusResrepStem : INexusResrepRoot
 {
-  string? EntityCanonicalLabel { get; set; }
   Guid? EntityContactGuidRef { get; set; }
   string? EntityContactLabel { get; set; }
   string? EntityContactName { get; set; }
@@ -24,14 +20,13 @@ public interface INexusResrepStem : INexusResrepRoot
   string? EntityOwnerLabel { get; set; }
   string? EntityOwnerName { get; set; }
   string? EntityOwnerTag { get; set; }
-  string? EntityPrincipalTag { get; set; }
   string? InfosetDoorsStatusName { get; set; }
   DateTime? InfosetDoorsStatusTestedOn { get; set; }
   string? InfosetEntailment { get; set; }
   string? InfosetPortalStatusName { get; set; }
   DateTime? InfosetPortalStatusTestedOn { get; set; }
   IList<NexusNexusSnapshot>? NexusNexusSnapshots { get; set; }
-  IList<NexusServiceCoreDefault>? NexusServiceCoreDefaults { get; set; }
+  IList<NexusCoreServiceDefault>? NexusCoreServiceDefaults { get; set; }
   IList<NexusServiceRestrictionAnd>? NexusServiceRestrictionAnds { get; set; }
   DateTime? RecordArchivedOn { get; set; }
   DateTime? RecordCachedOn { get; set; }

@@ -1,0 +1,84 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeRegisterUser)]
+@model AnonModeRegisterUser
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    Thank you for registering.
+    A security token has been sent to you for verification of your email address.
+    Please check your email and click on the confirmation link to complete your registration.
+  </p>
+}
+else
+{
+  <form id="frmRegisterUser" asp-page="@DepAnonModeRegisterUser"
+      method="post" role="form" class="form-horizontal">
+    <p>
+      Use the form below to register a new user account.
+    </p>
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.FirstName, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.FirstName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.FirstName, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.LastName, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.LastName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.LastName, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.EmailAddress, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.EmailAddress, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.EmailAddress, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.QebUserName, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.QebUserName, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.QebUserName, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+      @Html.PasswordFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.AltPassword, new { @class = "form-label col-md-3" })
+      @Html.PasswordFor(m => m.UXM.AltPassword, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.AltPassword, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SecurityQuestion, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityQuestion, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityQuestion, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SecurityAnswer, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityAnswer, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityAnswer, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SimpleCaptcha, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SimpleCaptcha, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SimpleCaptcha, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <br />
+    <button id="btnRegisterUser" type="submit" class="btn btn-outline-primary">Register User</button>
+  </form>
+}

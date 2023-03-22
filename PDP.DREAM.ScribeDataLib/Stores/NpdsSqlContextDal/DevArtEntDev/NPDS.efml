@@ -359,27 +359,6 @@
     <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
     <parameter name="OtherText" type="String" sql-type="nvarchar" />
   </method>
-  <method name="ScribeServiceCoreDefaultDelete" p1:procedure="dbo.ScribeServiceCoreDefaultDelete" p1:Guid="a926c3a9-372f-417c-bf82-9102a103bb8e">
-    <return-scalar column="return_value" type="Int32" />
-    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
-  </method>
-  <method name="ScribeServiceCoreDefaultEdit" p1:procedure="dbo.ScribeServiceCoreDefaultEdit" p1:Guid="8550072b-5772-4810-a85c-80735afeb3cd">
-    <return-scalar column="return_value" type="Int32" />
-    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="HasPriority" type="Int16" sql-type="smallint" precision="5" scale="0" />
-    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
-    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
-    <parameter name="DiristryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="RegistryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="DirectoryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="RegistrarIGuidRef" type="Guid" sql-type="uniqueidentifier" />
-  </method>
   <method name="ScribeProvenanceEdit" p1:procedure="dbo.ScribeProvenanceEdit" p1:Guid="a1d0689a-5c18-45ee-ae9c-aee7e4ad93a1">
     <return-scalar column="return_value" type="Int32" />
     <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
@@ -520,5 +499,38 @@
     <parameter name="RestrictionName" type="String" sql-type="nvarchar" length="64" />
     <parameter name="IsExcluding" type="Boolean" sql-type="bit" />
     <parameter name="IsSufficient" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeCoreDefaultServiceCheck" p1:procedure="dbo.ScribeCoreDefaultServiceCheck" p1:Guid="c3936e9b-2556-4c33-839d-b8d42b0a80d3">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="ScribeCoreDefaultServiceDelete" p1:procedure="dbo.ScribeCoreDefaultServiceDelete" p1:Guid="d06bb48a-981b-4b97-96f4-2eb0cab54dff">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="IsRealDelete" type="Boolean" sql-type="bit" />
+  </method>
+  <method name="ScribeCoreDefaultServiceEdit" p1:procedure="dbo.ScribeCoreDefaultServiceEdit" p1:Guid="f1a6cb99-e946-483d-991f-a3ebf39a54b4">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="IsMarked" type="Boolean" sql-type="bit" />
+    <parameter name="IsPrincipal" type="Boolean" sql-type="bit" />
+    <parameter name="DiristryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DirectoryIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistrarIGuidRef" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="ScribeCoreDefaultServiceReseq" p1:procedure="dbo.ScribeCoreDefaultServiceReseq" p1:Guid="32446f23-a634-4587-bb97-7c8553f19d3a">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="HasPriority" p1:parameter-direction="InOut" type="Int16" sql-type="smallint" precision="5" scale="0" />
   </method>
 </efcore>

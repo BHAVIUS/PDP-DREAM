@@ -1,0 +1,81 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeContactSite)]
+@model AnonModeContactSite
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">Your message was sent successfully.</p>
+}
+else
+{
+  <form id="frmContactSite"  asp-page="@DepAnonModeContactSite"
+    method="post" role="form" class="form-horizontal">
+    <p>
+      To contact the site administrator, please complete the form below with your information and message.
+    </p>
+    <div class="form-group">
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(m => m.UXM.FormTitle, new { Value = Model.UXM.FormTitle })
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.FirstName, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.FirstName, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.FirstName, null, new { @class = "form-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.LastName, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.LastName, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.LastName, null, new { @class = "form-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.PhoneNumber, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.PhoneNumber, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.PhoneNumber, null, new { @class = "form-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.EmailAddress, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.EmailAddress, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.EmailAddress, null, new { @class = "form-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.EmailAlternate, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.EmailAlternate, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.EmailAlternate, null, new { @class = "control-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.WebsiteAddress, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.WebsiteAddress, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.WebsiteAddress, null, new { @class = "control-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.Organization, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.Organization, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.Organization, null, new { @class = "control-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.EmailSubject, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.EmailSubject, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.EmailSubject, null, new { @class = "form-label text-danger" })
+    </div>
+    <div class="form-group mb-3">
+      @Html.LabelFor(m => m.UXM.EmailBody, new { @class = "form-label" })
+      @Html.TextAreaFor(m => m.UXM.EmailBody, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.EmailBody, null, new { @class = "form-label text-danger" })
+    </div>
+    <br />
+    <button id="btnContactSite" type="submit" class="btn btn-outline-primary">Contact Site</button>
+  </form>
+}

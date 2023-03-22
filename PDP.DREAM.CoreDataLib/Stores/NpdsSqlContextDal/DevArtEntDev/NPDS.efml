@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<efcore context-namespace="PDP.DREAM.CoreDataLib.Stores" namespace="PDP.DREAM.CoreDataLib.Stores" p1:name="CoreDbsqlContext" p1:Guid="9b64ffd1-c35c-4f35-bdab-3febf7b505a6" p1:ContextBase="PDP.DREAM.CoreDataLib.Stores.PdpDataContext" p1:DoNotGenerateDefaultConstructor="True" p1:DoNotGenerateConstructorWithDbContextOptionsArgument="True" p1:UseGenericDbContextOptionsConstructorArgument="False" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
+<efcore context-namespace="PDP.DREAM.CoreDataLib.Stores" namespace="PDP.DREAM.CoreDataLib.Stores" p1:name="CoreDbsqlContext" p1:Guid="9b64ffd1-c35c-4f35-bdab-3febf7b505a6" p1:ContextBase="PDP.DREAM.CoreDataLib.Stores.DbsqlContextBase" p1:DoNotGenerateDefaultConstructor="True" p1:DoNotGenerateConstructorWithDbContextOptionsArgument="True" p1:UseGenericDbContextOptionsConstructorArgument="False" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0">
   <class name="CoreEntityTypeItem" entity-set="CoreEntityTypeItems" table="CoreEntityTypeItem" schema="dbo" p1:Guid="04e0c8da-172b-42be-9da5-07681c5ff782">
     <id name="CodeKey" type="Int16" p1:ValidateRequired="true" p1:Guid="57c7b99f-8574-4ca2-94cf-15dba27c5a5d">
       <column name="CodeKey" not-null="True" precision="5" scale="0" sql-type="smallint" p1:unicode="False" />
@@ -336,5 +336,13 @@
     <parameter name="IdentityUserNameDisp" type="String" sql-type="nvarchar" length="64" />
     <parameter name="AgentGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="SessionGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+  </method>
+  <method name="CoreDefaultServices" p1:procedure="dbo.CoreDefaultServices" p1:Guid="22f89418-9fd5-4e34-a328-4c88d71ba913">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="ServicePTag" type="String" sql-type="nvarchar" length="128" />
+    <parameter name="DiristryGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistryGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DirectoryGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="RegistrarGuid" p1:parameter-direction="InOut" type="Guid" sql-type="uniqueidentifier" />
   </method>
 </efcore>

@@ -1,8 +1,6 @@
 ﻿// ICoreResrepModelBase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
@@ -21,7 +19,7 @@ public interface ICoreResrepModelBase
   // independent parent table
   Guid? RRRecordGuid { get; set; } // ResRep Record guid
   Guid? RRInfosetGuid { get; set; } // ResRep Infoset guid
-
+  string? RRRecordAccess { get; set; } // ResRep RecordAccess string
 
   // dependent child tables
   Guid? RRFgroupGuid { get; set; } // ResRep Fgroup guid

@@ -1,14 +1,6 @@
 ﻿// PdpCodeConfig.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
@@ -17,7 +9,7 @@ public class PdpCodeDateAttribute : Attribute
 {
   public PdpCodeDateAttribute(string value)
   {
-    DateTime = DateTime.ParseExact(value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None);
+    DateTime = DateTime.ParseExact(value, PdpDateTimeNowSortFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
   }
 
   public DateTime DateTime { get; }
@@ -25,17 +17,20 @@ public class PdpCodeDateAttribute : Attribute
 
 public class PdpCodeConfig
 {
-  public PdpCodeConfig(Type progtype, string webroot = "",
-    AcgtCodeBranch codebranch = AcgtBranchDefault, AcgtCodeRazor coderazor = AcgtRazorDefault)
+  public PdpCodeConfig(Type progType,
+    string projRoot = "", string webRoot = PdpSiteDefaultWebroot,
+    AcgtCodeRazor codeRazor = AcgtRazorDefault, AcgtCodeBranch codeBranch = AcgtBranchDefault)
   {
-    if (string.IsNullOrEmpty(webroot)) { PdpCodeWebroot = PdpSiteDefaultWebroot; }
-    else { PdpCodeWebroot = webroot; }
-    PdpCodeBranch = codebranch;
-    PdpCodeRazor = coderazor;
-    PdpCodeProjdir = Directory.GetCurrentDirectory();
+    if (progType == null) { throw new ArgumentNullException(nameof(progType)); }
+    if (string.IsNullOrEmpty(projRoot)) { PdpCodeProjroot = Environment.CurrentDirectory; }
+    else { PdpCodeProjroot = projRoot; }
+    if (string.IsNullOrEmpty(webRoot)) { PdpCodeWebroot = PdpSiteDefaultWebroot; }
+    else { PdpCodeWebroot = webRoot; }
+    PdpCodeRazor = codeRazor;
+    PdpCodeBranch = codeBranch;
 
     // info from the program assembly
-    var progAsmbly = Assembly.GetAssembly(progtype);
+    var progAsmbly = Assembly.GetAssembly(progType);
     var progName = progAsmbly.GetName();
     PdpCodeAsmdat = GetPdpCodeDate(progAsmbly);
     // PdpCodeAppnam = progName.FullName; // includes description
@@ -43,8 +38,9 @@ public class PdpCodeConfig
     // PdpCodeAsmver = progName.Version.ToString(3);
     PdpCodeAsmver = progName.Version.ToString();
     PdpCodeAppver = FileVersionInfo.GetVersionInfo(progAsmbly.Location).FileVersion;
-    PdpCodeNamspc = progtype.Namespace;
+    PdpCodeNamspc = progType.Namespace;
     PdpCodeErrmsg = $"PDP-DREAM error in {PdpCodeNamspc} for {PdpCodeBranch} {PdpCodeAppnam} {PdpCodeAppver}";
+    PdpCodeBldstr = $"Code Branch {PdpCodeBranch} Version {PdpCodeAsmver} Date {PdpCodeAsmdat.ToLocalTime()}<br />";
   }
   public static DateTime GetPdpCodeDate(Assembly assembly)
   {
@@ -60,7 +56,8 @@ public class PdpCodeConfig
   public string PdpCodeAsmver { get; init; }
   public string PdpCodeErrmsg { get; init; }
   public string PdpCodeNamspc { get; init; }
-  public string PdpCodeProjdir { get; init; }
+  public string PdpCodeBldstr { get; init; }
+  public string PdpCodeProjroot { get; init; }
   public string PdpCodeWebroot { get; init; }
 
 } // end class

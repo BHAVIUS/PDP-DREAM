@@ -1,12 +1,5 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Xml;
-using System.Xml.Serialization;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.CoreDataLib.Models;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -14,7 +7,7 @@ public class NpdsXmlStringWriter<T>
 {
   // ATTN: compare with PdpXmlResponseWriter
 
-  public NpdsXmlStringWriter(T dataTransferObjectToSerialize, QebUserRestContext pdpRestContext, XmlWriterSettings? xmlWriterSettings = null)
+  public NpdsXmlStringWriter(T dataTransferObjectToSerialize, QebiUserRestContext pdpRestContext, XmlWriterSettings? xmlWriterSettings = null)
   {
     if (dataTransferObjectToSerialize == null)  // ?? operator cannot be applied to generic types
     {
@@ -24,14 +17,14 @@ public class NpdsXmlStringWriter<T>
     QURC = pdpRestContext ?? throw new ArgumentNullException("pdpRestContext in PdpXmlStringWriter");
     // TODO: recode the ResponseStatus feature
     // PRC.ResponseStatus = HttpResponseExtensions.ResponseStatus();
-    XWS = xmlWriterSettings ?? PdpXml.CreateXmlWriterSettings();
+    XWS = xmlWriterSettings ?? QebXml.CreateXmlWriterSettings();
   }
 
   // the Data Transfer Object
   public T DTO { set; get; }
 
   // the QEB User REST Context
-  public QebUserRestContext QURC { set; get; }
+  public QebiUserRestContext QURC { set; get; }
 
   // the XML Writer and Settings
   public NpdsXmlWrappingWriter NXWW { set; get; }

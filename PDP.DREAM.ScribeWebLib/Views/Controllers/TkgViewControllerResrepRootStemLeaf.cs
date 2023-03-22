@@ -1,30 +1,17 @@
 ﻿// TkgViewControllerResrepRootStemLeaf.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsViewControllerBase
+public partial class TkgsViewController
 {
   private const string eidResrepRootStatus = "span#ResrepRootStatus";
   private const string eidResrepStemStatus = "span#ResrepStemStatus";
   private const string eidResrepLeafStatus = "span#ResrepLeafStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeSelectResrepRoots), "", PdpRatsStstet, SrlRanpView)]
-  [PdpRazorViewRoute( TSststet)]
+  [PdpRazorViewRoute( depTSststet)]
   public JsonResult ScribeSelectResrepRoots([DataSourceRequest] DataSourceRequest request, string serviceType, string serviceTag, string entityType)
   {
     QURC.ParseNpdsSelectFilterForView(serviceType, serviceTag, entityType);
@@ -35,8 +22,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeUpsertResrepRoot), "", PdpRatsStstet, SrlRanpView)]
-  [PdpRazorViewRoute( TSststet)]
+  [PdpRazorViewRoute( depTSststet)]
   public JsonResult ScribeUpsertResrepRoot([DataSourceRequest] DataSourceRequest dsr, NexusResrepEditModel nre, string serviceType, string serviceTag, string entityType)
   {
     QURC.ParseNpdsSelectFilterForView(serviceType, serviceTag, entityType);
@@ -47,8 +33,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeDeleteResrepRoot), "", PdpRatsStstet, SrlRanpView)]
-  [PdpRazorViewRoute( TSststet)]
+  [PdpRazorViewRoute( depTSststet)]
   public JsonResult ScribeDeleteResrepRoot([DataSourceRequest] DataSourceRequest dsr, NexusResrepEditModel nre, string serviceType, string serviceTag, string entityType)
   {
     QURC.ParseNpdsSelectFilterForView(serviceType, serviceTag, entityType);
@@ -59,8 +44,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeCheckResrepRoot), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+  [PdpRazorViewRoute( depTSrg)]
   public ActionResult<string?> ScribeCheckResrepRoot(Guid recordGuid)
   {
     ResetScribeRepository();  // use PSDC
@@ -71,8 +55,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeCheckResrepStem), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+  [PdpRazorViewRoute( depTSrg)]
   public ActionResult<string?> ScribeCheckResrepStem(Guid recordGuid)
   {
     ResetScribeRepository();  // use PSDC
@@ -83,8 +66,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeCheckResrepLeaf), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+  [PdpRazorViewRoute( depTSrg)]
   public ActionResult<string?> ScribeCheckResrepLeaf(Guid recordGuid)
   {
     ResetScribeRepository();  // use PSDC
@@ -95,8 +77,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeRefreshResrepStatus), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+  [PdpRazorViewRoute( depTSrg)]
   public JsonResult ScribeRefreshResrepStatus([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository();  // use PSDC
@@ -111,8 +92,7 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpPut, HttpPost] // Put for Rest, Post for Ajax
-  // [PdpMvcRoute(nameof(ScribeValidateResrepStatus), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+  [PdpRazorViewRoute( depTSrg)]
   public JsonResult ScribeValidateResrepStatus([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
     ResetScribeRepository();  // use PSDC
@@ -128,11 +108,10 @@ public partial class TkgsViewControllerBase
   }
 
   [HttpPost]
-  // [PdpMvcRoute(nameof(ScribeArchiveResrepSnapshot), "", PdpRatsRg, SrlRanpView)]
-  [PdpRazorViewRoute( TSrg)]
+  [PdpRazorViewRoute( depTSrg)]
   public JsonResult ScribeArchiveResrepSnapshot([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid)
   {
-    QURC.ArchiveFormatReqst = true;
+    QURC.ArchiveFormat = true;
     ResetScribeRepository();  // use PSDC
     NexusResrepEditModel? nre = PSDC.GetEditableResrepLeafByKey(recordGuid);
     if (nre?.RRRecordGuid == recordGuid)

@@ -1,12 +1,6 @@
 ﻿// ISiaaUserResetEmail.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
 
@@ -18,12 +12,12 @@ public partial interface ISiaaUser
     var uxm = new ChangeEmailUxm();
     uxm.UserName = username;
     uxm.SecurityAnswer = securityanswer;
-    uxm = ResetEmailWithToken(uxm, new QebIdentityContext());
+    uxm = ResetEmailWithToken(uxm, new QebiDbsqlContext());
     return uxm;
   }
 
   // requires known current UserName and Security Q&A to reset forgotten Email
-  protected static ChangeEmailUxm ResetEmailWithToken(ChangeEmailUxm uxm, QebIdentityContext qudc)
+  protected static ChangeEmailUxm ResetEmailWithToken(ChangeEmailUxm uxm, QebiDbsqlContext qudc)
   {
     uxm.DbtestPassed = false;
     uxm.DbfieldReset = false;

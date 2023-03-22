@@ -2,11 +2,11 @@
 
 ### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
-Current Version: Cervin 10.2.0  
-Required Package: Telerik.UI.for.AspNet.Core.2022.3.913.nupkg  
-Required Database: Microsoft SQL Server 2019 v15.0.4249.2  
-Current DotNet Target: .NET 7.0.100-rc.1 with SDK 7.0.100-rc.1 and Visual Studio 17.4.0 Preview 2.1  
-Planned DotNet Target: maintain in most recent preview of Net 6, 7, 8  
+This Version: Cervin 10.3.4  
+Required Package: Telerik.UI.for.AspNet.Core.2023.1.314.nupkg  
+Required Database: Microsoft SQL Server 2022 v16.0.4003.1  
+Current DotNet Target: .NET Runtime 7.0.4 with SDK 7.0.202 and Visual Studio 17.5.3  
+Planned DotNet Target: maintain in most recent preview of Net 7, 8, 9  
 Dev/Test Focus Net 6 Aoraki: web apps with Telerik UI for ASP.Net Core MVC Views     
 Dev/Test Focus Net 7 Cervin: web apps with Telerik UI for ASP.Net Core Razor Pages  
 Dev/Test Focus Net 8 Gangkhar: web apps with Telerik UI for ASP.Net Core Blazor Components and desktop apps with Telerik UI for MAUI  
@@ -22,7 +22,11 @@ Visual Studio Solution of DotNet Projects and Assemblies
 * PDP.DREAM.CoreWebLib (PDP.Cervin.CoreWebLib) for ACGT
 * PDP.DREAM.CoreDataLib (PDP.Cervin.CoreDataLib) for ACGT
 
-where A is Aoraki (Net 6), C is Cervin (Net 7), G is Gangkhar (Net 8), T is Tahtali (current)
+where  
+A is Aoraki on Net 6 with MVC Views, fall 2022,  
+C is Cervin on Net 7 with Razor Pages, spring 2023,  
+G is Gangkhar on Net 8 with Blazor Components, fall 2023,  
+T is Tahtali on current Net preview.  
 
 Related Github Projects  
 
@@ -112,3 +116,24 @@ Related Github Projects
   not for management of NPDS components where write access is restricted to agents with Admin roles.
 </p>
 
+
+<h4>Nexus Sites (anonymous)</h4>
+
+<ul>
+  <li><a href="http://www.bhaconservation.net/" target="_blank">www.BHAConservation.net</a></li>
+  <li><a href="http://www.bhahealth.net/" target="_blank">www.BHAHealth.net</a></li>
+  <li><a href="http://www.biomedicalcomputing.net/" target="_blank">www.BioMedicalComputing.net</a></li>
+  <li><a href="http://www.brainwatch.net/" target="_blank">www.BrainWatch.net</a></li>
+  <li><a href="http://www.clinicaltelegaming.net/" target="_blank">www.ClinicalTeleGaming.net</a></li>
+  <li><a href="http://www.genescene.net/" target="_blank">www.GeneScene.net</a></li>
+  <li><a href="http://www.nucmedlib.net/" target="_blank">www.NucMedLib.net</a></li>
+</ul>
+
+<h4>Scribe Sites (authenticated)</h4>
+
+<ul>
+  <li><a href="https://www.brainhealthalliance.net/" target="_blank">www.BrainHealthAlliance.net</a></li>
+  <li><a href="https://www.npdslinks.net/" target="_blank">www.NPDSLINKS.net</a></li>
+  <li><a href="https://www.portaldoors.net/" target="_blank">www.PORTALDOORS.net</a></li>
+  <li><a href="https://www.telegenetics.net/" target="_blank">www.TeleGenetics.net</a></li>
+</ul>

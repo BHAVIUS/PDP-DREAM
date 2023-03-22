@@ -1,17 +1,22 @@
 @*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/SwlHome/AdminHelp"
+@page
+@attribute [PdpRazorPageRoute(DepNexusWebLib, DepSwlHomeAdminHelp)]
 @model SwlHomeAdminHelp
 @{
-  PdpSiteRazorModel psr = Model.PSR;
-  PdpSiteInfoModel psi = psr.PdpSiteInfo;
-  QebUserRestContext qurc = Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psr.FormatPageTitle())
-<p><partial name="@psr.RazorBodyMenu" /></p>
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 
 <p>
   You are registered as an NPDS Record Administrator
@@ -21,8 +26,7 @@
 
 <h5>Admin Manage SIAA Users and Roles</h5>
 
-<p><partial name="_AdminCoreSpanPageMenu" /></p>
-
+<p><partial name="_AdminModeSpanPageMenu" /></p>
 
 <h5>Admin Manage NPDS Records</h5>
 
@@ -33,5 +37,45 @@
   <li> <a href="/NPDS/ScribeServer/ServiceRestrictions/Admin">NPDS Service Restrictions</a> </li>
   <li> <a href="/NPDS/ScribeServer/ServiceStatus/Admin">NPDS Service Status</a> </li>
 </ul>
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/NPDS-Root">/NPDS/ScribeServer/AdminResreps/Diristry/NPDS-Root</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/PDP-Nexus">/NPDS/ScribeServer/AdminResreps/Diristry/PDP-Nexus</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Registry/PDP-PORTAL">/NPDS/ScribeServer/AdminResreps/Registry/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Directory/PDP-DOORS">/NPDS/ScribeServer/AdminResreps/Directory/PDP-DOORS</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Registrar/PDP-Scribe">/NPDS/ScribeServer/AdminResreps/Registrar/PDP-Scribe</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/PDP-DREAM">/NPDS/ScribeServer/AdminResreps/Diristry/PDP-DREAM</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Ashurbanipal">/NPDS/ScribeServer/AdminResreps/Diristry/Ashurbanipal</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Avicenna">/NPDS/ScribeServer/AdminResreps/Diristry/Avicenna</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Beacon">/NPDS/ScribeServer/AdminResreps/Diristry/Beacon</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/BioPORT">/NPDS/ScribeServer/AdminResreps/Diristry/BioPORT</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/BrainIACS">/NPDS/ScribeServer/AdminResreps/Diristry/BrainIACS</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/BrainWatch">/NPDS/ScribeServer/AdminResreps/Diristry/BrainWatch</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/CTGaming">/NPDS/ScribeServer/AdminResreps/Diristry/CTGaming</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/DaVinci">/NPDS/ScribeServer/AdminResreps/Diristry/DaVinci</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Eywa">/NPDS/ScribeServer/AdminResreps/Diristry/Eywa</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Fidentinus">/NPDS/ScribeServer/AdminResreps/Diristry/Fidentinus</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Gaia">/NPDS/ScribeServer/AdminResreps/Diristry/Gaia</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/GeneScene">/NPDS/ScribeServer/AdminResreps/Diristry/GeneScene</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/HELPME">/NPDS/ScribeServer/AdminResreps/Diristry/HELPME</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Jubatus">/NPDS/ScribeServer/AdminResreps/Diristry/Jubatus</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Knuth">/NPDS/ScribeServer/AdminResreps/Diristry/Knuth</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Martialis">/NPDS/ScribeServer/AdminResreps/Diristry/Martialis</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/ManRay">/NPDS/ScribeServer/AdminResreps/Diristry/ManRay</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Osler">/NPDS/ScribeServer/AdminResreps/Diristry/Osler</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/Socrates">/NPDS/ScribeServer/AdminResreps/Diristry/Socrates</a></li>
+  <li><a href="/NPDS/ScribeServer/AdminResreps/Diristry/SOLOMON">/NPDS/ScribeServer/AdminResreps/Diristry/SOLOMON</a></li>
+  <li><a href="/NPDS/ScribeServer/AuthorAccess/Admin">/NPDS/ScribeServer/AuthorAccess/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/EditorAccess/Admin">/NPDS/ScribeServer/EditorAccess/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/ServiceDefaults/Admin">/NPDS/ScribeServer/ServiceDefaults/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/ServiceRestrictions/Admin">/NPDS/ScribeServer/ServiceRestrictions/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/ServiceRestrictionsTest/Admin">/NPDS/ScribeServer/ServiceRestrictionsTest/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/ServiceRestrictionsAnds/Admin">/NPDS/ScribeServer/ServiceRestrictionsAnds/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/ServiceRestrictionsOrs/Admin">/NPDS/ScribeServer/ServiceRestrictionsOrs/Admin</a></li>
+  <li><a href="/NPDS/ScribeServer/ServiceStatus/Admin">/NPDS/ScribeServer/ServiceStatus/Admin</a></li>
+</ul>
+
 
 <partial name="_CuratorHelp" />

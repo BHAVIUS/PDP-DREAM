@@ -1,23 +1,21 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Microsoft.Data.SqlClient;
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 // PDP dream software APPlication STATUS
 public static class PdpAppStatus
 {
+  // TODO: create zero-parameter constructors for these properties from classes
+
   // PDP CodeConfig (PDPCC)
-  public static PdpCodeConfig PDPCC { get; set; }
+  public static PdpCodeConfig PDPCC { get; set; } // = new PdpCodeConfig();
 
   // PDP SiteSettings (PDPSS)
-  public static PdpSiteSettings PDPSS { get; set; }
+  public static PdpSiteSettings PDPSS { get; set; } // = new PdpSiteSettings();
 
   // NPDS ServerDefaults (NPDSSD)
-  public static NpdsServerDefaults NPDSSD { get; set; }
+  public static NpdsServerDefaults NPDSSD { get; set; } // = new NpdsServerDefaults();
 
 
   public static string GetNamespace(this object thing)
@@ -26,6 +24,7 @@ public static class PdpAppStatus
   }
 
   // for use when called from a SQL related context
+  // TODO: reconcile/merge ? with QebSql error messages
   public static string SqlErrorMessage(SqlException exc)
   {
     var msgOuter = exc?.Message ?? string.Empty;
@@ -43,39 +42,57 @@ public static class PdpAppStatus
     return linqError;
   }
 
-  public static void NullRefException(string variableName, string methodName, string className = "")
+  // CatchNull methods throw exceptions
+  // arguments from calling methods are passed to parameters declared in receiving methods
+
+  //public static void CatchNullObject(this object? value)
+  //{
+  //  if (value == null)
+  //  { throw new ArgumentNullException(value?.ToString(), "Object cannot be null."); }
+  //  else if ((value.GetType() == typeof(string)) && (string.IsNullOrWhiteSpace((string)value)))
+  //  { throw new ArgumentNullException(value.ToString(), "String cannot be null or whitespace."); }
+  //}
+
+  // TODO: migrate references where possible to CatchNullEmptyGuid or CatchNullEmptyString 
+  public static void CatchNullObject(this object? theValue, string variableName, string methodName, string className = "")
   {
-    var errorMessage = $"null variable {variableName} in method {methodName}";
+    if (theValue == null)
+    {
+      ThrowNullEmptyException(variableName, methodName, className);
+    }
+  }
+  public static void CatchNullEmptyGuid(this Guid? theValue, string variableName, string methodName, string className = "")
+  {
+    if (theValue.IsNullOrEmpty())
+    {
+      ThrowNullEmptyException(variableName, methodName, className);
+    }
+  }
+  public static void CatchNullEmptyString(this string? theValue, string variableName, string methodName, string className = "")
+  {
+    if (string.IsNullOrEmpty(theValue))
+    {
+      ThrowNullEmptyException(variableName, methodName, className);
+    }
+  }
+  public static void CatchNullWhiteString(this string? theValue, string variableName, string methodName, string className = "")
+  {
+    if (string.IsNullOrWhiteSpace(theValue))
+    {
+      ThrowNullEmptyException(variableName, methodName, className);
+    }
+  }
+  public static void ThrowNullEmptyException(string variableName, string methodName, string className)
+  {
+    var errorMessage = $"Null or empty variable {variableName} in method {methodName}";
     if (!string.IsNullOrEmpty(className)) { errorMessage += $" of class {className}"; }
     throw new NullReferenceException(errorMessage);
   }
 
-  // CatchNull methods throw exceptions
-  // arguments from calling methods are passed to parameters declared in receiving methods
-
-  public static void CatchNull(object value, string name)
+  // TODO: implement use of [CallerArgumentExpression] 
+  public static void PdpDebugMessage(this object thing, string namThing = "")
   {
-    if (value == null) { throw new ArgumentNullException(name); }
-  }
-  public static void CatchNullObject(this object? value)
-  {
-    if (value == null)
-    { throw new ArgumentNullException(value?.ToString(), "Object cannot be null."); }
-    else if ((value.GetType() == typeof(string)) && (string.IsNullOrWhiteSpace((string)value)))
-    { throw new ArgumentNullException(value.ToString(), "String cannot be null or whitespace."); }
-  }
-  public static void CatchNullEmptyString(this string? value, string name = "")
-  {
-    CatchNull(value, name);
-    if (value.Length == 0) { throw new ArgumentNullException(name); }
-  }
-  public static void CatchNullWhiteString(this string? value, string name = "")
-  {
-    if ((value == null) || (string.IsNullOrWhiteSpace(value)))
-    {
-      if ((string.IsNullOrWhiteSpace(name)) && (value != null)) { name = value.ToString(); }
-      throw new ArgumentNullException(name, "String cannot be null or whitespace.");
-    }
+    Debug.WriteLine($"Name = '{namThing}', Value = '{thing}', Type = '{thing.GetType().Name}';");
   }
 
 } // end class

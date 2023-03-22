@@ -1,16 +1,6 @@
 ﻿// SqldbcUilSrvcRstrctAndEditGet.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.ScribeDataLib.Models;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -22,28 +12,28 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var infosetGuid = PdpGuid.ParseToNonNullable(editObj.RRInfosetGuid, Guid.Empty);
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     NexusServiceRestrictionAnd storObj;
     if (isNewRecord)
     {
       // insert new record
-      internalGuid = Guid.NewGuid();
+      fgroupGuid = Guid.NewGuid();
       storObj = new NexusServiceRestrictionAnd()
       {
         CreatedByAgentGuid = agentGuid,
         UpdatedByAgentGuid = agentGuid,
         RecordGuidRef = recordGuid,
-        RestrictionAndGuidKey = internalGuid
+        RestrictionAndGuidKey = fgroupGuid
       };
     }
     else
     {
       // update existing record
-      storObj = GetStorableRestrictionAndByKey(internalGuid);
+      storObj = GetStorableRestrictionAndByKey(fgroupGuid);
       storObj.UpdatedByAgentGuid = agentGuid;
     }
 
@@ -59,7 +49,7 @@ public partial class ScribeDbsqlContext
     if (byStorProc)
     {
       var errCod = ScribeServiceRestrictionAndEdit(
-        agentGuid, infosetGuid, recordGuid, internalGuid,
+        agentGuid, infosetGuid, recordGuid, fgroupGuid,
         storObj.AndHasPriority, storObj.RestrictionName, storObj.IsExcluding, storObj.IsSufficient);
       if (errCod < 0) { errMsg = $"Error code = {errCod} while writing to database {recordName} record with index {recordIndex}"; }
     }
@@ -69,7 +59,7 @@ public partial class ScribeDbsqlContext
       errMsg = StoreChanges();
     }
     // refresh the edit object
-    editObj = GetEditableRestrictionAndByKey(internalGuid);
+    editObj = GetEditableRestrictionAndByKey(fgroupGuid);
     if (editObj == null) { editObj = new ServiceRestrictionAndEditModel(); }
     // refresh the recordIndex
     recordIndex = editObj.HasIndex;
@@ -89,14 +79,14 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var agentGuid = NPDSCP.ClientAgentGuid;
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     if (!isNewRecord) // delete existing record
     {
-      var storObj = GetStorableRestrictionAndByKey(internalGuid);
-      storObj.DeletedByAgentGuid = QURC.QebAgentGuid;
-      storObj.IsDeleted = QURC.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
+      var storObj = GetStorableRestrictionAndByKey(fgroupGuid);
+      storObj.DeletedByAgentGuid = NPDSCP.ClientAgentGuid;
+      storObj.IsDeleted = NPDSCP.ClientHasAdminAccess;  // maps to IsRealDelete input parameter in storproc
       if (byStorProc)
       {
         var errCod = ScribeServiceRestrictionAndDelete(
@@ -111,7 +101,7 @@ public partial class ScribeDbsqlContext
         errMsg = StoreChanges();
       }
       // refresh the edit object
-      editObj = GetEditableRestrictionAndByKey(internalGuid);
+      editObj = GetEditableRestrictionAndByKey(fgroupGuid);
       if (editObj == null) { editObj = new ServiceRestrictionAndEditModel(); }
       // update the status message
       if (string.IsNullOrEmpty(errMsg)) { editObj.PdpStatusMessage = $"{recordName} record with index {recordIndex} deleted from database"; }

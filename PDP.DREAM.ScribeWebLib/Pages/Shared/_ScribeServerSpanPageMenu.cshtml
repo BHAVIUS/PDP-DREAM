@@ -1,0 +1,24 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? string.Empty);
+  <span>
+      ScribeServer:
+      <a asp-page="@DepScribeServerIndex">Index</a>
+    @if (userAuth)
+    {
+      <span> | </span>
+      <a asp-page="@DepScribeServerAgentResreps">AgentResreps</a>
+      <span> | </span>
+      <a asp-page="@DepScribeServerAuthorResreps">AuthorResreps</a>
+      <span> | </span>
+      <a asp-page="@DepScribeServerEditorResreps">EditorResreps</a>
+      <span> | </span>
+      <a asp-page="@DepScribeServerAdminResreps">AdminResreps</a>
+    }
+  </span>
+}

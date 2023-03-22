@@ -1,16 +1,5 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.IO;
-using System.Xml;
-
-using Newtonsoft.Json.Linq;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.CoreDataLib.Models;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -20,31 +9,32 @@ public class NpdsXmlWrappingReader : XmlReader, IXmlLineInfo
   {
     BaseXmlReader = reader;
   }
-  public NpdsXmlWrappingReader(QebUserRestContext context, XmlReader reader)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, XmlReader reader)
   { QURC = context; BaseXmlReader = reader; }
-  public NpdsXmlWrappingReader(QebUserRestContext context, TextReader reader)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, TextReader reader)
   { QURC = context; BaseXmlReader = Create(reader); }
-  public NpdsXmlWrappingReader(QebUserRestContext context, Stream inputStream)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, Stream inputStream)
   { QURC = context; BaseXmlReader = Create(inputStream); }
-  public NpdsXmlWrappingReader(QebUserRestContext context, XmlReader reader, XmlReaderSettings settings)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, XmlReader reader, XmlReaderSettings settings)
   { QURC = context; BaseXmlReader = Create(reader, settings); }
-  public NpdsXmlWrappingReader(QebUserRestContext context, TextReader reader, XmlReaderSettings settings)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, TextReader reader, XmlReaderSettings settings)
   { QURC = context; BaseXmlReader = Create(reader, settings); }
-  public NpdsXmlWrappingReader(QebUserRestContext context, Stream inputStream, XmlReaderSettings settings)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, Stream inputStream, XmlReaderSettings settings)
   { QURC = context; BaseXmlReader = Create(inputStream, settings); }
-  public NpdsXmlWrappingReader(QebUserRestContext context, string inputUri, XmlReaderSettings settings)
+  public NpdsXmlWrappingReader(QebiUserRestContext context, string inputUri, XmlReaderSettings settings)
   { QURC = context; BaseXmlReader = Create(inputUri, settings); }
 
-  public QebUserRestContext QURC { get; set; }
+  public QebiUserRestContext QURC { get; set; }
 
   private XmlReader baseXmlReader;
   protected XmlReader BaseXmlReader
   {
-    get { 
-      CatchNull(baseXmlReader, nameof(BaseXmlReader));
-      return baseXmlReader; }
+    get {
+      baseXmlReader.CatchNullObject(nameof(baseXmlReader), nameof(BaseXmlReader), nameof(NpdsXmlWrappingReader));
+      return baseXmlReader;
+    }
     set {
-      CatchNull(value, nameof(BaseXmlReader));
+      value.CatchNullObject(nameof(baseXmlReader), nameof(BaseXmlReader), nameof(NpdsXmlWrappingReader));
       baseXmlReader = value;
     }
   }

@@ -1,21 +1,6 @@
-﻿// NexusDataLibControllerBase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// NexusDataRestApiControllerBase.cs 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreWebLib.Controllers;
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Stores;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
@@ -33,58 +18,67 @@ public abstract class NexusDataRestApiControllerBase : CoreDataRazorViewControll
   protected NexusDbsqlContext pdpNexusDataCntxt;
   public NexusDbsqlContext PNDC
   {
-    get { return pdpNexusDataCntxt; }
-    set { pdpNexusDataCntxt = value; ResetNexusRepository(); }
+    set {
+      value.CatchNullObject(nameof(pdpNexusDataCntxt), nameof(PNDC), nameof(NexusDataRestApiControllerBase));
+      pdpNexusDataCntxt = value;
+      ResetNexusRepository();
+    }
+    get {
+      pdpNexusDataCntxt.CatchNullObject(nameof(pdpNexusDataCntxt), nameof(PNDC), nameof(NexusDataRestApiControllerBase));
+      return pdpNexusDataCntxt;
+    }
   }
   // reset repository with current PDP Rest Context and current PDP Data Context
   // protected so not visible as public action for controller routes
+  // TODO: Reset Repository methods in controllers or data contexts or both ???
+  //  prefer data contexts independent of QURC and HttpContext !!!
   protected void ResetNexusRepository()
   {
-    // reset repository with current PDP Rest Context and current PDP Data Context
-    if (QURC == null) { throw new NullReferenceException("PDP REST Context"); }
-    if (PNDC != null) { pdpNexusDataCntxt.ResetRestContext(QURC); }
+    QURC.CatchNullObject(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
+    PNDC.CatchNullObject(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
+    pdpNexusDataCntxt.NPDSCP = QURC; // resets data connection with current QURC.DbConnectionString
   }
 
   public NexusDataRestApiControllerBase()
   {
-    qebUserDataCntxt = new QebIdentityContext(NPDSSD.NpdsUserDbconstr);
-    pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NpdsDiristryDbconstr);
+    qebUserDataCntxt = new QebiDbsqlContext();
+    pdpNexusDataCntxt = new NexusDbsqlContext();
   }
 
-  public NexusDataRestApiControllerBase(QebIdentityContext userCntxt)
-  {
-    qebUserDataCntxt = userCntxt;
-    pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NpdsDiristryDbconstr);
-  }
-  public NexusDataRestApiControllerBase(NexusDbsqlContext npdsCntxt)
-  {
-    qebUserDataCntxt = new QebIdentityContext(NPDSSD.NpdsUserDbconstr);
-    pdpNexusDataCntxt = npdsCntxt;
-  }
-  public NexusDataRestApiControllerBase(QebIdentityContext userCntxt, NexusDbsqlContext npdsCntxt)
-  {
-    qebUserDataCntxt = userCntxt;
-    pdpNexusDataCntxt = npdsCntxt;
-  }
-  public NexusDataRestApiControllerBase(QebIdentityContext userCntxt,
-    IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  {
-    qebUserDataCntxt = userCntxt;
-    qebEmailSender = emlSndr;
-    qebSmsSender = smsSndr;
-    qebLogger = InitLogger(lgrFtry);
-    pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NpdsDiristryDbconstr);
-  }
+  //public NexusDataRestApiControllerBase(QebiDbsqlContext userCntxt)
+  //{
+  //  qebUserDataCntxt = userCntxt;
+  //  pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NexusDbconstr);
+  //}
+  //public NexusDataRestApiControllerBase(NexusDbsqlContext npdsCntxt)
+  //{
+  //  qebUserDataCntxt = new QebiDbsqlContext(NPDSSD.QebiDbconstr);
+  //  pdpNexusDataCntxt = npdsCntxt;
+  //}
+  //public NexusDataRestApiControllerBase(QebiDbsqlContext userCntxt, NexusDbsqlContext npdsCntxt)
+  //{
+  //  qebUserDataCntxt = userCntxt;
+  //  pdpNexusDataCntxt = npdsCntxt;
+  //}
+  //public NexusDataRestApiControllerBase(QebiDbsqlContext userCntxt,
+  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
+  //{
+  //  qebUserDataCntxt = userCntxt;
+  //  qebEmailSender = emlSndr;
+  //  qebSmsSender = smsSndr;
+  //  qebLogger = InitLogger(lgrFtry);
+  //  pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NexusDbconstr);
+  //}
 
-  public NexusDataRestApiControllerBase(QebIdentityContext userCntxt, NexusDbsqlContext npdsCntxt,
-    IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  {
-    qebUserDataCntxt = userCntxt;
-    qebEmailSender = emlSndr;
-    qebSmsSender = smsSndr;
-    qebLogger = InitLogger(lgrFtry);
-    pdpNexusDataCntxt = npdsCntxt;
-  }
+  //public NexusDataRestApiControllerBase(QebiDbsqlContext userCntxt, NexusDbsqlContext npdsCntxt,
+  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
+  //{
+  //  qebUserDataCntxt = userCntxt;
+  //  qebEmailSender = emlSndr;
+  //  qebSmsSender = smsSndr;
+  //  qebLogger = InitLogger(lgrFtry);
+  //  pdpNexusDataCntxt = npdsCntxt;
+  //}
 
   protected ILogger InitLogger(ILoggerFactory lgrFtry)
   {
@@ -95,13 +89,13 @@ public abstract class NexusDataRestApiControllerBase : CoreDataRazorViewControll
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // new PdpRestContext() calls ParseQueryCollection
-    qebUserRestCntxt = new QebUserRestContext(oaeCntxt.HttpContext.Request)
+    qebUserRestCntxt = new QebiUserRestContext(oaeCntxt.HttpContext)
     {
       DatabaseType = NpdsDatabaseType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
       RecordAccess = NpdsRecordAccess.AnonUser,
       UserModeClientRequired = false,
-      QebSessionValueIsRequired = false
+      SessionClientRequired = false
     };
   }
 

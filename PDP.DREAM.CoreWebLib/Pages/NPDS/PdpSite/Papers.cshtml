@@ -1,19 +1,17 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/PdpSite/Papers"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepPdpSitePapers)]
 @model PdpSitePapers
 @{
-  PdpSiteRazorModel psr = Model.PSR;
+  PdpSiteRazorModel psrm = Model.PSRM;
 }
-@Html.Raw(psr.FormatPageTitle())
-
-@if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
-{
-  <p><partial name="@psr.RazorBodyMenu" /></p>
-}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
 
 <h4>PORTAL-DOORS Project NPDS Cyberinfrastructure System Papers</h4>
 
@@ -300,8 +298,8 @@
       principles the DREAM principles with acronym DREAM for the phrase
       <em>
         Discoverable Data with Reproducible Results for Equivalent
-        Entities with Accessible Attributes and Manageable Metadata
-      </em>.
+        Entities with Accessible Attributes and Manageable Metadata.
+      </em>
       To codify these DREAM principles as a concrete artifact for the
       semantic web, and thus to operationalize their use, we developed
       an OWL 2.0 ontology that we named the PDP-DREAM ontology.

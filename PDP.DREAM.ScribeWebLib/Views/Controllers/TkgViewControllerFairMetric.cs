@@ -1,28 +1,16 @@
 ﻿// TkgViewControllerFairMetric.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsViewControllerBase
+public partial class TkgsViewController
 {
   private const string eidFairMetricStatus = "span#FairMetricStatus";
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeSelectFairMetrics), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeSelectFairMetrics([DataSourceRequest] DataSourceRequest request, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -32,7 +20,7 @@ public partial class TkgsViewControllerBase
 
   [HttpPut, HttpPost] // Put/Post for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeUpsertFairMetric), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeUpsertFairMetric([DataSourceRequest] DataSourceRequest dsr, FairMetricEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -44,7 +32,7 @@ public partial class TkgsViewControllerBase
 
   [HttpDelete, HttpPost] // Delete for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeDeleteFairMetric), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeDeleteFairMetric([DataSourceRequest] DataSourceRequest dsr, FairMetricEditModel nre, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -56,7 +44,7 @@ public partial class TkgsViewControllerBase
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeCheckFairMetric), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeCheckFairMetric([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC
@@ -68,7 +56,7 @@ public partial class TkgsViewControllerBase
 
   [HttpGet, HttpPost] // Get for Rest, Post for Ajax
   // [PdpMvcRoute(nameof(ScribeReseqFairMetric), "", PdpRatsRgil, SrlRanpView)]
-  [PdpRazorViewRoute(TSrgil)]
+  [PdpRazorViewRoute(depTSrgil)]
   public JsonResult ScribeReseqFairMetric([DataSourceRequest] DataSourceRequest dsr, Guid recordGuid, bool isLimited = false)
   {
     ResetScribeRepository(); // use PSDC

@@ -1,40 +1,54 @@
-﻿// TkgPageControllerSupportingTag.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// TkgPageControllerSupportingTag.cs
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Text.RegularExpressions;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
   private const string eidSupportingTagStatus = "span#SupportingTagStatus";
 
   public virtual JsonResult OnPostReadSupportingTags([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid recordGuid, bool isLimited = false)
+   // string searchFilter, string serviceTag, string entityType,
+   Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
-    DataSourceResult dsResult = PSDC.ListEditableSupportingTags(recordGuid, isLimited).ToDataSourceResult(dsRequest);
+    var rzrHndlr = nameof(OnPostReadSupportingTags);
+    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    OpenScribeConnection(); // use PSDC
+#if DEBUG
+    DebugScribeRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (recordGuid.IsInvalid())
+      { ModelState.AddModelError("SupportingTags", "RRRecordGuid invalid."); }
+      else
+      {
+          dsResult = PSDC.ListEditableSupportingTags(recordGuid, isLimited)
+          .ToDataSourceResult(dsRequest);
+      }
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteSupportingTag([DataSourceRequest] DataSourceRequest dsRequest,
     SupportingTagEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
+    if (fgr.RRRecordGuid.IsInvalid())
+    { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
     if (!string.IsNullOrWhiteSpace(fgr.SupportingTag))
     {
       var rgx = new Regex(PdpAppConst.RegexSupportingTag);
@@ -42,42 +56,52 @@ public partial class TkgsPageControllerBase
       if (!isMatch)
       { ModelState.AddModelError(fgr.ItemXnam, $"String is not a valid {fgr.ItemXnam}."); }
     }
-    if (ModelState.IsValid) { fgr = PSDC.EditSupportingTag(fgr); fgr.PdpStatusElement = eidSupportingTagStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.EditSupportingTag(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidSupportingTagStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostDeleteSupportingTag([DataSourceRequest] DataSourceRequest dsRequest,
     SupportingTagEditModel fgr, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteSupportingTag(fgr); fgr.PdpStatusElement = eidSupportingTagStatus; }
+    if (ModelState.IsValid) { fgr = PSDC.DeleteSupportingTag(fgr); }
+    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.PdpStatusElement = eidSupportingTagStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostCheckSupportingTag([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     SupportingTagEditModel? fgr = PSDC.GetEditableSupportingTagByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.CheckSupportingTag(fgr); fgr.PdpStatusElement = eidSupportingTagStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.CheckSupportingTag(fgr); fgr.PdpStatusElement = eidSupportingTagStatus; }
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostReseqSupportingTag([DataSourceRequest] DataSourceRequest dsRequest,
     Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     SupportingTagEditModel? fgr = PSDC.GetEditableSupportingTagByKey(recordGuid);
-    if (fgr?.RRFgroupGuid == recordGuid) { fgr = PSDC.ReseqSupportingTag(fgr); fgr.PdpStatusElement = eidSupportingTagStatus; }
+    if (fgr?.RRFgroupGuid == recordGuid)
+    { fgr = PSDC.ReseqSupportingTag(fgr); fgr.PdpStatusElement = eidSupportingTagStatus; }
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 

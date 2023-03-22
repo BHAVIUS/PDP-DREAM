@@ -1,0 +1,261 @@
+@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model CwlHomeAuthorHelp
+@{
+  var psrm = (PdpSiteRazorModel)Model.PSRM;
+  var psim = (PdpSiteInfoModel)psrm.PdpSiteInfo;
+  var qurc = (QebiUserRestContext)Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+<p><partial name="@psrm.RazorBodyMenu" /></p>
+
+<p>
+  You are registered as an NPDS Record Author
+  and may edit your own resource metadata records on this server for any records
+  for which you have been granted privileges as the current ManagedByAgent.
+</p>
+
+<h5>URLs in href attributes</h5>
+
+<ul>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/NPDS-Root">/NPDS/NexusServer/AuthorResreps/Diristry/NPDS-Root</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/PDP-Nexus">/NPDS/NexusServer/AuthorResreps/Diristry/PDP-Nexus</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Registry/PDP-PORTAL">/NPDS/NexusServer/AuthorResreps/Registry/PDP-PORTAL</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Directory/PDP-DOORS">/NPDS/NexusServer/AuthorResreps/Directory/PDP-DOORS</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Registrar/PDP-Scribe">/NPDS/NexusServer/AuthorResreps/Registrar/PDP-Scribe</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/PDP-DREAM">/NPDS/NexusServer/AuthorResreps/Diristry/PDP-DREAM</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Ashurbanipal">/NPDS/NexusServer/AuthorResreps/Diristry/Ashurbanipal</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Avicenna">/NPDS/NexusServer/AuthorResreps/Diristry/Avicenna</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Beacon">/NPDS/NexusServer/AuthorResreps/Diristry/Beacon</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/BioPORT">/NPDS/NexusServer/AuthorResreps/Diristry/BioPORT</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/BrainIACS">/NPDS/NexusServer/AuthorResreps/Diristry/BrainIACS</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/BrainWatch">/NPDS/NexusServer/AuthorResreps/Diristry/BrainWatch</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/CTGaming">/NPDS/NexusServer/AuthorResreps/Diristry/CTGaming</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/DaVinci">/NPDS/NexusServer/AuthorResreps/Diristry/DaVinci</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Eywa">/NPDS/NexusServer/AuthorResreps/Diristry/Eywa</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Fidentinus">/NPDS/NexusServer/AuthorResreps/Diristry/Fidentinus</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Gaia">/NPDS/NexusServer/AuthorResreps/Diristry/Gaia</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/GeneScene">/NPDS/NexusServer/AuthorResreps/Diristry/GeneScene</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/HELPME">/NPDS/NexusServer/AuthorResreps/Diristry/HELPME</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Jubatus">/NPDS/NexusServer/AuthorResreps/Diristry/Jubatus</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Knuth">/NPDS/NexusServer/AuthorResreps/Diristry/Knuth</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Martialis">/NPDS/NexusServer/AuthorResreps/Diristry/Martialis</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/ManRay">/NPDS/NexusServer/AuthorResreps/Diristry/ManRay</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Osler">/NPDS/NexusServer/AuthorResreps/Diristry/Osler</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/Socrates">/NPDS/NexusServer/AuthorResreps/Diristry/Socrates</a></li>
+  <li><a href="/NPDS/NexusServer/AuthorResreps/Diristry/SOLOMON">/NPDS/NexusServer/AuthorResreps/Diristry/SOLOMON</a></li>
+</ul>
+
+
+
+<h5>
+  Resource Metadata Records
+</h5>
+<p>
+  The main entry form for initial registration of resources has two dropdown menus. There is a menu for
+  the entity type which defaults to "untyped"; please select the most appropriate type for the entity
+  to be registered. There is another menu for the registry which defaults to the registry that was selected
+  from the page menu or to the @psim.SiteOwnerAcronym Registry if "All Resources" was selected
+  on the page menu. The main entry form also has four text boxes which have help with mouse-over tooltips.
+</p>
+<p>
+  It is recommended to enter at least Name and Nature in the @psim.SiteOwnerAcronym Registrar
+  implementation of PDS (although technically per the PDS design specification neither is required) to
+  take advantage of their dual use as special automatic Restricted Supporting Tags (see below). OtherMetadata
+  and Description are also optional both in the PDS design spec and the @psim.SiteOwnerAcronym
+  Registrar implementation. Also, note that if you wish to re-assign a resource record from one PORTAL
+  registry to a different PORTAL registry, you must access the record via the "All Resources" page in
+  order to use the form with the dropdownlist of registries.
+</p>
+<p>
+  When entering a Name, keep in mind that any upper case letters used in the phrase for the Name will
+  be automatically entered as the Principal Tag used for the Canonical Label when the record is created.
+  If you do not like the acronym created for the Principal Tag, you can always change it to something
+  else of your preference as long as the token is still available for use in the registry. When entering
+  a Nature, think of it as a brief description of the entity which could also be the entity's slogan,
+  tagline or service trademark in the case of an entity that is an organization, product or service
+</p>
+<h5>
+  Priorities
+</h5>
+<p>
+  For each Resource Entity, there are various metadata elements that allow multiple instances including
+  Labels, Locations, Tags, etc. Any metadata element that allows multiple instances may be assigned a
+  priority which defaults to zero and must be an integer in the range 0 to 255. Although replicate value
+  assignments are allowed (eg, all zeros), it is recommended that a unique sequence be chosen for multiple
+  instances such as 0,1,2,3 or 0, 10, 20, 30 to assure a unique priority ordering. This ordering is natural
+  in the sense that lowest values are first and highest values are last. Editing an instance of a metadata element with multiple instances only refreshes the current instance being edited.  However, only one of the multiple instances can be considered principal.  To view which instance is the current principal instance, refresh the list of instances by clicking the circle-arrow button in the lower right corner of the panel.
+  It is not possible to delete the EntityLabel marked principal. You must first assign principal status to another EntityLabel if you wish to delete that EntityLabel.
+</p>
+<h5>
+  Labels
+</h5>
+<p>
+  The PDS Schema requires at least one Label, the Canonical Label, which must be a URI.
+</p>
+<p>
+  However, the Label may be private and it may be a NON-resolvable URI. Moreover, multiple instances
+  of Labels are allowed of which there must always be at least one Canonical Label and there may be additional
+  Alias Labels. All records are created with a Principal Tag generated as an acronym from the Name for
+  the record and used to create the initial Canonical Label for the record. If the generated Principal
+  Tag has already been used by a different record, then a two digit string is appended to the acronym
+  to assure uniqueness of the generated Principal Tag. If the record is created without a Name, then
+  a randomly generated character Tag is used to create the initial Principal Tag and Canonical Label.
+  If you do not like the initial Principal Tag and Canonical Labels that are created automatically, you
+  can always change them something different of your preference. Note that Priority values are not automatically
+  adjusted except for any new Canonical Label which is always automatically assigned a value of 0. If
+  as an Author, you choose to add multiple Alias Labels and/or retain the initial random character generated
+  Label as an Alias Label in addition to your new Canonical Label, then it is recommended that you re-assign
+  Priority values to assure a unique ordering of the Labels. Also, please note that the US National Library
+  of Medicine makes a strong argument for the benefits of maintaining arbitrary identifiers (such as
+  randomly generated character keys) in addition to any identifiers intended to serve as human readable
+  words or acronyms. Thus, @psim.SiteOwnerAcronym Registrar recommends (but does not require)
+  that if randomly generated initial Canonical Labels are replaced by a preferred Canonical Label of
+  the Author's choice, that these initial random Canonical Labels be retained as Alias Labels with a
+  Priority in the range 1 to 255 rather than being deleted.
+</p>
+<h5>
+  Locations
+</h5>
+<p>
+  The PDS Schema requires at least one Location which must be a resolvable URL.
+</p>
+<p>
+  This URL may be the Canonical Label if the Canonical Label is both a URI and a URL and there is no
+  other relevant meaningful or otherwise appropriate Location for the Resource Entity. In most cases,
+  it is desirable that the Location URL for the Resource Entity be different from the URL (if a resolvable
+  URI) for the Canonical Label. In these cases with different URLs for Canonical Label and for Location,
+  then the Location URL should point to the resource entity itself and the Canonical Label URL points
+  to the metadata representation of the entity but not to the entity itself. However, for those cases
+  where the entity is a simple virtual item (such as a vocabulary item in a dictionary or thesaurus,
+  eg, the concepts in MeSH2010) and also for those cases where the entity is entirely offline and has
+  no other online presence, then the Canonical Label if marked as a Resolvable URL may also be used as
+  the only online Location for the entity (but if possible there should also be an offline Location for
+  the entity entered in the LocationXML textbox rather than the LocationURL textbox of the Location entry
+  form).
+</p>
+<h5>
+  XML Metadata Elements
+</h5>
+<p>
+  With regard to entry form textboxes that require XML (or XML derivatives such as RDF or OWL), any text
+  entered will be reset to null if the text does not validate as well-formed XML. So there must be at
+  least one outer XML element wrapping the inner text (which may itself be free-form text or XML structured
+  text). These remarks apply to elements including OtherMetadata, Description, LocationXml which are
+  optional. You may wish to experiment with these elements or simply defer any use of them until the
+  interface is better developed and demonstrated with some examples of how best to use them with preferred
+  microformats and/or XML Schemas to guide the inner structure of the metadata to be entered in each
+  XML element.
+</p>
+<h5>
+  Validation Tests
+</h5>
+<p>
+  Clicking on the green check mark icon for the record performs a validation test for the entry, and
+  should not be attempted until all relevant data for the record has been entered. Validation of the
+  representation for a resource entity performs a test of PORTAL validity and DOORS validity separately
+  but both tests are triggered when clicking on the check mark icon at the @psim.SiteOwnerAcronym
+  Registrar which is a NEXUS server (ie, implements the functionality of both a PORTAL server and a DOORS
+  server).
+</p>
+<p>
+  PORTAL validity tests evaluate the Restricted Supporting Tags for the presence of any required concepts
+  for the particular PORTAL Registry in order to determine eligibility of the record for entry in that
+  registry. To view the concepts tested, view the OtherMetadata element after getting the ResourceRepresentation
+  for the PORTAL Registry as in the following examples for the prototype registries:
+</p>
+<ul>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/beacon")' target="other">http://npds.portaldoors.org/npds/portal/Beacon</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/brainwatch")' target="other">http://npds.portaldoors.org/npds/portal/BrainWatch</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/ctgaming")' target="other">http://npds.portaldoors.org/npds/portal/CTGaming</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/eywa")' target="other">http://npds.portaldoors.org/npds/portal/Eywa</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/gaia")' target="other">http://npds.portaldoors.org/npds/portal/Gaia</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/genescene")' target="other">http://npds.portaldoors.org/npds/portal/GeneScene</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/gtg")' target="other">http://npds.portaldoors.org/npds/portal/GTG</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/helpme")' target="other">http://npds.portaldoors.org/npds/portal/HELPME</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/manray")' target="other">http://npds.portaldoors.org/npds/portal/ManRay</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/mesh2011")' target="other">http://npds.portaldoors.org/npds/portal/MeSH2011</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/micad2011")' target="other">http://npds.portaldoors.org/npds/portal/MICAD2011</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/osler")' target="other">http://npds.portaldoors.org/npds/portal/Osler</a>
+  </li>
+  <li>
+    <a href='@Url.Content("http://npds.portaldoors.org/npds/portal/solomon")' target="other">http://npds.portaldoors.org/npds/portal/SOLOMON</a>
+  </li>
+</ul>
+<p>
+  For now, there is no timer to expunge invalid records. However, when development of PDS stabilizes
+  (reaches version 0.8 or 0.9 on the PDS Development Roadmap), it is likely that there will be a 14-day
+  timer by which records must be properly validated or otherwise be purged from the registry. Another
+  possible action for invalid records will be to transfer them to an open and unrestricted PORTAL Registry
+  such as the @psim.SiteOwnerAcronym Registry.
+</p>
+<p>
+  The PORTAL validity test now operates on the Restricted Supporting Tags, and also automatically on
+  the Entity Name and Entity Nature which can be considered specialized Restricted Supporting Tags named
+  with their additional intended purposes. So if there are no Restricted Supporting Tags and no Name
+  or Nature, then the test will surely fail unless the record has been entered in an open PORTAL for
+  which there are no restrictions. At the present time, the only prototype PORTAL Registry without any
+  problem oriented domain restrictions is the @psim.SiteOwnerAcronym Registry. The PORTAL validity
+  test will be modified soon so that Restricted Supporting Labels can also be tested. Note that if a
+  Supporting Tag or a Supporting Label is not marked as Restricted, then it will not be evaluated in
+  the Validity Test. However, the Entity Name and Entity Nature are always tested and do not need to
+  be flagged for the test with the IsRestricted boolean.
+</p>
+<p>
+  An Author may choose an arbitrary number of either Supporting Tags and/or Supporting Labels to describe
+  the Resource Entity. These Tags and Labels may or may not be related to the defining concepts that
+  <em>restrict</em> the problem oriented domain for the PORTAL. To provide a full and complete description
+  of a Resource Entity, an Author may choose to use some Tags and Labels that relate directly to the
+  defining concepts for the PORTAL and some that do not. Thus, there is good cause for both Restricted
+  and Unrestricted Tags and Labels. However, keep in mind that currently the PORTAL validity test evaluates
+  first the Restricted Supporting Tags (including Entity Name and Entity Nature) and then the Restricted
+  Supporting Labels.
+</p>
+<p>
+  DOORS validity tests evaluate the Canonical Label or the Locations for the presence of at least one
+  resolvable URL. Currently, for a Label to be considered a URL and not just a URI, it must be marked
+  as Resolvable.
+</p>
+<h5>
+  Questions, Suggestions, and Bug Reports
+</h5>
+<p>
+  Please contact Carl Taswell with any questions each of which will be answered with new documentation
+  on this page. Also any suggestions for improvements to the interface for the @psim.SiteOwnerAcronym
+  Registrar are always appreciated including any suggestions for additional entity types to be added
+  to the list of entity types. Though regarding the latter, keep in mind that the list of entity types
+  must remain generic with each entity type applicable across all problem oriented domains declared as
+  PDS PORTAL Registries. Finally, please be sure to report any problems or software bugs that you encounter.
+  Note that any operation that inserts, updates, or deletes a record in the database should be acknowledged
+  with a message above the displayed datagrid confirming success or failure of the operation. If you
+  do not see a message of any kind for those operations that should have messages (inserts, updates including
+  validation tests, and deletes), or if you do see a message that is a server error message, please be
+  sure to report the problem. Thanks!
+</p>

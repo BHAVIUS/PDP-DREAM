@@ -1,18 +1,6 @@
 ﻿// SqldbcUilResrepRootViewList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Kendo.Mvc;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.EntityFrameworkCore;
-
-using PDP.DREAM.NexusDataLib.Models;
 
 namespace PDP.DREAM.NexusDataLib.Stores;
 
@@ -21,13 +9,13 @@ public partial class NexusDbsqlContext
   // ListViewables //
   public IList<NexusResrepViewModel?> ListViewableResrepRoots()
   {
-    IQueryable<INexusResrepRoot> query = InitQueryStorableNexusRoot();
+    IQueryable<INexusResrepRoot> query = InitDataQueryStorableNexusRoot();
     IList<NexusResrepViewModel?> list = query.ToViewable().ToList();
     return list;
   }
   public IList<NexusResrepViewModel?> ListViewableResrepRoots(int pageSize, int pageNumber, out int listCount)
   {
-    IQueryable<INexusResrepRoot> query = InitQueryStorableNexusRoot();
+    IQueryable<INexusResrepRoot> query = InitDataQueryStorableNexusRoot();
     listCount = (from INexusResrepRoot rr in query select rr).Count();
     if (pageSize > 0)
     {
@@ -45,7 +33,7 @@ public partial class NexusDbsqlContext
     IList<NexusResrepViewModel?> resreps;
     var pageSize = dsRequest.PageSize;
     var pageNumber = dsRequest.Page;
-    IQueryable<INexusResrepRoot> query = InitQueryStorableNexusRoot();
+    IQueryable<INexusResrepRoot> query = InitDataQueryStorableNexusRoot();
     foreach (FilterDescriptor filterDescriptor in dsRequest.Filters)
     {
       var filterMember = filterDescriptor.Member;
@@ -143,7 +131,7 @@ public partial class NexusDbsqlContext
         query = query.Take(pageSize);
       }
     }
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     resreps = query.ToViewable(agentGuid).ToList();
     return resreps;
   }
@@ -152,8 +140,8 @@ public partial class NexusDbsqlContext
   public IList<INexusResrepRoot> ListStorableNexusRoots(IQueryable<INexusResrepRoot>? query = null, int listCount = 0)
   {
     IList<INexusResrepRoot> resreps;
-    if (listCount == 0) { listCount = QURC.ListCount; }
-    if (query == null) { query = InitQueryStorableNexusRoot(); }
+    if (listCount == 0) { listCount = NPDSCP.PageListCount; }
+    if (query == null) { query = InitRestQueryStorableNexusRoot(); }
     query = query.Select((INexusResrepRoot rr) => rr)
       .OrderByDescending((INexusResrepRoot rr) => rr.RecordUpdatedOn)
       .Take(listCount);
@@ -162,9 +150,10 @@ public partial class NexusDbsqlContext
   }
   public IList<INexusResrepRoot> ListStorableNexusRootsWithFacets(IQueryable<INexusResrepRoot>? query = null, int listCount = 0)
   {
+    // TODO: add a facet for all fields in complement of root that exists in stem and leaf
     IList<INexusResrepRoot> resreps;
-    if (listCount == 0) { listCount = QURC.ListCount; }
-    if (query == null) { query = InitQueryStorableNexusRoot(); }
+    if (listCount == 0) { listCount = NPDSCP.PageListCount; }
+    if (query == null) { query = InitRestQueryStorableNexusRoot(); }
     query = query.Select((INexusResrepRoot rr) => rr)
       .OrderByDescending((INexusResrepRoot rr) => rr.RecordUpdatedOn)
       .Take(listCount)

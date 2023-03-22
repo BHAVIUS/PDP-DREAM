@@ -1,97 +1,36 @@
 ﻿// SqldbContext.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Security.Claims;
-using System.Net.Http;
-
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Options;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreDataLib.Stores;
 
-public partial class CoreDbsqlContext : PdpDataContext, INpdsDataService
+// PDP.DREAM.CoreDataLib.Stores.CoreDbsqlContext
+public partial class CoreDbsqlContext : DbsqlContextBase, INpdsDataService
 {
-  // partial void OnCreated for use with Devart Entity Developer generated code
-  partial void OnCreated()
+  // ATTN: OnConfiguring method required with DbContextOptionsBuilder required for EF Core 
+  // ATTN: if use Entity Developer, then must delete generated redundant copy of OnConfiguring()
+  protected override void OnConfiguring(DbContextOptionsBuilder dbcob)
   {
-    if (base.AppSiaaGuid.IsEmpty()) { base.AppSiaaGuid = PDPSS.AppSecureUiaaGuid; }
-  }
-
-  // OnConfiguring method with DbContextOptionsBuilder required for EntityFrameworkCore
-  // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  // partial void CustomizeConfiguration for use with Devart Entity Developer generated code
-  partial void CustomizeConfiguration(ref DbContextOptionsBuilder optionsBuilder)
-  {
-    if (!optionsBuilder.IsConfigured ||
-        (!optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().Any(ext => !string.IsNullOrEmpty(ext.ConnectionString) || ext.Connection != null) &&
-         !optionsBuilder.Options.Extensions.Any(ext => !(ext is RelationalOptionsExtension) && !(ext is CoreOptionsExtension))))
+    if (NPDSCP == null) { NPDSCP = new NpdsClient(NpdsDatabaseType.Core); }
+    if (!dbcob.IsConfigured) { dbcob.UseSqlServer(NPDSCP.DatabaseConstr); }
+    if (dbcob.IsConfigured)
     {
-      optionsBuilder.UseSqlServer(NPDSSD.NpdsCoreDbconstr);
+      if (NPDSCP.ClientAppSiaaGuid.IsNullOrEmpty() && !PDPSS.AppSecureUiaaGuid.IsEmpty())
+      { NPDSCP.ClientAppSiaaGuid = PDPSS.AppSecureUiaaGuid; }
+    }
+    else
+    {
+      throw new Exception("DbContext builder with NPDSCP has not been configured");
     }
   }
 
-  protected void OnInitiatingPdpdc(string? dbcs = null)
-  {
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; }
-    if (string.IsNullOrEmpty(dbcs)) { throw new NullReferenceException("dbcs null or empty"); }
-    var builder = new DbContextOptionsBuilder<CoreDbsqlContext>();
-    builder.UseSqlServer(dbcs);
-    OnConfiguring(builder);
-    OnCreated();
-  }
-  protected void OnInitiatingPdpdc(SqlConnection? dbconn)
-  {
-    if (dbconn == null) { throw new NullReferenceException("dbcs null or empty"); }
-    var builder = new DbContextOptionsBuilder<CoreDbsqlContext>();
-    builder.UseSqlServer(dbconn);
-    OnConfiguring(builder);
-    OnCreated();
-  }
-  protected void OnInitiatingPdpdc(DbContextOptions<CoreDbsqlContext> dbco)
-  {
-    var builder = new DbContextOptionsBuilder(dbco);
-    OnConfiguring(builder);
-    OnCreated();
-  }
+  // constructor with typed and untyped DbContextOptionsBuilder required for EntityFrameworkCore 
+  public CoreDbsqlContext(DbContextOptionsBuilder dbcob) : base(dbcob) { }
+  public CoreDbsqlContext(DbContextOptionsBuilder<CoreDbsqlContext> dbcob) : base(dbcob) { }
 
-  // constructor with typed DbContextOptions required for EntityFrameworkCore
-  public CoreDbsqlContext(DbContextOptions<CoreDbsqlContext> dbco) : base()
-  {
-    OnInitiatingPdpdc(dbco);
-  }
-  public CoreDbsqlContext(SqlConnection? dbconn) : base()
-  {
-    OnInitiatingPdpdc(dbconn);
-  }
-  public CoreDbsqlContext(string dbcs) : base()
-  {
-    OnInitiatingPdpdc(dbcs);
-  }
-  public CoreDbsqlContext() : base()
-  {
-    OnInitiatingPdpdc();
-  }
-
-  public override void UsePdpdbDefaultConnection(ref DbContextOptionsBuilder builder)
-  {
-    var dbcs = qebUserRestCntxt?.DbConnectionString; // assume dynamic selection on each request
-    if (string.IsNullOrEmpty(dbcs)) { dbcs = NPDSSD.NpdsCoreDbconstr; } // for Core service
-    if (!string.IsNullOrEmpty(dbcs)) { builder.UseSqlServer(dbcs); }
-  }
+  // constructors with typed NpdsClient or database connection strings
+  public CoreDbsqlContext(INpdsClient npdsc) : base(npdsc) { }
+  public CoreDbsqlContext() : this(new NpdsClient(NpdsDatabaseType.Core)) { }
 
 } // end class
 

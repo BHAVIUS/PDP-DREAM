@@ -1,36 +1,40 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-
-using Microsoft.AspNetCore.Mvc;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
-public partial class TkgsPageControllerBase
+public partial class TkgsPageController
 {
-
-  public virtual JsonResult OnPostReadServiceEditorRequests([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid recordGuid, bool isLimited = false)
+  public virtual JsonResult OnPostReadServiceEditorRequests([DataSourceRequest] DataSourceRequest dsRequest)
   {
-    ResetScribeRepository(); // use PSDC
-    DataSourceResult dsResult = PSDC.ListEditableServiceEditorRequests().ToDataSourceResult(dsRequest);
+    var rzrHndlr = nameof(OnPostReadServiceEditorRequests);
+    OpenScribeConnection(); // use PSDC
+#if DEBUG
+    DebugScribeRepo(rzrHndlr, rzrClass);
+    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+        dsResult = PSDC.ListEditableServiceEditorRequests()
+        .ToDataSourceResult(dsRequest);
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostWriteServiceEditorRequest([DataSourceRequest] DataSourceRequest dsRequest,
    ServiceEditorRequestEditModel rem, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     var recordName = rem.ItemXnam;
     var infosetGuid = PdpGuid.ParseToNonNullable(rem.RRInfosetGuid, Guid.Empty);
     if (infosetGuid == Guid.Empty) // assure presence of valid infosetGuid
@@ -42,16 +46,18 @@ public partial class TkgsPageControllerBase
     rem.PdpStatusElement = eidResrepRootStatus;
     DataSourceResult dsResult = (new[] { rem }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 
   public virtual JsonResult OnPostDeleteServiceEditorRequest([DataSourceRequest] DataSourceRequest dsRequest,
    ServiceEditorRequestEditModel rem, Guid recordGuid, bool isLimited = false)
   {
-    ResetScribeRepository(); // use PSDC
+    OpenScribeConnection(); // use PSDC
     if (ModelState.IsValid) { rem = PSDC.DeleteServiceEditorRequest(rem); rem.PdpStatusElement = eidResrepRootStatus; }
     DataSourceResult dsResult = (new[] { rem }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
     return jsonData;
   }
 

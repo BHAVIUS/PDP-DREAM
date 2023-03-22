@@ -1,0 +1,28 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? string.Empty);
+  QebiUserRestContext qurc = Model.QURC;
+  var keys = new Dictionary<string, string>() { ["ugk"] = qurc.ClientUserKey, ["agk"] = qurc.ClientAgentKey, ["sgk"] = qurc.ClientSessionKey };
+  if (userAuth)
+  {
+    <span>
+      AdminMode:
+      <a asp-page="/NPDS/AdminMode/Index" asp-all-route-data="@keys">Index</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AdminMode/ViewSiaaRoles">View Roles</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AdminMode/EditSiaaRoles">Edit Roles</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AdminMode/ViewSiaaUsers">View Users</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AdminMode/EditSiaaUsers">Edit Users</a>
+      <span> | </span>
+      <a asp-page="/NPDS/AdminMode/CheckSession" asp-route-ugk="@qurc.ClientUserKey" asp-route-sgk="@qurc.ClientSessionKey">Check Session</a>
+    </span>
+  }
+}

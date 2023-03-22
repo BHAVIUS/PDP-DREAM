@@ -1,18 +1,18 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 //
 // Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
 *@
 
-@page "/NPDS/ScribeServer/ServiceDefaults/{recordAccess?}"
+@page "{recordAccess?}"
+@attribute [PdpRazorPageRoute(DepScribeWebLib, DepScribeServerServiceDefaults)]
 @model ScribeServerServiceDefaults
 @{
-var psr = (PdpSiteRazorModel)Model.PSR;
-var qurc = (QebUserRestContext)Model.QURC;
+PdpSiteRazorModel psrm = Model.PSRM;
+QebiUserRestContext qurc = Model.QURC;
 // TODO: refactor access as more convenient method in QebUserRestContext
 //   with input parameter for the requested RecordAccess
-var TkgAccess = qurc.RecordAccess;
 var hasAnonAccess = qurc.ClientIsAnonymous;
 var hasAgentAccess = qurc.ClientHasAgentAccess;
 var hasAuthorAccess = qurc.ClientHasAuthorAccess;
@@ -20,9 +20,9 @@ var hasEditorAccess = qurc.ClientHasEditorAccess;
 var hasAdminAccess = qurc.ClientHasAdminAccess;
 var hasScribeEditAccess = qurc.ClientHasScribeEditAccess;
 // correct path remains critical for Razor routing
-var TkgResrepQrystr = $"&serviceType={qurc.ServiceType}&serviceTag={qurc.ServiceTag}&entityType={qurc.EntityType}";
+var TkgResrepQrystr = $"&searchFilter={qurc.SearchFilter}&serviceTag={qurc.ServiceTag}&entityType={qurc.EntityType}";
 var TkgFgroupQrystr = $"&recordGuid=#=RRRecordGuid#&infosetGuid=#=RRInfosetGuid#&isLimited=#=InfosetIsUpdaterLimited#";
-var TkgPath = psr.RazorPagePath;
+var TkgPath = psrm.RazorPagePath;
 var TkgToken = PdpAppConst.TkgrdToken;
 // column formatting
 var UtcdtFormat = PdpAppConst.UtcdtFormat;
@@ -32,7 +32,7 @@ var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
 
-@Html.Raw(psr.FormatPageTitle())
+@Html.Raw(psrm.FormatBodyTitle())
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
 @(Html.Kendo()
@@ -147,14 +147,14 @@ m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
 m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
 m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
 m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
-m.Field(p => p.DiristryGuid).Editable(true).DefaultValue(Guid.Empty);
-m.Field(p => p.DiristryName).Editable(false).DefaultValue(string.Empty);
-m.Field(p => p.RegistryGuid).Editable(true).DefaultValue(Guid.Empty);
-m.Field(p => p.RegistryName).Editable(false).DefaultValue(string.Empty);
-m.Field(p => p.DirectoryGuid).Editable(true).DefaultValue(Guid.Empty);
-m.Field(p => p.DirectoryName).Editable(false).DefaultValue(string.Empty);
-m.Field(p => p.RegistrarGuid).Editable(true).DefaultValue(Guid.Empty);
-m.Field(p => p.RegistrarName).Editable(false).DefaultValue(string.Empty);
+m.Field(p => p.RecordDiristryGuid).Editable(true).DefaultValue(Guid.Empty);
+m.Field(p => p.RecordDiristryName).Editable(false).DefaultValue(string.Empty);
+m.Field(p => p.RecordRegistryGuid).Editable(true).DefaultValue(Guid.Empty);
+m.Field(p => p.RecordRegistryName).Editable(false).DefaultValue(string.Empty);
+m.Field(p => p.RecordDirectoryGuid).Editable(true).DefaultValue(Guid.Empty);
+m.Field(p => p.RecordDirectoryName).Editable(false).DefaultValue(string.Empty);
+m.Field(p => p.RecordRegistrarGuid).Editable(true).DefaultValue(Guid.Empty);
+m.Field(p => p.RecordRegistrarName).Editable(false).DefaultValue(string.Empty);
 m.Field(p => p.UpdatedOn).Editable(false);
 m.Field(p => p.UpdatedByAgentName).Editable(false);
 m.Field(p => p.DeletedOn).Editable(false);
@@ -186,26 +186,26 @@ col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "ServiceDefault is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "ServiceDefault is Principal?" });
-col.Bound(row => row.DiristryGuid).Title("Diristry")
+col.Bound(row => row.RecordDiristryGuid).Title("Diristry")
 .HeaderHtmlAttributes(new { title = "Nexus Diristry" })
-.HtmlAttributes(new { title = "\\#=DiristryGuid\\#" })
+.HtmlAttributes(new { title = "\\#=RecordDiristryGuid\\#" })
 .EditorTemplateName("_RecordDiristryGuid")
-.ClientTemplate("\\#=DiristryName\\#");
-col.Bound(row => row.RegistryGuid).Title("Registry")
+.ClientTemplate("\\#=RecordDiristryName\\#");
+col.Bound(row => row.RecordRegistryGuid).Title("Registry")
 .HeaderHtmlAttributes(new { title = "PORTAL Registry" })
-.HtmlAttributes(new { title = "\\#=RegistryGuid\\#" })
+.HtmlAttributes(new { title = "\\#=RecordRegistryGuid\\#" })
 .EditorTemplateName("_RecordRegistryGuid")
-.ClientTemplate("\\#=RegistryName\\#");
-col.Bound(row => row.DirectoryGuid).Title("Directory")
+.ClientTemplate("\\#=RecordRegistryName\\#");
+col.Bound(row => row.RecordDirectoryGuid).Title("Directory")
 .HeaderHtmlAttributes(new { title = "DOORS Directory" })
-.HtmlAttributes(new { title = "\\#=DirectoryGuid\\#" })
+.HtmlAttributes(new { title = "\\#=RecordDirectoryGuid\\#" })
 .EditorTemplateName("_RecordDirectoryGuid")
-.ClientTemplate("\\#=DirectoryName\\#");
-col.Bound(row => row.RegistrarGuid).Title("Registrar")
+.ClientTemplate("\\#=RecordDirectoryName\\#");
+col.Bound(row => row.RecordRegistrarGuid).Title("Registrar")
 .HeaderHtmlAttributes(new { title = "Scribe Registrar" })
-.HtmlAttributes(new { title = "\\#=RegistrarGuid\\#" })
+.HtmlAttributes(new { title = "\\#=RecordRegistrarGuid\\#" })
 .EditorTemplateName("_RecordRegistrarGuid")
-.ClientTemplate("\\#=RegistrarName\\#");
+.ClientTemplate("\\#=RecordRegistrarName\\#");
 if (hasAdminAccess) {
 col.Command(com => {
 com.Edit();
@@ -225,7 +225,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .HeaderHtmlAttributes(new { title = "Deleted by agent" });
 } // end if
 }) // end Columns
-.Editable(edt => edt.Mode(GridEditMode.InLine).Enabled(!hasAgentAccess))
+.Editable(edt => edt.Mode(GridEditMode.InLine).Enabled(hasScribeEditAccess))
 .Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToolBar(tlb => tlb.ClientTemplateId("ServiceDefaultToolbar"))
@@ -234,4 +234,3 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 </script>
 
 <partial name="_ScribeJavascriptTkgp" />
-

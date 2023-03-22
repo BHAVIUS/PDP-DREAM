@@ -1,0 +1,50 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AnonMode/ResetUsername3"
+@model AnonModeResetUsername3
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    Your username has been reset.
+  </p>
+}
+else
+{
+  <form id="frmResetUsername3" asp-page="/NPDS/AnonMode/ResetUsername3"
+      method="post" role="form" class="form-horizontal">
+    <p>
+      To reset your username, please enter your password and then answer the security question.
+    </p>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3", Value = Model.UXM.PassWord })
+      @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.SecurityToken, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityToken, new { @class = "form-control col-md-3", Value = Model.UXM.SecurityToken })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityToken, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.NewUsername, new { @class = "form-label col-md-3" })
+      @Html.PasswordFor(m => m.UXM.NewUsername, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.NewUsername, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="form-group">
+      @Html.LabelFor(m => m.UXM.AltUsername, new { @class = "form-label col-md-3" })
+      @Html.PasswordFor(m => m.UXM.AltUsername, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.AltUsername, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <br />
+    <button id="btnResetUsername3" type="submit" class="btn btn-outline-primary">Reset Password</button>
+  </form>
+}

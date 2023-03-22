@@ -1,35 +1,12 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.CoreDataLib.Utilities;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
 
 // convention: name abstract controllers with suffix ControllerBase
 public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 {
-  private const string rzrCntrllr = nameof(CoreDataRazorViewControllerBase);
+  private const string rzrClass = nameof(CoreDataRazorViewControllerBase);
 
   [BindProperty]
   public PdpSiteRazorModel PSR { get; set; } = new PdpSiteRazorModel();
@@ -44,8 +21,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 
   // QEB User REST Context = QURC
   // reset on each request to each controller
-  protected QebUserRestContext? qebUserRestCntxt = null;
-  public QebUserRestContext QURC
+  protected QebiUserRestContext? qebUserRestCntxt = null;
+  public QebiUserRestContext QURC
   {
     set {
       //if (value == null) { qebUserRestCntxt = InitRestContext(); }
@@ -60,8 +37,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   }
 
   // QEB User Data Context = QUDC
-  protected QebIdentityContext qebUserDataCntxt = new QebIdentityContext(NPDSSD.NpdsUserDbconstr);
-  public QebIdentityContext QUDC { get { return qebUserDataCntxt; } set { qebUserDataCntxt = value; } }
+  protected QebiDbsqlContext qebUserDataCntxt = new QebiDbsqlContext();
+  public QebiDbsqlContext QUDC { get { return qebUserDataCntxt; } set { qebUserDataCntxt = value; } }
 
   // data contexts: QEB User REST/Data, PDP NPDS Data/Metadata
   // QEB User REST Context = QURC for user config settings and web api requests
@@ -76,12 +53,12 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   // protected const string PsdcKey = nameof(PSDC);
 
   // PDP Core Data Context = PCDC
-  protected CoreDbsqlContext pdpCoreDataCntxt = new CoreDbsqlContext(NPDSSD.NpdsCoreDbconstr);
-  public CoreDbsqlContext PCDC
+  protected CoreDbsqlContext? pdpCoreDataCntxt = null;
+  public CoreDbsqlContext? PCDC
   {
     set { pdpCoreDataCntxt = value; ResetCoreRepository(); }
     get {
-      if (pdpCoreDataCntxt == null) { pdpCoreDataCntxt = new CoreDbsqlContext(NPDSSD.NpdsCoreDbconstr); }
+      if (pdpCoreDataCntxt == null) { pdpCoreDataCntxt = new CoreDbsqlContext(); }
       return pdpCoreDataCntxt;
     }
   }
@@ -90,64 +67,64 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   protected void ResetCoreRepository()
   {
 #if DEBUG
-    CatchNullQurc(nameof(ResetCoreRepository), rzrCntrllr);
-    if (PCDC == null) { NullRefException(PcdcKey, nameof(ResetCoreRepository), rzrCntrllr); }
+    CatchNullQurc(nameof(ResetCoreRepository), rzrClass);
+    if (PCDC == null) { PCDC.CatchNullObject(PcdcKey, nameof(ResetCoreRepository), rzrClass); }
 #endif
     // reset ViewData with current QEB User Rest Context
     ViewData[QurcKey] = QURC;
-    // reset repository with current PDP Core Data Context
-    pdpCoreDataCntxt.ResetRestContext(QURC);
+    // reset repository with current QEB User Rest Context
+    pdpCoreDataCntxt = new CoreDbsqlContext((INpdsClient)QURC);
   }
 
   public CoreDataRazorViewControllerBase()
   {
     qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
     qebUserRestCntxt = InitRestContext();
-    qebUserDataCntxt = new QebIdentityContext(NPDSSD.NpdsUserDbconstr);
-    pdpCoreDataCntxt = new CoreDbsqlContext(NPDSSD.NpdsCoreDbconstr);
+    qebUserDataCntxt = new QebiDbsqlContext();
+    pdpCoreDataCntxt = new CoreDbsqlContext();
   }
 
-  public CoreDataRazorViewControllerBase(QebIdentityContext userCntxt)
-  {
-    qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
-    qebUserRestCntxt = InitRestContext();
-    qebUserDataCntxt = userCntxt;
-    pdpCoreDataCntxt = new CoreDbsqlContext(NPDSSD.NpdsCoreDbconstr);
-  }
-  public CoreDataRazorViewControllerBase(CoreDbsqlContext npdsCntxt)
-  {
-    qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
-    qebUserRestCntxt = InitRestContext();
-    qebUserDataCntxt = new QebIdentityContext(NPDSSD.NpdsUserDbconstr);
-    pdpCoreDataCntxt = npdsCntxt;
-  }
-  public CoreDataRazorViewControllerBase(QebIdentityContext userCntxt, CoreDbsqlContext npdsCntxt)
-  {
-    qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
-    qebUserRestCntxt = InitRestContext();
-    qebUserDataCntxt = userCntxt;
-    pdpCoreDataCntxt = npdsCntxt;
-  }
-  public CoreDataRazorViewControllerBase(QebIdentityContext userCntxt,
-    IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  {
-    qebLogger = InitLogger<CoreDataRazorViewControllerBase>(lgrFtry);
-    qebUserRestCntxt = InitRestContext();
-    qebUserDataCntxt = userCntxt;
-    qebEmailSender = emlSndr;
-    qebSmsSender = smsSndr;
-    pdpCoreDataCntxt = new CoreDbsqlContext(NPDSSD.NpdsCoreDbconstr);
-  }
-  public CoreDataRazorViewControllerBase(QebIdentityContext userCntxt, CoreDbsqlContext npdsCntxt,
-    IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  {
-    qebLogger = InitLogger<CoreDataRazorViewControllerBase>(lgrFtry);
-    qebUserRestCntxt = InitRestContext();
-    qebUserDataCntxt = userCntxt;
-    qebEmailSender = emlSndr;
-    qebSmsSender = smsSndr;
-    pdpCoreDataCntxt = npdsCntxt;
-  }
+  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt)
+  //{
+  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
+  //  qebUserRestCntxt = InitRestContext();
+  //  qebUserDataCntxt = userCntxt;
+  //  pdpCoreDataCntxt = new CoreDbsqlContext();
+  //}
+  //public CoreDataRazorViewControllerBase(CoreDbsqlContext npdsCntxt)
+  //{
+  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
+  //  qebUserRestCntxt = InitRestContext();
+  //  qebUserDataCntxt = new QebiDbsqlContext();
+  //  pdpCoreDataCntxt = npdsCntxt;
+  //}
+  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt, CoreDbsqlContext npdsCntxt)
+  //{
+  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
+  //  qebUserRestCntxt = InitRestContext();
+  //  qebUserDataCntxt = userCntxt;
+  //  pdpCoreDataCntxt = npdsCntxt;
+  //}
+  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt,
+  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
+  //{
+  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>(lgrFtry);
+  //  qebUserRestCntxt = InitRestContext();
+  //  qebUserDataCntxt = userCntxt;
+  //  qebEmailSender = emlSndr;
+  //  qebSmsSender = smsSndr;
+  //  pdpCoreDataCntxt = new CoreDbsqlContext();
+  //}
+  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt, CoreDbsqlContext npdsCntxt,
+  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
+  //{
+  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>(lgrFtry);
+  //  qebUserRestCntxt = InitRestContext();
+  //  qebUserDataCntxt = userCntxt;
+  //  qebEmailSender = emlSndr;
+  //  qebSmsSender = smsSndr;
+  //  pdpCoreDataCntxt = npdsCntxt;
+  //}
 
   protected UilDropDownLists UilDdlists;
   protected IList<EntityTypeListItem> EntityTypeSelectList;
@@ -204,19 +181,12 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 
   }
 
-  protected QebUserRestContext InitRestContext()
+  protected QebiUserRestContext InitRestContext()
   {
-    var baseUrl = PdpHttpContextAccessor.BaseUrl;
-    var httpRqst = PdpHttpContextAccessor.Current.Request;
-    return InitRestContext(httpRqst);
-  }
-  protected QebUserRestContext InitRestContext(HttpRequest httpRqst)
-  {
-    if (httpRqst == null)
-    { NullRefException(nameof(httpRqst), nameof(InitRestContext), rzrCntrllr); }
-    var qurc = new QebUserRestContext(httpRqst);
+    var qurc = new QebiUserRestContext(HttpContext);
     return qurc;
   }
+
   protected virtual ILogger InitLogger<TLogger>(ILoggerFactory? lgrFtry = null)
   {
     if (lgrFtry == null) { lgrFtry = new LoggerFactory(); }
@@ -226,8 +196,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 
   protected virtual void CatchNullQurc(string methodName, string className)
   {
-    if (QURC == null)
-    { NullRefException(QurcKey, methodName, className); }
+    QURC.CatchNullObject(QurcKey, methodName, className);
   }
   protected virtual void DebugQurcData(object thing)
   {
@@ -241,7 +210,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   public override void OnActionExecuting(ActionExecutingContext exeCntxt)
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnActionExecuting), rzrCntrllr);
+    CatchNullQurc(nameof(OnActionExecuting), rzrClass);
 #endif
     ResetCoreRepository();
     ViewData[PsrKey] = PSR;
@@ -249,7 +218,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   public override void OnActionExecuted(ActionExecutedContext exeCntxt)
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnActionExecuted), rzrCntrllr);
+    CatchNullQurc(nameof(OnActionExecuted), rzrClass);
     if (exeCntxt.Result is ViewResult)
     {
       var result = (ViewResult)exeCntxt.Result;
@@ -258,8 +227,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
 #endif
   }
 
-  protected NamesForIdentityRoles npdsUsrRolRequired = NamesForIdentityRoles.NpdsAnon;
-  public NamesForIdentityRoles NpdsUserRoleRequired
+  protected NamesForClientRoles npdsUsrRolRequired = NamesForClientRoles.NpdsAnon;
+  public NamesForClientRoles NpdsUserRoleRequired
   {
     set { npdsUsrRolRequired = value; }
     get { return npdsUsrRolRequired; }
@@ -273,87 +242,87 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     var roleIsVerified = false;
     switch (NpdsUserRoleRequired)
     {
-      case NamesForIdentityRoles.NpdsAdmin:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsAdmin:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.Admin,
           AdminModeClientRequired = true,
-          QebSessionValueIsRequired = true
+          SessionClientRequired = true
         };
         roleIsVerified = CheckCoreUserSession();
         break;
-      case NamesForIdentityRoles.NpdsEditor:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsEditor:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.Editor,
           EditorModeClientRequired = true,
-          QebSessionValueIsRequired = true
+          SessionClientRequired = true
         };
         roleIsVerified = CheckCoreUserSession();
         break;
-      case NamesForIdentityRoles.NpdsAuthor:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsAuthor:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.Author,
           AuthorModeClientRequired = true,
-          QebSessionValueIsRequired = true
+          SessionClientRequired = true
         };
         roleIsVerified = CheckCoreUserSession();
         break;
-      case NamesForIdentityRoles.NpdsAgent:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsAgent:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.Agent,
           AgentModeClientRequired = true,
-          QebSessionValueIsRequired = true
+          SessionClientRequired = true
         };
         roleIsVerified = CheckCoreUserSession();
         break;
-      case NamesForIdentityRoles.NpdsUser:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsUser:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.AuthUser,
           UserModeClientRequired = true,
-          QebSessionValueIsRequired = true
+          SessionClientRequired = true
         };
         roleIsVerified = CheckCoreUserSession();
         break;
-      case NamesForIdentityRoles.NpdsAuth:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsAuth:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.AnonUser,
           AuthenticatedClientRequired = true,
-          QebSessionValueIsRequired = true
+          SessionClientRequired = true
         };
         if (OnlineUserIsAuthenticated) { roleIsVerified = true; }
         break;
-      case NamesForIdentityRoles.NpdsAnon:
-        QURC = new QebUserRestContext(httpReqst)
+      case NamesForClientRoles.NpdsAnon:
+        QURC = new QebiUserRestContext(HttpContext)
         {
-          NpdsUserRole = NpdsUserRoleRequired,
+          ClientRole = NpdsUserRoleRequired,
           DatabaseType = dbType,
           DatabaseAccess = dbAccess,
           RecordAccess = NpdsRecordAccess.AnonUser,
           AuthenticatedClientRequired = false,
-          QebSessionValueIsRequired = false
+          SessionClientRequired = false
         };
         break;
       default:
@@ -362,8 +331,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     ResetCoreRepository();
 #if DEBUG
     var appName = PSR.PdpSiteInfo.SiteAppNameVersion;
-    var userRole = QURC.NpdsUserRole.ToString();
-    var userName = QURC.QebUserNameDisplayed;
+    var userRole = QURC.ClientRole.ToString();
+    var userName = QURC.ClientUserNameDisplayed;
 #endif
     return roleIsVerified;
   }
@@ -379,15 +348,15 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
       {
         sessionIsIdentified = PCDC.CheckCoreSessionAgent(ref qebUserRestCntxt);
       }
-      else if (!string.IsNullOrEmpty(QURC.QebUserName) && !string.IsNullOrEmpty(QURC.QebPassWord))
+      else if (!string.IsNullOrEmpty(QURC.ClientUserName) && !string.IsNullOrEmpty(QURC.ClientPassWord))
       {
-        qebSignin = QebUserSignin(QURC.QebUserName, QURC.QebPassWord);
+        qebSignin = QebUserSignin(QURC.ClientUserName, QURC.ClientPassWord);
         sessionIsIdentified = PCDC.CheckCoreSessionAgent(ref qebUserRestCntxt);
       }
-      else if (QURC.QebSessionValueIsRequired && !QURC.QebSessionGuid.IsInvalid())
+      else if (QURC.SessionClientRequired && !QURC.ClientSessionGuid.IsInvalid())
       {
         sessionIsIdentified = PCDC.CheckCoreSessionAgent(ref qebUserRestCntxt);
-        qebSignin = QebUserSignin(QURC.QebUserGuid, QURC.QebAgentGuid, QURC.QebSessionGuid);
+        qebSignin = QebUserSignin(QURC.ClientUserGuid, QURC.ClientAgentGuid, QURC.ClientSessionGuid);
       }
       if (sessionIsIdentified)
       {
@@ -411,15 +380,15 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
       {
         sessionIsIdentified = PCDC.CheckCoreSessionAgent(ref qebUserRestCntxt);
       }
-      else if (!string.IsNullOrEmpty(QURC.QebUserName) && !string.IsNullOrEmpty(QURC.QebPassWord))
+      else if (!string.IsNullOrEmpty(QURC.ClientUserName) && !string.IsNullOrEmpty(QURC.ClientPassWord))
       {
-        qebSignin = QebUserSignin(QURC.QebUserName, QURC.QebPassWord);
+        qebSignin = QebUserSignin(QURC.ClientUserName, QURC.ClientPassWord);
         sessionIsIdentified = PCDC.CheckCoreSessionAgent(ref qebUserRestCntxt);
       }
-      else if (QURC.QebSessionValueIsRequired && !QURC.QebSessionGuid.IsInvalid())
+      else if (QURC.SessionClientRequired && !QURC.ClientSessionGuid.IsInvalid())
       {
         sessionIsIdentified = PCDC.CheckCoreSessionAgent(ref qebUserRestCntxt);
-        qebSignin = QebUserSignin(QURC.QebUserGuid, QURC.QebAgentGuid, QURC.QebSessionGuid);
+        qebSignin = QebUserSignin(QURC.ClientUserGuid, QURC.ClientAgentGuid, QURC.ClientSessionGuid);
       }
       if (sessionIsIdentified)
       {
@@ -461,13 +430,13 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     if (PdpGuid.IsInvalidGuid(macUsrGuid)) { QURC.ServiceError += "QebUserGuid is null, empty, or invalid"; }
 
     // test-dev-debug from QEB User REST Context (prefix qeb)
-    var qebUsrGuid = QURC.QebUserGuid;
+    var qebUsrGuid = QURC.ClientUserGuid;
     if (PdpGuid.IsInvalidGuid(qebUsrGuid)) { QURC.ServiceError += "QebUserGuid is null, empty, or invalid"; }
-    var qebAgtGuid = QURC.QebAgentGuid;
+    var qebAgtGuid = QURC.ClientAgentGuid;
     if (PdpGuid.IsInvalidGuid(qebAgtGuid)) { QURC.ServiceError += "QebAgentGuid is null, empty, or invalid"; }
-    var qebInfGuid = QURC.QebAgentInfosetGuid;
+    var qebInfGuid = QURC.ClientAgentInfosetGuid;
     if (PdpGuid.IsInvalidGuid(qebInfGuid)) { QURC.ServiceError += "QebAgentInfosetGuid is null, empty, or invalid"; }
-    var qebSsnGuid = QURC.QebSessionGuid;
+    var qebSsnGuid = QURC.ClientSessionGuid;
     if (PdpGuid.IsInvalidGuid(qebSsnGuid)) { QURC.ServiceError += "QebAgentSessionGuid is null, empty, or invalid"; }
 
     // error check reports for QEB User REST Context
@@ -515,11 +484,11 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     get {
       onlinUsrAuth = OnlineUser.Identity.IsAuthenticated;
       QURC.ClientIsAuthenticated = onlinUsrAuth;
-      QURC.NpdsUserRole = npdsUsrRolRequired;
-      QURC.QebUserName = QebUserName;
-      QURC.QebUserGuid = QebUserGuid;
-      QURC.QebAgentGuid = QebAgentGuid;
-      QURC.QebSessionGuid = QebSessionGuid;
+      QURC.ClientRole = npdsUsrRolRequired;
+      QURC.ClientUserName = QebUserName;
+      QURC.ClientUserGuid = QebUserGuid;
+      QURC.ClientAgentGuid = QebAgentGuid;
+      QURC.ClientSessionGuid = QebSessionGuid;
       return onlinUsrAuth;
     }
   }
@@ -534,8 +503,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     get {
       if (string.IsNullOrEmpty(qebUsrName))
       {
-        qebUsrName = QebiUserExtensions.GetUserName(OnlineUser);
-        QURC.QebUserName = qebUsrName;
+        qebUsrName = QebiExtensions.GetUserName(OnlineUser);
+        QURC.ClientUserName = qebUsrName;
       }
       return qebUsrName;
     }
@@ -551,8 +520,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     get {
       if (qebUsrGuid.IsEmpty())
       {
-        qebUsrGuid = QebiUserExtensions.GetUserGuid(OnlineUser);
-        QURC.QebUserGuid = qebUsrGuid;
+        qebUsrGuid = QebiExtensions.GetUserGuid(OnlineUser);
+        QURC.ClientUserGuid = qebUsrGuid;
       }
       return qebUsrGuid;
     }
@@ -567,11 +536,11 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     set {
       qebUsr = value;
       qebUsrGuid = qebUsr.UserGuidKey;
-      QURC.QebUserGuid = qebUsrGuid;
+      QURC.ClientUserGuid = qebUsrGuid;
       qebUsrName = qebUsr.UserName;
-      QURC.QebUserName = qebUsrName;
+      QURC.ClientUserName = qebUsrName;
       qebSsnGuid = qebUsr.SessionGuidRef ?? Guid.Empty;
-      QURC.QebSessionGuid = qebSsnGuid;
+      QURC.ClientSessionGuid = qebSsnGuid;
     }
   }
 
@@ -581,8 +550,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     get {
       if (qebAgtGuid.IsEmpty())
       {
-        qebAgtGuid = QebiUserExtensions.GetAgentGuid(OnlineUser);
-        QURC.QebAgentGuid = qebAgtGuid;
+        qebAgtGuid = QebiExtensions.GetAgentGuid(OnlineUser);
+        QURC.ClientAgentGuid = qebAgtGuid;
       }
       return qebAgtGuid;
     }
@@ -594,19 +563,19 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     get {
       if (qebSsnGuid.IsEmpty())
       {
-        qebSsnGuid = QebiUserExtensions.GetSessionGuid(OnlineUser);
-        QURC.QebSessionGuid = qebSsnGuid;
+        qebSsnGuid = QebiExtensions.GetSessionGuid(OnlineUser);
+        QURC.ClientSessionGuid = qebSsnGuid;
       }
       return qebSsnGuid;
     }
   }
 
-  public QebIdentityResult QebUserSignin(string userName, string passWord)
+  public QebIdentityResult QebUserSignin(string? userName, string? passWord)
   {
     return QebUserSigninAsync(userName, passWord).GetAwaiter().GetResult();
   }
 
-  public async Task<QebIdentityResult> QebUserSigninAsync(string userName, string passWord)
+  public async Task<QebIdentityResult> QebUserSigninAsync(string? userName, string? passWord)
   {
     var qebSignin = new QebIdentityResult();
     var qebUser = QUDC.GetUserByUserName(userName);
@@ -620,32 +589,32 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     var passWordOk = QebCryptoService.TokenEqualsHash(passWord, qebUser.PasswordHash);
     if (!passWordOk) { qebSignin.Failed = true; return qebSignin; }
     var userRoles = QUDC.GetUserRoleNamesByUserGuid(qebUser.UserGuidKey);
-    var result = await QebiUserExtensions.SigninUserAsync(HttpContext, userName, qebUser.UserGuidKey, Guid.Empty, Guid.Empty, userRoles);
+    var result = await QebiExtensions.SigninUserAsync(HttpContext, userName, qebUser.UserGuidKey, Guid.Empty, Guid.Empty, userRoles);
     return result;
   }
 
-  public QebIdentityResult QebUserSignin(string userName, Guid userGuid)
+  public QebIdentityResult QebUserSignin(string? userName, Guid? userGuid)
   {
     return QebUserSigninAsync(userName, userGuid).GetAwaiter().GetResult();
   }
-  public async Task<QebIdentityResult> QebUserSigninAsync(string userName, Guid userGuid)
+  public async Task<QebIdentityResult> QebUserSigninAsync(string? userName, Guid? userGuid)
   {
-    if (string.IsNullOrWhiteSpace(userName) || userGuid.IsEmpty())
+    if (string.IsNullOrWhiteSpace(userName) || userGuid.IsNullOrEmpty())
     { throw new ArgumentNullException("userName or userGuid is null empty or invalid in QebUserSignin"); }
     var userRoles = QUDC.GetUserRoleNamesByUserGuid(userGuid);
-    var result = await QebiUserExtensions.SigninUserAsync(HttpContext, userName, userGuid, Guid.Empty, Guid.Empty, userRoles);
+    var result = await QebiExtensions.SigninUserAsync(HttpContext, userName, userGuid, Guid.Empty, Guid.Empty, userRoles);
     return result;
   }
-  public QebIdentityResult QebUserSignin(Guid userGuid, Guid agentGuid, Guid sessionGuid)
+  public QebIdentityResult QebUserSignin(Guid? userGuid, Guid? agentGuid, Guid? sessionGuid)
   {
     return QebUserSigninAsync(userGuid, agentGuid, sessionGuid).GetAwaiter().GetResult();
   }
-  public async Task<QebIdentityResult> QebUserSigninAsync(Guid userGuid, Guid agentGuid, Guid sessionGuid)
+  public async Task<QebIdentityResult> QebUserSigninAsync(Guid? userGuid, Guid? agentGuid, Guid? sessionGuid)
   {
     if (userGuid.IsInvalid() || agentGuid.IsInvalid() || sessionGuid.IsInvalid())
     { throw new ArgumentNullException("userGuid, agentGuid, or sessionGuid is invalid in QebUserSignin"); }
     var userRoles = QUDC.GetUserRoleNamesByUserGuid(userGuid);
-    var result = await QebiUserExtensions.SigninUserAsync(HttpContext, string.Empty, userGuid, agentGuid, sessionGuid, userRoles);
+    var result = await QebiExtensions.SigninUserAsync(HttpContext, string.Empty, userGuid, agentGuid, sessionGuid, userRoles);
     return result;
   }
   public QebIdentityResult QebUserSignin(string userName, Guid userGuid, Guid agentGuid, Guid sessionGuid, List<string> userRoles)
@@ -654,7 +623,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   }
   public async Task<QebIdentityResult> QebUserSigninAsync(string userName, Guid userGuid, Guid agentGuid, Guid sessionGuid, List<string> userRoles)
   {
-    var result = await QebiUserExtensions.SigninUserAsync(HttpContext, userName, userGuid, agentGuid, sessionGuid, userRoles);
+    var result = await QebiExtensions.SigninUserAsync(HttpContext, userName, userGuid, agentGuid, sessionGuid, userRoles);
     return result;
   }
 
@@ -665,7 +634,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   }
   public async void QebUserSignoutAsync()
   {
-    await QebiUserExtensions.SignoutUserAsync(HttpContext);
+    await QebiExtensions.SignoutUserAsync(HttpContext);
     return;
   }
 

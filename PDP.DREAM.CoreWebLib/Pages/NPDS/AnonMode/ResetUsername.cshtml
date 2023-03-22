@@ -1,0 +1,26 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model AnonModeResetUsername
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  QebiUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+
+<form id="frmResetUsername1"  asp-page="@DepAnonModeResetUsername" 
+      method="post" role="form" class="form-horizontal">
+  <p>
+    To reset your username, please enter your password and then answer the security question.
+  </p>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3", Value = Model.UXM.PassWord })
+    @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <br />
+  <button id="btnResetUsername1" type="submit" class="btn btn-outline-primary">Next Step</button>
+</form>

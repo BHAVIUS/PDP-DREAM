@@ -1,16 +1,5 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
-using PDP.DREAM.CoreDataLib.Utilities;
-using PDP.DREAM.CoreDataLib.Models;
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
@@ -18,41 +7,41 @@ public class NpdsXmlWrappingWriter : XmlWriter
 {
   public NpdsXmlWrappingWriter(XmlWriter writer)
   {
-    CatchNull(writer, "baseWriter");
+    writer.CatchNullObject(nameof(writer), nameof(BaseXmlWriter), nameof(NpdsXmlWrappingWriter));
     BaseXmlWriter = writer;
   }
 
-  public NpdsXmlWrappingWriter(QebUserRestContext context, XmlWriter writer)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, XmlWriter writer)
   {
     QURC = context; BaseXmlWriter = writer;
   }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, TextWriter writer)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, TextWriter writer)
   { QURC = context; BaseXmlWriter = Create(writer); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, Stream outputStream)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, Stream outputStream)
   { QURC = context; BaseXmlWriter = Create(outputStream); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, StringBuilder outputString)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, StringBuilder outputString)
   { QURC = context; BaseXmlWriter = Create(outputString); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, string outputFileName)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, string outputFileName)
   { QURC = context; BaseXmlWriter = Create(outputFileName); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, XmlWriter writer, XmlWriterSettings settings)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, XmlWriter writer, XmlWriterSettings settings)
   { QURC = context; BaseXmlWriter = Create(writer, settings); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, TextWriter writer, XmlWriterSettings settings)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, TextWriter writer, XmlWriterSettings settings)
   { QURC = context; BaseXmlWriter = Create(writer); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, Stream outputStream, XmlWriterSettings settings)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, Stream outputStream, XmlWriterSettings settings)
   { QURC = context; BaseXmlWriter = Create(outputStream, settings); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, StringBuilder outputString, XmlWriterSettings settings)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, StringBuilder outputString, XmlWriterSettings settings)
   { QURC = context; BaseXmlWriter = Create(outputString, settings); }
-  public NpdsXmlWrappingWriter(QebUserRestContext context, string outputFileName, XmlWriterSettings settings)
+  public NpdsXmlWrappingWriter(QebiUserRestContext context, string outputFileName, XmlWriterSettings settings)
   { QURC = context; BaseXmlWriter = Create(outputFileName, settings); }
 
-  public QebUserRestContext QURC { get; set; }
+  public QebiUserRestContext QURC { get; set; }
 
   private XmlWriter baseXmlWriter;
   protected XmlWriter BaseXmlWriter
   {
     get { return this.baseXmlWriter; }
     set {
-      CatchNull(value, "value");
+      value.CatchNullObject(nameof(baseXmlWriter), nameof(BaseXmlWriter), nameof(NpdsXmlWrappingWriter));
       this.baseXmlWriter = value;
     }
   }

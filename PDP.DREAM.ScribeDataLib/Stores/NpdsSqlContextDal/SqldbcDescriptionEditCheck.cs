@@ -1,14 +1,6 @@
 ﻿// SqldbcUilDescriptionEditCheck.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.ScribeDataLib.Models;
 
 namespace PDP.DREAM.ScribeDataLib.Stores;
 
@@ -20,15 +12,15 @@ public partial class ScribeDbsqlContext
     var recordName = editObj.ItemXnam;
     var recordIndex = editObj.HasIndex;
     var recordPriority = editObj.HasPriority;
-    var agentGuid = QURC.QebAgentGuid;
-    var registryGuid = (Guid)QURC.RegistryGuid; // ???
+    var agentGuid = NPDSCP.ClientAgentGuid;
+    var registryGuid = (Guid)NPDSCP.RegistryGuid; // ???
     var recordGuid = PdpGuid.ParseToNonNullable(editObj.RRRecordGuid, Guid.Empty);
-    var internalGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
-    var isNewRecord = internalGuid.IsEmpty();
+    var fgroupGuid = PdpGuid.ParseToNonNullable(editObj.RRFgroupGuid, Guid.Empty);
+    var isNewRecord = fgroupGuid.IsEmpty();
     if (!isNewRecord)
     {
       // refresh object
-      editObj = GetEditableDescriptionByKey(internalGuid);
+      editObj = GetEditableDescriptionByKey(fgroupGuid);
       if (editObj == null) { editObj = new DescriptionEditModel(); }
       short statusCode = CheckSupportingStrings(editObj.Description, registryGuid); // ???
       if (string.IsNullOrEmpty(errMsg)) { editObj.PdpStatusMessage = $"{recordName} record with index {recordIndex} checked in database"; }
@@ -63,7 +55,7 @@ public partial class ScribeDbsqlContext
   public DescriptionEditModel ReseqDescription(DescriptionEditModel ssEdit)
   {
     var errMsg = string.Empty;
-    var agentGuid = QURC.QebAgentGuid;
+    var agentGuid = NPDSCP.ClientAgentGuid;
     var rrRecordGuid = PdpGuid.ParseToNonNullable(ssEdit.RRRecordGuid, Guid.Empty);
     var ssRecordGuid = PdpGuid.ParseToNonNullable(ssEdit.RRFgroupGuid, Guid.Empty);
     var ssRecordName = ssEdit.ItemXnam;

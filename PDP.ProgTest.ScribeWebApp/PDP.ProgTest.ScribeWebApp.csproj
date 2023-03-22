@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- project declaration -->
+  <PropertyGroup>
+    <AssemblyName>PDP.ProgTest.ScribeWebApp</AssemblyName>
+    <RootNamespace>PDP.DREAM.ScribeWebApp</RootNamespace>
+    <AssemblyVersion>10.3.*</AssemblyVersion>
+    <FileVersion>10.3.4</FileVersion>
+    <Version>10.3.4</Version>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- dev/test/build/debug configuration -->
+  <PropertyGroup>
+    <Deterministic>false</Deterministic>
+    <NoWarn>CS8357;CS8600;CS8601;CS8602;CS8604;CS8669;IDE0047;</NoWarn>
+  </PropertyGroup>
+
+  <!-- required references -->
+  <ItemGroup>
+    <ProjectReference Include="..\PDP.DREAM.ScribeWebLib\PDP.DREAM.ScribeWebLib.csproj" />
+  </ItemGroup>
+
+</Project>
+

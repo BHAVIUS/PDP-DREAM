@@ -1,17 +1,6 @@
 ﻿// SqldbcUilResrepRootViewGet.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
-
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Kendo.Mvc.Extensions;
-
-using Microsoft.EntityFrameworkCore;
-
-using PDP.DREAM.CoreDataLib.Types;
-using PDP.DREAM.NexusDataLib.Models;
 
 namespace PDP.DREAM.NexusDataLib.Stores;
 
@@ -70,6 +59,25 @@ public partial class NexusDbsqlContext
   { return QueryStorableNexusRootByIKey(guidKey).SingleOrDefault(); }
   public INexusResrepRoot GetStorableNexusRootByDiristryEntityTag(Guid diristryGuid, string entityTag)
   { return QueryStorableNexusRootByDiristryEntityTag(diristryGuid, entityTag).FirstOrDefault(); }
+
+  public INexusResrepRoot GetStorableNexusRootWithFacets(Guid guidKey)
+  {
+    IQueryable<INexusResrepRoot> query = this.NexusResrepLeafs;
+    query = query.Where(r => (r.RecordGuidKey == guidKey));
+    query = query.Select((INexusResrepRoot rr) => rr)
+      .Include((INexusResrepRoot rr) => rr.NexusEntityLabels)
+      .Include((INexusResrepRoot rr) => rr.NexusSupportingTags)
+      .Include((INexusResrepRoot rr) => rr.NexusSupportingLabels)
+      .Include((INexusResrepRoot rr) => rr.NexusCrossReferences)
+      .Include((INexusResrepRoot rr) => rr.NexusOtherTexts)
+      .Include((INexusResrepRoot rr) => rr.NexusLocations)
+      .Include((INexusResrepRoot rr) => rr.NexusDescriptions)
+      .Include((INexusResrepRoot rr) => rr.NexusProvenances)
+      .Include((INexusResrepRoot rr) => rr.NexusDistributions)
+      .Include((INexusResrepRoot rr) => rr.NexusFairMetrics);
+    INexusResrepRoot resrep = query.SingleOrDefault();
+    return resrep;
+  }
 
   // QueryStorables //
   public IQueryable<INexusResrepRoot> QueryStorableNexusRootByRKey(Guid guidKey)

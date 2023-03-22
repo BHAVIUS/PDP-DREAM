@@ -1,0 +1,28 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? string.Empty);
+  <span>
+    NexusServer:
+    <a href="/NPDS/NexusServer/Index">Index</a>
+    <span> | </span>
+    <a href="/NPDS/NexusServer/AnonResreps">AnonResreps</a>
+    @if (userAuth)
+    {
+      <span> | </span>
+      <a href="/NPDS/NexusServer/UserResreps">UserResreps</a>
+      <span> | </span>
+      <a href="/NPDS/NexusServer/AgentResreps">AgentResreps</a>
+      <span> | </span>
+      <a href="/NPDS/NexusServer/AuthorResreps">AuthorResreps</a>
+      <span> | </span>
+      <a href="/NPDS/NexusServer/EditorResreps">EditorResreps</a>
+      <span> | </span>
+      <a href="/NPDS/NexusServer/AdminResreps">AdminResreps</a>
+    }
+  </span>
+}
