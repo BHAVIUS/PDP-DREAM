@@ -2,7 +2,7 @@
 
   <!-- project declaration -->
   <PropertyGroup>
-    <AssemblyName>PDP.Tahtali.CoreDataLib</AssemblyName>
+    <AssemblyName>PDP.Gangkhar.CoreDataLib</AssemblyName>
     <RootNamespace>PDP.DREAM.CoreDataLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
@@ -22,14 +22,14 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0-preview.2.23153.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.2.23128.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.2.23128.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-preview.2.23128.3" />
     <PackageReference Include="Sendgrid" Version="9.28.1" />
     <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2023.1.314" />
     <PackageReference Include="Telerik.Web.Captcha" Version="1.1.0" />

@@ -50,10 +50,10 @@ public static class SqlServer2022Core
       // userCntxt.Database.Migrate(); // create database with migrations ? problems! does not work ?!?
       // userCntxt.Database.EnsureCreated(); // add schema to database if not yet added problems! does not work ?!?
       // TODO: move hardcoded strings to options / appsettings
-      var fileInfo = fileProv.GetFileInfo(@"\Migrations\CreatePdpCore10Tahtali.sql");
+      var fileInfo = fileProv.GetFileInfo(@"\Migrations\CreatePdpCore10Gangkhar.sql");
       var sqlScript = File.ReadAllText(fileInfo.PhysicalPath, Encoding.UTF8);
       var mstrDbconstr = NPDSSD.CoreDbconstr
-        .Replace("PdpCore10Tahtali", "master");
+        .Replace("PdpCore10Gangkhar", "master");
       errorMessage = QebSql.ExecuteNonQuerySqlScript(mstrDbconstr, sqlScript, true);
       // renew/reset the context
       try

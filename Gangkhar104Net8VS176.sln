@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CervinNet7", "CervinNet7", "{A2B36B78-A7F1-45C2-8AA1-6446E71A1C11}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GangkharNet8", "GangkharNet8", "{A2B36B78-A7F1-45C2-8AA1-6446E71A1C11}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props

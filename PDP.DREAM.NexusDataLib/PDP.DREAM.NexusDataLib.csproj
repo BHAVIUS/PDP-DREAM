@@ -2,7 +2,7 @@
 
   <!-- project declaration -->
   <PropertyGroup>
-    <AssemblyName>PDP.Tahtali.NexusDataLib</AssemblyName>
+    <AssemblyName>PDP.Gangkhar.NexusDataLib</AssemblyName>
     <RootNamespace>PDP.DREAM.NexusDataLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>

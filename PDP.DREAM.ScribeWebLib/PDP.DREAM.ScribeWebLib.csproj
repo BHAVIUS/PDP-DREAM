@@ -2,7 +2,7 @@
 
   <!-- project declaration -->
   <PropertyGroup>
-    <AssemblyName>PDP.Tahtali.ScribeWebLib</AssemblyName>
+    <AssemblyName>PDP.Gangkhar.ScribeWebLib</AssemblyName>
     <RootNamespace>PDP.DREAM.ScribeWebLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>

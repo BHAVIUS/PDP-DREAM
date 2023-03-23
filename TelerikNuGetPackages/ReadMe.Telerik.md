@@ -1,8 +1,8 @@
 # PDP-DREAM Software
 
-### PORTAL-DOORS Project - Private Tahtali Repository for C# Software
+### PORTAL-DOORS Project - public PDP-DREAM Repository for C# Software
 
-  This private PDP-Tahtali repository software project requires a user interface widget package available from https://www.telerik.com/ called the Telerik UI for ASP.NET Core Components. 
+  This public PDP-DREAM repository software project requires a user interface widget package available from https://www.telerik.com/ called the Telerik UI for ASP.NET Core Components. 
   See https://www.telerik.com/aspnet-core-ui for more information about this Telerik nuget package.  
 
   The Telerik.UI.for.AspNet.Core nuget package is required for developers to build and compile the PDP-DREAM software source code.

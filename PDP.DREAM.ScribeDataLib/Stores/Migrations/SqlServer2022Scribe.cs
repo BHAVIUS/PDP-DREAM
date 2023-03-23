@@ -47,7 +47,7 @@ public static class SqlServer2022Scribe
       // userCntxt.Database.Migrate(); // create database with migrations ? problems! does not work ?!?
       // userCntxt.Database.EnsureCreated(); // add schema to database if not yet added problems! does not work ?!?
       // TODO: move hardcoded strings to options / appsettings
-      var fileInfo = fileProv.GetFileInfo(@"\Migrations\CreatePdpScribe10Tahtali.sql");
+      var fileInfo = fileProv.GetFileInfo(@"\Migrations\CreatePdpScribe10Gangkhar.sql");
       var sqlScript = File.ReadAllText(fileInfo.PhysicalPath, Encoding.UTF8);
       var mstrDbconstr = NPDSSD.ScribeDbconstr
         .Replace("PdpScribe10Tahtli", "master");
