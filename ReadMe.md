@@ -1,4 +1,4 @@
-# PDP-Gangkhar
+# PDP-DREAM
 
 ### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
 
