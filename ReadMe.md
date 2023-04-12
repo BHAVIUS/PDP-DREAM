@@ -1,8 +1,12 @@
 # PDP-DREAM
 
-### PORTAL-DOORS Project PDP-DREAM Repository for C# Software
+### PORTAL-DOORS Project DREAM Repository for C# Software
 
+<<<<<<< Updated upstream
 This Version: Cervin 10.3.4  
+=======
+This Branch Version: Gangkhar 10.4.4  
+>>>>>>> Stashed changes
 Required Package: Telerik.UI.for.AspNet.Core.2023.1.314.nupkg  
 Required Database: Microsoft SQL Server 2022 v16.0.4003.1  
 Current DotNet Target: .NET Runtime 7.0.4 with SDK 7.0.202 and Visual Studio 17.5.3  
