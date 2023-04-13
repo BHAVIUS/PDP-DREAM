@@ -2,35 +2,57 @@
 
 ### PORTAL-DOORS Project DREAM Repository for C# Software
 
-<<<<<<< Updated upstream
-This Version: Cervin 10.3.4  
-=======
-This Branch Version: Gangkhar 10.4.4  
->>>>>>> Stashed changes
+This Branch Version: private Tahtali 10.3.5  
 Required Package: Telerik.UI.for.AspNet.Core.2023.1.314.nupkg  
 Required Database: Microsoft SQL Server 2022 v16.0.4003.1  
-Current DotNet Target: .NET Runtime 7.0.4 with SDK 7.0.202 and Visual Studio 17.5.3  
+Current DotNet Target: .NET Runtime 7.0.5 with SDK 7.0.203 and Visual Studio 17.5.4  
 Planned DotNet Target: maintain in most recent preview of Net 7, 8, 9  
 Dev/Test Focus Net 6 Aoraki: web apps with Telerik UI for ASP.Net Core MVC Views     
 Dev/Test Focus Net 7 Cervin: web apps with Telerik UI for ASP.Net Core Razor Pages  
 Dev/Test Focus Net 8 Gangkhar: web apps with Telerik UI for ASP.Net Core Blazor Components and desktop apps with Telerik UI for MAUI  
-Public Release: Initial 24 June 2021 in repository github.com/BHAVIUS/PDP-DREAM  
+PDP-DREAM Public Release: Tahtali branch will remain private  
+Example websites: BHAVI.us, BrainiacsJournal.org, BrainHealthAlliance.org  
 
 Visual Studio Solution of DotNet Projects and Assemblies  
 (stack dependencies configured as chain from top to bottom)  
 
-* PDP.DREAM.ScribeWebLib (PDP.Cervin.ScribeWebLib) for ACGT
-* PDP.DREAM.ScribeDataLib (PDP.Cervin.ScribeDataLib) for ACGT
-* PDP.DREAM.NexusWebLib (PDP.Cervin.NexusWebLib) for ACGT
-* PDP.DREAM.NexusDataLib (PDP.Cervin.NexusDataLib) for ACGT
-* PDP.DREAM.CoreWebLib (PDP.Cervin.CoreWebLib) for ACGT
-* PDP.DREAM.CoreDataLib (PDP.Cervin.CoreDataLib) for ACGT
+* PDP.DREAM.AcmsWebLib (PDP.Tahtali.AcmsWebLib) for T
+* PDP.DREAM.BibCitRefLib (PDP.Tahtali.BabbleBirdLib) for T
+* PDP.DREAM.BibCitRefLib (PDP.Tahtali.BibCitRefLib) for T
+* PDP.DREAM.ScribeWebLib (PDP.Tahtali.ScribeWebLib) for ACGT
+* PDP.DREAM.ScribeDataLib (PDP.Tahtali.ScribeDataLib) for ACGT
+* PDP.DREAM.NexusWebLib (PDP.Tahtali.NexusWebLib) for ACGT
+* PDP.DREAM.NexusDataLib (PDP.Tahtali.NexusDataLib) for ACGT
+* PDP.DREAM.CoreWebLib (PDP.Tahtali.CoreWebLib) for ACGT
+* PDP.DREAM.CoreDataLib (PDP.Tahtali.CoreDataLib) for ACGT
 
 where  
 A is Aoraki on Net 6 with MVC Views, fall 2022,  
 C is Cervin on Net 7 with Razor Pages, spring 2023,  
 G is Gangkhar on Net 8 with Blazor Components, fall 2023,  
-T is Tahtali on current Net preview.  
+T is Tahtali on current Net preview for which Tahtali maintains private BabbleNewt, BabbleBird, AcmsWebLib.  
+
+ATTN: defer decision on public release of BabbleNewt, BabbleBird, AcmsWebLib until early 2023
+
+ATTN: do not use Areas in those app projects and api projects
+such as NexusRestApi, NexusWebApp, ScribeRestApi, ScribeWebApp projects
+which are built on the corresponding lib projects;  
+NexusRestApi and NexusWebApp projects built on NexusWebLib dependency;    
+ScribeRestApi and ScribeWebApp projects built on ScribeWebLib dependency;  
+AcmsWebApp projects built on AcmsWebLib dependency;  
+ 
+* PDP.DREAM.ScribeWebApp on PDP.DREAM.ScribeWebLib 
+  * www.NPDSLINKS.net
+  * www.PORTALDOORS.net
+* PDP.DREAM.ScribeRestApi on PDP.DREAM.ScribeWebLib
+  * npds.NPDSLINKS.net
+  * npds.PORTALDOORS.net
+* PDP.DREAM.NexusWebApp on PDP.DREAM.NexusWebLib
+  * www.NPDSLINKS.org
+  * www.PORTALDOORS.org
+* PDP.DREAM.NexusRestApi on PDP.DREAM.NexusWebLib
+  * npds.NPDSLINKS.org
+  * npds.PORTALDOORS.org
 
 Related Github Projects  
 

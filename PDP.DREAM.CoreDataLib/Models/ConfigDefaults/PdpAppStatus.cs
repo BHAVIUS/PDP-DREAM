@@ -45,15 +45,6 @@ public static class PdpAppStatus
   // CatchNull methods throw exceptions
   // arguments from calling methods are passed to parameters declared in receiving methods
 
-  //public static void CatchNullObject(this object? value)
-  //{
-  //  if (value == null)
-  //  { throw new ArgumentNullException(value?.ToString(), "Object cannot be null."); }
-  //  else if ((value.GetType() == typeof(string)) && (string.IsNullOrWhiteSpace((string)value)))
-  //  { throw new ArgumentNullException(value.ToString(), "String cannot be null or whitespace."); }
-  //}
-
-  // TODO: migrate references where possible to CatchNullEmptyGuid or CatchNullEmptyString 
   public static void CatchNullObject(this object? theValue, string variableName, string methodName, string className = "")
   {
     if (theValue == null)

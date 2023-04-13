@@ -2,6 +2,8 @@
 // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
+using PDP.DREAM.CoreDataLib.Utilities;
+
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public abstract class CoreResrepModelBase : ICoreResrepModelBase
@@ -80,7 +82,7 @@ public abstract class CoreResrepModelBase : ICoreResrepModelBase
   {
     get {
       if (string.IsNullOrEmpty(EntityName)) { entNam64 = string.Empty; }
-      else { entNam64 = EntityName.ToTruncatedPhrase(64); }
+      else { entNam64 = EntityName.ToHoverHideHtml(64); }
       return entNam64;
     }
   }
@@ -91,7 +93,7 @@ public abstract class CoreResrepModelBase : ICoreResrepModelBase
   {
     get {
       if (string.IsNullOrEmpty(EntityNature)) { entNat128 = string.Empty; }
-      else { entNat128 = EntityNature.ToTruncatedPhrase(128); }
+      else { entNat128 = EntityNature.ToHoverHideHtml(128); }
       return entNat128;
     }
   }

@@ -18,6 +18,16 @@ public class LocationViewModel : CoreResrepModelBase
 
   public string? Location { get; set; } = string.Empty;
 
+  private string ssLocn128 = string.Empty;
+  public string Location128
+  {
+    get {
+      if (string.IsNullOrEmpty(Location)) { ssLocn128 = string.Empty; }
+      else { ssLocn128 = Location.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
+      return ssLocn128;
+    }
+  }
+
   private string ssLocnHtml = string.Empty;
   public string LocationHtml
   {
@@ -25,16 +35,6 @@ public class LocationViewModel : CoreResrepModelBase
       if (string.IsNullOrEmpty(Location)) { ssLocnHtml = string.Empty; }
       else { ssLocnHtml = Location.StringEscapeHashLiteral(); }
       return ssLocnHtml;
-    }
-  }
-
-  private string ssLocn128 = string.Empty;
-  public string Location128
-  {
-    get {
-      if (string.IsNullOrEmpty(Location)) { ssLocn128 = string.Empty; }
-      else { ssLocn128 = Location.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
-      return ssLocn128;
     }
   }
 

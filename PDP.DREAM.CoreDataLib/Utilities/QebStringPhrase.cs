@@ -108,7 +108,7 @@ public static partial class QebString
     return acronym;
   }
 
-  // TODO: convert status string to enum with invalid|valid|unknown|pending|partial
+  // TODO: convert status string to enum with invalid|valid|unknown|pending|partial|complete|truncated
   // TODO: convert css class strings to enum for pdpStatus* series 
   public static string ToColorSpan(this string? phrase, string status = "")
   {
@@ -123,6 +123,11 @@ public static partial class QebString
     { spanHtml = $"<span class='pdpStatusUnknown'>{phrase}</span>"; }
     else if (status.Contains("pending", StringComparison.OrdinalIgnoreCase))
     { spanHtml = $"<span class='pdpStatusPending'>{phrase}</span>"; }
+    else if (status.Contains("pdpHover", StringComparison.OrdinalIgnoreCase))
+    { spanHtml = $"{phrase} <span class='pdpHover'> --> </span>"; }
+    else if (status.Contains("truncated", StringComparison.OrdinalIgnoreCase))
+    { spanHtml = $"{phrase} <span class='pdpStatusTruncated'> --> </span>"; }
+    // TODO: deprecate use of pdpStatusPartial and pdpStatusTruncated ???
     else if (status.Contains("partial", StringComparison.OrdinalIgnoreCase))
     { spanHtml = $"{phrase} <span class='pdpStatusPartial'> --> </span>"; }
     return spanHtml;
@@ -135,9 +140,27 @@ public static partial class QebString
     if (fullPhrase != null)
     {
       partPhrase = ((fullPhrase.Length > maxChars) ?
-       fullPhrase.Substring(0, maxChars).ToColorSpan("partial") : fullPhrase);
+       fullPhrase.Substring(0, maxChars).ToColorSpan("truncated") : fullPhrase);
     }
     return partPhrase;
+  }
+  public static string ToHoverHideHtml(this string? fullText, int maxChars)
+  {
+    var hhHtml = string.Empty;
+    if (!string.IsNullOrEmpty(fullText))
+    {
+      var lenPhrase = fullText.Length;
+      if (lenPhrase > maxChars)
+      {
+        //var part1 = fullText.Substring(0, maxChars);
+        //var part2 = fullText.Substring(maxChars, (lenPhrase - maxChars));
+        // hhHtml = $"{part1}<span class='pdpHover'> --> </span><span class='pdpHide'>{part2}</span>";
+        // hhHtml = $"{part1}<img src='/RAB3v1.ico' style='cursor:pointer;' title='{part2}'";
+        hhHtml = $"{fullText.Substring(0, maxChars)}<img src='/RAB3v1.ico' style='cursor:pointer;' title='{fullText}'";
+      }
+      else { hhHtml = fullText; }
+    }
+    return hhHtml;
   }
 
   public static string ToDigitNumberString(this string? str, int digits)

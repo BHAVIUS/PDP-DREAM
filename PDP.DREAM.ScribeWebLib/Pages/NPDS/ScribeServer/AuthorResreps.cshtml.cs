@@ -20,8 +20,9 @@ public class ScribeServerAuthorResreps : TkgsPageController
       AuthorModeClientRequired = true,
       SessionClientRequired = true
     };
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepScribeServerAuthorResreps, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServerSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
@@ -55,6 +56,8 @@ public class ScribeServerAuthorResreps : TkgsPageController
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+
+  // Other page handlers and properties
 
 } // end class
 

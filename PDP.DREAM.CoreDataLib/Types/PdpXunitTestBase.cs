@@ -24,8 +24,8 @@ public abstract class PdpXunitTestBase
   public void StartNpdsServer(Type tstClass, string tstPath)
   {
     PDPCC = new PdpCodeConfig(tstClass, tstPath);
-    PDPSS = new PdpSiteSettings(PDPCC.PdpCodeProjroot);
-    NPDSSD = new NpdsServerDefaults(PDPCC.PdpCodeProjroot);
+    PDPSS = new PdpSiteSettings();
+    NPDSSD = new NpdsServerDefaults();
   }
 
 } // end class

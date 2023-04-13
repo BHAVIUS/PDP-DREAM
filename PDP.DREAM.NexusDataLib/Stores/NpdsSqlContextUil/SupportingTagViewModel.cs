@@ -28,7 +28,7 @@ public class SupportingTagViewModel : CoreResrepModelBase
   {
     get {
       if (string.IsNullOrEmpty(SupportingTag)) { ssStag128 = string.Empty; }
-      else { ssStag128 = SupportingTag.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
+      else { ssStag128 = SupportingTag.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
       return ssStag128;
     }
   }

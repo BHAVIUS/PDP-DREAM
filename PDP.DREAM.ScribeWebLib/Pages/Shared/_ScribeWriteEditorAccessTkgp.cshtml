@@ -19,8 +19,12 @@ var FipmpWidth = "6em"; // width for index priority marked principal (and other 
 var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
-
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 @Html.Raw(psrm.FormatBodyTitle(qurc.RecordAccess.ToString() + " Manage Requests for NPDS Service Editor"))
+
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
 @(

@@ -17,13 +17,14 @@ public class NexusServerIndex : TkgnPageController
       ServiceType = NpdsServiceType.Nexus,
       DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
       RecordAccess = NpdsRecordAccess.AnonUser,
-      UserModeClientRequired = false,
+      AuthenticatedClientRequired = false,
       SessionClientRequired = false
     };
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepNexusServerIndex, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_NexusServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_NexusWebLibSpanPageMenu", "_NexusServerSpanPageMenu");
     ResetCoreRepository();
-    ResetNexusRepository();
+    ResetNexusRepository(); // for both OnGet and OnPost
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
@@ -37,7 +38,7 @@ public class NexusServerIndex : TkgnPageController
     var rzrHndlr = nameof(OnGet);
     CatchNullQurc(rzrHndlr, rzrClass);
 #endif
-    // SelectFilter properties
+    // SearchFilter properties
     QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
     PSRM.NpdsRazorBodyTitle(QURC.ServiceTitle);
     ResetNexusRepository(true);
@@ -50,6 +51,8 @@ public class NexusServerIndex : TkgnPageController
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+
+  // Other page handlers and properties
 
 } // end class
 

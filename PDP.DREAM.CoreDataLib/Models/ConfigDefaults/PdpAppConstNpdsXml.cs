@@ -20,7 +20,7 @@ public static partial class PdpAppConst
   // const for NPDS namespace for use in XML Schema and XML instances
   public const string NpdsNamespace = "http://npds.portaldoors.org/nsvo/npdsystem#";
   // in the copyright string a "&169;" character does not display in output unless in XHTML
-  public const string NpdsCopyright = "Nexus-PORTAL-DOORS-Scribe Cyberinfrastructure System (c) 2006-2022 Carl Taswell and the PORTAL-DOORS Project Team";
+  public const string NpdsCopyright = "Nexus-PORTAL-DOORS-Scribe Cyberinfrastructure System (c) 2006-2023 Carl Taswell and the PORTAL-DOORS Project Team";
   public const string NpdsVersion = "2.2.2 (2021-03-19)";
   public const string NpdsVersionXnam = "Version";
   // const for root/branch node element names

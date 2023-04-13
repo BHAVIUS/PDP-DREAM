@@ -26,11 +26,11 @@
   var labelWide = "control-label col-md-6";
   var controlWide = "form-control col-md-6";
 }
-@Html.Raw(psrm.FormatBodyTitle(qurc.RecordAccess + " Export Metadata Records by BibCitRef File"))
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
 {
   <p><partial name="@psrm.RazorBodyMenu" /></p>
 }
+@Html.Raw(psrm.FormatBodyTitle(qurc.RecordAccess + " Export Metadata Records by BibCitRef File"))
 
 <p>
   This form must be used with selection of a Nexus diristry.

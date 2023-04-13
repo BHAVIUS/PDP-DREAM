@@ -20,12 +20,13 @@ public class ScribeServerEditorAccess : TkgsPageController
       AuthenticatedClientRequired = true,
       SessionClientRequired = true
     };
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepScribeServerEditorAccess, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServerSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
-    ResetScribeRepository();
+    ResetScribeRepository(); // for both OnGet and OnPost
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
@@ -39,10 +40,13 @@ public class ScribeServerEditorAccess : TkgsPageController
     var rzrHndlr = nameof(OnGet);
     CatchNullQurc(rzrHndlr, rzrClass);
 #endif
-    // SelectFilter properties
+    // SearchFilter properties
     if (!string.IsNullOrEmpty(recordAccess) &&  recordAccess.ToLower() != "editor") 
     { QURC.RecordAccessReqst = recordAccess; }
+    ResetCoreRepository(true);
     ResetScribeRepository(true);
+    // build select lists
+    BuildCoreDropDownLists();
 #if DEBUG
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
     QURC.DebugNpdsParams(rzrHndlr, rzrClass);
@@ -52,6 +56,8 @@ public class ScribeServerEditorAccess : TkgsPageController
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+
+  // Other page handlers and properties
 
 } // end class
 

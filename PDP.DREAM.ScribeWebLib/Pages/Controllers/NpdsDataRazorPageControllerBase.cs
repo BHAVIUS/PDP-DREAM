@@ -27,8 +27,8 @@ public abstract class ScribeDataRazorPageControllerBase : NexusDataRazorPageCont
 
   protected void CatchNullScribe(string methodName = "", string className = "")
   {
-    Debug.WriteLine($"{nameof(CatchNullScribe)} called from Class = '{className}'; Method = '{methodName}';");
     PSDC.CatchNullObject(PndcKey, methodName, className);
+    Debug.WriteLine($"{nameof(CatchNullScribe)} called from Class = '{className}'; Method = '{methodName}';");
     Debug.WriteLine($"PSDC DatabaseType: {PSDC.NPDSCP.DatabaseType}");
     Debug.WriteLine($"PSDC DatabaseConstr: {PSDC.NPDSCP.DatabaseConstr}");
   }

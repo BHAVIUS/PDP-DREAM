@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Pages;
@@ -22,7 +22,7 @@ public class ScribeServerImportNpdsQuads : TkgsPageController
     };
     // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepScribeServerImportNpdsQuads, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServerSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
@@ -42,15 +42,15 @@ public class ScribeServerImportNpdsQuads : TkgsPageController
 #endif
     if (!string.IsNullOrEmpty(recordAccess))
     { QURC.RecordAccessReqst = recordAccess; }
-    // build select lists
+    // SearchFilter properties
+    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    // PSRM.NpdsRazorBodyTitle(QURC.ServiceTitle);
     ResetCoreRepository(true);
+    ResetScribeRepository(true);
+    // build select lists
     BuildCoreDropDownLists();
     UXM = new NpdsQuadEditModel();
     UXM.RRRecordAccess = QURC.RecordAccess.ToString();
-    // SelectFilter properties
-    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
-    // PSRM.NpdsRazorBodyTitle(QURC.ServiceTitle);
-    ResetScribeRepository(true);
 #if DEBUG
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
     QURC.DebugNpdsParams(rzrHndlr, rzrClass);

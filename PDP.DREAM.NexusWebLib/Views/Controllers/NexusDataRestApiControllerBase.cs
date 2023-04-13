@@ -34,7 +34,7 @@ public abstract class NexusDataRestApiControllerBase : CoreDataRazorViewControll
   //  prefer data contexts independent of QURC and HttpContext !!!
   protected void ResetNexusRepository()
   {
-    QURC.CatchNullObject(nameof(QURC), nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
+    QURC.CatchNullObject(QurcKey, nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
     PNDC.CatchNullObject(nameof(PNDC), nameof(ResetNexusRepository), nameof(NexusDataRestApiControllerBase));
     pdpNexusDataCntxt.NPDSCP = QURC; // resets data connection with current QURC.DbConnectionString
   }

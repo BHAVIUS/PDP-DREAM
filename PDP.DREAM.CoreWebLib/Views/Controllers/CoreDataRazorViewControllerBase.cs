@@ -67,8 +67,8 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
   protected void ResetCoreRepository()
   {
 #if DEBUG
-    CatchNullQurc(nameof(ResetCoreRepository), rzrClass);
-    if (PCDC == null) { PCDC.CatchNullObject(PcdcKey, nameof(ResetCoreRepository), rzrClass); }
+    QURC.CatchNullObject(QurcKey, nameof(ResetCoreRepository), rzrClass);
+    PCDC.CatchNullObject(PcdcKey, nameof(ResetCoreRepository), rzrClass);
 #endif
     // reset ViewData with current QEB User Rest Context
     ViewData[QurcKey] = QURC;
@@ -83,48 +83,6 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     qebUserDataCntxt = new QebiDbsqlContext();
     pdpCoreDataCntxt = new CoreDbsqlContext();
   }
-
-  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt)
-  //{
-  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  pdpCoreDataCntxt = new CoreDbsqlContext();
-  //}
-  //public CoreDataRazorViewControllerBase(CoreDbsqlContext npdsCntxt)
-  //{
-  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = new QebiDbsqlContext();
-  //  pdpCoreDataCntxt = npdsCntxt;
-  //}
-  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt, CoreDbsqlContext npdsCntxt)
-  //{
-  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>();
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  pdpCoreDataCntxt = npdsCntxt;
-  //}
-  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt,
-  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  //{
-  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>(lgrFtry);
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  qebEmailSender = emlSndr;
-  //  qebSmsSender = smsSndr;
-  //  pdpCoreDataCntxt = new CoreDbsqlContext();
-  //}
-  //public CoreDataRazorViewControllerBase(QebiDbsqlContext userCntxt, CoreDbsqlContext npdsCntxt,
-  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  //{
-  //  qebLogger = InitLogger<CoreDataRazorViewControllerBase>(lgrFtry);
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  qebEmailSender = emlSndr;
-  //  qebSmsSender = smsSndr;
-  //  pdpCoreDataCntxt = npdsCntxt;
-  //}
 
   protected UilDropDownLists UilDdlists;
   protected IList<EntityTypeListItem> EntityTypeSelectList;
@@ -194,6 +152,7 @@ public abstract class CoreDataRazorViewControllerBase : Controller, ISiaaUser
     return qebLogger;
   }
 
+  // TODO: migrate to the set/get with .CatchNullObject extension on values
   protected virtual void CatchNullQurc(string methodName, string className)
   {
     QURC.CatchNullObject(QurcKey, methodName, className);

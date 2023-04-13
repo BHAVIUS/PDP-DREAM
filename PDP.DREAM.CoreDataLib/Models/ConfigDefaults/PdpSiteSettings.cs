@@ -6,16 +6,15 @@ namespace PDP.DREAM.CoreDataLib.Models;
 
 public class PdpSiteSettings : PdpConfigManager
 {
-  public PdpSiteSettings() : base(true) { }
-  public PdpSiteSettings(string? projCodedir) : base(false)
+  public PdpSiteSettings() : base()
   {
-    if (pdpCodeCnfgMngr == null) { throw new NullReferenceException(); }
-    if (string.IsNullOrEmpty(projCodedir)) { projCodedir = Environment.CurrentDirectory; }
-    Configure(projCodedir); // configures pdpSiteConfig
-    if (pdpSiteConfig == null) { throw new NullReferenceException(); }
+    base.Configure(); // configures pdpSiteConfig in PdpConfigManager
+    pdpSiteConfig.CatchNullObject(nameof(pdpSiteConfig),nameof(PdpSiteSettings));
 
+    // TODO: re-implement generic approach with arbitrary path to webroot
+    //  not constrained to be in same dir as project code
     AppFilepathWebroot = ParseAppStringSetting(NamesForSiteSettings.PdpSetAppwebrootFilepath,
- @$"{projCodedir}\{PdpSiteDefaultWebroot}");
+ @$"{PDPCC.PdpCodePrjroot}\{PdpSiteDefaultWebroot}");
 
     AppRqstpathExtdeplib = ParseAppStringSetting(NamesForSiteSettings.PdpSetExtdeplibRqstpath);
     AppFilepathExtdeplib = ParseAppStringSetting(NamesForSiteSettings.PdpSetExtdeplibFilepath);

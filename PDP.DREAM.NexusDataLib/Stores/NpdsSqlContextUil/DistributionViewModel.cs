@@ -13,6 +13,16 @@ public class DistributionViewModel : CoreResrepModelBase
 
   public string? Distribution { get; set; } = string.Empty;
 
+  private string ssDist128 = string.Empty;
+  public string Distribution128
+  {
+    get {
+      if (string.IsNullOrEmpty(Distribution)) { ssDist128 = string.Empty; }
+      else { ssDist128 = Distribution.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
+      return ssDist128;
+    }
+  }
+
   private string ssDistHtml = string.Empty;
   public string DistributionHtml
   {
@@ -20,16 +30,6 @@ public class DistributionViewModel : CoreResrepModelBase
       if (string.IsNullOrEmpty(Distribution)) { ssDistHtml = string.Empty; }
       else { ssDistHtml = Distribution.StringEscapeHashLiteral(); }
       return ssDistHtml;
-    }
-  }
-
-  private string ssDist128 = string.Empty;
-  public string Distribution128
-  {
-    get {
-      if (string.IsNullOrEmpty(Distribution)) { ssDist128 = string.Empty; }
-      else { ssDist128 = Distribution.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
-      return ssDist128;
     }
   }
 

@@ -13,6 +13,16 @@ public class CrossReferenceViewModel : CoreResrepModelBase
 
   public string? CrossReference { get; set; } = string.Empty;
 
+  private string ssCref128 = string.Empty;
+  public string CrossReference128
+  {
+    get {
+      if (string.IsNullOrEmpty(CrossReference)) { ssCref128 = string.Empty; }
+      else { ssCref128 = CrossReference.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
+      return ssCref128;
+    }
+  }
+
   private string ssCrefHtml = string.Empty;
   public string CrossReferenceHtml
   {
@@ -20,16 +30,6 @@ public class CrossReferenceViewModel : CoreResrepModelBase
       if (string.IsNullOrEmpty(CrossReference)) { ssCrefHtml = string.Empty; }
       else { ssCrefHtml = CrossReference.StringEscapeHashLiteral(); }
       return ssCrefHtml;
-    }
-  }
-
-  private string ssCref128 = string.Empty;
-  public string CrossReference128
-  {
-    get {
-      if (string.IsNullOrEmpty(CrossReference)) { ssCref128 = string.Empty; }
-      else { ssCref128 = CrossReference.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
-      return ssCref128;
     }
   }
 

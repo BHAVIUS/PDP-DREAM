@@ -84,12 +84,13 @@ public static partial class PdpAppConst
   // NPDS database Connection String Names for use with settings in web.config
   public enum NamesForRequiredDbConnStrings : short
   {
-    NpdsSiaaDbserver, NpdsAcmsDbserver, NpdsCoreDbserver,
-    NpdsNexusDiristry, NpdsPortalRegistry, NpdsDoorsDirectory, NpdsScribeRegistrar
+    NpdsSiaaDbserver, NpdsCoreDbserver,
+    NpdsNexusDiristry, NpdsPortalRegistry, NpdsDoorsDirectory, 
+    NpdsScribeRegistrar
   }
   public enum NamesForPermittedDbConnStrings : short
   {
-    NpdsVocabDbserver, NpdsCacheDbserver,
+    NpdsAcmsDbserver, NpdsBridgeDbserver, NpdsVocabDbserver, NpdsCacheDbserver,
     NpdsDiristryAuth2Dbserver, NpdsDiristryCacheDbserver, NpdsDiristryVocabDbserver,
     NpdsRegistryAuth2Dbserver, NpdsRegistryCacheDbserver, NpdsRegistryVocabDbserver,
     NpdsDirectoryAuth2Dbserver, NpdsDirectoryCacheDbserver, NpdsDirectoryVocabDbserver

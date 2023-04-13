@@ -24,12 +24,13 @@ public class ScribeServerServiceRestrictions : TkgsPageController
     QURC.SearchFilter = NpdsSearchFilter.Diristry;
     QURC.ServiceTag = NpdsRoot;
     QURC.EntityType = NpdsEntityType.AnyAndAll;
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepScribeServerServiceRestrictions, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServerSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
-    ResetScribeRepository();
+    ResetScribeRepository(); // for both OnGet and OnPost
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
@@ -43,7 +44,7 @@ public class ScribeServerServiceRestrictions : TkgsPageController
     var rzrHndlr = nameof(OnGet);
     CatchNullQurc(rzrHndlr, rzrClass);
 #endif
-    // SelectFilter properties
+    // SearchFilter properties
     QURC.ParseNpdsResrepFilter(QURC.SearchFilter.ToString(), QURC.ServiceTag, QURC.EntityType.ToString());
     // TODO: fix this hack on RecordAccess roles
     // create parser for RecordAccess that limits to specified roles
@@ -55,7 +56,10 @@ public class ScribeServerServiceRestrictions : TkgsPageController
       { QURC.RecordAccessReqst = recordAccess; }
     }
     PSRM.NpdsRazorBodyTitle(QURC.ServiceTitle);
+    ResetCoreRepository(true);
     ResetScribeRepository(true);
+    // build select lists
+    BuildCoreDropDownLists();
 #if DEBUG
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
     QURC.DebugNpdsParams(rzrHndlr, rzrClass);
@@ -65,6 +69,8 @@ public class ScribeServerServiceRestrictions : TkgsPageController
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+
+  // Other page handlers and properties
 
 } // end class
 

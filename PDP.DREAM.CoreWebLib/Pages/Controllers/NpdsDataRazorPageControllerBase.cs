@@ -28,8 +28,8 @@ public abstract partial class CoreDataRazorPageControllerBase : PageModel, ISiaa
   protected string YearNow = DateTime.Now.Year.ToString();
   protected void CatchNullCore(string methodName = "", string className = "")
   {
-    Debug.WriteLine($"{nameof(CatchNullCore)} called from Class = '{className}'; Method = '{methodName}';");
     PCDC.CatchNullObject(PcdcKey, methodName, className);
+    Debug.WriteLine($"{nameof(CatchNullCore)} called from Class = '{className}'; Method = '{methodName}';");
     Debug.WriteLine($"PCDC DatabaseType: {PCDC.NPDSCP.DatabaseType}");
     Debug.WriteLine($"PCDC DatabaseConstr: {PCDC.NPDSCP.DatabaseConstr}");
   }

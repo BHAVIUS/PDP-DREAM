@@ -6,15 +6,12 @@ namespace PDP.DREAM.CoreDataLib.Models;
 
 public class NpdsServerDefaults : PdpConfigManager
 {
-  public NpdsServerDefaults() : base(true) { }
-  public NpdsServerDefaults(string? projCodedir) : base(false)
+  public NpdsServerDefaults() : base()
   {
-    if (pdpCodeCnfgMngr == null) { throw new NullReferenceException(); }
-    if (string.IsNullOrEmpty(projCodedir)) { projCodedir = Environment.CurrentDirectory; }
-    Configure(projCodedir); // configures pdpSiteConfig
-    if (pdpSiteConfig == null) { throw new NullReferenceException(); }
+    base.Configure(); // configures pdpSiteConfig in PdpConfigManager
+    pdpSiteConfig.CatchNullObject(nameof(pdpSiteConfig), nameof(NpdsServerDefaults));
 
-    // TODO: recode Enums and the Enum parsing to assure that error thrown for invalid arguments
+    // TODO: recode Enums and the Enum parsing to assure error thrown for invalid arguments
 
     defSearchScope = PdpEnum<NpdsSearchScope>.ParseString(ParseAppStringSetting(NamesForServiceDefaults.NpdsDefSearchScope));
     defSearchFilter = PdpEnum<NpdsSearchFilter>.ParseString(ParseAppStringSetting(NamesForServiceDefaults.NpdsDefSearchFilter));
@@ -44,26 +41,23 @@ public class NpdsServerDefaults : PdpConfigManager
     conDiristryTag = ParseAppStringSetting(NamesForServiceConstraints.NpdsConDiristryTag);
 
     // required database connection strings
-    qebiDbcsForUser = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsSiaaDbserver);
+    qebiDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsSiaaDbserver);
     coreDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsCoreDbserver);
     nexusDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsNexusDiristry);
     portalDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsPortalRegistry);
     doorsDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsDoorsDirectory);
     scribeDbcs = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsScribeRegistrar);
-    acmsDbcsForAgent = ParseAppDbConnString(NamesForRequiredDbConnStrings.NpdsAcmsDbserver);
 
     // permitted database connection strings
+    acmsDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsAcmsDbserver);
+    bridgeDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsBridgeDbserver);
     vocabDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsVocabDbserver);
     cacheDbcs = ParseAppDbConnString(NamesForPermittedDbConnStrings.NpdsCacheDbserver);
   }
 
-  private string qebiDbcsForUser = string.Empty;
+  private string qebiDbcs = string.Empty;
   public string QebiDbconstr
-  { get { return qebiDbcsForUser; } }
-
-  private string acmsDbcsForAgent = string.Empty;
-  public string AcmsDbconstr
-  { get { return acmsDbcsForAgent; } }
+  { get { return qebiDbcs; } }
 
   private string coreDbcs = string.Empty;
   public string CoreDbconstr
@@ -84,6 +78,14 @@ public class NpdsServerDefaults : PdpConfigManager
   private string scribeDbcs = string.Empty;
   public string ScribeDbconstr
   { get { return scribeDbcs; } }
+
+  private string acmsDbcs = string.Empty;
+  public string AcmsDbconstr
+  { get { return acmsDbcs; } }
+
+  private string bridgeDbcs = string.Empty;
+  public string BridgeDbconstr
+  { get { return bridgeDbcs; } }
 
   private string vocabDbcs = string.Empty;
   public string VocabDbconstr

@@ -32,9 +32,7 @@ public static partial class PdpAppConst
     Agent = 11, Author = 12, Reviewer = 13, Editor = 14, Publisher = 15
   };
 
-  // Server Network NodeType
-  public enum NpdsNodeType { None = 0, Forwarding = 1, Caching = 2, Authoritative = 3 }
-
+  // Network NodeType for authoritative vs non-authoritative
   // ServerType is focused on overall function of NPDS component
   //   Registrar, Registry, Directory, and
   //   Diristry == 'Directory-Registry' == 'Registry-Directory'
@@ -43,7 +41,8 @@ public static partial class PdpAppConst
   //    resource representations in response to requests
   // proper-named service with generic-termed server yields NPDS components with
   // Core root, Nexus diristry, PORTAL registry, DOORS directory, Scribe registrar
-  public enum NpdsServiceType { Core = 0, Nexus = 1, PORTAL = 2, DOORS = 3, Scribe = 4, ACMS = 5 };
+  public enum NpdsNodeType { None = 0, Forwarding = 1, Caching = 2, Authoritative = 3 }
+  public enum NpdsServiceType { Core = 0, Nexus = 1, PORTAL = 2, DOORS = 3, Scribe = 4, ACMS = 5, Bridge = 6 };
   public enum NpdsServerType { Root = 0, Diristry = 1, Registry = 2, Directory = 3, Registrar = 4 };
 
   // Network SearchScope determines extent of distributed network nodes
@@ -66,6 +65,7 @@ public static partial class PdpAppConst
   // [Flags] // why bother with Flags attribute ???
   public enum NpdsSearchFilter { None = 0, Diristry = 1, Registry = 2, Directory = 3, Registrar = 5, AllTags = 10, AllGuids = 11 }
 
+
   // FieldRule determines restrictions/conditions on record fields in the different formats
   // Prohibited and Optional are unnamed and unspecified by NPDS standard
   // Permitted and Required are named and specified by NPDS standard
@@ -76,8 +76,8 @@ public static partial class PdpAppConst
   // and be sure to include our new convention of 0 for none meaning no filter or in this case
   public enum NpdsFieldFormat
   {
-    None = 0, FreeForm = 1,
-    NpdsQuad = 2, // Craig and Taswell 2021 Brainiacs Edoc HA46280EF
+    None = 0, FreeForm = 1, NpdsQuad = 2,
+    NpdsQuadMin = 3, NpdsQuadMod = 4, NpdsQuadMax = 5, //  Craig and Taswell 2021 Brainiacs Edoc HA46280EF
     JSON = 10, XML = 11, RDF = 12, OWL = 13, HTML = 14, XHTML = 15,
     PdpBibtex = 30, // PDP variant similar to BibTeX, interoperable with BibTeX format
     PdpBibtexgen = 31, // PDP variant similar to BibTeX, interoperable with BibTeX format, transition to PdpBiblatex
@@ -88,6 +88,24 @@ public static partial class PdpAppConst
   }
   public const NpdsFieldFormat DefaultFieldFormatItem = NpdsFieldFormat.FreeForm;
   public const short DefaultFieldFormatCode = (short)NpdsFieldFormat.FreeForm;
+
+  // SemanticLevel addresses use of "None, Metadata, Triples, Reified" from BHA-2020-41
+  // Table 2 Categorizing Examples of Semantic Markup of Adam Craig's SARSE paper at
+  // https://www.brainiacsjournal.org/arc/pub/Craig2020SARSE
+  public enum NpdsSemanticLevel
+  {
+    None = 0,
+    LexMeta = 1, // lexical metadata (unspecified)
+    SemMeta = 2, // semantic metadata (unspecified)
+    Triples = 3, // semantic triples (subject-verb-object)
+    Quads = 4,   // semantic quads (reified triples)
+  };
+  // NPDS <--> Quad Casts between formats
+  public enum NpdsQuadCasts
+  {
+    Npds2QuadMin = 1, Npds2QuadMod = 2, Npds2QuadMax = 3,
+    QuadMin2Npds = 4, QuadMod2Npds = 5, QuadMax2Npds = 6
+  };
 
   // ResrepFormat is the format for the NPDS resource representation
   // ATTN: note distinction with http message format and NPDS message representation

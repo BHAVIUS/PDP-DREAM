@@ -13,6 +13,16 @@ public class DescriptionViewModel : CoreResrepModelBase
 
   public string? Description { get; set; } = string.Empty;
 
+  private string ssDesc128 = string.Empty;
+  public string Description128
+  {
+    get {
+      if (string.IsNullOrEmpty(Description)) { ssDesc128 = string.Empty; }
+      else { ssDesc128 = Description.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
+      return ssDesc128;
+    }
+  }
+
   private string ssDescHtml = string.Empty;
   public string DescriptionHtml
   {
@@ -20,16 +30,6 @@ public class DescriptionViewModel : CoreResrepModelBase
       if (string.IsNullOrEmpty(Description)) { ssDescHtml = string.Empty; }
       else { ssDescHtml = Description.StringEscapeHashLiteral(); }
       return ssDescHtml;
-    }
-  }
-
-  private string ssDesc128 = string.Empty;
-  public string Description128
-  {
-    get {
-      if (string.IsNullOrEmpty(Description)) { ssDesc128 = string.Empty; }
-      else { ssDesc128 = Description.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
-      return ssDesc128;
     }
   }
 

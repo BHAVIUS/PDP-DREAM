@@ -33,7 +33,10 @@ var FipmpWidth = "6em"; // width for index priority marked principal (and other 
 var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
-
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 @Html.Raw(psrm.FormatBodyTitle())
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
@@ -64,11 +67,9 @@ col.Bound(row => row.EntityTypeCode).Title("Type")
 .Filterable(false);
 col.Bound(row => row.EntityName).Title("Name")
 .HeaderHtmlAttributes(new { title = "Resource Entity Name" })
-.HtmlAttributes(new { title = "#=EntityName#" })
 .ClientTemplate("#=EntityName64#");
 col.Bound(row => row.EntityNature).Title("Nature")
 .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
-.HtmlAttributes(new { title = "#=EntityNature#" })
 .ClientTemplate("#=EntityNature128#");
 if (!hasAnonAccess) {
 col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Width(FipmpWidth)
@@ -284,7 +285,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 } // end if
 }) // Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end CrossReference
 
 itm.Add().Text("OtherTexts").Content(@<text>
@@ -309,11 +310,11 @@ col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "OtherText Format" });
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "OtherText Format" })
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.OtherText).Title("OtherText")
 .HeaderHtmlAttributes(new { title = "OtherText Content" })
-.HtmlAttributes(new { title = "\\#=OtherTextHtml\\#" })
 .ClientTemplate("\\#=OtherText128\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
@@ -339,7 +340,7 @@ itm.Add().Text("Locations").Content(@<text>
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(post => post.Url(TkgPath + "?handler=ReadLocations" + TkgFgroupQrystr).Data(TkgToken))
+.Read(fg => fg.Url(TkgPath + "?handler=ReadLocations" + TkgFgroupQrystr).Data(TkgToken))
 .Events(evn => evn.Error("HandleAjaxErrors"))
 ) // end DataSource
 .Columns(col => {
@@ -394,12 +395,11 @@ col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description Format" })
-;
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Description).Title("Description")
 .HeaderHtmlAttributes(new { title = "Description Content" })
-.HtmlAttributes(new { title = "\\#=DescriptionHtml\\#" })
 .ClientTemplate("\\#=Description128\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
@@ -409,7 +409,7 @@ col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
 } // end if
 if (hasAdminAccess) {
 col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date" });
+.HeaderHtmlAttributes(new {title = "Deleted on date"});
 col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .HeaderHtmlAttributes(new { title = "Deleted by agent" });
 } // end if
@@ -440,11 +440,11 @@ col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "Provenance Format" });
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Provenance Format" })
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Provenance).Title("Provenance")
 .HeaderHtmlAttributes(new { title = "Provenance Content" })
-.HtmlAttributes(new { title = "\\#=ProvenanceHtml\\#" })
 .ClientTemplate("\\#=Provenance128\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
@@ -454,13 +454,13 @@ col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
 } // end if
 if (hasAdminAccess) {
 col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date" });
+.HeaderHtmlAttributes(new {title = "Deleted on date"});
 col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .HeaderHtmlAttributes(new { title = "Deleted by agent" });
 } // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Provenance
 
 itm.Add().Text("Distributions").Content(@<text>
@@ -485,11 +485,11 @@ col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "Distribution Format" });
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Distribution Format" })
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Distribution).Title("Distribution")
 .HeaderHtmlAttributes(new { title = "Distribution Content" })
-.HtmlAttributes(new { title = "\\#=DistributionHtml\\#" })
 .ClientTemplate("\\#=Distribution128\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
@@ -530,17 +530,17 @@ col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "FairMetric is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "FairMetric is Principal?" });
-col.Bound(row => row.MInvalidOldClaim).Title("M = Misquoted")
-.HeaderHtmlAttributes(new { title = "Invalid Old Claims" })
+col.Bound(row => row.MInvalidOldClaim).Title("M")
+.HeaderHtmlAttributes(new { title = "Invalid Old Claims M = Misquoted" })
 ;
-col.Bound(row => row.QValidOldClaim).Title("Q = Quoted")
-.HeaderHtmlAttributes(new { title = "Valid Old Claims" })
+col.Bound(row => row.QValidOldClaim).Title("Q")
+.HeaderHtmlAttributes(new { title = "Valid Old Claims Q = Quoted" })
 ;
-col.Bound(row => row.PInvalidNewClaim).Title("P = Plagiarized")
-.HeaderHtmlAttributes(new { title = "Invalid New Claims" })
+col.Bound(row => row.PInvalidNewClaim).Title("P")
+.HeaderHtmlAttributes(new { title = "Invalid New Claims P = Plagiarized" })
 ;
-col.Bound(row => row.NValidNewClaim).Title("N = Novel")
-.HeaderHtmlAttributes(new { title = "Valid New Claims" })
+col.Bound(row => row.NValidNewClaim).Title("N")
+.HeaderHtmlAttributes(new { title = "Valid New Claims N = Novel" })
 ;
 col.Bound(row => row.FAIR1).Title("F1").Format(Numf3Format)
 .HeaderHtmlAttributes(new { title = "FAIR 1 Metric" });
@@ -564,7 +564,7 @@ col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
 } // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end FairMetric
 
 }).SelectedIndex(0).ToClientTemplate()

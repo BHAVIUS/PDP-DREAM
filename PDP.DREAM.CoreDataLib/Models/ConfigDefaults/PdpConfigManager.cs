@@ -5,18 +5,22 @@ namespace PDP.DREAM.CoreDataLib.Models;
 
 public abstract class PdpConfigManager
 {
-  protected static string pdpCodeDirpath;
+  protected string pdpCodeDirpath; // compare PdpCodePrjroot in PdpCodeConfig
   protected static ConfigurationManager pdpCodeCnfgMngr;
   protected static IConfigurationRoot pdpSiteConfig;
 
   protected PdpConfigManager(bool setDefault = false)
   {
     pdpCodeCnfgMngr = new ConfigurationManager();
-    if (setDefault) { Configure(Environment.CurrentDirectory); }
+    if (setDefault) { pdpCodeDirpath = Environment.CurrentDirectory; }
+    else { pdpCodeDirpath = PDPCC.PdpCodePrjroot; }
+#if DEBUG
+    pdpCodeCnfgMngr.CatchNullObject(nameof(pdpCodeCnfgMngr), nameof(PdpConfigManager));
+    pdpCodeDirpath.CatchNullEmptyString(nameof(pdpCodeDirpath), nameof(PdpConfigManager));
+#endif
   }
-  protected void Configure(string basedirpath)
+  protected void Configure()
   {
-    pdpCodeDirpath = basedirpath;
     IConfigurationBuilder builder = new ConfigurationBuilder();
     string envir = Environment.GetEnvironmentVariable(MSASPNETENVVAR);
     switch (envir)
@@ -25,19 +29,19 @@ public abstract class PdpConfigManager
       // or any machine where IIS web server is running when publish to that server
       // else if environment variable not set then will default to throwing exception!!!
       case "Production":
-        builder.AddJsonFile(Path.GetFullPath("appsettings.json", basedirpath), true, true);
-        builder.AddJsonFile(Path.GetFullPath("appsettings.Production.json", basedirpath), false, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.json", pdpCodeDirpath), true, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.Production.json", pdpCodeDirpath), false, true);
         break;
       case "Staging":
-        builder.AddJsonFile(Path.GetFullPath("appsettings.json", basedirpath), true, true);
-        builder.AddJsonFile(Path.GetFullPath("appsettings.Staging.json", basedirpath), false, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.json", pdpCodeDirpath), true, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.Staging.json", pdpCodeDirpath), false, true);
         break;
       case "Development":
-        builder.AddJsonFile(Path.GetFullPath("appsettings.json", basedirpath), true, true);
-        builder.AddJsonFile(Path.GetFullPath("appsettings.Development.json", basedirpath), false, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.json", pdpCodeDirpath), true, true);
+        builder.AddJsonFile(Path.GetFullPath("appsettings.Development.json", pdpCodeDirpath), false, true);
         break;
       case XunitEnvirname:
-        builder.AddJsonFile(Path.GetFullPath($"{XunitEnvirname}.json", basedirpath), false, true);
+        builder.AddJsonFile(Path.GetFullPath($"{XunitEnvirname}.json", pdpCodeDirpath), false, true);
         break;
       default: // should handle other cases including null if not set in current environment
         throw new UnauthorizedAccessException();
@@ -61,7 +65,7 @@ public abstract class PdpConfigManager
     }
   }
 
-  public string PdpSiteDirpath
+  public string PdpCodeDirpath
   {
     get { return pdpCodeDirpath; }
   }

@@ -69,7 +69,7 @@ public partial class PdpSiteRazorModel
     }
   }
 
-  // for use in header content with <partial name="@RazorHeaderPart" /> 
+  // for use in header with <partial name="@RazorHeaderPart" /> 
   public string RazorHeaderPart { get; set; } = string.Empty;
   public string RazorHeaderMenu
   {
@@ -77,11 +77,13 @@ public partial class PdpSiteRazorModel
     get { DefaultRazorPageMenu(); return rzrPageMenu; }
   }
 
-  // for use in body content with <partial name="@RazorBodyPart" /> 
+  // for use in body with <partial name="@RazorBodyPart" /> 
   public string RazorBodyPart { get; set; } = string.Empty;
   public string RazorBodyMenu { get; set; } = string.Empty;
+  // generic container for arbitrary content used in body
+  public string RazorBodyContent { get; set; } = string.Empty;
 
-  // for use in footer content with <partial name="@RazorFooterPart" /> 
+  // for use in footer with <partial name="@RazorFooterPart" /> 
   public string RazorFooterPart { set; get; } = string.Empty;
   public string RazorFooterMenu { set; get; } = string.Empty;
 

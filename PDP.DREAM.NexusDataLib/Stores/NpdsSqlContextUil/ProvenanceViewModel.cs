@@ -13,6 +13,16 @@ public class ProvenanceViewModel : CoreResrepModelBase
 
   public string? Provenance { get; set; } = string.Empty;
 
+  private string ssprov128 = string.Empty;
+  public string Provenance128
+  {
+    get {
+      if (string.IsNullOrEmpty(Provenance)) { ssprov128 = string.Empty; }
+      else { ssprov128 = Provenance.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
+      return ssprov128;
+    }
+  }
+
   private string ssprov = string.Empty;
   public string ProvenanceHtml
   {
@@ -20,16 +30,6 @@ public class ProvenanceViewModel : CoreResrepModelBase
       if (string.IsNullOrEmpty(Provenance)) { ssprov = string.Empty; }
       else { ssprov = Provenance.StringEscapeHashLiteral(); }
       return ssprov;
-    }
-  }
-
-  private string ssprov128 = string.Empty;
-  public string Provenance128
-  {
-    get {
-      if (string.IsNullOrEmpty(Provenance)) { ssprov128 = string.Empty; }
-      else { ssprov128 = Provenance.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
-      return ssprov128;
     }
   }
 

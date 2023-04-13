@@ -24,11 +24,11 @@ public class ScribeRestApiController : ScribeDataRazorViewControllerBase
     // TODO: split this controller into two controllers 
     // one for anonymous and one for authorized, 
     // then deprecate the QebRazorAnonList
-    if (!QebRazorAnonList.Contains(oaeCntxt.ActionName()))
-    {
-      var isVerified = CheckCoreAgentSession();
-      if (!isVerified) { oaeCntxt.Result = Redirect(DepQebIdentRequired); }
-    }
+    // if (!QebRazorAnonList.Contains(oaeCntxt.ActionName()))
+    // {
+    var isVerified = CheckCoreAgentSession();
+    if (!isVerified) { oaeCntxt.Result = Redirect(DepQebIdentRequired); }
+    // }
   }
 
   //

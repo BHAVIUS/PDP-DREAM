@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Pages;
@@ -20,8 +20,9 @@ public class ScribeServerAdminResreps : TkgsPageController
       AdminModeClientRequired = true,
       SessionClientRequired = true
     };
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepScribeServerAdminResreps, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServerSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
@@ -55,6 +56,8 @@ public class ScribeServerAdminResreps : TkgsPageController
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+
+  // Other page handlers and properties
 
 } // end class
 

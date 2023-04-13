@@ -12,13 +12,14 @@ public class NwlHomeIndex : TkgnPageController
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepNwlHomeIndex, PdpSitePathKey);
     PSRM.InitRazorPageMenus("_NwlHomeSpanPageMenu");
   }
 
   // OnGet before OnPageHandlerExecuted
 
-  // OnPageHandlerExecuted before the [RazorPage].cshtml
+  // OnPageHandlerExecuted after [RazorPage].cshtml but before result
 
   // Other page handlers and properties
 

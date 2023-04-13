@@ -143,10 +143,17 @@ public static partial class PdpSiteRoutes
   // AcmsServer
   public const string DepAcmsServer = DepNpdsPath + "/AcmsServer";
   public const string DepAcmsServerIndex = $"{DepAcmsServer}/Index";
-  public const string DepAcmsServerAgentResreps = $"{DepAcmsServer}/AgentResreps";
-  public const string DepAcmsServerAuthorResreps = $"{DepAcmsServer}/AuthorResreps";
-  public const string DepAcmsServerEditorResreps = $"{DepAcmsServer}/EditorResreps";
-  public const string DepAcmsServerAdminResreps = $"{DepAcmsServer}/AdminResreps";
+  public const string DepAcmsServerConcatDreamExamples = $"{DepAcmsServer}/ConcatDreamExamples";
+  public const string DepAcmsServerConcatDreamPrinciples = $"{DepAcmsServer}/ConcatDreamPrinciples";
+  public const string DepAcmsServerExportBcrList = $"{DepAcmsServer}/ExportBcrList";
+  public const string DepAcmsServerImportBcrItem = $"{DepAcmsServer}/ImportBcrItem";
+  public const string DepAcmsServerImportBcrList = $"{DepAcmsServer}/ImportBcrList";
+  public const string DepAcmsServerImportBcrSui = $"{DepAcmsServer}/ImportBcrSui";
+  //public const string DepAcmsServerImportDreamExample = $"{DepAcmsServer}/ImportDreamExample";
+  //public const string DepAcmsServerImportDreamPrinciple = $"{DepAcmsServer}/ImportDreamPrinciple";
+  public const string DepAcmsServerImportDreamResrep = $"{DepAcmsServer}/ImportDreamResrep";
+  public const string DepAcmsServerMergeToSameResrep = $"{DepAcmsServer}/MergeToSameResrep";
+  public const string DepAcmsServerSplitToDifferentResreps = $"{DepAcmsServer}/SplitToDifferentResreps";
   //AwlHome
   public const string DepAwlHome = DepNpdsPath + "/AwlHome";
   public const string DepAwlHomeIndex = $"{DepAwlHome}/Index";

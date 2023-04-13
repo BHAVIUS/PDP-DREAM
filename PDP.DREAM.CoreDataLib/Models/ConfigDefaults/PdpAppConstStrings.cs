@@ -32,7 +32,7 @@ public static partial class PdpAppConst
   public const string PdpSitePathKey = "path";
   public const string PdpSiteDefaultWebroot = "wwwroot";
   public const string PdpSiteDefaultHtml = "PdpSiteDefault.html";
-  public const string PdpSiteDefaultDbconstr = @"Server=.\SQLD2019;Database=PdpDevTestDebug;";
+  public const string PdpSiteDefaultDbconstr = @"Server=.\SQLS2022;Database=PdpDevTestDebug;";
 
   // used by QEB User REST Context properties as defaults for PdpSiteSettings
   public const string PdpSiteMetatagAuthor = "PORTAL-DOORS Project";

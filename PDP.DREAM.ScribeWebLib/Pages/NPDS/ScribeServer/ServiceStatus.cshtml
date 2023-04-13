@@ -9,8 +9,10 @@
 @attribute [PdpRazorPageRoute(DepScribeWebLib, DepScribeServerServiceStatus)]
 @model ScribeServerServiceStatus
 @{
-PdpSiteRazorModel psrm = Model.PSRM;
-QebiUserRestContext qurc = Model.QURC;
+  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  QebiUserRestContext qurc = Model.QURC;
 // TODO: refactor access as more convenient method in QebUserRestContext
 //   with input parameter for the requested RecordAccess
 var hasAnonAccess = qurc.ClientIsAnonymous;
@@ -31,7 +33,10 @@ var FipmpWidth = "6em"; // width for index priority marked principal (and other 
 var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
-
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 @Html.Raw(psrm.FormatBodyTitle())
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">

@@ -44,8 +44,8 @@ public class Program
     // PDPCC = new PdpCodeConfig(typeof(Program),"", AcgtCodeBranch.AorakiNet6, AcgtCodeRazor.Views);
     PDPCC = new PdpCodeConfig(typeof(Program));
     // PdpConfigManager in PDP.DREAM.CoreDataLib.Utilities
-    PDPSS = new PdpSiteSettings(PDPCC.PdpCodeProjroot);
-    NPDSSD = new NpdsServerDefaults(PDPCC.PdpCodeProjroot);
+    PDPSS = new PdpSiteSettings();
+    NPDSSD = new NpdsServerDefaults();
 
     // local variables prefix pdw for Portal-Doors Website
     // pdwBuilder as Microsoft.AspNetCore.Builder.WebApplicationBuilder
@@ -59,7 +59,7 @@ public class Program
     {
       Args = args,
       ApplicationName = PDPCC.PdpCodeAppnam,
-      ContentRootPath = PDPCC.PdpCodeProjroot,
+      ContentRootPath = PDPCC.PdpCodePrjroot,
       WebRootPath = PDPCC.PdpCodeWebroot,
     };
     // WebApplicationBuilder in Microsoft.AspNetCore.Builder

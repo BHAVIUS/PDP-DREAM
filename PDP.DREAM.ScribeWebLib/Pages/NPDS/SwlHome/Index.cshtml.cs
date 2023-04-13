@@ -3,7 +3,7 @@
 
 namespace PDP.DREAM.ScribeWebLib.Pages;
 
-[RequireHttps, Authorize]
+[RequireHttps, PdpAuthorizeRoles(NpdsAgent, NpdsAuthor, NpdsEditor, NpdsAdmin)]
 public class SwlHomeIndex : TkgsPageController
 {
   private const string rzrClass = nameof(SwlHomeIndex);
@@ -12,13 +12,14 @@ public class SwlHomeIndex : TkgsPageController
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
+    // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepSwlHomeIndex, PdpSitePathKey);
     PSRM.InitRazorPageMenus("_SwlHomeSpanPageMenu");
   }
 
   // OnGet before OnPageHandlerExecuted
 
-  // OnPageHandlerExecuted before the [RazorPage].cshtml
+  // OnPageHandlerExecuted after [RazorPage].cshtml but before result
 
   // Other page handlers and properties
 

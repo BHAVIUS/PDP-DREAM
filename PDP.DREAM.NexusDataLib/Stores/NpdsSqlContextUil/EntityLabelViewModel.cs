@@ -29,7 +29,7 @@ public class EntityLabelViewModel : CoreResrepModelBase
       else
       {
         ssElabHtml =
-          ((IsResolvable) ? $"<a href='{EntityLabel256}' target='_blank'>{EntityLabel128}</a>" : EntityLabel128)
+          ((IsResolvable) ? $"<a href='{EntityLabel256}' rel='external'>{EntityLabel128}</a>" : EntityLabel128)
           .StringEscapeHashLiteral();
       }
       return ssElabHtml;
@@ -41,7 +41,7 @@ public class EntityLabelViewModel : CoreResrepModelBase
   {
     get {
       if (string.IsNullOrEmpty(EntityLabel)) { ssElab128 = string.Empty; }
-      else { ssElab128 = EntityLabel.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
+      else { ssElab128 = EntityLabel.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
       return ssElab128;
     }
   }
@@ -50,7 +50,7 @@ public class EntityLabelViewModel : CoreResrepModelBase
   {
     get {
       if (string.IsNullOrEmpty(EntityLabel)) { ssElab256 = string.Empty; }
-      else { ssElab256 = EntityLabel.ToTruncatedPhrase(256).StringEscapeHashLiteral(); }
+      else { ssElab256 = EntityLabel.ToHoverHideHtml(256).StringEscapeHashLiteral(); }
       return ssElab256;
     }
   }

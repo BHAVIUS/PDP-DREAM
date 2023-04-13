@@ -12,11 +12,11 @@
   PdpSiteInfoModel psim = psrm.PdpSiteInfo;
   QebiUserRestContext qurc = Model.QURC;
 }
-@Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
 {
   <p><partial name="@psrm.RazorBodyMenu" /></p>
 }
+@Html.Raw(psrm.FormatBodyTitle())
 
 <h5>Help Info and Examples by NPDS RecordAccess</h5>
 

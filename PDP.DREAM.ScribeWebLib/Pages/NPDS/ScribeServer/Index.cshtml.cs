@@ -3,7 +3,7 @@
 
 namespace PDP.DREAM.ScribeWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsAgent)]
+[RequireHttps, PdpAuthorizeRoles(NpdsAgent, NpdsAuthor, NpdsEditor, NpdsAdmin)]
 public class ScribeServerIndex : TkgsPageController
 {
   private const string rzrClass = nameof(ScribeServerIndex);
@@ -22,7 +22,7 @@ public class ScribeServerIndex : TkgsPageController
     };
     // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepScribeServerIndex, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeServerSpanPageMenu");
+    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServerSpanPageMenu");
     ResetCoreRepository();
     var isVerified = CheckCoreAgentSession();
     if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
@@ -40,10 +40,13 @@ public class ScribeServerIndex : TkgsPageController
     var rzrHndlr = nameof(OnGet);
     CatchNullQurc(rzrHndlr, rzrClass);
 #endif
-    // SelectFilter properties
+    // SearchFilter properties
     QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
     PSRM.NpdsRazorBodyTitle(QURC.ServiceTitle);
+    ResetCoreRepository(true);
     ResetScribeRepository(true);
+    // build select lists
+    BuildCoreDropDownLists();
 #if DEBUG
     QURC.DebugClientAccess(rzrHndlr, rzrClass);
     QURC.DebugNpdsParams(rzrHndlr, rzrClass);
@@ -53,6 +56,8 @@ public class ScribeServerIndex : TkgsPageController
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+
+  // Other page handlers and properties
 
 } // end class
 

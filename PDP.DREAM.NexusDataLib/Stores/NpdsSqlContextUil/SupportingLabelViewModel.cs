@@ -28,7 +28,7 @@ public class SupportingLabelViewModel : CoreResrepModelBase
   {
     get {
       if (string.IsNullOrEmpty(SupportingLabel)) { ssSlab128 = string.Empty; }
-      else { ssSlab128 = SupportingLabel.ToTruncatedPhrase(128).StringEscapeHashLiteral(); }
+      else { ssSlab128 = SupportingLabel.ToHoverHideHtml(128).StringEscapeHashLiteral(); }
       return ssSlab128;
     }
   }

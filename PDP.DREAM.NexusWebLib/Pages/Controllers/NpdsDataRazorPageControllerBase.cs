@@ -27,8 +27,8 @@ public abstract class NexusDataRazorPageControllerBase : CoreDataRazorPageContro
 
   protected void CatchNullNexus(string methodName = "", string className = "")
   {
-    Debug.WriteLine($"{nameof(CatchNullNexus)} called from Class = '{className}'; Method = '{methodName}';");
     PNDC.CatchNullObject(PndcKey, methodName, className);
+    Debug.WriteLine($"{nameof(CatchNullNexus)} called from Class = '{className}'; Method = '{methodName}';");
     Debug.WriteLine($"PNDC DatabaseType: {PNDC.NPDSCP.DatabaseType}");
     Debug.WriteLine($"PNDC DatabaseConstr: {PNDC.NPDSCP.DatabaseConstr}");
   }

@@ -62,8 +62,8 @@ public abstract partial class CoreDataRazorPageControllerBase : PageModel, ISiaa
 
   protected void CatchNullQurc(string methodName = "", string className = "")
   {
-    Debug.WriteLine($"{nameof(CatchNullQurc)} called from Class = '{className}'; Method = '{methodName}';");
     QURC.CatchNullObject(QurcKey, methodName, className);
+    Debug.WriteLine($"{nameof(CatchNullQurc)} called from Class = '{className}'; Method = '{methodName}';");
     Debug.WriteLine($"QURC QebiDbconstr: {QURC.QebiDbconstr}");
     Debug.WriteLine($"QURC CoreDbconstr: {QURC.CoreDbconstr}");
     Debug.WriteLine($"QURC NexusDbconstr: {QURC.NexusDbconstr}");

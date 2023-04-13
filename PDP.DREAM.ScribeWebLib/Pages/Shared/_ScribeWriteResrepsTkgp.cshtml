@@ -33,7 +33,10 @@ var FipmpWidth = "6em"; // width for index priority marked principal (and other 
 var FonbyWidth = "11em"; // width for date-on person-by columns
 var FcmdbWidth = "21em"; // width for command button columns
 }
-
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 @Html.Raw(psrm.FormatBodyTitle())
 
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
@@ -93,11 +96,9 @@ col.Bound(row => row.EntityTypeCode).Title("Type")
 .Filterable(false);
 col.Bound(row => row.EntityName).Title("Name")
 .HeaderHtmlAttributes(new { title = "Resource Entity Name" })
-.HtmlAttributes(new { title = "#=EntityName#" })
 .ClientTemplate("#=EntityName64#");
 col.Bound(row => row.EntityNature).Title("Nature")
 .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
-.HtmlAttributes(new { title = "#=EntityNature#" })
 .ClientTemplate("#=EntityNature128#");
 if (!hasAnonAccess) {
 col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Width(FipmpWidth)
@@ -469,12 +470,10 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText is Principal?" });
 col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText Format" })
-.HtmlAttributes(new { title = "\\#=FieldFormatCode\\#" })
 .EditorTemplateName("_FieldFormatCode")
 .ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.OtherText).Title("OtherText")
 .HeaderHtmlAttributes(new { title = "OtherText Content" })
-.HtmlAttributes(new { title = "\\#=OtherTextHtml\\#" })
 .EditorTemplateName("_TextAreaBox")
 .ClientTemplate("\\#=OtherText128\\#");
 col.Command(com =>
@@ -630,12 +629,10 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description is Principal?" });
 col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description Format" })
-.HtmlAttributes(new { title = "\\#=FieldFormatCode\\#" })
 .EditorTemplateName("_FieldFormatCode")
 .ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Description).Title("Description")
 .HeaderHtmlAttributes(new { title = "Description Content" })
-.HtmlAttributes(new { title = "\\#=DescriptionHtml\\#" })
 .EditorTemplateName("_TextAreaBox")
 .ClientTemplate("\\#=Description128\\#");
 col.Command(com =>
@@ -653,7 +650,7 @@ col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
 } // end if
 if (hasAdminAccess) {
 col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
+.HeaderHtmlAttributes(new {title = "Deleted on date"});
 col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .HeaderHtmlAttributes(new { title = "Deleted by agent" });
 } // end if
@@ -705,12 +702,10 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance is Principal?" });
 col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance Format" })
-.HtmlAttributes(new { title = "\\#=FieldFormatCode\\#" })
 .EditorTemplateName("_FieldFormatCode")
 .ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Provenance).Title("Provenance")
 .HeaderHtmlAttributes(new { title = "Provenance Content" })
-.HtmlAttributes(new { title = "\\#=ProvenanceHtml\\#" })
 .EditorTemplateName("_TextAreaBox")
 .ClientTemplate("\\#=Provenance128\\#");
 col.Command(com =>
@@ -728,7 +723,7 @@ col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
 } // end if
 if (hasAdminAccess) {
 col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
+.HeaderHtmlAttributes(new {title = "Deleted on date"});
 col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
 .HeaderHtmlAttributes(new { title = "Deleted by agent" });
 } // end if
@@ -780,12 +775,10 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution is Principal?" });
 col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution Format" })
-.HtmlAttributes(new { title = "\\#=FieldFormatCode\\#" })
 .EditorTemplateName("_FieldFormatCode")
 .ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Distribution).Title("Distribution")
 .HeaderHtmlAttributes(new { title = "Distribution Content" })
-.HtmlAttributes(new { title = "\\#=DistributionHtml\\#" })
 .EditorTemplateName("_TextAreaBox")
 .ClientTemplate("\\#=Distribution128\\#");
 col.Command(com =>

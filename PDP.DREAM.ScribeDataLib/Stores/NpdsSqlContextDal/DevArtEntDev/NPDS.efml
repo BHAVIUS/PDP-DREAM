@@ -324,22 +324,6 @@
     <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="FgroupGuidKey" type="Guid" sql-type="uniqueidentifier" />
   </method>
-  <method name="ScribeConcatRecordsDocByDescription" p1:procedure="dbo.ScribeConcatRecordsDocByDescription" p1:Guid="5ffbb951-17ae-4769-ade3-478804b48605">
-    <return-scalar column="return_value" type="Int32" />
-    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="DiristryTag" type="String" sql-type="nvarchar" length="64" />
-    <parameter name="DocumentEntityType" type="String" sql-type="nvarchar" length="32" />
-    <parameter name="RecordEntityType" type="String" sql-type="nvarchar" length="32" />
-    <parameter name="RecordCount" p1:parameter-direction="InOut" type="Int32" sql-type="int" precision="10" scale="0" />
-  </method>
-  <method name="ScribeConcatRecordsDocByOtherText" p1:procedure="dbo.ScribeConcatRecordsDocByOtherText" p1:Guid="5f1a739f-1dab-4918-809a-e711950ce1f0">
-    <return-scalar column="return_value" type="Int32" />
-    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
-    <parameter name="DiristryTag" type="String" sql-type="nvarchar" length="64" />
-    <parameter name="DocumentEntityType" type="String" sql-type="nvarchar" length="32" />
-    <parameter name="RecordEntityType" type="String" sql-type="nvarchar" length="32" />
-    <parameter name="RecordCount" p1:parameter-direction="InOut" type="Int32" sql-type="int" precision="10" scale="0" />
-  </method>
   <method name="ScribeOtherTextReseq" p1:procedure="dbo.ScribeOtherTextReseq" p1:Guid="5ca81d2f-5374-4a11-af6f-c4256f043a2e">
     <return-scalar column="return_value" type="Int32" />
     <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
@@ -532,5 +516,25 @@
     <parameter name="InfosetGuidRef" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="RecordGuidRef" type="Guid" sql-type="uniqueidentifier" />
     <parameter name="HasPriority" p1:parameter-direction="InOut" type="Int16" sql-type="smallint" precision="5" scale="0" />
+  </method>
+  <method name="ScribeConcatRecordsDocByDescription" p1:procedure="dbo.ScribeConcatRecordsDocByDescription" p1:Guid="eac501c5-f256-4f25-bbf3-b1476a3d3fba">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DiristryTag" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DocumentEntityType" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="RecordEntityType" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="FieldFormatCodeRef" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="RecordCount" p1:parameter-direction="InOut" type="Int32" sql-type="int" precision="10" scale="0" />
+    <parameter name="DocumentText" p1:parameter-direction="InOut" type="String" sql-type="nvarchar" />
+  </method>
+  <method name="ScribeConcatRecordsDocByOtherText" p1:procedure="dbo.ScribeConcatRecordsDocByOtherText" p1:Guid="94a8115f-bfe7-4ea1-b0a8-b6892fe8751d">
+    <return-scalar column="return_value" type="Int32" />
+    <parameter name="AgentGuidRef" type="Guid" sql-type="uniqueidentifier" />
+    <parameter name="DiristryTag" type="String" sql-type="nvarchar" length="64" />
+    <parameter name="DocumentEntityType" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="RecordEntityType" type="String" sql-type="nvarchar" length="32" />
+    <parameter name="FieldFormatCodeRef" type="Int16" sql-type="smallint" precision="5" scale="0" />
+    <parameter name="RecordCount" p1:parameter-direction="InOut" type="Int32" sql-type="int" precision="10" scale="0" />
+    <parameter name="DocumentText" p1:parameter-direction="InOut" type="String" sql-type="nvarchar" />
   </method>
 </efcore>

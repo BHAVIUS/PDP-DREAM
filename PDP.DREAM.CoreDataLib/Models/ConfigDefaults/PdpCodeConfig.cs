@@ -17,20 +17,20 @@ public class PdpCodeDateAttribute : Attribute
 
 public class PdpCodeConfig
 {
-  public PdpCodeConfig(Type progType,
-    string projRoot = "", string webRoot = PdpSiteDefaultWebroot,
+  public PdpCodeConfig(Type programType,
+    string projectRoot = "", string wwwebRoot = PdpSiteDefaultWebroot,
     AcgtCodeRazor codeRazor = AcgtRazorDefault, AcgtCodeBranch codeBranch = AcgtBranchDefault)
   {
-    if (progType == null) { throw new ArgumentNullException(nameof(progType)); }
-    if (string.IsNullOrEmpty(projRoot)) { PdpCodeProjroot = Environment.CurrentDirectory; }
-    else { PdpCodeProjroot = projRoot; }
-    if (string.IsNullOrEmpty(webRoot)) { PdpCodeWebroot = PdpSiteDefaultWebroot; }
-    else { PdpCodeWebroot = webRoot; }
+    if (programType == null) { throw new ArgumentNullException(nameof(programType)); }
+    if (string.IsNullOrEmpty(projectRoot)) { PdpCodePrjroot = Environment.CurrentDirectory; }
+    else { PdpCodePrjroot = projectRoot; }
+    if (string.IsNullOrEmpty(wwwebRoot)) { PdpCodeWebroot = PdpSiteDefaultWebroot; }
+    else { PdpCodeWebroot = wwwebRoot; }
     PdpCodeRazor = codeRazor;
     PdpCodeBranch = codeBranch;
 
     // info from the program assembly
-    var progAsmbly = Assembly.GetAssembly(progType);
+    var progAsmbly = Assembly.GetAssembly(programType);
     var progName = progAsmbly.GetName();
     PdpCodeAsmdat = GetPdpCodeDate(progAsmbly);
     // PdpCodeAppnam = progName.FullName; // includes description
@@ -38,7 +38,7 @@ public class PdpCodeConfig
     // PdpCodeAsmver = progName.Version.ToString(3);
     PdpCodeAsmver = progName.Version.ToString();
     PdpCodeAppver = FileVersionInfo.GetVersionInfo(progAsmbly.Location).FileVersion;
-    PdpCodeNamspc = progType.Namespace;
+    PdpCodeNamspc = programType.Namespace;
     PdpCodeErrmsg = $"PDP-DREAM error in {PdpCodeNamspc} for {PdpCodeBranch} {PdpCodeAppnam} {PdpCodeAppver}";
     PdpCodeBldstr = $"Code Branch {PdpCodeBranch} Version {PdpCodeAsmver} Date {PdpCodeAsmdat.ToLocalTime()}<br />";
   }
@@ -57,7 +57,7 @@ public class PdpCodeConfig
   public string PdpCodeErrmsg { get; init; }
   public string PdpCodeNamspc { get; init; }
   public string PdpCodeBldstr { get; init; }
-  public string PdpCodeProjroot { get; init; }
+  public string PdpCodePrjroot { get; init; }
   public string PdpCodeWebroot { get; init; }
 
 } // end class
