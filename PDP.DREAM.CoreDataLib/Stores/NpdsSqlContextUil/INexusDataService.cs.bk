@@ -1,0 +1,51 @@
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+namespace PDP.DREAM.CoreDataLib.Models;
+
+public interface INexusDataService
+{
+  WebApiContext PRC { get; set; }
+
+  // User Interface/Interaction Layer (with acronym "uil") for viewable ViewModel objects and editable EditModel objects
+
+  void SetRestContext(ref WebApiContext warc);
+
+  bool CreatePdpAgent();
+
+  bool CreatePdpAgentSession();
+
+  bool IdentifyPdpAgent();
+
+  bool IdentifyPdpAgentSession();
+
+
+  CoreResrepRootUxm GetViewableRecordByKey(Guid guidKey, bool isInfosetKey = false);
+
+  IEnumerable<CoreResrepRootUxm> ListViewableRecords();
+
+  IEnumerable<CoreResrepRootUxm> ListViewableRecordsWithAgent(Guid guidKey);
+
+  IEnumerable<NexusSnapshotUxm> ListViewableArchivedRecords(Guid guidKey);
+
+  IEnumerable<CrossReferenceUxm> ListViewableCrossReferences(Guid guidKey);
+
+  IEnumerable<EntityTypeUxm> ListViewableEntityTypes();
+
+  IEnumerable<LocationUxm> ListViewableLocations(Guid guidKey);
+
+  IEnumerable<SupportingLabelUxm> ListViewableSupportingLabels(Guid guidKey);
+
+  IEnumerable<SupportingTagUxm> ListViewableSupportingTags(Guid guidKey);
+
+  IEnumerable<EntityLabelUxm> ListViewableEntityLabels(Guid guidKey);
+
+  // Message Exchange Layer (with acronym "mel") for serializable data transfer objects
+
+  NpdsResrepItem MelNrrItem { get; set; }
+  NpdsResrepList MelNrrList { get; set; }
+
+  NpdsResrepXmlRoot GetXmlmsgFormtdNexusResourceByKey(Guid guidKey, bool isInfosetKey = false);
+
+  NpdsResrepXmlRoot GetXmlmsgFormtdNexusResourcesWithPredicateFilters();
+}

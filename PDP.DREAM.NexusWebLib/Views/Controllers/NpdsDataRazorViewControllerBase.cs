@@ -1,5 +1,5 @@
-﻿// NexusDataRazorViewControllerBase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// NpdsDataRazorViewControllerBase.cs 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
@@ -11,7 +11,7 @@ public abstract class NexusDataRazorViewControllerBase : CoreDataRazorViewContro
   private const string rzrClass = nameof(NexusDataRazorViewControllerBase);
 
   // data contexts: QEB User REST/Data, PDP NPDS Data/Metadata
-  // QEB User REST Context = QURC for user config settings and web api requests
+  // QEB User REST Context = WRACE for user config settings and web api requests
   // QEB User Data Context = QUDC for user identification, authentication, authorization
   // PDP Core Data Context = PCDC for Core data repositories of data/metadata records
   // PDP Nexus Data Context = PNDC for Nexus data repositories of data/metadata records
@@ -26,41 +26,46 @@ public abstract class NexusDataRazorViewControllerBase : CoreDataRazorViewContro
     get { return pdpNexusDataCntxt; }
   }
 
+  protected ILogger InitLoggerNexus(ILoggerFactory lgrFtry)
+  {
+    var logger = lgrFtry.CreateLogger<NexusDataRazorViewControllerBase>();
+    return logger;
+  }
+#if DEBUG
   protected void CatchNullNexus(string methodName = "", string className = "")
   {
-    Debug.WriteLine($"{nameof(CatchNullNexus)} called from Class = '{className}'; Method = '{methodName}';");
     PNDC.CatchNullObject(PndcKey, methodName, className);
-    Debug.WriteLine($"PNDC DatabaseType: {PNDC.NPDSCP.DatabaseType}");
-    Debug.WriteLine($"PNDC DatabaseConstr: {PNDC.NPDSCP.DatabaseConstr}");
+    Debug.WriteLine($"{nameof(CatchNullNexus)} called from Class = '{className}'; Method = '{methodName}';");
+    Debug.WriteLine($"PNDC DatabaseType: {PNDC.NPDSDC.DatabaseType}");
+    Debug.WriteLine($"PNDC DatabaseConstr: {PNDC.NPDSDC.DatabaseConstr}");
   }
   protected void DebugNexusRepo(string methodName = "", string className = "")
   {
     Debug.WriteLine($"{nameof(DebugNexusRepo)} called from Class = '{className}'; Method = '{methodName}';");
-    Debug.WriteLine($"/{QURC.SearchFilter}/{QURC.ServiceTag}/{QURC.ServiceType}/{QURC.EntityType}/{QURC.RecordAccess}");
+    Debug.WriteLine($"/{WRACE.SearchFilter}/{WRACE.ServiceTag}/{WRACE.ServiceType}/{WRACE.EntityType}/{WRACE.RecordAccess}");
     Debug.WriteLine($"with database connection strings in method {methodName}");
-    Debug.WriteLine($"QURC NexusDbconstr: {QURC.NexusDbconstr}");
-    Debug.WriteLine($"QURC DatabaseConstr: {QURC.DatabaseConstr}");
-    Debug.WriteLine($"PNDC DatabaseType: {PNDC?.NPDSCP.DatabaseType}");
-    Debug.WriteLine($"PNDC DatabaseConstr: {PNDC?.NPDSCP.DatabaseConstr}");
+    Debug.WriteLine($"WRACE NexusDbconstr: {WRACE.DbcnstrNexus}");
+    Debug.WriteLine($"WRACE DatabaseConstr: {WRACE.DatabaseConstr}");
+    Debug.WriteLine($"PNDC DatabaseType: {PNDC?.NPDSDC.DatabaseType}");
+    Debug.WriteLine($"PNDC DatabaseConstr: {PNDC?.NPDSDC.DatabaseConstr}");
   }
+#endif
 
   // protected so not visible as public action for controller routes
   protected void ResetNexusRepository(bool openCnctn = false, string? dbcs = "")
   {
 #if DEBUG
     var rzrMethod = nameof(ResetNexusRepository);
-    CatchNullQurc(rzrMethod, rzrClass);
+    CatchNullWrace(rzrMethod, rzrClass);
 #endif
     // assure correct DatabaseType
-    if (QURC.DatabaseType != NpdsDatabaseType.Nexus)
-    { QURC.DatabaseType = NpdsDatabaseType.Nexus; }
+    if (WRACE.DatabaseType != NPDSCD.DatabaseTypeNexus)
+    { WRACE.DatabaseType = NPDSCD.DatabaseTypeNexus; }
     // override DatabaseConstr if dbcs input
     if (!string.IsNullOrEmpty(dbcs))
-    { QURC.NexusDbconstr = dbcs; }
-    // reset viewdata with current QEB User Rest Context
-    ViewData[QurcKey] = QURC; // TODO: where used? where required? for Views not Pages?
+    { WRACE.DbcnstrNexus = dbcs; }
     // reset NPDS data context with current QEB User Rest Context
-    pdpNexusDataCntxt = new NexusDbsqlContext((INpdsClient)QURC);
+    pdpNexusDataCntxt = new NexusDbsqlContext((INpdscwClient)WRACE);
     // open connection if switched on
     if (openCnctn)
     {
@@ -79,60 +84,36 @@ public abstract class NexusDataRazorViewControllerBase : CoreDataRazorViewContro
   {
     pdpNexusDataCntxt.DbsqlDisconnect();
   }
-  protected virtual void CloseAllConnections()
+  protected override void CloseAllConnections()
   {
-    qebUserDataCntxt?.DbsqlDisconnect();
+    qebiUserDataCntxt?.DbsqlDisconnect();
     pdpCoreDataCntxt?.DbsqlDisconnect();
     pdpNexusDataCntxt?.DbsqlDisconnect();
   }
 
+  // ATTN: assure that these controllers create both the
+  // public WRACE with private qebiUserRestCntxt
+  // public QUDC with private qebiUserDataCntxt
+
   public NexusDataRazorViewControllerBase()
   {
-    qebUserRestCntxt = InitRestContext().SetDatabaseType(NpdsDatabaseType.SIAA);
-    qebUserDataCntxt = new QebiDbsqlContext((INpdsClient)qebUserRestCntxt);
+    wrace = InitWrace().SetDatabaseType(NPDSCD.DatabaseTypeQEBI);
+    qebiUserDataCntxt = new QebiDalContext((INpdscwClient)wrace);
   }
-
-  //public NexusDataRazorViewControllerBase(QebiDbsqlContext userCntxt)
-  //{
-  //  qebLogger = InitLogger<NexusDataRazorViewControllerBase>();
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NexusDbconstr);
-  //}
-  //public NexusDataRazorViewControllerBase(NexusDbsqlContext npdsCntxt)
-  //{
-  //  qebLogger = InitLogger<NexusDataRazorViewControllerBase>();
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = new QebiDbsqlContext();
-  //  pdpNexusDataCntxt = npdsCntxt;
-  //}
-  //public NexusDataRazorViewControllerBase(QebiDbsqlContext userCntxt, NexusDbsqlContext npdsCntxt)
-  //{
-  //  qebLogger = InitLogger<NexusDataRazorViewControllerBase>();
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  pdpNexusDataCntxt = npdsCntxt;
-  //}
-  //public NexusDataRazorViewControllerBase(QebiDbsqlContext userCntxt,
-  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  //{
-  //  qebLogger = InitLogger<NexusDataRazorViewControllerBase>(lgrFtry);
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  qebEmailSender = emlSndr;
-  //  qebSmsSender = smsSndr;
-  //  pdpNexusDataCntxt = new NexusDbsqlContext(NPDSSD.NexusDbconstr);
-  //}
-  //public NexusDataRazorViewControllerBase(QebiDbsqlContext userCntxt, NexusDbsqlContext npdsCntxt,
-  //  IEmailSender emlSndr, ISmsSender smsSndr, ILoggerFactory lgrFtry)
-  //{
-  //  qebLogger = InitLogger<NexusDataRazorViewControllerBase>(lgrFtry);
-  //  qebUserRestCntxt = InitRestContext();
-  //  qebUserDataCntxt = userCntxt;
-  //  qebEmailSender = emlSndr;
-  //  qebSmsSender = smsSndr;
-  //  pdpNexusDataCntxt = npdsCntxt;
-  //}
+  public NexusDataRazorViewControllerBase(ILoggerFactory lgrFtry)
+  {
+    qebLogger = InitLoggerNexus(lgrFtry);
+    wrace = InitWrace().SetDatabaseType(NPDSCD.DatabaseTypeQEBI);
+    qebiUserDataCntxt = new QebiDalContext((INpdscwClient)wrace);
+  }
+  public NexusDataRazorViewControllerBase(ILoggerFactory lgrFtry, IEmailSender emlSndr, ISmsSender smsSndr)
+  {
+    qebLogger = InitLoggerNexus(lgrFtry);
+    qebEmailSender = emlSndr;
+    qebSmsSender = smsSndr;
+    wrace = InitWrace().SetDatabaseType(NPDSCD.DatabaseTypeQEBI);
+    qebiUserDataCntxt = new QebiDalContext((INpdscwClient)wrace);
+  }
 
 } // end class
 

@@ -1,5 +1,4 @@
-﻿// BingMapsService.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Services;
@@ -72,32 +71,32 @@ public class BingMapsService : IGeolocater
 public class BingAddress
 {
   [DataMember(Name = "addressLine")]
-  public string AddressLine { get; set; } = string.Empty;
+  public string AddressLine { get; set; } = ESS;
   [DataMember(Name = "adminDistrict")]
-  public string AdminDistrict { get; set; } = string.Empty;
+  public string AdminDistrict { get; set; } = ESS;
   [DataMember(Name = "adminDistrict2")]
-  public string AdminDistrict2 { get; set; } = string.Empty;
+  public string AdminDistrict2 { get; set; } = ESS;
   [DataMember(Name = "countryRegion")]
-  public string CountryRegion { get; set; } = string.Empty;
+  public string CountryRegion { get; set; } = ESS;
   [DataMember(Name = "formattedAddress")]
-  public string FormattedAddress { get; set; } = string.Empty;
+  public string FormattedAddress { get; set; } = ESS;
   [DataMember(Name = "locality")]
-  public string Locality { get; set; } = string.Empty;
+  public string Locality { get; set; } = ESS;
   [DataMember(Name = "postalCode")]
-  public string PostalCode { get; set; } = string.Empty;
+  public string PostalCode { get; set; } = ESS;
 }
 
 [DataContract(Namespace = "http://schemas.microsoft.com/search/local/ws/rest/v1")]
 public class DataflowJob : Resource
 {
   [DataMember(Name = "completedDate")]
-  public string CompletedDate { get; set; } = string.Empty;
+  public string CompletedDate { get; set; } = ESS;
   [DataMember(Name = "createdDate")]
-  public string CreatedDate { get; set; } = string.Empty;
+  public string CreatedDate { get; set; } = ESS;
   [DataMember(Name = "status")]
-  public string Status { get; set; } = string.Empty;
+  public string Status { get; set; } = ESS;
   [DataMember(Name = "errorMessage")]
-  public string ErrorMessge { get; set; } = string.Empty;
+  public string ErrorMessge { get; set; } = ESS;
   [DataMember(Name = "failedEntityCount")]
   public int FailedEntityCount { get; set; }
   [DataMember(Name = "processedEntityCount")]
@@ -110,27 +109,27 @@ public class DataflowJob : Resource
 public class Hint
 {
   [DataMember(Name = "hintType")]
-  public string HintType { get; set; } = string.Empty;
+  public string HintType { get; set; } = ESS;
   [DataMember(Name = "value")]
-  public string Value { get; set; } = string.Empty;
+  public string Value { get; set; } = ESS;
 }
 
 [DataContract]
 public class Instruction
 {
   [DataMember(Name = "maneuverType")]
-  public string ManeuverType { get; set; } = string.Empty;
+  public string ManeuverType { get; set; } = ESS;
   [DataMember(Name = "text")]
-  public string Text { get; set; } = string.Empty;
+  public string Text { get; set; } = ESS;
   [DataMember(Name = "value")]
-  public string Value { get; set; } = string.Empty;
+  public string Value { get; set; } = ESS;
 }
 
 [DataContract]
 public class ItineraryItem
 {
   [DataMember(Name = "travelMode")]
-  public string TravelMode { get; set; } = string.Empty;
+  public string TravelMode { get; set; } = ESS;
   [DataMember(Name = "travelDistance")]
   public double TravelDistance { get; set; }
   [DataMember(Name = "travelDuration")]
@@ -140,7 +139,7 @@ public class ItineraryItem
   [DataMember(Name = "instruction")]
   public Instruction? Instruction { get; set; }
   [DataMember(Name = "compassDirection")]
-  public string CompassDirection { get; set; } = string.Empty;
+  public string CompassDirection { get; set; } = ESS;
   [DataMember(Name = "hint")]
   public Hint[]? Hint { get; set; }
   [DataMember(Name = "warning")]
@@ -160,24 +159,24 @@ public class Line
 public class Link
 {
   [DataMember(Name = "role")]
-  public string Role { get; set; } = string.Empty;
+  public string Role { get; set; } = ESS;
   [DataMember(Name = "name")]
-  public string Name { get; set; } = string.Empty;
+  public string Name { get; set; } = ESS;
   [DataMember(Name = "value")]
-  public string Value { get; set; } = string.Empty;
+  public string Value { get; set; } = ESS;
   [DataMember(Name = "url")]
-  public string Url { get; set; } = string.Empty;
+  public string Url { get; set; } = ESS;
 }
 
 [DataContract(Namespace = "http://schemas.microsoft.com/search/local/ws/rest/v1")]
 public class Location : Resource
 {
   [DataMember(Name = "entityType")]
-  public string EntityType { get; set; } = string.Empty;
+  public string EntityType { get; set; } = ESS;
   [DataMember(Name = "address")]
   public BingAddress? Address { get; set; }
   [DataMember(Name = "confidence")]
-  public string Confidence { get; set; } = string.Empty;
+  public string Confidence { get; set; } = ESS;
 }
 
 [DataContract]
@@ -201,9 +200,9 @@ public class Point
 public class Resource
 {
   [DataMember(Name = "name")]
-  public string Name { get; set; } = string.Empty;
+  public string Name { get; set; } = ESS;
   [DataMember(Name = "id")]
-  public string Id { get; set; } = string.Empty;
+  public string Id { get; set; } = ESS;
   [DataMember(Name = "link")]
   public Link[]? Link { get; set; }
   [DataMember(Name = "links")]
@@ -227,19 +226,19 @@ public class ResourceSet
 public class Response
 {
   [DataMember(Name = "copyright")]
-  public string Copyright { get; set; } = string.Empty;
+  public string Copyright { get; set; } = ESS;
   [DataMember(Name = "brandLogoUri")]
-  public string BrandLogoUri { get; set; } = string.Empty;
+  public string BrandLogoUri { get; set; } = ESS;
   [DataMember(Name = "statusCode")]
   public int StatusCode { get; set; }
   [DataMember(Name = "statusDescription")]
-  public string StatusDescription { get; set; } = string.Empty;
+  public string StatusDescription { get; set; } = ESS;
   [DataMember(Name = "authenticationResultCode")]
-  public string AuthenticationResultCode { get; set; } = string.Empty;
+  public string AuthenticationResultCode { get; set; } = ESS;
   [DataMember(Name = "errorDetails")]
   public string[]? errorDetails { get; set; }
   [DataMember(Name = "traceId")]
-  public string TraceId { get; set; } = string.Empty;
+  public string TraceId { get; set; } = ESS;
   [DataMember(Name = "resourceSets")]
   public ResourceSet[]? ResourceSets { get; set; }
 }
@@ -248,9 +247,9 @@ public class Response
 public class Route : Resource
 {
   [DataMember(Name = "distanceUnit")]
-  public string DistanceUnit { get; set; } = string.Empty;
+  public string DistanceUnit { get; set; } = ESS;
   [DataMember(Name = "durationUnit")]
-  public string DurationUnit { get; set; } = string.Empty;
+  public string DurationUnit { get; set; } = ESS;
   [DataMember(Name = "travelDistance")]
   public double TravelDistance { get; set; }
   [DataMember(Name = "travelDuration")]
@@ -291,9 +290,9 @@ public class RoutePath
 public class Warning
 {
   [DataMember(Name = "warningType")]
-  public string WarningType { get; set; } = string.Empty;
+  public string WarningType { get; set; } = ESS;
   [DataMember(Name = "severity")]
-  public string Severity { get; set; } = string.Empty;
+  public string Severity { get; set; } = ESS;
   [DataMember(Name = "value")]
-  public string Value { get; set; } = string.Empty;
+  public string Value { get; set; } = ESS;
 }

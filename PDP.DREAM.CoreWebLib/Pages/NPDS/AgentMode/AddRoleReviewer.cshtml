@@ -1,0 +1,90 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAgentModeAddRoleReviewer)]
+@model AgentModeAddRoleReviewer
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+  bool clientHasRole = wrace.ClientIsReviewer;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+
+@if (userAuth && clientHasRole)
+{
+  <p class="pdpTaskPassed">
+    You are registered as a PdpSite QEBI User and NPDS Reviewer.
+  </p>
+}
+else
+{
+  <p>
+    You are registered as a QEBI User of this PdpSite but not yet as a member of any other roles.
+    You must add the NPDS Reviewer role to your account before you can submit content to
+    the NEXUS diristries, PORTAL registries and DOORS directories managed by @psim.SiteOwnerName.
+    Adding the Reviewer role confers read/write privileges as a NPDS Reviewer (resource scope);
+    other higher read/write privilege levels include NPDS Editor
+    (registry scope) and NPDS Admin (registrar scope).
+  </p>
+  <p>
+    To add the <em>NPDS Reviewer</em> role with Reviewer privileges to your User account, please acknowledge
+    the following terms:
+  </p>
+  <ul>
+    <li>
+      @psim.SiteOwnerName Registrar reserves the right to revoke privileges
+      from any person acting as an NPDS Reviewer who submits inappropriate and/or offensive content.
+      Please report any abuses.
+    </li>
+    <li>
+      @psim.SiteOwnerName Registrar does not confer any legal ownership rights
+      for any content submitted by any person acting as an NPDS Reviewer. All rights previously held
+      by you and/or others, such as trade and service marks, will be retained by their respective owners.
+    </li>
+    <li>
+      @psim.SiteOwnerName Registrar will defer to other recognized organizations
+      such as the USPTO and similar international organizations in the event of any questions or disputes
+      concerning trade and service marks.
+    </li>
+    <li>
+      @psim.SiteOwnerName Registrar services remain under development. Alternative
+      resource record management models may be explored including restricted, unrestricted, and hybrid models
+      with respect to editing privileges by Agents. The initial current default model is restricted, ie,
+      any record entered by you as an Agent can only be edited by you as the Author for that resource record
+      albeit possibly subject to review by the Registry Editor and/or Registrar Admin.
+      Unsupervised anonymous editing as practiced in some wikis is NOT permitted.
+      @psim.SiteOwnerName  Registrar reserves the right to change this policy to allow for concurrent use of the hybrid and unrestricted
+      models for managing various classes of resource records with the goal of facilitating productive collaborative
+      development of the PORTAL-DOORS System for the benefit of all.
+    </li>
+    <li>
+      For use with scholarly publications and communications in conferences and journals,
+      this agreement to contribute as a Reviewer requires your consent to abide by
+      the research integrity policies articulated in Taswell et al 2020,
+      <cite>The Hitchhiker's Guide to Scholarly Research Integrity</cite>,
+      DOI <a target="_blank" href="https://doi.org/10.1002/pra2.223">10.1002/pra2.223</a>
+    </li>
+  </ul>
+  <p>
+    For the change in role permissions to take effect, 
+    you will be redirected to logout then login again.
+    To confirm your agreement, click the button:
+  </p>
+
+  <form id="frmAddRole" asp-page="@DepAgentModeAddRoleReviewer"
+        method="post" role="form" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    <div class="textcenter">
+      <button id="btnSubmit" type="submit" class="btn btn-outline-primary">Add Reviewer Role</button>
+      <button id="btnCancel" type="reset" class="btn btn-outline-primary">Cancel</button>
+    </div>
+  </form>
+
+}

@@ -1,9 +1,9 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, Authorize]
+[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
 public class DebugModeSiteSettings : CoreDataRazorPageControllerBase
 {
   private const string rzrClass = nameof(DebugModeSiteSettings);
@@ -12,21 +12,25 @@ public class DebugModeSiteSettings : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NpdsDatabaseAccess.AuthReadOnly,
-      RecordAccess = NpdsRecordAccess.AuthUser,
-      UserModeClientRequired = true,
+      DatabaseType = NPDSCD.DatabaseTypeCore,
+      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
+      RecordAccess = NPDSCD.RecordAccessUser,
+      AdminModeClientRequired = true,
       SessionClientRequired = true
     };
     PSRM = new PdpSiteRazorModel(DepDebugModeSiteSettings, $"{DepPdpDream}: SiteSettings");
-    PSRM.InitRazorPageMenus("_DebugModeSpanPageMenu");
+    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_DebugModeSpanPageMenu");
     // TODO: create subtitle as second line for title
     // PSRM.RazorBodyTitle = $"PDP-DREAM SiteSettings ({nameof(PDPSS)}) table of object properties.";
-    ResetQebiRepository();
     ResetCoreRepository();
-    var isVerified = CheckCoreUserSession();
-    if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    var isVerified = CheckNpdsAgentSession();
+    if (!isVerified) { RedirectToPage(DepAgentModeCheckNpdsAgent); }
+#if DEBUG
+    var rzrHndlr = nameof(OnPageHandlerExecuting);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+#endif
   }
 
   // OnGet before OnPageHandlerExecuted

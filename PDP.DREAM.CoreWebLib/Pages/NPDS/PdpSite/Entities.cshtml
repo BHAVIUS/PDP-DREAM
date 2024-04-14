@@ -1,43 +1,39 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
-  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
 @attribute [PdpRazorPageRoute(DepCoreWebLib, DepPdpSiteEntities)]
 @model PdpSiteEntities
 @{
-  PdpSiteRazorModel psrm = Model.PSRM;
+PdpSiteRazorModel psrm = Model.PSRM;
 }
 @Html.Raw(psrm.FormatBodyTitle())
-
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
 {
-  <p><partial name="@psrm.RazorBodyMenu" /></p>
+<p><partial name="@psrm.RazorBodyMenu" /></p>
 }
 
 <h4>NPDS Entity Types</h4>
 
-@(Html.Kendo().Grid<EntityTypeViewModel>()
-    .Name("EntityTypes")
-    .DataSource(ds => ds.Ajax()
-      .Model(m => m.Id(p => p.CodeKey))
-      .Read(post => post.Url(psrm.RazorPagePath + "?handler=Read").Data("kendoToken"))
-    )
-    .Columns(col =>
-    {
-      col.Bound(row => row.TypeName).Title("Type Name")
-        .HeaderHtmlAttributes(new { title = "Name of EntityType" });
-      col.Bound(row => row.TypeDescription).Title("Type Description")
-        .HeaderHtmlAttributes(new { title = "Description of EntityType" });
-      col.Bound(row => row.TypeEditedByAgent).Title("Agent")
-        .HeaderHtmlAttributes(new { title = "Editable by Agent" });
-      col.Bound(row => row.TypeEditedByAuthor).Title("Author")
-        .HeaderHtmlAttributes(new { title = "Editable by Author" });
-      col.Bound(row => row.TypeEditedByEditor).Title("Editor")
-        .HeaderHtmlAttributes(new { title = "Editable by Editor" });
-      col.Bound(row => row.TypeEditedByAdmin).Title("Administrator")
-        .HeaderHtmlAttributes(new { title = "Editable by Administrator" });
-    })
-    .Sortable().Filterable()
-)
+@(Html.Kendo()
+.Grid<EntityTypeUxm>()
+.Name("EntityTypes")
+.DataSource(ds => ds.Ajax()
+.Model(m => m.Id(p => p.CodeKey))
+.Read(post => post.Url(psrm.RazorPagePath + "?handler=Read").Data("kendoToken"))    )
+.Columns(col =>    {
+col.Bound(row => row.TypeName).Title("Type Name")
+.HeaderHtmlAttributes(new { title = "Name of EntityType" });
+col.Bound(row => row.TypeDescription).Title("Type Description")
+.HeaderHtmlAttributes(new { title = "Description of EntityType" });
+col.Bound(row => row.TypeEditedByAgent).Title("Agent")
+.HeaderHtmlAttributes(new { title = "Editable by Agent" });
+col.Bound(row => row.TypeEditedByAuthor).Title("Author")
+.HeaderHtmlAttributes(new { title = "Editable by Author" });
+col.Bound(row => row.TypeEditedByEditor).Title("Editor")
+.HeaderHtmlAttributes(new { title = "Editable by Editor" });
+col.Bound(row => row.TypeEditedByAdmin).Title("Administrator")
+.HeaderHtmlAttributes(new { title = "Editable by Administrator" });
+}).Sortable().Filterable())

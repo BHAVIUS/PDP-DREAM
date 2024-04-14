@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<rdf:RDF
+	         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	         xmlns:pdpprov="http://npds.portaldoors.org/schema/bha/Provenance/">
+	  <!--The document-->
+	  <rdf:Description rdf:about="https://doi.org/10.1016/j.chaos.2022.112707">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Document"/>
+	    <pdpprov:hasName>Impact of finite size effect on applicability of generalized fractal and spectral dimensions to biological networks</pdpprov:hasName>
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv1" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv2" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv3" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv4" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv5" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPreprint" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv6" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv7" />
+	    <pdpprov:hasVersion rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPublished" />
+	    <pdpprov:hasCoAuthor rdf:resource="https://orcid.org/0000-0002-7646-4384"/>
+	    <pdpprov:hasCoAuthor rdf:resource="https://uk.linkedin.com/in/mesut-y%C3%BCcel-0b94aa54" />
+	    <pdpprov:hasCoAuthor rdf:resource="https://orcid.org/0000-0002-5011-8336"/>
+	    <pdpprov:hasCoAuthor rdf:resource="https://orcid.org/0000-0002-6425-5980"/>
+	  </rdf:Description>
+	  <!--Document versions-->
+	  <!--The following is a condensed version of the editing history of the document for illustartive purposes.
+	  It was actually a more drawn-out process with back-and-forth over the course of about 7 years.-->
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv1">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>Initial draft by M.Y.</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpOriginalDraftWriting"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv2">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>Second draft following a similar structure but heavily rewritten by A.C. with many additional results added</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpMajorRewriting"/>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv1"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv3">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>Third draft with comments and editing by U.H., mostly for brevity and readability</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpShorterAndPunchier"/>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv2"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv4">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>Fourth draft with comments and editing by L.M., correcting small technical errors and mistakes in the citations</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpMinorFixes"/>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv3"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv5">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>The version A.C. edited to take into account additional comments from U.H. and L.M. and then submitted</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpFinishingTouches"/>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv4"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPreprint">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>The version as typeset by the publisher and posted on a preprint server</pdpprov:hasNature>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv5"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv6">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>The version A.C. edited in response to reviewer comments</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpRespondingToFeedback"/>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv5"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv7">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>The version A.C. edited to take into account further comments from U.H. and L.M. after the v6 edits and then resubmitted</pdpprov:hasNature>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpFinishingTouchesTake2"/>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv6"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPublished">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/DocumentVersion"/>
+	    <pdpprov:hasNature>The published version</pdpprov:hasNature>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv7"/>
+	  </rdf:Description>
+	  <!--People-->
+	  <rdf:Description rdf:about="https://orcid.org/0000-0002-7646-4384">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Person"/>
+	    <pdpprov:hasName>Adam Craig</pdpprov:hasName>
+	    <pdpprov:contributedMethodologyTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedSoftwareTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedValidationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedFormalAnalysisTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedInvestigationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedDataCurationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedWritingReviewAndEditingTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedVisualizationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://uk.linkedin.com/in/mesut-y%C3%BCcel-0b94aa54">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Person"/>
+	    <pdpprov:hasName>Mesut Yücel</pdpprov:hasName>
+	    <pdpprov:contributedMethodologyTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedSoftwareTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedFormalAnalysisTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedInvestigationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedDataCurationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedWritingOriginalDraftgTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://orcid.org/0000-0002-5011-8336">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Person"/>
+	    <pdpprov:hasName>Lev Muchnik</pdpprov:hasName>
+	    <pdpprov:contributedConceptualizationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedInvestigationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedWritingReviewAndEditingTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://orcid.org/0000-0002-6425-5980">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Person"/>
+	    <pdpprov:hasName>Uri Hershberg</pdpprov:hasName>
+	    <pdpprov:contributedConceptualizationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedResourcesTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedWritingReviewAndEditingTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedSupervisionTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedProjectAdministrationTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	    <pdpprov:contributedFundingAcquisitionTo rdf:resource="https://doi.org/10.1016/j.chaos.2022.112707"/>
+	  </rdf:Description>
+	  <!--Processes-->
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpOriginalDraftWriting">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>The writing of the original draft</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://uk.linkedin.com/in/mesut-y%C3%BCcel-0b94aa54"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpMajorRewriting">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>The writing of a new version with extensive new results</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-7646-4384"/>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv1"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpShorterAndPunchier">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>Additional editing for brevity and clarity</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-6425-5980"/>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv2"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpMinorFixes">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>Additional editing to fix minor errors</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-5011-8336"/>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv3"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpFinishingTouches">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>Last round of edits before submission</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-7646-4384"/>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv4"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpRespondingToFeedback">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>Editing and adding more supplementary figures to take into account reviewer feedback</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-7646-4384"/>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv5"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpFinishingTouchesTake2">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Editing"/>
+	    <pdpprov:hasNature>Last round of edits before resubmission</pdpprov:hasNature>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-7646-4384"/>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNv6"/>
+	  </rdf:Description>
+	  <!--Example hash for the published version-->
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPublishedHash">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/Hash"/>
+		<pdpprov:Nature>Sha256 hash of the published PDF version</pdpprov:Nature>
+		<pdpprov:hasText>D8EF27F4BB11A52231B6E752BF802EA80C117F39ABAC25A5E1D7A56DA6A841CF</pdpprov:hasText>
+		<pdpprov:wasDerivedFrom rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPublished"/>
+		<pdpprov:wasGeneratedBy rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpSha256HashingAlgorithm"/>
+	  </rdf:Description>
+	  <rdf:Description rdf:about="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNpSha256HashingAlgorithm">
+	    <rdf:type rdf:resource="http://npds.portaldoors.org/schema/bha/Provenance/HashingAlgorithm"/>
+		<pdpprov:Nature>sha256 hashing utility called in Windows PowerShell</pdpprov:Nature>
+		<pdpprov:used rdf:resource="https://npds.portaldoors.net/nexus/knuth/Craig2022IFSEAGFSDBNvPublished"/>
+		<pdpprov:wasControlledBy rdf:resource="https://orcid.org/0000-0002-7646-4384"/>
+	  </rdf:Description>
+	</rdf:RDF>

@@ -1,12 +1,14 @@
 ﻿// QebStringForm.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public static partial class QebString
 {
-  public const string OrSeparator = "|";
+  public const string DotSeparator = "."; // aka "period"
+  public const string EqualSeparator = "="; // aka "equal sign"
+  public const string OrSeparator = "|"; // aka "pipe sign", "vertical bar", "logical or"
   public const string OrSeparatorPadded = " | ";
   // ATTN: on Microsoft Windows OS, using only "Environment.NewLine" is not sufficient
   public static string[] EmptyLineSeparators = new string[] { "\r\n", "\r", "\n" };
@@ -47,14 +49,6 @@ public static partial class QebString
 
   public static string[] RemoveBlankStrings(this IList<string>? contents)
   {
-    // next line with RemoveAll() not working in NET 7.0 ???
-    // var numRemoved = contents.ToList().RemoveAll(s => (string.IsNullOrWhiteSpace(s) == true));
-    // next line with where predicate is working in NET 7.0
-    // var contents1 = contents.Where(s => (string.IsNullOrWhiteSpace(s) == false));
-    // next line with where predicate is working in NET 7.0
-    // var contents2 = contents.Where(s => (!string.IsNullOrWhiteSpace(s))).ToArray();
-    // next line with where and select is working in NET 7.0
-    // var contents3 = contents.Where(s => (!string.IsNullOrWhiteSpace(s))).Select(s => s.Trim()).ToArray();
     return contents.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToArray();
   }
 
@@ -160,7 +154,7 @@ public static partial class QebString
 
   public static string? StringEscapeHashLiteral(this string? withHash)
   {
-    string? withoutHash = string.Empty;
+    string? withoutHash = ESS;
     if (!string.IsNullOrEmpty(withHash))
     { withoutHash = withHash.Replace("#", "\\#"); }
     return withoutHash;

@@ -1,24 +1,21 @@
-﻿// TkgPageControllerFairMetric.cs
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
 public partial class TkgnPageController
 {
-  private const string eidFairMetricStatus = "span#FairMetricStatus";
+  private const string eidFairMetricStatus = TkndoElemPrfx + "FairMetricStatus";
 
   public virtual JsonResult OnPostReadFairMetrics([DataSourceRequest] DataSourceRequest dsRequest,
-   // string searchFilter, string serviceTag, string entityType,
    Guid recordGuid, bool isLimited = false)
   {
     var rzrHndlr = nameof(OnPostReadFairMetrics);
-    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
     OpenNexusConnection(); // use PNDC
 #if DEBUG
     DebugNexusRepo(rzrHndlr, rzrClass);
-    QURC.DebugClientAccess(rzrHndlr, rzrClass);
-    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
     try
@@ -27,8 +24,8 @@ public partial class TkgnPageController
       { ModelState.AddModelError("FairMetrics", "RRRecordGuid invalid."); }
       else
       {
-        dsResult = PNDC.ListViewableFairMetrics(recordGuid, isLimited)
-          .ToDataSourceResult(dsRequest);
+        dsResult = PNDC.ListEditableFairMetrics(recordGuid, isLimited)
+        .ToDataSourceResult(dsRequest, ModelState);
       }
     }
     catch (SqlException exc)

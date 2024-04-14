@@ -1,4 +1,5 @@
 {
+  "hotReloadEnabled": false,
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",

@@ -1,0 +1,8 @@
+﻿@model Guid?
+
+@(
+  Html.Kendo().DropDownListFor(m => m)
+  .DataValueField("Value").DataTextField("Text").OptionLabel("Select Registry")
+  .BindTo((System.Collections.IEnumerable) NPDSSD.NpdsDdlists.RegcRegistryListItems)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select PORTAL Registry" })
+)

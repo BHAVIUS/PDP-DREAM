@@ -1,6 +1,4 @@
 @model int?
 
-@(
-  Html.Kendo().IntegerTextBoxFor(m => m)
-  .HtmlAttributes(new {style = "width:100%"}).Min(0).Max(255)
-)
+@(Html.Kendo().IntegerTextBoxFor(m => m)
+  .HtmlAttributes(new {style = "width:100%"}).Min(0).Max(255))

@@ -1,4 +1,4 @@
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // Portions of code and/or ideas for code adapted from
@@ -39,20 +39,20 @@ public static class QebHttpRouteExtensions
   public static string GetMvcRouteDataTokenString(this
     Microsoft.AspNetCore.Routing.Route r, string dataTokenKey)
   {
-    if (r == null) { return string.Empty; }
+    if (r == null) { return ESS; }
     return r.DataTokens.GetMvcRouteDataTokenString(dataTokenKey);
   }
   public static string GetMvcRouteDataTokenString(this RouteData rData, string dataTokenKey)
   {
-    if (rData == null) { return string.Empty; }
+    if (rData == null) { return ESS; }
     return rData.DataTokens.GetMvcRouteDataTokenString(dataTokenKey);
   }
   public static string GetMvcRouteDataTokenString(this RouteValueDictionary rValues, string dataTokenKey)
   {
-    if (rValues == null) { return string.Empty; }
+    if (rValues == null) { return ESS; }
     object dataTokenValue = null;
     rValues.TryGetValue(dataTokenKey, out dataTokenValue);
-    if (dataTokenValue == null) { return string.Empty; }
+    if (dataTokenValue == null) { return ESS; }
     return dataTokenValue as string;
   }
 

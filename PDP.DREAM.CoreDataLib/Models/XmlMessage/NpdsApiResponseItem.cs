@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -6,12 +6,12 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsServerResponseItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsServerResponseItem : ANpdsXsgBaseItem<XElement>
 {
-  public NpdsServerResponseItem() : base() { this.Initialize(); }
-  public NpdsServerResponseItem(PdpAppConst.NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
+  public NpdsServerResponseItem() : base() { this.Initialize(NPDSCD.ResrepFormatDefault); }
+  public NpdsServerResponseItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
 
-  private void Initialize(PdpAppConst.NpdsResrepFormat rrf = PdpAppConst.NpdsResrepFormat.Nexus)
+  private void Initialize(NpdsResrepFormat rrf)
   {
-    base.InitNpdsItem(PdpAppConst.NpdsFieldRule.Required, PdpAppConst.ResponseXnam);
+    base.InitNpdsItem(NpdsFieldRule.Required, ResponseXnam);
   }
 
   public override void WriteXml(XmlWriter xWriter)
@@ -20,63 +20,63 @@ public class NpdsServerResponseItem : ANpdsXsgBaseItem<XElement>
     // start ServerResponse element
     writer.WriteStartElement(ItemXnam);
     // Response status
-    if (!(string.IsNullOrEmpty(writer.QURC.ResponseStatus)))
+    if (!(string.IsNullOrEmpty(writer.WRACE.ResponseStatus)))
     {
-      writer.WriteElementString(PdpAppConst.ResponseStatusXnam, writer.QURC.ResponseStatus);
+      writer.WriteElementString(ResponseStatusXnam, writer.WRACE.ResponseStatus);
     }
-    else if (writer.QURC.VerboseFormat)
+    else if (writer.WRACE.VerboseFormat)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseStatusXnam);
+      writer.WriteStartElement(ResponseStatusXnam);
       writer.WriteEndElement();
     }
     // Response Note
-    if (!(string.IsNullOrEmpty(writer.QURC.ResponseNote)))
+    if (!(string.IsNullOrEmpty(writer.WRACE.ResponseNote)))
     {
-      writer.WriteElementString(PdpAppConst.ResponseNoteXnam, writer.QURC.ResponseNote);
+      writer.WriteElementString(ResponseNoteXnam, writer.WRACE.ResponseNote);
     }
-    else if (writer.QURC.VerboseFormat)
+    else if (writer.WRACE.VerboseFormat)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseNoteXnam);
+      writer.WriteStartElement(ResponseNoteXnam);
       writer.WriteEndElement();
     }
     // Response Answer
-    if (writer.QURC.ResponseAnswer != null)
+    if (writer.WRACE.ResponseAnswer != null)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseAnswerXnam);
-      writer.QURC.ResponseAnswer.WriteXml(writer);
+      writer.WriteStartElement(ResponseAnswerXnam);
+      writer.WRACE.ResponseAnswer.WriteXml(writer);
       writer.WriteEndElement();
     }
-    else if (writer.QURC.VerboseFormat)
+    else if (writer.WRACE.VerboseFormat)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseAnswerXnam);
+      writer.WriteStartElement(ResponseAnswerXnam);
       writer.WriteEndElement();
     }
     // Response Related
-    if (writer.QURC.ResponseRelated != null)
+    if (writer.WRACE.ResponseRelated != null)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseRelatedXnam);
-      writer.QURC.ResponseRelated.WriteXml(writer);
+      writer.WriteStartElement(ResponseRelatedXnam);
+      writer.WRACE.ResponseRelated.WriteXml(writer);
       writer.WriteEndElement();
     }
-    else if (writer.QURC.VerboseFormat)
+    else if (writer.WRACE.VerboseFormat)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseRelatedXnam);
+      writer.WriteStartElement(ResponseRelatedXnam);
       writer.WriteEndElement();
     }
     // Response Referred
-    if (writer.QURC.ResponseReferred != null)
+    if (writer.WRACE.ResponseReferred != null)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseReferredXnam);
-      writer.QURC.ResponseReferred.WriteXml(writer);
+      writer.WriteStartElement(ResponseReferredXnam);
+      writer.WRACE.ResponseReferred.WriteXml(writer);
       writer.WriteEndElement();
     }
-    else if (writer.QURC.VerboseFormat)
+    else if (writer.WRACE.VerboseFormat)
     {
-      writer.WriteStartElement(PdpAppConst.ResponseReferredXnam);
+      writer.WriteStartElement(ResponseReferredXnam);
       writer.WriteEndElement();
     }
     // finish ServerResponse element
-    writer.WriteEndElement();  
+    writer.WriteEndElement();
   }
 
   public override void ReadXml(XmlReader xReader)
@@ -87,14 +87,14 @@ public class NpdsServerResponseItem : ANpdsXsgBaseItem<XElement>
     {
       reader.ReadStartElement();
     }
-    reader.ReadToFollowing(PdpAppConst.ResponseXnam);
-    if (reader.IsStartElement(PdpAppConst.ResponseXnam))
+    reader.ReadToFollowing(ResponseXnam);
+    if (reader.IsStartElement(ResponseXnam))
     {
       reader.Read();
-      reader.QURC.ResponseStatus = reader.ReadElementString(PdpAppConst.ResponseStatusXnam);
-      reader.QURC.ResponseAnswer.ReadXml(reader);
-      reader.QURC.ResponseRelated.ReadXml(reader);
-      reader.QURC.ResponseReferred.ReadXml(reader);
+      reader.WRACE.ResponseStatus = reader.ReadElementString(ResponseStatusXnam);
+      reader.WRACE.ResponseAnswer.ReadXml(reader);
+      reader.WRACE.ResponseRelated.ReadXml(reader);
+      reader.WRACE.ResponseReferred.ReadXml(reader);
     }
 
   }

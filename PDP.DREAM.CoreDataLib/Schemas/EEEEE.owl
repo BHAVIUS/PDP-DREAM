@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://npds.portaldoors.org/schema/pdp/eeeee"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://npds.portaldoors.org/schema/pdp/eeeee"
+     versionIRI="http://npds.portaldoors.org/schema/pdp/eeeee/2.3">
+    <Prefix name="eeeee" IRI="http://npds.portaldoors.org/schema/pdp/eeeee#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <Literal>Last Updated: 2023/06/11</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="owl:versionInfo"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">2.3</Literal>
+    </Annotation>
+    <Declaration>
+        <Class IRI="#Different"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EEE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LexicallyDifferent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LexicallySame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LexicallySimilar"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Related"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Same"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SemanticallyDifferent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SemanticallySame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SemanticallySimilar"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Similar"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#Different"/>
+        <Class IRI="#EEE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LexicallyDifferent"/>
+        <Class IRI="#Different"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LexicallySame"/>
+        <Class IRI="#Same"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LexicallySimilar"/>
+        <Class IRI="#Similar"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Related"/>
+        <Class IRI="#EEE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Same"/>
+        <Class IRI="#EEE"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SemanticallyDifferent"/>
+        <Class IRI="#Different"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SemanticallySame"/>
+        <Class IRI="#Same"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SemanticallySimilar"/>
+        <Class IRI="#Similar"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Similar"/>
+        <Class IRI="#EEE"/>
+    </SubClassOf>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#EEE</IRI>
+        <Literal>The term &quot;equivalent entities&quot; and the essential question of &quot;Equal and/or Equivalent Entities&quot; both represent the essential enquiry of identifying and characterizing two entities as the same, similar, related, or different from each other. Two entities are considered equivalent when there exists sufficient semantic similarity despite lexical differences including differences in natural language. Two entites are equal when they are lexically the same with some semantic similarity.</Literal>
+    </AnnotationAssertion>
+</Ontology>
+

@@ -1,35 +1,34 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
-@page "/NPDS/AgentMode/AddRoleAgent"
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAgentModeAddRoleAgent)]
 @model AgentModeAddRoleAgent
 @{
-  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
   PdpSiteRazorModel psrm = Model.PSRM;
   PdpSiteInfoModel psim = psrm.PdpSiteInfo;
-  QebiUserRestContext qurc = Model.QURC;
-  var clientIsAgent = qurc.ClientIsAgent; 
-  var userIsAgent = User.IsInRole(NamesForClientRoles.NpdsAgent.ToString());
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+  bool clientHasRole = wrace.ClientIsAgent;
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
 { <p><partial name="@psrm.RazorBodyMenu" /></p> }
 
-@if (userIsAgent)
+@if (userAuth && clientHasRole)
 {
   <p class="pdpTaskPassed">
-    You are registered as a Site User and NPDS Resource Agent.
+    You are registered as a PdpSite QEBI User and NPDS Agent.
   </p>
 }
 else
 {
   <p>
-    You are registered as a Site User but not yet as a member of any other roles. Please note that you
-    must add the NPDS Resource Agent role to your account before you can register resource labels and publish
-    resource descriptions in any of the NEXUS diristries, PORTAL registries and DOORS directories managed by
-    @psim.SiteOwnerName.
+    You are registered as a QEBI User of this PdpSite but not yet as a member of any other roles.
+    You must add the NPDS Agent role to your account before you can submit content to
+    the NEXUS diristries, PORTAL registries and DOORS directories managed by @psim.SiteOwnerName.
   </p>
   <p>
     The original description of the PORTAL-DOORS system of metadata registries and directories distinguished
@@ -45,18 +44,18 @@ else
     does not confer legal ownership.
   </p>
   <p>
-    To add the <em>NPDS Resource Agent</em> role with Author privileges to your user account, please acknowledge
+    To add the <em>NPDS Agent</em> role with Author privileges to your user account, please acknowledge
     the following terms:
   </p>
   <ul>
     <li>
       @psim.SiteOwnerName Registrar reserves the right to revoke privileges
-      from any person acting as a NPDS Resource Agent who submits inappropriate and/or offensive content.
+      from any person acting as an NPDS Agent who submits inappropriate and/or offensive content.
       Please report any abuses.
     </li>
     <li>
       @psim.SiteOwnerName Registrar does not confer any legal ownership rights
-      for any content submitted by any person acting as a NPDS Resource Agent. All rights previously held
+      for any content submitted by any person acting as an NPDS Agent. All rights previously held
       by you and/or others, such as trade and service marks, will be retained by their respective owners.
     </li>
     <li>
@@ -69,11 +68,11 @@ else
       resource record management models may be explored including restricted, unrestricted, and hybrid models
       with respect to editing privileges by Agents. The initial current default model is restricted, ie,
       any record entered by you as an Agent can only be edited by you as the Author for that resource record
-      albeit possibly subject to review by the Registry Editor and/or Registrar Admin. Unsupervised anonymous
-      editing as practiced in some wikis is NOT permitted. @psim.SiteOwnerName
-      Registrar reserves the right to change this policy to allow for concurrent use of the hybrid and unrestricted
+      albeit possibly subject to review by the Registry Editor and/or Registrar Admin.
+      Unsupervised anonymous editing as practiced in some wikis is NOT permitted.
+      @psim.SiteOwnerName  Registrar reserves the right to change this policy to allow for concurrent use of the hybrid and unrestricted
       models for managing various classes of resource records with the goal of facilitating productive collaborative
-      development of the PORTAL-DOORS System for the benefit of all users.
+      development of the PORTAL-DOORS System for the benefit of all.
     </li>
     <!--
             <li>A Resource Agent may register information about resources for which the Agent is either the actual owner or else
@@ -89,9 +88,9 @@ else
     To confirm your agreement, click the button:
   </p>
 
-  <form id="frmAddRoleAgent"  asp-page="/AuthMode/AddRoleAgent"
-      method="post" role="form" class="form-horizontal">
-      @Html.AntiForgeryToken()
+  <form id="frmAddRole" asp-page="@DepAgentModeAddRoleAgent"
+        method="post" role="form" class="form-horizontal">
+    @Html.AntiForgeryToken()
     <div class="textcenter">
       <button id="btnSubmit" type="submit" class="btn btn-outline-primary">Add Agent Role</button>
       <button id="btnCancel" type="reset" class="btn btn-outline-primary">Cancel</button>

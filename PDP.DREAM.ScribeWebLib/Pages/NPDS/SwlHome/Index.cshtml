@@ -1,5 +1,5 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -7,10 +7,10 @@
 @attribute [PdpRazorPageRoute(DepScribeWebLib, DepSwlHomeIndex)]
 @model SwlHomeIndex
 @{
-  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
   PdpSiteRazorModel psrm = Model.PSRM;
   PdpSiteInfoModel psim = psrm.PdpSiteInfo;
-  QebiUserRestContext qurc = Model.QURC;
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
@@ -18,23 +18,4 @@
   <p><partial name="@psrm.RazorBodyMenu" /></p>
 }
 
-<h5>Help Info and Examples by NPDS RecordAccess</h5>
-
-<ul>
-  <li>
-    Agent: <a asp-page="@DepSwlHomeAgentHelp">@DepSwlHomeAgentHelp</a> |
-    <a asp-page="@DepScribeServerAgentResreps">@DepScribeServerAgentResreps</a>
-  </li>
-  <li>
-    Author: <a asp-page="@DepSwlHomeAuthorHelp">@DepSwlHomeAuthorHelp</a> |
-    <a asp-page="@DepScribeServerAuthorResreps">@DepScribeServerAuthorResreps</a>
-  </li>
-  <li>
-    Editor: <a asp-page="@DepSwlHomeEditorHelp">@DepSwlHomeEditorHelp</a> |
-    <a asp-page="@DepScribeServerEditorResreps">@DepScribeServerEditorResreps</a>
-  </li>
-  <li>
-    Admin: <a asp-page="@DepSwlHomeAdminHelp">@DepSwlHomeAdminHelp</a> |
-    <a asp-page="@DepScribeServerAdminResreps">@DepScribeServerAdminResreps</a>
-  </li>
-</ul>
+<p><partial name="_ScribeHelp" /></p>

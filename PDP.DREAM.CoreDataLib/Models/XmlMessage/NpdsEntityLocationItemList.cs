@@ -1,5 +1,5 @@
 ﻿// NpdsEntityLocationItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsEntityLocationItem : ANpdsXsgBaseItem<string>
 {
   public NpdsEntityLocationItem() : base() { this.Initialize(); }
-  public NpdsEntityLocationItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityLocationItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsEntityLocationItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsEntityLocationItem(NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.LocationItemXnam, PdpAppConst.LocationListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, LocationItemXnam, LocationListXnam); }
 
   public string Location
   {
@@ -26,7 +26,7 @@ public class NpdsEntityLocationItem : ANpdsXsgBaseItem<string>
 public class NpdsEntityLocationList : ANpdsXsgItemList<NpdsEntityLocationItem>
 {
   public NpdsEntityLocationList() : base() { }
-  public NpdsEntityLocationList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsEntityLocationList(NpdsFieldRule rul) : base(rul) { }
 
 } // class
 

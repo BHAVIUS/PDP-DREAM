@@ -1,0 +1,27 @@
+@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepEditorModeHelp)]
+@model EditorModeHelp
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<p>
+  You are registered as an NPDS Record Editor
+  and may edit resource metadata records on this server for any services
+  for which you have been granted Editor privileges.
+</p>
+
+<partial name="_ResRepRecordHelp" />

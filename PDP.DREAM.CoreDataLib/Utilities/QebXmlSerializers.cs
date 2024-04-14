@@ -1,5 +1,5 @@
 ﻿// PdpXml.Serializers.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities
@@ -69,9 +69,9 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return serObj;
     }
 
-    public static string PdpSerialize(QebiUserRestContext qurc, IXmlSerializable ixs, XmlWriterSettings? xws = null)
+    public static string PdpSerialize(NpdsClientWrace wrace, IXmlSerializable ixs, XmlWriterSettings? xws = null)
     {
-      if (qurc == null) { throw new ArgumentNullException("qurc in SerializeToString"); }
+      if (wrace == null) { throw new ArgumentNullException("wrace in SerializeToString"); }
       if (ixs == null) { throw new ArgumentNullException("ixs in SerializeToString"); }
       if (xws == null) { xws = CreateXmlWriterSettings(); }
       // ATTN: StringBuilder fixed encoding of UTF-16 overrides any encoding carried by xws
@@ -80,11 +80,11 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       EncodedStringWriter esb = null;
       NpdsXmlWrappingWriter pxw = null;
       XmlSerializer xsz = null;
-      var xml = string.Empty;
+      var xml = ESS;
       try
       {
         esb = new EncodedStringWriter(xws.Encoding);
-        pxw = new NpdsXmlWrappingWriter(qurc, esb, xws); // create the writer with the settings
+        pxw = new NpdsXmlWrappingWriter(wrace, esb, xws); // create the writer with the settings
         xsz = new XmlSerializer(ixs.GetType()); // create the serializer with the object type
         xsz.Serialize(pxw, ixs); // serialize with the writer and the object value
         pxw.Flush(); // flush the writer
@@ -102,13 +102,13 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return xml;
     }
 
-    public static T PdpDeserialize<T>(QebiUserRestContext qurc, string xmlStr, T serObj) where T : class, IXmlSerializable, new()
+    public static T PdpDeserialize<T>(NpdsClientWrace wrace, string xmlStr, T serObj) where T : class, IXmlSerializable, new()
     {
       XmlDocument xd = new XmlDocument();
       xd.LoadXml(xmlStr);
       using (var xnr = new XmlNodeReader(xd))
       {
-        using (var pxr = new NpdsXmlWrappingReader(qurc, xnr))
+        using (var pxr = new NpdsXmlWrappingReader(wrace, xnr))
         {
           serObj.ReadXml(pxr);
         }
@@ -130,7 +130,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       return pairAreEquiv;
     }
 
-    public static bool RoundTripX2<T>(QebiUserRestContext qurc, T serObj1, T serObj2, string pairName = "",
+    public static bool RoundTripX2<T>(NpdsClientWrace wrace, T serObj1, T serObj2, string pairName = "",
       XmlWriterSettings? xws = null) where T : class, IXmlSerializable, new()
     {
       if (xws == null) { xws = CreateXmlWriterSettings(); }
@@ -141,7 +141,7 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       // XML serialized strings may have HTML encoded entities so str1 and str2 may have entities
       // XML deserialized strings should not have any HTML encoded entities so strings in serObj1 and serObj2 should not have any encoded entities
 
-      if (qurc == null)
+      if (wrace == null)
       {
         str1 = XmlSerialize(serObj1, xws);
         Debug.WriteLine(str1);
@@ -152,11 +152,11 @@ namespace PDP.DREAM.CoreDataLib.Utilities
       }
       else
       {
-        str1 = PdpSerialize(qurc, serObj1, xws);
+        str1 = PdpSerialize(wrace, serObj1, xws);
         Debug.WriteLine(str1);
 
-        serObj2 = PdpDeserialize(qurc, str1, serObj2);
-        str2 = PdpSerialize(qurc, serObj2, xws);
+        serObj2 = PdpDeserialize(wrace, str1, serObj2);
+        str2 = PdpSerialize(wrace, serObj2, xws);
         Debug.WriteLine(str2);
       }
 

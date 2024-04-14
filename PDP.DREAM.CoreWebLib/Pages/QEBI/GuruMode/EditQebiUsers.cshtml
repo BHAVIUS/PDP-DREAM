@@ -1,0 +1,72 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepGuruModeEditQebiUsers)]
+@model GuruModeEditQebiUsers
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+<p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<div id="CiaaGrid">
+@(Html.Kendo()
+.Grid<QebiUserUzm>()
+.Name("QebiGrid")
+.HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(10)
+.Model(m => {
+m.Id<Guid?>(p => p.UserGuid);
+m.Field<Guid?>(p => p.AppGuid).Editable(false).DefaultValue(EGS);
+m.Field<Guid?>(p => p.UserGuid).Editable(false).DefaultValue(EGS);
+m.Field(p => p.FirstName).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.LastName).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.UserName).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.EmailAddress).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.EmailAlternate).Editable(true).DefaultValue(String.Empty);
+m.Field(p => p.UserIsApproved).Editable(true).DefaultValue(true);
+m.Field(p => p.UserRoleNames).Editable(true).DefaultValue(String.Empty);
+}) // end Model
+.Read(post => post.Url(psrm.RazorPagePath + "?handler=ReadQebiUsers").Data("kendoToken"))
+.Create(post => post.Url(psrm.RazorPagePath + "?handler=WriteQebiUser").Data("kendoToken"))
+.Update(post => post.Url(psrm.RazorPagePath + "?handler=WriteQebiUser").Data("kendoToken"))
+.Destroy(post => post.Url(psrm.RazorPagePath + "?handler=DeleteQebiUser").Data("kendoToken"))
+.Events(e => e.Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+col.Bound(row => row.AppGuid).Hidden(true);
+col.Bound(row => row.UserGuid).Hidden(true);
+col.Bound(row => row.FirstName).Title("FirstName");
+col.Bound(row => row.LastName).Title("LastName");
+col.Bound(row => row.UserName).Title("UserName");
+col.Bound(row => row.EmailAddress).Title("EmailAddress");
+col.Bound(row => row.EmailAlternate).Title("EmailAlternate");
+col.Bound(row => row.UserIsApproved).Title("IsApproved");
+col.Bound(row => row.UserRoleNames).Title("UserRoles");
+col.Command(com => {
+com.Edit();
+com.Destroy();
+}).Title(""); // end Command
+}) // end Columns
+.Editable(ed => ed.Mode(GridEditMode.InLine))
+.Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
+.Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 10, 30, 50 }))
+.Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+.Filterable().Resizable(rs => rs.Columns(true)))
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+$("#CiaaGrid").show();
+$("#QebiGrid").data("kendoGrid").resize();
+})
+</script>
+

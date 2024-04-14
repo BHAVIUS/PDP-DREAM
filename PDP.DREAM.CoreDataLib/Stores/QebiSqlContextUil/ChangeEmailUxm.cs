@@ -1,5 +1,4 @@
-﻿// ChangeEmailUxm.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -13,30 +12,33 @@ public interface IConfirmEmail
   public bool EmailConfirmed { get; set; }
 } // interface
 
-public class ChangeEmailUxm : ConfirmTokenUxm, IConfirmEmail, IFormTaskUxm
+public class ChangeEmailUxm : ConfirmTokenUxm, IConfirmEmail
 {
   // required parameterless constructor
   public ChangeEmailUxm() { InitPath(); }
   public ChangeEmailUxm(Guid ug) { InitPath(); UserGuid = ug; }
-  public ChangeEmailUxm(string id, string ct) : base(id, ct) {InitPath();  }
+  public ChangeEmailUxm(string id, string ct) : base(id, ct) { InitPath(); }
   public ChangeEmailUxm(string id, string ct, short ws) : base(id, ct, ws) { InitPath(); }
   public ChangeEmailUxm(string id, string ct, string firstName, string lastName, string email) : base(id, ct)
   {
-    InitPath(); 
+    InitPath();
     PersonName = ConcatNames(firstName, lastName);
     NewEmail = email;
   }
 
   public void InitPath()
   {
-    ReturnUrlPath = "/NPDS/AnonMode/ConfirmEmail";
+    ReturnUrlPath = DepAnonModeConfirmEmail;
   }
 
-  public string? OldEmail { get; set; } = string.Empty;
+  [Display(Name = "Current Email (primary)")]
+  public string? OldEmail { get; set; } = ESS;
 
-  public string? NewEmail { get; set; } = string.Empty;
+  [Display(Name = "New Email (primary)")]
+  public string? NewEmail { get; set; } = ESS;
 
-  public string? AltEmail { get; set; } = string.Empty;
+  [Display(Name = "New Email (secondary)")]
+  public string? AltEmail { get; set; } = ESS;
 
   public bool EmailChanged { get; set; } = false;
 }

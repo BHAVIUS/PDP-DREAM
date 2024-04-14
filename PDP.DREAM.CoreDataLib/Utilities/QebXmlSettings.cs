@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -82,7 +82,7 @@ public static partial class QebXml
   // TODO: deprecate and replace by current ASP.NET Core encoder for XML
   public static string EncodeXml(string inXml)
   {
-    string outXml = string.Empty;
+    string outXml = ESS;
 
     if (!string.IsNullOrWhiteSpace(inXml))
     {

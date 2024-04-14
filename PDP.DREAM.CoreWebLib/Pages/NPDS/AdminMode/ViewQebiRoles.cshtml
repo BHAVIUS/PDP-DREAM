@@ -1,0 +1,47 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAdminModeViewQebiRoles)]
+@model AdminModeViewQebiRoles
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+
+<div id="CiaaGrid">
+@(Html.Kendo()
+.Grid<QebiAppRoleUxm>()
+.Name("QebiGrid")
+.HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(10)
+.Model(m => {
+m.Id(p => p.RoleGuid);
+}) // end Model
+.Read(post => post.Url(psrm.RazorPagePath + "?handler=ReadQebiRoles").Data("kendoToken"))
+.Events(e => e.Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+col.Bound(row => row.RoleGuid).Hidden(true);
+col.Bound(row => row.RoleName).Title("Name");
+col.Bound(row => row.AppRoleComment).Title("Description");
+}) // end Columns
+.Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
+.Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 10, 30, 50 }))
+.Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+.Filterable().Resizable(rs => rs.Columns(true)))
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+$("#CiaaGrid").show();
+$("#QebiGrid").data("kendoGrid").resize();
+})
+</script>
+

@@ -1,5 +1,5 @@
 @*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
   //
   // Telerik Kendo Grid (TKG acronym or Tkg prefix/suffix)
@@ -8,126 +8,196 @@
 
 <script type="text/javascript">
   var TkgPath = $("#NpdsGrid").attr("data-tkgpath");
-  var TkgToken = $("input:hidden[name='__RequestVerificationToken']").val();
+  var TkndoToken = $("input:hidden[name='__RequestVerificationToken']").val();
+  var TkgStsPrfx = "button#";
 
-  $(document).ready(function() {
-      $("#NpdsGrid").show();
-      $("#ResrepRecordGrid").data("kendoGrid").resize();
+  $(document).ready(function () {
+    $("#NpdsGrid").show();
   })
 
   function OnChangeRecord(e) {
-      if (e.type === "create" || e.type === "update" || e.type === "destroy") {
-          var data = e.response.Data[0];
-          $(data.PdpStatusName).html(data.PdpStatusMessage).show();
-      }
+    if (e.type === "create" || e.type === "update" || e.type === "destroy") {
+      var jsondata = e.response.Data[0];
+      // alert(jsondata.NdisElemId + " = " + jsondata.NdisElemMsg);
+      // update status in toolbar element
+      $(jsondata.NdisElemId).empty().html(jsondata.NdisElemMsg).removeClass("pdpHide").addClass("pdpShow");
+    }
   }
 
-  function OnRequestReleaseRecord(alink) {
-      var alid = $(alink).attr("id");
-      var posturl = TkgPath + "?handler=ReqRelResrepRecord" + "&recordGuid=" + alid;
-      PostAjaxRequest(posturl);
-      $("span#ReqRel" + data.RecordHandle).html(data.PdpStatusLabel).show();
+  function OnAuthorResrepAccess(alink) {
+    var alid = alink.id.replace("Author-", "");
+    var hndler = "?handler=RequestAccess&requestedRole=Author&isService=0&recordGuid=";
+    var posturl = TkgPath + hndler + alid;
+    PostAjaxRequest(posturl);
+  }
+  function OnReviewerResrepAccess(alink) {
+    var alid = alink.id.replace("Reviewer-", "");
+    var hndler = "?handler=RequestAccess&requestedRole=Reviewer&isService=0&recordGuid=";
+    var posturl = TkgPath + hndler + alid;
+    PostAjaxRequest(posturl);
+  }
+  function OnEditorResrepAccess(alink) {
+    var alid = alink.id.replace("Editor-", "");
+    var hndler = "?handler=RequestAccess&requestedRole=Editor&isService=0&recordGuid=";
+    var posturl = TkgPath + hndler + alid;
+    PostAjaxRequest(posturl);
+  }
+
+  function OnAuthorServiceAccess(alink) {
+    var alid = alink.id.replace("Author-", "");
+    var hndler = "?handler=RequestAccess&requestedRole=Author&isService=1&recordGuid=";
+    var posturl = TkgPath + hndler + alid;
+    PostAjaxRequest(posturl);
+  }
+  function OnReviewerServiceAccess(alink) {
+    var alid = alink.id.replace("Reviewer-", "");
+    var hndler = "?handler=RequestAccess&requestedRole=Reviewer&isService=1&recordGuid=";
+    var posturl = TkgPath + hndler + alid;
+    PostAjaxRequest(posturl);
+  }
+  function OnEditorServiceAccess(alink) {
+    var alid = alink.id.replace("Editor-", "");
+    var hndler = "?handler=RequestAccess&requestedRole=Editor&isService=1&recordGuid=";
+    var posturl = TkgPath + hndler + alid;
+    PostAjaxRequest(posturl);
   }
 
   function OnRefreshRecord(e) {
-      var tr = $(e.currentTarget).closest("tr");
-      var trid = this.dataItem(tr).id;
-      var posturl = TkgPath + "?handler=RefreshResrepStatus" + "&recordGuid=" + trid;
-      PostAjaxRequest(posturl);
+    // alert("RefreshRecord method has been triggered");
+    var tr = $(e.currentTarget).closest("tr");
+    var trid = this.dataItem(tr).id;
+    var posturl = TkgPath + "?handler=RefreshResrepStatus" + "&recordGuid=" + trid;
+    PostAjaxRequest(posturl);
   }
 
   function OnValidateRecord(e) {
-      var tr = $(e.currentTarget).closest("tr");
-      var trid = this.dataItem(tr).id;
-      var posturl = TkgPath + "?handler=ValidateResrepStatus" + "&recordGuid=" + trid;
-      PostAjaxRequest(posturl);
+    // alert("ValidateRecord method has been triggered");
+    var tr = $(e.currentTarget).closest("tr");
+    var trid = this.dataItem(tr).id;
+    var posturl = TkgPath + "?handler=ValidateResrepStatus" + "&recordGuid=" + trid;
+    PostAjaxRequest(posturl);
+  }
+
+  function OnShowInfosubset(e) {
+    // alert("ShowInfosubset method has been triggered");
+    var ct = $(e.currentTarget);
+    var cttitle = ct.attr("title").toString();
+    var tr = $(e.currentTarget).closest("tr");
+    var trdi = this.dataItem(tr);
+    var rrid = trdi.RRRecordGuid;
+    var fgid = trdi.RRFgroupGuid;
+    // alert(cttitle + " rrid = " + rrid + " fgid = " + fgid);
+    var trtexthhh = "";
+    // ATTN: must use if else if construct
+    //   because switch statement never worked
+    if (cttitle === "Location") {
+      trtexthhh = trdi.LocationJsam;
+    } else if (cttitle === "Description") {
+      trtexthhh = trdi.DescriptionJsam;
+    } else if (cttitle === "Provenance") {
+      trtexthhh = trdi.ProvenanceJsam;
+    } else if (cttitle === "Distribution") {
+      trtexthhh = trdi.DistributionJsam;
+    } else {
+      trtexthhh = "cttitle value unknown";
+    }
+    // alert(cttitle + " = " + trtexthhh);
+    // javascript open window not working
+    // var isswin = window.open("", cttitle, "resizable=yes,scrollbars=yes,status=no,location=no,toolbar=no,menubar=no,width=600,height=400,left=100,top=100");
+    // isswin.document.body.innerHTML = trtexthhh;
+    alert(trtexthhh);
   }
 
   function OnCheckInfosubset(e) {
-      var ct = $(e.currentTarget);
-      var cttitle = ct.attr("title");
-      var tr = ct.closest("tr");
-      var trid = this.dataItem(tr).id;
-      var posturl = TkgPath + "?handler=Check" + cttitle + "&recordGuid=" + trid;
-      PostAjaxRequest(posturl);
+    // alert("CheckInfosubset method has been triggered");
+    var ct = $(e.currentTarget);
+    var cttitle = ct.attr("title");
+    var tr = ct.closest("tr");
+    var rrid = this.dataItem(tr).RRRecordGuid;
+    var fgid = this.dataItem(tr).RRFgroupGuid;
+    // alert(cttitle + " rrid = " + rrid + " fgid = " + fgid);
+    var posturl = TkgPath + "?handler=Check" + cttitle + "&fgroupGuid=" + fgid;
+    PostAjaxRequest(posturl);
   }
 
   function OnReseqInfosubset(e) {
-      var ct = $(e.currentTarget);
-      var cttitle = ct.attr("title");
-      var tr = ct.closest("tr");
-      var trid = this.dataItem(tr).id;
-      var posturl = TkgPath + "?handler=Reseq" + cttitle + "&recordGuid=" + trid;
-      PostAjaxRequest(posturl);
+    // alert("ReseqInfosubset method has been triggered");
+    var ct = $(e.currentTarget);
+    var cttitle = ct.attr("title");
+    var tr = ct.closest("tr");
+    var rrid = this.dataItem(tr).RRRecordGuid;
+    var fgid = this.dataItem(tr).RRFgroupGuid;
+    // alert(cttitle + " rrid = " + rrid + " fgid = " + fgid);
+    var posturl = TkgPath + "?handler=Reseq" + cttitle + "&fgroupGuid=" + fgid;
+    PostAjaxRequest(posturl);
   }
 
   function PostAjaxRequest(requrl) {
-      $.ajax({
-          type: "POST",
-          url: requrl,
-          contentType: "application/json",
-          dataType: "json",
-          headers: { RequestVerificationToken: TkgToken },
-          success: function(result) {
-              var jsondata = result.Data[0];
-              $(jsondata.PdpStatusElement).html(jsondata.PdpStatusMessage).show();
-          },
-          failure: function(fail) { alert(fail.responseText); },
-          error: function(err) { alert(err.responseText); }
-      });
+    $.ajax({
+      type: "POST",
+      url: requrl,
+      contentType: "application/json",
+      dataType: "json",
+      headers: { RequestVerificationToken: TkndoToken },
+      success: function (result) {
+        var jsondata = result.Data[0];
+        // alert(jsondata.NdisElemId + " = " + jsondata.NdisElemMsg);
+        // update status in toolbar element
+        $(jsondata.NdisElemId).empty().html(jsondata.NdisElemMsg).removeClass("pdpHide").addClass("pdpShow");
+        // alert(jsondata.NdisLinkId + " = " + jsondata.NdisLinkMsg);
+        // update status in grid cell link
+        $(jsondata.NdisLinkId).empty().html(jsondata.NdisLinkMsg);
+      },
+      failure: function (fail) { alert(fail.responseText); },
+      error: function (err) { alert(err.responseText); }
+    });
   }
 
   function HideStatus(e) {
-      $("span#ResrepRootStatus").hide();
-      $("span#ResrepStemStatus").hide();
-      $("span#ResrepLeafStatus").hide();
-      $("span#EntityLabelStatus").hide();
-      $("span#SupportingTagStatus").hide();
-      $("span#SupportingLabelStatus").hide();
-      $("span#CrossReferenceStatus").hide();
-      $("span#OtherTextStatus").hide();
-      $("span#LocationStatus").hide();
-      $("span#DescriptionStatus").hide();
-      $("span#ProvenanceStatus").hide();
-      $("span#DistributionStatus").hide();
-      $("span#FairMetricStatus").hide();
-      $("span#SnapshotStatus").hide();
-      $("span#ServiceDefaultStatus").hide();
-      $("span#ServiceRestrictionAndStatus").hide();
-      $("span#ServiceRestrictionOrStatus").hide();
-  }
-
-  function ResizeGrid(e) {
-      var grid = $(this).closest(".k-grid").data("kendoGrid");
-      // grid.resize();
-      grid.ResizeGrid();
+    // alert("HideStatus method has been triggered");
+    $(TkgStsPrfx + "ResrepRootStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "EntityLabelStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "SupportingTagStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "SupportingLabelStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "CrossReferenceStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "OtherTextStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "LocationStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "DescriptionStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ProvenanceStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "DistributionStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "FairMetricStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ResrepSnapshotStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ResrepServiceStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ServiceRestrictionAndStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ServiceRestrictionOrStatus").removeClass("pdpShow").addClass("pdpHide");
   }
 
   function RefreshGrid(e) {
-      var grid = $(this).closest(".k-grid").data("kendoGrid");
-      // grid.dataSource.read();
-      grid.RefreshGrid();
+    // alert("RefreshGrid method has been triggered");
+    var grid = $(this).closest(".k-grid").data("kendoGrid");
+    grid.refresh();
+    HideStatus();
   }
 
   function HandleJsonErrors(e) {
-      // alert(e.xhr.responseText);
-      var msg = $.parseJSON(e.xhr.responseText);
-      if (msg) {
-          alert("Errors:\n" + msg.join("\n"));
-      }
+    // alert(e.xhr.responseText);
+    var msg = $.parseJSON(e.xhr.responseText);
+    if (msg) {
+      alert("Errors:\n" + msg.join("\n"));
+    }
   }
 
   function HandleAjaxErrors(e) {
-      if (e.errors) {
-          var message = "Errors:\n";
-          $.each(e.errors, function(key, value) {
-              if ('errors' in value) {
-                  $.each(value.errors, function() {
-                      message += this + "\n";
-                  });
-              }
+    if (e.errors) {
+      var message = "Errors:\n";
+      $.each(e.errors, function (key, value) {
+        if ('errors' in value) {
+          $.each(value.errors, function () {
+            message += this + "\n";
           });
-          alert(message);
-      }
+        }
+      });
+      alert(message);
+    }
   }
 </script>

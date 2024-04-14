@@ -1,41 +1,23 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreWebLib.Controllers;
-using PDP.DREAM.NexusDataLib.Stores;
-using PDP.DREAM.NexusWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Models.PdpSiteRoutes;
-
-namespace PDP.DREAM.NexusWebApp.Pages;
+namespace PDP.DREAM.NexusWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
 public class NwaHomeIndex : TkgnPageController
 {
   private const string rzrClass = nameof(NwaHomeIndex);
-  public NwaHomeIndex(ILoggerFactory lgrFtry,
-    IEmailSender emlSndr, ISmsSender smsSndr)
-    : base(lgrFtry, emlSndr, smsSndr) { }
+  public NwaHomeIndex() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      ServiceType = NpdsServiceType.Nexus,
-      DatabaseType = NpdsDatabaseType.Nexus,
-      DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
-      RecordAccess = NpdsRecordAccess.AnonUser,
+      ServiceType = NPDSCD.ServiceTypeNexus,
+      DatabaseType = NPDSCD.DatabaseTypeNexus,
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
+      RecordAccess = NPDSCD.RecordAccessAnon,
       UserModeClientRequired = false,
       SessionClientRequired = false
     };
@@ -45,7 +27,7 @@ public class NwaHomeIndex : TkgnPageController
     ResetNexusRepository();
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
-    QURC.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
   }
 
@@ -54,25 +36,17 @@ public class NwaHomeIndex : TkgnPageController
   {
 #if DEBUG
     var rzrHndlr = nameof(OnGet);
-    CatchNullQurc(rzrHndlr, rzrClass);
-    QURC.DebugClientAccess(rzrHndlr, rzrClass);
-    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+    CatchNullWrace(rzrHndlr, rzrClass);
+    CatchNullCore(rzrHndlr, rzrClass);
+    CatchNullNexus(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
     PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     return Page();
   }
 
   // OnPageHandlerExecuted before the [RazorPage].cshtml
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
-  {
-#if DEBUG
-    var rzrHndlr = nameof(OnPageHandlerExecuted);
-    CatchNullQurc(rzrHndlr, rzrClass);
-    CatchNullCore(rzrHndlr, rzrClass);
-    PSRM.DebugRazorPageStrings();
-    DebugQurcData(exeCntxt.Result);
-#endif
-  }
 
 } // end class
 

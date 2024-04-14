@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- project declaration -->
+  <PropertyGroup>
+    <AssemblyName>PDP.UnitTest.CoreDataLib</AssemblyName>
+    <RootNamespace>PDP.UnitTest.CoreDataLib</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <!-- dev/test/build/debug configuration -->
+  <PropertyGroup>
+    <NoWarn>CS0169;CS0219;CS0414;CS8600;CS8602;CS8604;</NoWarn>
+  </PropertyGroup>
+
+  <!-- required lib references -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.3.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.3.1" />
+    <PackageReference Include="xunit" Version="2.7.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PDP.DREAM.CoreDataLib\PDP.DREAM.CoreDataLib.csproj" />
+  </ItemGroup>
+
+  <!-- required PDP references -->
+
+</Project>
+

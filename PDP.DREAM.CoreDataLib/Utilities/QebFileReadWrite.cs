@@ -1,10 +1,12 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public static partial class QebFile
 {
+  // TODO: should file readers/writers be implemented as extensions?
+
   public static string ReadFileByLine(string fileName, out int lineCount)
   {
     lineCount = 0;

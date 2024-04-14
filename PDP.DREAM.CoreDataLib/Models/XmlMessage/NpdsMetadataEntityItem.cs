@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -6,49 +6,51 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsMetadataEntityItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataEntityNexus
 {
-  public NpdsMetadataEntityItem() : base() { this.Initialize(); }
-  public NpdsMetadataEntityItem(PdpAppConst.NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
+  public NpdsMetadataEntityItem() : base() { this.Initialize(NPDSCD.ResrepFormatDefault); }
+  public NpdsMetadataEntityItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
 
-  private void Initialize(PdpAppConst.NpdsResrepFormat rrf = default(PdpAppConst.NpdsResrepFormat))
+  private void Initialize(NpdsResrepFormat rrf)
   {
     // initialize base
-    base.InitNpdsItem(PdpAppConst.NpdsFieldRule.Required, PdpAppConst.EntityItemXnam, PdpAppConst.EntityListXnam, PdpAppConst.EntityKeyXnam);
+    base.InitNpdsItem(NpdsFieldRule.Required, EntityItemXnam, EntityListXnam, EntityKeyXnam);
 
-    // pdsroot.xsd group G_EntityNexusCore
-    this.EntityName = new NpdsEntityNameItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.EntityNature = new NpdsEntityNatureItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.EntityPrincipalTag = new NpdsEntityPrincipalTagItem(PdpAppConst.NpdsFieldRule.Required);
-    this.EntityCanonicalLabel = new NpdsEntityCanonicalLabelItem(PdpAppConst.NpdsFieldRule.Required);
-    this.EntityAliasLabelSet = new NpdsEntityAliasLabelList(PdpAppConst.NpdsFieldRule.Permitted);
+    // pdsroot.xsd group G_EntityCore
+    this.EntityName = new NpdsEntityNameItem(NpdsFieldRule.Permitted);
+    this.EntityNature = new NpdsEntityNatureItem(NpdsFieldRule.Permitted);
+    this.EntityPrincipalTag = new NpdsEntityPrincipalTagItem(NpdsFieldRule.Required);
+    this.EntityCanonicalLabel = new NpdsEntityCanonicalLabelItem(NpdsFieldRule.Required);
+    this.EntityAliasLabelSet = new NpdsEntityAliasLabelList(NpdsFieldRule.Permitted);
 
     // pdsroot.xsd group G_EntityPortal
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus || rrf == PdpAppConst.NpdsResrepFormat.PORTAL)
+    if (rrf == NPDSCD.ResrepFormatNexus || rrf == NPDSCD.ResrepFormatPORTAL)
     {
-      this.EntitySupportingTagSet = new NpdsEntitySupportingTagList(PdpAppConst.NpdsFieldRule.Permitted);
-      this.EntitySupportingLabelSet = new NpdsEntitySupportingLabelList(PdpAppConst.NpdsFieldRule.Permitted);
-      this.EntityOtherEntity = new NpdsEntityOtherEntityItem(PdpAppConst.NpdsFieldRule.Permitted);
-      this.EntityContact = new NpdsEntityContactItem(PdpAppConst.NpdsFieldRule.Permitted);
-      this.EntityOwner = new NpdsEntityOwnerItem(PdpAppConst.NpdsFieldRule.Permitted);
+      this.EntitySupportingTagSet = new NpdsEntitySupportingTagList(NpdsFieldRule.Permitted);
+      this.EntitySupportingLabelSet = new NpdsEntitySupportingLabelList(NpdsFieldRule.Permitted);
+      this.EntityOtherEntity = new NpdsEntityOtherEntityItem(NpdsFieldRule.Permitted);
+      this.EntityContact = new NpdsEntityContactItem(NpdsFieldRule.Permitted);
+      this.EntityOwner = new NpdsEntityOwnerItem(NpdsFieldRule.Permitted);
     }
     else
     {
-      this.EntitySupportingTagSet = new NpdsEntitySupportingTagList(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.EntitySupportingLabelSet = new NpdsEntitySupportingLabelList(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.EntityOtherEntity = new NpdsEntityOtherEntityItem(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.EntityContact = new NpdsEntityContactItem(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.EntityOwner = new NpdsEntityOwnerItem(PdpAppConst.NpdsFieldRule.Prohibited);
+      this.EntitySupportingTagSet = new NpdsEntitySupportingTagList(NpdsFieldRule.Prohibited);
+      this.EntitySupportingLabelSet = new NpdsEntitySupportingLabelList(NpdsFieldRule.Prohibited);
+      this.EntityOtherEntity = new NpdsEntityOtherEntityItem(NpdsFieldRule.Prohibited);
+      this.EntityContact = new NpdsEntityContactItem(NpdsFieldRule.Prohibited);
+      this.EntityOwner = new NpdsEntityOwnerItem(NpdsFieldRule.Prohibited);
     }
 
     // pdsroot.xsd group G_EntityDoors
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus || rrf == PdpAppConst.NpdsResrepFormat.DOORS)
+    if (rrf == NPDSCD.ResrepFormatNexus || rrf == NPDSCD.ResrepFormatDOORS)
     {
-      this.EntityLocationSet = new NpdsEntityLocationList(PdpAppConst.NpdsFieldRule.Required);
-      this.EntityDescriptionSet = new NpdsEntityDescriptionList(PdpAppConst.NpdsFieldRule.Permitted);
+      this.EntityLocationSet = new NpdsEntityLocationList(NpdsFieldRule.Required);
+      this.EntityDescriptionSet = new NpdsEntityDescriptionList(NpdsFieldRule.Permitted);
+      this.EntityFairMetricSet = new NpdsEntityFairMetricList(NpdsFieldRule.Permitted);
     }
     else
     {
-      this.EntityLocationSet = new NpdsEntityLocationList(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.EntityDescriptionSet = new NpdsEntityDescriptionList(PdpAppConst.NpdsFieldRule.Prohibited);
+      this.EntityLocationSet = new NpdsEntityLocationList(NpdsFieldRule.Prohibited);
+      this.EntityDescriptionSet = new NpdsEntityDescriptionList(NpdsFieldRule.Prohibited);
+      this.EntityFairMetricSet = new NpdsEntityFairMetricList(NpdsFieldRule.Prohibited);
     }
   }
 
@@ -64,6 +66,7 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
   public NpdsEntityOwnerItem EntityOwner { set; get; }
   public NpdsEntityLocationList EntityLocationSet { set; get; }
   public NpdsEntityDescriptionList EntityDescriptionSet { set; get; }
+  public NpdsEntityFairMetricList EntityFairMetricSet { set; get; }
 
   public override void WriteXml(XmlWriter xWriter)
   {
@@ -73,12 +76,12 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
     //       implies base class must handle both keys and values???
     //       or else treat the "keys" as the important "value"
     //       and everything else in the properties????
-    if (ItemHasKey && writer.QURC.ItemDoesArchive)
+    if (ItemHasKey && writer.WRACE.ItemDoesArchive)
     {
       // TODO: consider moving to generalized attribute writer in base
       writer.WriteAttributeString(ItemKeyXnam, ItemGuidKey.ToString());
     }
-    if (writer.QURC.ItemDoesVerbose || writer.QURC.ItemDoesArchive)
+    if (writer.WRACE.ItemDoesVerbose || writer.WRACE.ItemDoesArchive)
     {
       if (EntityName.ItemMayExist) { EntityName.WriteXml(writer); }
       if (EntityNature.ItemMayExist) { EntityNature.WriteXml(writer); }
@@ -92,6 +95,7 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
       if (EntityContact.ItemMayExist) { EntityContact.WriteXml(writer); }
       if (EntityLocationSet.ListMayExist) { EntityLocationSet.WriteXml(writer); }
       if (EntityDescriptionSet.ListMayExist) { EntityDescriptionSet.WriteXml(writer); }
+      if (EntityFairMetricSet.ListMayExist) { EntityFairMetricSet.WriteXml(writer); }
     }
     else
     {
@@ -107,6 +111,7 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
       if (EntityContact.ItemDoesExist) { EntityContact.WriteXml(writer); }
       if (EntityLocationSet.ListDoesExist) { EntityLocationSet.WriteXml(writer); }
       if (EntityDescriptionSet.ListDoesExist) { EntityDescriptionSet.WriteXml(writer); }
+      if (EntityFairMetricSet.ListDoesExist) { EntityFairMetricSet.WriteXml(writer); }
     }
     writer.WriteEndElement();
   }
@@ -140,7 +145,7 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
       }
       reader.Read();
 
-      // pdsroot.xsd group G_EntityNexusCore
+      // pdsroot.xsd group G_EntityCore
       EntityName.ReadXml(reader);
       EntityNature.ReadXml(reader);
       EntityPrincipalTag.ReadXml(reader);
@@ -148,8 +153,8 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
       EntityAliasLabelSet.ReadXml(reader);
 
       // pdsroot.xsd group G_EntityPortal
-      if (reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.Nexus ||
-          reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.PORTAL)
+      if (reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatNexus ||
+          reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatPORTAL)
       {
         EntitySupportingTagSet.ReadXml(reader);
         EntitySupportingLabelSet.ReadXml(reader);
@@ -159,11 +164,12 @@ public class NpdsMetadataEntityItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataE
       }
 
       // pdsroot.xsd group G_EntityDoors
-      if (reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.Nexus ||
-          reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.DOORS)
+      if (reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatNexus ||
+          reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatDOORS)
       {
         EntityLocationSet.ReadXml(reader);
         EntityDescriptionSet.ReadXml(reader);
+        EntityFairMetricSet.ReadXml(reader);
       }
       reader.Read();
     }

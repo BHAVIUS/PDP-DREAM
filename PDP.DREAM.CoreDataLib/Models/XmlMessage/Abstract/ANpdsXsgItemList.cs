@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,9 +8,9 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public abstract class ANpdsXsgItemList<TItem> : List<TItem>, IXmlSerializable where TItem : INpdsXsgListItem, IXmlSerializable, new()
 {
   protected ANpdsXsgItemList() { InitNpdsItemList(); }
-  protected ANpdsXsgItemList(PdpAppConst.NpdsFieldRule rul) { InitNpdsItemList(rul); }
+  protected ANpdsXsgItemList(NpdsFieldRule rul) { InitNpdsItemList(rul); }
 
-  protected void InitNpdsItemList(PdpAppConst.NpdsFieldRule rul = default)
+  protected void InitNpdsItemList(NpdsFieldRule rul = default)
   {
     ListRule = rul;
     TItem itm = new TItem();
@@ -19,17 +19,17 @@ public abstract class ANpdsXsgItemList<TItem> : List<TItem>, IXmlSerializable wh
     ListXnam = itm.ItemListXnam;
   }
 
-  public PdpAppConst.NpdsFieldRule ListRule { set; get; } = default;
+  public NpdsFieldRule ListRule { set; get; } = default;
 
-  public string ItemXnam { set; get; } = string.Empty;
+  public string ItemXnam { set; get; } = ESS;
 
-  public string ListXnam { set; get; } = string.Empty;
+  public string ListXnam { set; get; } = ESS;
 
   public bool ListIsNullOrEmpty
   { get { return (this.Count <= 0); } }
 
   public bool ListMayExist
-  { get { return (ListRule != PdpAppConst.NpdsFieldRule.Prohibited); } }
+  { get { return (ListRule != NpdsFieldRule.Prohibited); } }
 
   public bool ListDoesExist
   { get { return (ListMayExist && !ListIsNullOrEmpty); } }
@@ -42,14 +42,14 @@ public abstract class ANpdsXsgItemList<TItem> : List<TItem>, IXmlSerializable wh
 
   public virtual void WriteXml(XmlWriter writer)
   {
-    QebiUserRestContext qurc = ((NpdsXmlWrappingWriter)writer).QURC;
+    NpdsClientWrace wrace = ((NpdsXmlWrappingWriter)writer).WRACE;
     bool lstHasValues = (Count > 0);
-    if (lstHasValues || qurc.VerboseFormat)
+    if (lstHasValues || wrace.VerboseFormat)
     {
       writer.WriteStartElement(ListXnam);
-      if (qurc.VerboseFormat)
+      if (wrace.VerboseFormat)
       {
-        writer.WriteAttributeString(PdpAppConst.ListCountXnam, Count.ToString());
+        writer.WriteAttributeString(ListFacetCountXnam, Count.ToString());
       }
       if (lstHasValues)
       {
@@ -75,7 +75,7 @@ public abstract class ANpdsXsgItemList<TItem> : List<TItem>, IXmlSerializable wh
         {
           string attrnam = reader.LocalName;
           string attrval = reader.GetAttribute(attrnam);
-          if (attrnam == PdpAppConst.ListCountXnam)
+          if (attrnam == ListFacetCountXnam)
           {
             expCount = Convert.ToInt32(attrval);
           }

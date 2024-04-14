@@ -1,35 +1,32 @@
-﻿// TkgPageControllerServiceRestrictionAnd.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
 public partial class TkgsPageController
 {
-  private const string eidRestrictionAndStatus = "span#ServiceRestrictionAndStatus";
+  public const string eidRestrictionAndStatus = TkndoElemPrfx + "ServiceRestrictionAndStatus";
 
   // ATTN: current implementation does not allow use of parameter isLimited
-  public virtual JsonResult OnPostReadServiceRestrictionAnds([DataSourceRequest] DataSourceRequest dsRequest,
-  // string searchFilter, string serviceTag, string entityType,
-   Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostReadServiceRestrictionAnds([DataSourceRequest] DataSourceRequest dsRequest,
+    Guid recordGuid, bool isLimited = false)
   {
     var rzrHndlr = nameof(OnPostReadServiceRestrictionAnds);
-    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
     OpenScribeConnection(); // use PSDC
 #if DEBUG
     DebugScribeRepo(rzrHndlr, rzrClass);
-    QURC.DebugClientAccess(rzrHndlr, rzrClass);
-    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
     try
     {
       if (recordGuid.IsInvalid())
-    { ModelState.AddModelError("RestrictionAnd", "RRRecordGuid invalid."); }
+      { ModelState.AddModelError("RestrictionAnd", "RRRecordGuid invalid."); }
       else
       {
-          dsResult = PSDC.ListEditableRestrictionAndsByRGuid(recordGuid)
-          .ToDataSourceResult(dsRequest);
+        dsResult = PSDC.ListEditableRestrictionAndsByRGuid(recordGuid)
+        .ToDataSourceResult(dsRequest);
       }
     }
     catch (SqlException exc)
@@ -44,14 +41,15 @@ public partial class TkgsPageController
   }
 
   public virtual JsonResult OnPostWriteServiceRestrictionAnd([DataSourceRequest] DataSourceRequest dsRequest,
-    ServiceRestrictionAndEditModel fgr)
+    ServiceRestrictionAndUxm fgr, Guid rstrctAndGuid, Guid recordGuid, Guid infosetGuid)
   {
     OpenScribeConnection(); // use PSDC
+    fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
     if (fgr.RRRecordGuid.IsInvalid())
     { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
     if (ModelState.IsValid) { fgr = PSDC.EditRestrictionAnd(fgr); }
-    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
-    fgr.PdpStatusElement = eidRestrictionAndStatus;
+    else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.NdisElemId = eidRestrictionAndStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
     CloseScribeConnection();
@@ -59,12 +57,13 @@ public partial class TkgsPageController
   }
 
   public virtual JsonResult OnPostDeleteServiceRestrictionAnd([DataSourceRequest] DataSourceRequest dsRequest,
-    ServiceRestrictionAndEditModel fgr)
+    ServiceRestrictionAndUxm fgr, Guid rstrctAndGuid, Guid recordGuid, Guid infosetGuid)
   {
     OpenScribeConnection(); // use PSDC
+    fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
     if (ModelState.IsValid) { fgr = PSDC.DeleteRestrictionAnd(fgr); }
-    else { fgr.PdpStatusMessage = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
-    fgr.PdpStatusElement = eidRestrictionAndStatus;
+    else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
+    fgr.NdisElemId = eidRestrictionAndStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
     CloseScribeConnection();

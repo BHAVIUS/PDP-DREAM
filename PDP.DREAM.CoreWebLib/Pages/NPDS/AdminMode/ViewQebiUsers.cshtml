@@ -1,0 +1,54 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAdminModeViewQebiUsers)]
+@model AdminModeViewQebiUsers
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+
+<div id="CiaaGrid">
+@(Html.Kendo()
+.Grid<QebiUserUzm>()
+.Name("QebiGrid")
+.HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(10)
+.Model(m => {
+m.Id<Guid?>(p => p.UserGuid);
+}) // end Model
+.Read(post => post.Url(psrm.RazorPagePath + "?handler=ReadQebiUsers").Data("kendoToken"))
+.Events(e => e.Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+col.Bound(row => row.UserGuid).Hidden(true);
+col.Bound(row => row.FirstName).Title("FirstName");
+col.Bound(row => row.LastName).Title("LastName");
+col.Bound(row => row.UserName).Title("UserName");
+col.Bound(row => row.EmailAddress).Title("EmailAddress");
+col.Bound(row => row.EmailAlternate).Title("EmailAlternate");
+col.Bound(row => row.SecurityQuestion).Title("SecurityQuestion");
+col.Bound(row => row.SecurityAnswer).Title("SecurityAnswer");
+col.Bound(row => row.UserIsApproved).Title("IsApproved");
+col.Bound(row => row.UserRoleNames).Title("UserRoles");
+}) // end Columns
+.Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
+.Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 10, 30, 50 }))
+.Sortable(st => st.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+.Filterable().Resizable(rs => rs.Columns(true)))
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+$("#CiaaGrid").show();
+$("#QebiGrid").data("kendoGrid").resize();
+})
+</script>
+

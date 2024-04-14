@@ -1,4 +1,4 @@
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // 2019 info on AspNetCore Routing
@@ -112,7 +112,7 @@ public class QebRouteDebuggerMiddleware
   private const string linbrksep = " </br> "; // line break separator to demarcate values
   private static string FormatRouteValueDictionary(IDictionary<string, string> values, bool formatKey = true)
   {
-    if (values == null || values.Count == 0) { return string.Empty; }
+    if (values == null || values.Count == 0) { return ESS; }
     var sb = new StringBuilder();
     foreach (string key in values.Keys)
     {
@@ -133,7 +133,7 @@ public class QebRouteDebuggerMiddleware
   }
   private static string FormatRouteValueDictionary(IReadOnlyDictionary<string, object?> values, bool formatKey = true)
   {
-    if (values == null || values.Count == 0) { return string.Empty; }
+    if (values == null || values.Count == 0) { return ESS; }
     var sb = new StringBuilder();
     foreach (string key in values.Keys)
     {
@@ -154,7 +154,7 @@ public class QebRouteDebuggerMiddleware
   }
   private static string FormatDataTokenValue(object dataTokenValue, string separator = "", string siteBaseUrl = "")
   {
-    string dataTokenString = string.Empty;
+    string dataTokenString = ESS;
     if (dataTokenValue != null)
     {
       if (dataTokenValue.GetType() == typeof(string[]))
@@ -214,7 +214,7 @@ public class QebRouteDebuggerMiddleware
   private string RouteHelpInformation(IList<IRouter> theRouters, bool allHelp = false)
   {
     string baseUrl = prdContext.Request.Host.ToString();
-    var sb = new StringBuilder(string.Empty);
+    var sb = new StringBuilder(ESS);
     sb.Append(@"<h1>Help Information:</h1><table>");
     sb.Append(@"<tr><th>Name</th><th>Route</th><th>Help</th><th>Examples</th></tr>");
     foreach (Microsoft.AspNetCore.Routing.Route r in theRouters)
@@ -243,7 +243,7 @@ public class QebRouteDebuggerMiddleware
   private string RouteDebugDiagnostics(IList<IRouter> theRouters, RouteData theRouteData)
   {
     HttpRequest theRequest = prdContext.Request;
-    var sb = new StringBuilder(string.Empty);
+    var sb = new StringBuilder(ESS);
 
     string titFrm = @"<h1>Web Request:</h1><table><caption>{0}</caption>";
     sb.AppendFormat(titFrm, typeof(HttpRequest).FullName);
@@ -266,8 +266,8 @@ public class QebRouteDebuggerMiddleware
 
     bool routeFound = false;
     Microsoft.AspNetCore.Routing.Route foundRoute = null;
-    string foundRouteUrl = string.Empty;
-    string foundRouteName = string.Empty;
+    string foundRouteUrl = ESS;
+    string foundRouteName = ESS;
     foreach (Microsoft.AspNetCore.Routing.Route r in theRouters)
     {
       string rUrl = r.ToString(); // URL template for the route
@@ -314,7 +314,7 @@ public class QebRouteDebuggerMiddleware
   private string RouteDebugDiagnostics(List<RouteEndpoint?>? theEndpoints, RouteData theRouteData)
   {
     HttpRequest theRequest = prdContext.Request;
-    var sb = new StringBuilder(string.Empty);
+    var sb = new StringBuilder(ESS);
 
     string titFrm = @"<h1>Web Request:</h1><table><caption>{0}</caption>";
     sb.AppendFormat(titFrm, typeof(HttpRequest).FullName);
@@ -334,8 +334,8 @@ public class QebRouteDebuggerMiddleware
 
     bool routeFound = false;
     RouteEndpoint foundRoute = null;
-    string foundRouteUrl = string.Empty;
-    string foundRouteName = string.Empty;
+    string foundRouteUrl = ESS;
+    string foundRouteName = ESS;
     foreach (RouteEndpoint r in theEndpoints)
     {
       string rUrl = r.ToString(); // URL template for the route

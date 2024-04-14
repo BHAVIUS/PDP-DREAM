@@ -1,0 +1,30 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (Model.QebRcp.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? ESS);
+  <span>
+    CoreService:
+    <a asp-page="@DepCoreServiceIndex">Index</a>
+    <span> | </span>
+    <a asp-page="@DepCoreServiceAnonResreps">AnonResreps</a>
+    @if (userAuth)
+    {
+      <span> | </span>
+      <a asp-page="@DepCoreServiceUserResreps">UserResreps</a>
+      <span> | </span>
+      <a asp-page="@DepCoreServiceAgentResreps">AgentResreps</a>
+      <span> | </span>
+      <a asp-page="@DepCoreServiceAuthorResreps">AuthorResreps</a>
+      <span> | </span>
+      <a asp-page="@DepCoreServiceReviewerResreps">ReviewerResreps</a>
+      <span> | </span>
+      <a asp-page="@DepCoreServiceEditorResreps">EditorResreps</a>
+      <span> | </span>
+      <a asp-page="@DepCoreServiceAdminResreps">AdminResreps</a>
+    }
+  </span>
+}

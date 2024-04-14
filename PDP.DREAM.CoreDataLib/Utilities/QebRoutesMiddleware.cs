@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -14,7 +14,7 @@ public static class GetRoutesMiddlewareExtensions
     var mrh = new RouteHandler(context => {
       // var routeValues = context.GetRouteData().Values;
       // return context.Response.WriteAsync($"Route values: {string.Join(",", routeValues)}");
-      return context.Response.WriteAsync(string.Empty);
+      return context.Response.WriteAsync(ESS);
     });
     var mrb = new RouteBuilder(app, mrh);
     configureRoutes(mrb);
@@ -29,7 +29,7 @@ public static class GetRoutesMiddlewareExtensions
     var mrh = new RouteHandler(context => {
       // var routeValues = context.GetRouteData().Values;
       // return context.Response.WriteAsync($"Route values: {string.Join(",", routeValues)}");
-      return context.Response.WriteAsync(string.Empty);
+      return context.Response.WriteAsync(ESS);
     });
     var mrb = new RouteBuilder(app, mrh);
     configureRoutes(mrb);
@@ -43,7 +43,7 @@ public static class GetRoutesMiddlewareExtensions
     var mrh = new RouteHandler(context => {
       // var routeValues = context.GetRouteData().Values;
       // return context.Response.WriteAsync($"Route values: {string.Join(",", routeValues)}");
-      return context.Response.WriteAsync(string.Empty);
+      return context.Response.WriteAsync(ESS);
     });
     var mrb = new RouteBuilder(app, mrh);
     configureRoutes(mrb);

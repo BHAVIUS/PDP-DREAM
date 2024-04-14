@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
@@ -12,15 +12,15 @@ public class PdpSitePrivacy : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
-      RecordAccess = NpdsRecordAccess.AnonUser,
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
+      RecordAccess = NPDSCD.RecordAccessAnon,
       UserModeClientRequired = false,
       SessionClientRequired = false
     };
     PSRM = new PdpSiteRazorModel(DepPdpSitePrivacy, $"{DepPdpDream}: PdpSite Privacy");
-    PSRM.InitRazorPageMenus("_PdpSiteSpanPageMenu");
+    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_PdpSiteSpanPageMenu");
   }
 
   // OnGet before OnPageHandlerExecuted

@@ -1,0 +1,32 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model AnonModeResetUsername1
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+  var pdpFormGroup = "form-group mb-3 col-md-3";
+}
+@Html.Raw(psrm.FormatBodyTitle())
+
+<form id="frmResetUsername1"  asp-page="@DepAnonModeResetUsername1"
+      method="post" role="form" class="form-horizontal">
+  <p>
+    To reset your username, please enter your password and then answer the security question.
+  </p>
+  <div class="form-group mb3">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UXM.FormTitle, new { Value = Model.UXM.FormTitle })
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+  </div>
+  <div class="@pdpFormGroup">
+    @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3", Value = Model.UXM.PassWord })
+    @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <br />
+  <button id="btnResetUsername1" type="submit" class="btn btn-outline-primary">Next Step</button>
+</form>

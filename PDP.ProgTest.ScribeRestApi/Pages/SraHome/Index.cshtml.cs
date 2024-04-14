@@ -1,65 +1,52 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreWebLib.Controllers;
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-using static PDP.DREAM.CoreDataLib.Utilities.QebString;
-
-namespace PDP.DREAM.ScribeRestApi.Pages;
+namespace PDP.DREAM.ScribeWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class SraHomeIndex : CoreDataRazorPageControllerBase
+public class SraHomeIndex : TkgsPageController
 {
   private const string rzrClass = nameof(SraHomeIndex);
-  public SraHomeIndex(ILoggerFactory lgrFtry, 
-    IEmailSender emlSndr, ISmsSender smsSndr) 
-    : base(lgrFtry, emlSndr, smsSndr) { }
+  public SraHomeIndex() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Core,
-      DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
-      RecordAccess = NpdsRecordAccess.AnonUser,
+      ServiceType = NPDSCD.ServiceTypeScribe,
+      DatabaseType = NPDSCD.DatabaseTypeScribe,
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
+      RecordAccess = NPDSCD.RecordAccessAnon,
       UserModeClientRequired = false,
       SessionClientRequired = false
     };
     PSRM = new PdpSiteRazorModel("/SraHome/Index", PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeRestApiPageMenu");
+    PSRM.InitRazorPageMenus("_SraHomeSpanPageMenu");
     ResetCoreRepository();
+#if DEBUG
+    var rzrHndlr = nameof(OnPageHandlerExecuting);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+#endif
+    ResetScribeRepository();
   }
 
   // OnGet before OnPageHandlerExecuted
   public IActionResult OnGet()
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnGet), rzrClass);
-    PSRM.DebugRazorPageStrings();
+    var rzrHndlr = nameof(OnGet);
+    CatchNullWrace(rzrHndlr, rzrClass);
+    CatchNullCore(rzrHndlr, rzrClass);
+    CatchNullScribe(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     return Page();
   }
 
   // OnPageHandlerExecuted before the [RazorPage].cshtml
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
-  {
-#if DEBUG
-    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrClass);
-    DebugQurcData(exeCntxt.Result);
-#endif
-  }
 
 } // end class
 

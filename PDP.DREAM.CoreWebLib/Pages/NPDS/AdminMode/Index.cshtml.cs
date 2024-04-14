@@ -1,32 +1,29 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, Authorize(Roles = NpdsAdmin)]
-public class AdminModeIndex : TkgcPageController
+[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
+public class AdminModeIndex : QebiDataRazorPageControllerBase
 {
   private const string rzrClass = nameof(AdminModeIndex);
-  public AdminModeIndex(ILoggerFactory lgrFtry,
-    IEmailSender emlSndr, ISmsSender smsSndr)
-    : base(lgrFtry, emlSndr, smsSndr) { }
+  public AdminModeIndex() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
-      RecordAccess = NpdsRecordAccess.Admin,
+      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
+      RecordAccess = NPDSCD.RecordAccessAdmin,
       AdminModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepAdminModeIndex, $"{PDPSS.AppOwnerShortName}: Admin Mode"); 
-    PSRM.InitRazorPageMenus("_AdminModeSpanPageMenu");
+    PSRM = new PdpSiteRazorModel(DepAdminModeIndex, $"{PDPSS.AppOwnerNameShort}: Admin Mode");
+    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AdminModeSpanPageMenu");
     ResetQebiRepository();
-    ResetCoreRepository();
-    var isVerified = CheckCoreAgentSession();
-    if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    var isVerified = CheckQebiUserSession();
+    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted

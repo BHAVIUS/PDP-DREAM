@@ -1,5 +1,5 @@
 ﻿// NpdsRecordUpdatedOnItem.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsRecordUpdatedOnItem : ANpdsXsgBaseItem<DateTime>
 {
   public NpdsRecordUpdatedOnItem() : base() { this.Initialize(); }
-  public NpdsRecordUpdatedOnItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsRecordUpdatedOnItem(PdpAppConst.NpdsFieldRule rul, DateTime val) : base(val) { this.Initialize(rul); }
+  public NpdsRecordUpdatedOnItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsRecordUpdatedOnItem(NpdsFieldRule rul, DateTime val) : base(val) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.UpdatedOnItemXnam, PdpAppConst.UpdatedOnListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, UpdatedOnItemXnam, UpdatedOnListXnam); }
 
   public DateTime UpdatedOn
   {

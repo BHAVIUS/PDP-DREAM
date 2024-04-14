@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -6,25 +6,25 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsPortalServerItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsPortalServerItem : ANpdsXsgBaseItem<XElement>
 {
-  public NpdsPortalServerItem() : base() { this.Initialize(); }
-  public NpdsPortalServerItem(PdpAppConst.NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
+  public NpdsPortalServerItem() : base() { this.Initialize(NPDSCD.ResrepFormatPORTAL); }
+  public NpdsPortalServerItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
 
-  private void Initialize(PdpAppConst.NpdsResrepFormat rrf = PdpAppConst.NpdsResrepFormat.PORTAL)
+  private void Initialize(NpdsResrepFormat rrf)
   {
-    base.InitNpdsItem(PdpAppConst.NpdsFieldRule.Required, PdpAppConst.PortalServerXnam);
+    base.InitNpdsItem(NpdsFieldRule.Required, PortalServerXnam);
   }
 
   public override void WriteXml(XmlWriter xWriter)
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
     writer.WriteStartElement(ItemXnam);
-    if (writer.QURC.PortalRecords != null)
+    if (writer.WRACE.PortalRecords != null)
     {
-      writer.QURC.PortalRecords.WriteXml(writer);
+      writer.WRACE.PortalRecords.WriteXml(writer);
     }
-    else if (writer.QURC.VerboseFormat)
+    else if (writer.WRACE.VerboseFormat)
     {
-      writer.WriteAttributeString(PdpAppConst.ListCountXnam, "0");
+      writer.WriteAttributeString(ListFacetCountXnam, "0");
     }
     writer.WriteEndElement();
   }
@@ -37,14 +37,14 @@ public class NpdsPortalServerItem : ANpdsXsgBaseItem<XElement>
     {
       reader.ReadStartElement();
     }
-    reader.ReadToFollowing(PdpAppConst.ResponseXnam);
-    if (reader.IsStartElement(PdpAppConst.ResponseXnam))
+    reader.ReadToFollowing(ResponseXnam);
+    if (reader.IsStartElement(ResponseXnam))
     {
       reader.Read();
-      reader.QURC.ResponseStatus = reader.ReadElementString(PdpAppConst.ResponseStatusXnam);
-      reader.QURC.ResponseAnswer.ReadXml(reader);
-      reader.QURC.ResponseRelated.ReadXml(reader);
-      reader.QURC.ResponseReferred.ReadXml(reader);
+      reader.WRACE.ResponseStatus = reader.ReadElementString(ResponseStatusXnam);
+      reader.WRACE.ResponseAnswer.ReadXml(reader);
+      reader.WRACE.ResponseRelated.ReadXml(reader);
+      reader.WRACE.ResponseReferred.ReadXml(reader);
     }
 
   }

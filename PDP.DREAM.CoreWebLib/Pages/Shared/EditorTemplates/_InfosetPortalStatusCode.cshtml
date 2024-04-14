@@ -1,8 +1,6 @@
 ﻿@model Int16
 
-@(
-  Html.Kendo().DropDownListFor(m => m)
-  .DataValueField("InfosetPortalStatusCode").DataTextField("InfosetPortalStatusName")
-  .BindTo((System.Collections.IEnumerable)ViewData["InfosetPortalStatusList"])
-  .HtmlAttributes(new {  style = "width: 11em;", title = "Select most appropriate InfosetPortalStatus." })
-)  
+@(Html.Kendo().DropDownListFor(m => m)
+  .DataValueField("Value").DataTextField("Text")
+  .BindTo((System.Collections.IEnumerable)NPDSCD.NpdsDdlists.InfosetPortalStatusList)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate InfosetPortalStatus." }))

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -7,14 +7,14 @@ public class NpdsXmlResponseWriter<T> : ActionResult  //, IDisposable
 {
   // ATTN: compare with PdpXmlStringWriter
 
-  public NpdsXmlResponseWriter(T dataTransferObjectToSerialize, QebiUserRestContext pdpRestContext, XmlWriterSettings? xmlWriterSettings = null)
+  public NpdsXmlResponseWriter(T dataTransferObjectToSerialize, NpdsClientWrace pdpRestContext, XmlWriterSettings? xmlWriterSettings = null)
   {
     if (dataTransferObjectToSerialize == null)  // ?? operator cannot be applied to generic types
     {
       throw new ArgumentNullException("dataTransferObjectToSerialize in PdpXmlResponseWriter");
     }
     DTO = dataTransferObjectToSerialize;
-    QURC = pdpRestContext ?? throw new ArgumentNullException("pdpRestContext in PdpXmlResponseWriter");
+    WRACE = pdpRestContext ?? throw new ArgumentNullException("pdpRestContext in PdpXmlResponseWriter");
     // TODO: recode the ResponseStatus feature
     // PRC.ResponseStatus = HttpResponseExtensions.ResponseStatus();
     XWS = xmlWriterSettings ?? QebXml.CreateXmlWriterSettings();
@@ -24,7 +24,7 @@ public class NpdsXmlResponseWriter<T> : ActionResult  //, IDisposable
   public T DTO { set; get; }
 
   // the QEB User REST Context
-  public QebiUserRestContext QURC { set; get; }
+  public NpdsClientWrace WRACE { set; get; }
 
   // the XML Writer and Settings
   public NpdsXmlWrappingWriter NXWW { set; get; }
@@ -35,7 +35,7 @@ public class NpdsXmlResponseWriter<T> : ActionResult  //, IDisposable
   public override void ExecuteResult(ActionContext ac)
   {
     ac.HttpContext.Response.ContentType = "text/xml";
-    NXWW = new NpdsXmlWrappingWriter(QURC, ac.HttpContext.Response.Body, XWS);
+    NXWW = new NpdsXmlWrappingWriter(WRACE, ac.HttpContext.Response.Body, XWS);
     var xs = new XmlSerializer(DTO.GetType());
     xs.Serialize(NXWW, DTO);  // .SerializeAsXElement ???
     ac.HttpContext.Response.Body.Flush();

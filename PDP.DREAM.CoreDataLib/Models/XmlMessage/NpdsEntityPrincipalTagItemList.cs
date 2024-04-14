@@ -1,5 +1,5 @@
 ﻿// NpdsEntityPrincipalTagItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsEntityPrincipalTagItem : ANpdsXsgBaseItem<string>
 {
   public NpdsEntityPrincipalTagItem() : base() { this.Initialize(); }
-  public NpdsEntityPrincipalTagItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityPrincipalTagItem(PdpAppConst.NpdsFieldRule rul, string val) : base(NpdsParsers.ParsePrincipalTag(val)) { this.Initialize(rul); }
+  public NpdsEntityPrincipalTagItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsEntityPrincipalTagItem(NpdsFieldRule rul, string val) : base(NpdsParsers.ParsePrincipalTag(val)) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.PrincipalTagItemXnam, PdpAppConst.PrincipalTagListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, PrincipalTagItemXnam, PrincipalTagListXnam); }
 
   public string PrincipalTag
   {
@@ -25,5 +25,5 @@ public class NpdsEntityPrincipalTagItem : ANpdsXsgBaseItem<string>
 public class NpdsEntityPrincipalTagList : ANpdsXsgItemList<NpdsEntityPrincipalTagItem>
 {
   public NpdsEntityPrincipalTagList() : base() { }
-  public NpdsEntityPrincipalTagList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsEntityPrincipalTagList(NpdsFieldRule rul) : base(rul) { }
 }

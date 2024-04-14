@@ -1,5 +1,5 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -12,9 +12,10 @@
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
-{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
-
-@Html.Raw(psrm.FormatBodyTitle())
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+@Html.Raw(psrm.FormatSectionTitle(""))
 
 <table class="pdpTable">
   <tr><td>Name</td><td>Value</td><td>Type</td></tr>

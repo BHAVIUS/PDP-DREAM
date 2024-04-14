@@ -1,127 +1,157 @@
-﻿// QebiUserUxm.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
-public partial class QebiUserUxm : QebiUserUvm, IUserProfileEdit, IFormTaskUxm
+public partial class QebiUserUxm : FormTaskUxmBase, IUserProfileEdit
 {
+  protected void CheckGuids()
+  {
+    if (AppGuid == EGS) { AppGuid = PDPSS.CiaamAppGuid; }
+    if (UserGuid == EGS) { UserGuid = PdpNewGuid(); }
+  }
   public QebiUserUxm()
   {
-    if (AppGuid == Guid.Empty) { AppGuid = PDPSS.AppSecureUiaaGuid; }
+    CheckGuids();
   }
   public QebiUserUxm(IUserProfileEdit p)
   {
+    CheckGuids();
     this.DateLastEdit = p.DateLastEdit;
     this.DateProfileChanged = p.DateProfileChanged;
-    this.QebUserNameDisplayed = p.QebUserNameDisplayed;
+    this.UserName = p.UserName;
+    this.UserAlias = p.UserAlias;
     this.FirstName = p.FirstName;
     this.LastName = p.LastName;
-    this.Organization = p.Organization;
     this.PhoneNumber = p.PhoneNumber;
-    this.SecurityAnswer = p.SecurityAnswer;
-    this.SecurityQuestion = p.SecurityQuestion;
+    this.PhoneAlternate = p.PhoneAlternate;
     this.WebsiteAddress = p.WebsiteAddress;
+    this.Organization = p.Organization;
+    this.SecurityQuestion = p.SecurityQuestion;
+    this.SecurityAnswer = p.SecurityAnswer;
   }
-  public QebiUserUxm(Guid appGuid, Guid usrGuid, string firstName, string lastName,
-    string userName, string emailAddress, bool isApproved)
+  public QebiUserUxm(IUserAdminEdit p)
   {
-    AppGuid = appGuid; UserGuid = usrGuid; FirstName = firstName; LastName = lastName;
-    QebUserName = userName; EmailAddress = emailAddress; UserIsApproved = isApproved;
+    CheckGuids();
+    this.FirstName = p.FirstName;
+    this.LastName = p.LastName;
+    this.UserName = p.UserName;
+    this.UserAlias = p.UserAlias;
+    this.EmailAddress = p.EmailAddress;
+    this.EmailAlternate = p.EmailAlternate;
+    this.UserIsApproved = p.UserIsApproved;
+  }
+  public QebiUserUxm(Guid appGuid, Guid usrGuid,
+     bool isApproved, bool isPerson, bool isAgent,
+    string firstName, string lastName, string userName, string userAlias, string emailAddress)
+  {
+    AppGuid = appGuid; UserGuid = usrGuid;
+    UserIsApproved = isApproved; UserIsPerson = isPerson; UserIsAgent = isAgent;
+    FirstName = firstName; LastName = lastName; UserName = userName; UserAlias = userAlias;
+    EmailAddress = emailAddress;
   }
 
-  // begin IFormTaskUxm
-  public string? FormTitle { get; set; } = string.Empty;
-  public string? FormMessage { get; set; } = string.Empty;
-  public bool FormCompleted { get; set; }
-  public bool ErrorOccurred { get; set; }
-  public Exception? Error { get; set; } = null;
-  // end IFormTaskUxm
+  public Guid AppGuid { get; set; } = EGS;
+  public Guid UserGuid { get; set; } = EGS;
 
+  public virtual string? ReturnUrl { get; set; } = ESS;
+  public virtual string? Message { get; set; } = ESS;
+
+  public virtual DateTime? DateEmailConfirmed { get; set; } = null;
+  public virtual DateTime? DateLastEdit { get; set; } = null;
+  public virtual DateTime? DateLastLogin { get; set; } = null;
+  public virtual DateTime? DateLastLockout { get; set; } = null;
+  public virtual DateTime? DatePasswordChanged { get; set; } = null;
+  public virtual DateTime? DateProfileChanged { get; set; } = null;
+  public virtual DateTime? DateTokenExpired { get; set; } = null;
+  public virtual DateTime? DateUserCreated { get; set; } = null;
+
+  public virtual bool RememberMe { get; set; } = false;
+  // public bool RequireASQ { get; set; } = false;
+  public virtual bool RequireSecTok { get; set; } = false;
+  public virtual bool UserIsApproved { get; set; } = false;
+  public virtual bool UserIsPerson { get; set; } = false;
+  public virtual bool UserIsAgent { get; set; } = false;
+  // public short WizardStep { get; set; } = 0;
+
+  public virtual string? SecurityStamp { get; set; } = ESS;
+  public virtual string? SecurityToken { get; set; } = ESS;
 
   // ATTN: does not update in Telerik controls unless use simple standard property
-  [Display(Name = "UserRoles")]
+  [Display(Name = "User Roles")]
   [StringLength(128, ErrorMessage = "String must be <=128 characters.")]
-  public string? UserRoleNames { get; set; } = string.Empty;
+  public string? UserRoleNames { get; set; } = ESS;
 
-  //private IList<string>? userRoleList = new List<string>() { string.Empty };
-  //public IList<string>? UserRoleList
-  //{
-  //  get {
-  //    if (string.IsNullOrEmpty(UserRoleNames)) { userRoleList = new List<string>() { string.Empty }; }
-  //    else { userRoleList = UserRoleNames.SplitOrStringToList(); }
-  //    return userRoleList;
-  //  }
-  //}
-
-  [Display(Name = "Email (primary)"), Required, EmailAddress]
+  [Display(Name = "Email (preferred)"), EmailAddress, Required]
   [StringLength(128, ErrorMessage = "String must be <=128 characters.")]
-  public override string? EmailAddress { get; set; } = string.Empty;
+  public string? EmailAddress { get; set; } = ESS;
 
   [Display(Name = "Email (alternate)"), EmailAddress]
   [StringLength(128, ErrorMessage = "String must be <=128 characters.")]
-  public override string? EmailAlternate
+  public string? EmailAlternate
   {
     get { if (string.IsNullOrEmpty(altEmail)) { return EmailAddress; } else { return altEmail; } }
     set { altEmail = value; }
   }
-  private string? altEmail = string.Empty;
+  private string? altEmail = ESS;
 
   [Display(Name = "Security Question")]
   [StringLength(64, ErrorMessage = "The {0} must be from {2} to <=64 characters.", MinimumLength = 6)]
-  public override string? SecurityQuestion { get; set; } = string.Empty;
+  public string? SecurityQuestion { get; set; } = ESS;
 
   [Display(Name = "Security Answer")]
   [StringLength(64, ErrorMessage = "The {0} must be from {2} to <=64 characters.", MinimumLength = 4)]
-  public override string? SecurityAnswer { get; set; } = string.Empty;
+  public string? SecurityAnswer { get; set; } = ESS;
 
-  [Display(Name = "Username"), Required]
-  // [StringLength(32,  MinimumLength = 8, ErrorMessage = "Username must be from 8 to <=32 characters.")]
+  [Display(Name = "User Name"), Required]
   [RegularExpression("[a-zA-Z0-9._]{8,32}", ErrorMessage = "Username must be 8 - 32 characters including alphanumeric, period '.' or underscore '_' ")]
-  public override string? QebUserName { get; set; } = string.Empty;
+  public string? UserName { get; set; } = ESS;
 
   [Display(Name = "Display (Screen) Name")]
   [StringLength(64, ErrorMessage = "String must be <=64 characters.")]
-  public override string? QebUserNameDisplayed
+  public string? UserAlias
   {
     get {
-      if (string.IsNullOrEmpty(usrNamDisp)) { usrNamDisp = QebUserName; }
-      return usrNamDisp;
+      if (string.IsNullOrEmpty(usrAlias)) { usrAlias = UserName; }
+      return usrAlias;
     }
-    set { usrNamDisp = value; }
+    set { usrAlias = value; }
   }
-  private string? usrNamDisp = string.Empty;
+  private string? usrAlias = ESS;
 
   [Display(Name = "First Name"), Required]
   [StringLength(64, ErrorMessage = "String must be <=64 characters.")]
-  public override string? FirstName { get; set; } = string.Empty;
+  public string? FirstName { get; set; } = ESS;
 
   [Display(Name = "Last Name"), Required]
   [StringLength(64, ErrorMessage = "String must be <=64 characters.")]
-  public override string? LastName { get; set; } = string.Empty;
+  public string? LastName { get; set; } = ESS;
 
-  [Display(Name = "Telephone")]
+  [Display(Name = "Phone (preferred)"), Phone, Required]
   [StringLength(32, ErrorMessage = "String must be <=32 characters.")]
-  public override string? PhoneNumber { get; set; } = string.Empty;
+  public string? PhoneNumber { get; set; } = ESS;
+
+  [Display(Name = "Phone (alternate)"), Phone]
+  [StringLength(32, ErrorMessage = "String must be <=32 characters.")]
+  public string? PhoneAlternate { get; set; } = ESS;
 
   [Display(Name = "Website")]
   [StringLength(256, ErrorMessage = "String must be <=256 characters.")]
-  public override string? WebsiteAddress { get; set; } = string.Empty;
+  public string? WebsiteAddress { get; set; } = ESS;
 
   [Display(Name = "Organization")]
   [StringLength(128, ErrorMessage = "String must be <=128 characters.")]
-  public override string? Organization { get; set; } = string.Empty;
+  public string? Organization { get; set; } = ESS;
 
   [Display(Name = "Password")]
   [StringLength(32, ErrorMessage = "The {0} must be from {2} to <=32 characters.", MinimumLength = 6)]
-  public virtual string? PassWord { get; set; } = string.Empty;
+  public virtual string? PassWord { get; set; } = ESS;
 
   [Display(Name = "Confirm Password")]
   [Compare("PassWord", ErrorMessage = "The Password and its confirmation do not match.")]
-  public virtual string? AltPassword { get; set; } = string.Empty;
-  public virtual string? PasswordHash { get; set; } = string.Empty;
+  public string? AltPassword { get; set; } = ESS;
+  public string? PasswordHash { get; set; } = ESS;
 
-
-}
+} // end class
 
 // end file

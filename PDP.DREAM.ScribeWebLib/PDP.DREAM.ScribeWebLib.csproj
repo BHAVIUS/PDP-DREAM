@@ -2,26 +2,24 @@
 
   <!-- project declaration -->
   <PropertyGroup>
-    <AssemblyName>PDP.Gangkhar.ScribeWebLib</AssemblyName>
+    <AssemblyName>PDP.DREAM.ScribeWebLib</AssemblyName>
     <RootNamespace>PDP.DREAM.ScribeWebLib</RootNamespace>
     <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
     <Company>Brain Health Alliance</Company>
-    <AssemblyVersion>10.3.4</AssemblyVersion>
-    <FileVersion>10.3.4</FileVersion>
-    <Version>10.3.4</Version>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <!-- dev/test/build/debug configuration -->
   <PropertyGroup>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <NoWarn>CS1998;CS0103;CS0120;CS0219;CS8600;CS8601;CS8602;CS8604;CS8629;CS8669;IDE0047;</NoWarn>
+    <NoWarn>CS1998;CS0103;CS0120;CS0219;CS8032;CS8600;CS8601;CS8602;CS8604;CS8629;CS8669;IDE0047;</NoWarn>
   </PropertyGroup>
+
+  <!-- required lib references -->
 
   <!-- required references -->
   <ItemGroup>
     <ProjectReference Include="..\PDP.DREAM.NexusWebLib\PDP.DREAM.NexusWebLib.csproj" />
-    <ProjectReference Include="..\PDP.DREAM.ScribeDataLib\PDP.DREAM.ScribeDataLib.csproj" />
   </ItemGroup>
 
 </Project>

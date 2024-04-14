@@ -1,9 +1,11 @@
-﻿// SmtpmailService.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Services;
 
+// System.Net.NetworkCredential
+// System.Net.Mail.MailMessage
+// System.Net.Mail.SmtpClient
 public static class SmtpmailService
 {
   public static bool SendEmail(string fromEmail, string toEmail, string subject, string body)
@@ -18,7 +20,7 @@ public static class SmtpmailService
       string adminEmail, adminUsername, adminPassword, smtpIpadrstring;
       int smtpPortnumber;
       bool useSsl, useDfltCred;
-      
+
       // smtpIpadrstring = "smtpIpadrstring";
       smtpIpadrstring = "208.91.196.40"; // smtpout.secureserver.net 465 with SSL
       // smtpPortnumber = 25;
@@ -89,13 +91,13 @@ public class WebmailMessage
 {
   public WebmailMessage() { }
 
-  public string CCList { get; set; } = string.Empty;
-  public string FromEmail { get; set; } = string.Empty;
-  public string FromName { get; set; } = string.Empty;
+  public string CCList { get; set; } = ESS;
+  public string FromEmail { get; set; } = ESS;
+  public string FromName { get; set; } = ESS;
   public bool IsHtml { get; set; } = false;
-  public string MessageBody { get; set; } = string.Empty;
-  public string Subject { get; set; } = string.Empty;
-  public string ToList { get; set; } = string.Empty;
+  public string MessageBody { get; set; } = ESS;
+  public string Subject { get; set; } = ESS;
+  public string ToList { get; set; } = ESS;
 
   public bool SendEmail()
   {
@@ -104,7 +106,7 @@ public class WebmailMessage
 
   public static string BuildMessageBody(string userName, string Password, string filePath)
   {
-    string text = string.Empty;
+    string text = ESS;
     FileInfo fi = new FileInfo(filePath);
     if (fi.Exists)
     {

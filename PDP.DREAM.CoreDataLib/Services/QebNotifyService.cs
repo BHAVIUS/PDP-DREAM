@@ -1,16 +1,11 @@
-﻿// QebNotifyService.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Services;
 
 public static class QebNotifyService
 {
-
-  // TODO: consider MailKit https://www.mailkit.com/
-  // TODO: consider MailGun https://www.mailgun.com/
-  // TODO: consider Postal https://github.com/postalhq/postal
-
+  // wrapper for current active mail service
   public static bool SendEmail(string toEmailAddress, string msgSubject, string msgBody)
   {
     bool emailSent;

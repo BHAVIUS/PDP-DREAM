@@ -1,5 +1,5 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 //
 // Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
@@ -8,53 +8,48 @@
 
 @{
 PdpSiteRazorModel psrm = Model.PSRM;
-QebiUserRestContext qurc = Model.QURC;
-var hasAnonAccess = qurc.ClientIsAnonymous;
-var hasAgentAccess = qurc.ClientHasAgentAccess;
-var hasAuthorAccess = qurc.ClientHasAuthorAccess;
-var hasEditorAccess = qurc.ClientHasEditorAccess;
-var hasAdminAccess = qurc.ClientHasAdminAccess;
-var hasScribeEditAccess = qurc.ClientHasScribeEditAccess;
-var diristryGuid = qurc.DiristryGuid;
-var registryGuid = qurc.RegistryGuid;
-var directoryGuid = qurc.DirectoryGuid;
-var registrarGuid = qurc.RegistrarGuid;
+PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+NpdsClientWrace wrace = Model.WRACE;
+var hasAnonMode = wrace.ClientIsAnonymous;
+var hasAgentMode = wrace.ClientHasAgentMode;
+var hasAuthorMode = wrace.ClientHasAuthorMode;
+var hasReviewerMode = wrace.ClientHasReviewerMode;
+var hasEditorMode = wrace.ClientHasEditorMode;
+var hasAdminMode = wrace.ClientHasAdminMode;
 // correct path remains critical for Razor routing for WebApp pages
 // paths for RestApi services may be different from paths for WebApp pages
-// TODO: reconcile and re-align paths for both WebApp pages and RestApi services when possible
-var TkgResrepParstr = $"/{qurc.SearchFilter}/{qurc.ServiceTag}/{qurc.EntityType}";
-var TkgFgroupQrystr = $"&recordGuid=#=RRRecordGuid#&isLimited=#=InfosetIsUpdaterLimited#";
+// TODO: reconcile and re-align paths for both WebApp pages and RestApi services
+var TkgResrepParstr = $"/{wrace.SearchFilter.EName}/{wrace.ServiceTag}/{wrace.EntityType.EName}";
+var TkgFgroupQrystr = $"&recordGuid=#=RRRecordGuid#"; // isLimited defaults to false
 var TkgPath = psrm.RazorPagePath + TkgResrepParstr;
-var TkgToken = PdpAppConst.TkgrdToken;
+var TkgStatusLabel = "Record status";
 // column formatting
-var UtcdtFormat = PdpAppConst.UtcdtFormat;
-var Numf3Format = PdpAppConst.Numf3Format;
-var FipmpWidth = "6em"; // width for index priority marked principal (and other int/bool) columns
-var FonbyWidth = "11em"; // width for date-on person-by columns
-var FcmdbWidth = "21em"; // width for command button columns
+var FipmpWidth = "6em"; // width for Index Priority Marked Principal (and other int/bool) columns
+var FonbyWidth = "11em"; // width for date-ON person-BY columns
+var FcmdbWidth = "21em"; // width for ComManD Button columns
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+<p><partial name="@psrm.RazorBodyMenu" /></p>
 }
 
-@Html.Raw(psrm.FormatBodyTitle())
-
 <div id="NpdsGrid" data-tkgpath="@TkgPath">
-@(
-Html.Kendo()
-.Grid<NexusResrepViewModel>()
-.Name("ResrepRecordGrid").HtmlAttributes(new { style = "float:left;" })
-.DataSource(ds => ds.Ajax().PageSize(5)
+@(Html.Kendo()
+.Grid<CoreResrepRootUxm>()
+.Name("ResrepRecordGrid")
+.HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(10)
 .Model(m => {
 m.Id<Guid?>(p => p.RRRecordGuid);
 }) // end Model
-.Read(rr => rr.Url(TkgPath + "?handler=ReadResrepRoots").Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(rr => rr.Url(TkgPath + "?handler=ReadResrepRoots").Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRInfosetGuid).Title("RRInfosetGuid").Hidden(true)
-.HeaderHtmlAttributes(new { title = "Resource Representation RRInfosetGuid" })
-;
+.HeaderHtmlAttributes(new { title = "Resource Representation RRInfosetGuid" });
 col.Bound(row => row.RRRecordGuid).Title("RRRecordGuid").Hidden(true)
-.HeaderHtmlAttributes(new { title = "Resource Representation RRRecordGuid" })
-;
+.HeaderHtmlAttributes(new { title = "Resource Representation RRRecordGuid" });
 col.Bound(row => row.RecordHandle).Title("Handle")
 .HeaderHtmlAttributes(new { title = "Resource RecordHandle" });
 col.Bound(row => row.EntityTypeCode).Title("Type")
@@ -70,37 +65,15 @@ col.Bound(row => row.EntityNature).Title("Nature")
 .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
 .HtmlAttributes(new { title = "#=EntityNature#" })
 .ClientTemplate("#=EntityNature128#");
-if (!hasAnonAccess) {
-col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
-.Hidden(false).Sortable(false).Filterable(false);
-col.Bound(row => row.InfosetIsAgentShared).Title("Shared?").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
-.Hidden(false).Sortable(false).Filterable(false);
-col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
-.Filterable(false);
-col.Bound(row => row.InfosetIsManagerReleased).Title("Released?").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
-.Hidden(false).Sortable(false).Filterable(false);
-}
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date" });
-} // end if
 }) // end Columns
 .ClientDetailTemplateId("ResrepRecordTabStrip")
 .Pageable(pgb => pgb.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
 .Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }))
 .Sortable(srt => srt.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
-.Filterable().Navigatable().Resizable(rs => rs.Columns(true))
-// end ResrepRecord
-)
+.Filterable().Navigatable().Resizable(rs => rs.Columns(true)))
 </div>
-
-<partial name="_NexusToolbarsTkgp" />
 
 <script id="ResrepRecordTabStrip" type="text/x-kendo-template">
 @(Html.Kendo()
@@ -109,82 +82,54 @@ col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
 .Items(itm => {
 
 itm.Add().Text("EntityLabels").Content(@<text>
-@(Html.Kendo().Grid<EntityLabelViewModel>()
+@(Html.Kendo()
+.Grid<EntityLabelUxm>()
 .Name("EntityLabels#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id<Guid?>(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadEntityLabels" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadEntityLabels" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "EntityLabel has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "EntityLabel has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "EntityLabel has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "EntityLabel is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "EntityLabel is Principal (Canonical)?" });
 col.Bound(row => row.EntityLabelHtml).Title("EntityLabel").Encoded(false)
 .HeaderHtmlAttributes(new { title = "Entity Label derived from LabelUri or from TagToken concatenated with Registry Label" });
-if (!hasAnonAccess){
-col.Bound(row => row.IsResolvable).Title("Resolvable").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "EntityLabel is Resolvable? (URI is also URL?)" });
-col.Bound(row => row.IsPrivate).Title("Private").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "EntityLabel is Private?" });
-}
-if (hasAdminAccess) {
-col.Bound(row => row.IsGenerating).Title("GL?").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "EntityLabel is a Generating URI?" });
-col.Bound(row => row.ServiceTypeCode).Title("STC?").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "EntityLabel has ServiceTypeCode?" });
-} // end if
 col.Bound(row => row.TagToken).Title("TagToken")
 .HeaderHtmlAttributes(new { title = "EntityLabel TagToken" });
-if (hasAdminAccess) {
-col.Bound(row => row.LabelUri).Title("LabelUri")
-.HeaderHtmlAttributes(new { title = "EntityLabel has a non-default Generating URI" });
-} // end if
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date" });
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end EntityLabel
 
 itm.Add().Text("SupportingTags").Content(@<text>
-@(Html.Kendo().Grid<SupportingTagViewModel>()
+@(Html.Kendo()
+.Grid<SupportingTagUxm>()
 .Name("SupportingTags#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadSupportingTags" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadSupportingTags" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "SupportingTag has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "SupportingTag has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "SupportingTag has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "SupportingTag is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
@@ -192,39 +137,28 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 col.Bound(row => row.SupportingTag).Title("SupportingTag");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end SupportingTag
 
 itm.Add().Text("SupportingLabels").Content(@<text>
-@(Html.Kendo().Grid<SupportingLabelViewModel>()
+@(Html.Kendo()
+.Grid<SupportingLabelUxm>()
 .Name("SupportingLabels#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadSupportingLabels" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadSupportingLabels" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "SupportingLabel has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "SupportingLabel has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "SupportingLabel has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "SupportingLabel is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
@@ -232,39 +166,28 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 col.Bound(row => row.SupportingLabel).Title("SupportingLabel").Encoded(false);
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end SupportingLabel
 
 itm.Add().Text("CrossReferences").Content(@<text>
-@(Html.Kendo().Grid<CrossReferenceViewModel>()
+@(Html.Kendo()
+.Grid<CrossReferenceUxm>()
 .Name("CrossReferences#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadCrossReferences" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // Datasource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadCrossReferences" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // Datasource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "CrossReference has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "CrossReference has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "CrossReference has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "CrossReference is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
@@ -272,303 +195,226 @@ col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 col.Bound(row => row.CrossReference).Title("CrossReference").Encoded(false);
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end CrossReference
 
 itm.Add().Text("OtherTexts").Content(@<text>
-@(Html.Kendo().Grid<OtherTextViewModel>()
+@(Html.Kendo()
+.Grid<OtherTextUxm>()
 .Name("OtherTexts#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadOtherTexts" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadOtherTexts" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "OtherText has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "OtherText has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "OtherText is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "OtherText Format" });
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "OtherText Format" })
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.OtherText).Title("OtherText")
 .HeaderHtmlAttributes(new { title = "OtherText Content" })
-.HtmlAttributes(new { title = "\\#=OtherTextHtml\\#" })
 .ClientTemplate("\\#=OtherText128\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end OtherText
 
 itm.Add().Text("Locations").Content(@<text>
-@(Html.Kendo().Grid<LocationViewModel>()
+@(Html.Kendo()
+.Grid<LocationUxm>()
 .Name("Locations#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(post => post.Url(TkgPath + "?handler=ReadLocations" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadLocations" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Location has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Location has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "Location has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Location is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Location is Principal?" });
-col.Bound(row => row.Location).Title("Location").Encoded(false);
+  col.Bound(row => row.FieldFormatName).Title("Format").Width(FipmpWidth)
+  .HeaderHtmlAttributes(new { title = "Location Format" });
+      col.Bound(row => row.LocationTkgr).Title("Location").Encoded(false)
+    .HeaderHtmlAttributes(new { title = "Location Content" });
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end Location
 
 itm.Add().Text("Descriptions").Content(@<text>
-@(Html.Kendo().Grid<DescriptionViewModel>()
+@(Html.Kendo()
+.Grid<DescriptionUxm>()
 .Name("Descriptions#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadDescriptions" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadDescriptions" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Description has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "Description has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Description is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "Description Format" })
-;
-col.Bound(row => row.Description).Title("Description")
-.HeaderHtmlAttributes(new { title = "Description Content" })
-.HtmlAttributes(new { title = "\\#=DescriptionHtml\\#" })
-.ClientTemplate("\\#=Description128\\#");
+col.Bound(row => row.FieldFormatName).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Description Format" });
+col.Bound(row => row.DescriptionTkgr).Title("Description").Encoded(false)
+.HeaderHtmlAttributes(new { title = "Description Content" });
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date" });
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end Description
 
 itm.Add().Text("Provenances").Content(@<text>
-@(Html.Kendo().Grid<ProvenanceViewModel>()
+@(Html.Kendo()
+.Grid<ProvenanceUxm>()
 .Name("Provenances#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadProvenances" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadProvenances" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Provenance has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "Provenance has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Provenance is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "Provenance Format" });
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Provenance Format" })
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Provenance).Title("Provenance")
 .HeaderHtmlAttributes(new { title = "Provenance Content" })
-.HtmlAttributes(new { title = "\\#=ProvenanceHtml\\#" })
-.ClientTemplate("\\#=Provenance128\\#");
+.ClientTemplate("\\#=ProvenanceJsam\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date" });
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end Provenance
 
 itm.Add().Text("Distributions").Content(@<text>
-@(Html.Kendo().Grid<DistributionViewModel>()
+@(Html.Kendo()
+.Grid<DistributionUxm>()
 .Name("Distributions#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadDistributions" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadDistributions" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "Distribution has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "Distribution has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "Distribution is Principal?" });
-col.Bound(row => row.FieldFormatName).Title("Format")
-.HeaderHtmlAttributes(new { title = "Distribution Format" });
+col.Bound(row => row.FieldFormatCode).Title("Format").Width(FipmpWidth)
+.HeaderHtmlAttributes(new { title = "Distribution Format" })
+.ClientTemplate("\\#=FieldFormatName\\#");
 col.Bound(row => row.Distribution).Title("Distribution")
 .HeaderHtmlAttributes(new { title = "Distribution Content" })
-.HtmlAttributes(new { title = "\\#=DistributionHtml\\#" })
-.ClientTemplate("\\#=Distribution128\\#");
+.ClientTemplate("\\#=DistributionJsam\\#");
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Width(FonbyWidth).Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Width(FonbyWidth).Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy").Width(FonbyWidth)
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
 .ToClientTemplate()) </text>);
 // end Distribution
 
 itm.Add().Text("FairMetrics").Content(@<text>
-@(Html.Kendo().Grid<FairMetricViewModel>()
+@(Html.Kendo()
+.Grid<FairMetricUxm>()
 .Name("FairMetrics#=RRRecordGuid#")
 .DataSource(ds => ds.Ajax()
 .Model(m => {
 m.Id(p => p.RRFgroupGuid);
 }) // end Model
-.Read(fg => fg.Url(TkgPath + "?handler=ReadFairMetrics" + TkgFgroupQrystr).Data(TkgToken))
-.Events(evn => evn.Error("HandleAjaxErrors"))
-) // end DataSource
+.Read(fg => fg.Url(TkgPath + "?handler=ReadFairMetrics" + TkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.Error("HandleAjaxErrors"))) // end DataSource
 .Columns(col => {
 col.Bound(row => row.RRFgroupGuid).Hidden(true);
 col.Bound(row => row.RRRecordGuid).Hidden(true);
 col.Bound(row => row.HasIndex).Title("Index").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "FairMetric has Index in integer range [0,1,...,255]" });
 col.Bound(row => row.HasPriority).Title("Priority").Width(FipmpWidth)
-.HeaderHtmlAttributes(new { title = "FairMetric has Priority in integer range [0,1,...,255]" })
-;
+.HeaderHtmlAttributes(new { title = "FairMetric has Priority in integer range [0,1,...,255]" });
 col.Bound(row => row.IsMarked).Title("Marked").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "FairMetric is Marked?" });
 col.Bound(row => row.IsPrincipal).Title("Principal").Width(FipmpWidth)
 .HeaderHtmlAttributes(new { title = "FairMetric is Principal?" });
-col.Bound(row => row.MInvalidOldClaim).Title("M = Misquoted")
-.HeaderHtmlAttributes(new { title = "Invalid Old Claims" })
+col.Bound(row => row.QValidOldClaim).Title("Q")
+.HeaderHtmlAttributes(new { title = "Valid Old Claims Q = Quoted" })
 ;
-col.Bound(row => row.QValidOldClaim).Title("Q = Quoted")
-.HeaderHtmlAttributes(new { title = "Valid Old Claims" })
+col.Bound(row => row.MInvalidOldClaim).Title("M")
+.HeaderHtmlAttributes(new { title = "Invalid Old Claims M = Misquoted" })
 ;
-col.Bound(row => row.PInvalidNewClaim).Title("P = Plagiarized")
-.HeaderHtmlAttributes(new { title = "Invalid New Claims" })
+col.Bound(row => row.NValidNewClaim).Title("N")
+.HeaderHtmlAttributes(new { title = "Valid New Claims N = Novel" })
 ;
-col.Bound(row => row.NValidNewClaim).Title("N = Novel")
-.HeaderHtmlAttributes(new { title = "Valid New Claims" })
+col.Bound(row => row.PInvalidNewClaim).Title("P")
+.HeaderHtmlAttributes(new { title = "Invalid New Claims P = Plagiarized" })
 ;
-col.Bound(row => row.FAIR1).Title("F1").Format(Numf3Format)
-.HeaderHtmlAttributes(new { title = "FAIR 1 Metric" });
-col.Bound(row => row.FAIR2).Title("F2").Format(Numf3Format)
-.HeaderHtmlAttributes(new { title = "FAIR 2 Metric" });
-col.Bound(row => row.FAIR3).Title("F3").Format(Numf3Format)
-.HeaderHtmlAttributes(new { title = "FAIR 3 Metric" });
-col.Bound(row => row.FAIR4).Title("F4").Format(Numf3Format)
-.HeaderHtmlAttributes(new { title = "FAIR 4 Metric" });
+col.Bound(row => row.FAIR1Q).Title("F1Q").Format(Numf3Format)
+.HeaderHtmlAttributes(new { title = "FAIR 1Q Metric" });
+col.Bound(row => row.FAIR2M).Title("F2M").Format(Numf3Format)
+.HeaderHtmlAttributes(new { title = "FAIR 2M Metric" });
+col.Bound(row => row.FAIR4N).Title("F4N").Format(Numf3Format)
+.HeaderHtmlAttributes(new { title = "FAIR 4N Metric" });
+col.Bound(row => row.FAIR3P).Title("F3P").Format(Numf3Format)
+.HeaderHtmlAttributes(new { title = "FAIR 3P Metric" });
 col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
 .HeaderHtmlAttributes(new { title = "Updated on date" });
-if (!hasAnonAccess) {
-col.Bound(row => row.UpdatedByAgentName).Title("UpdatedBy")
-.HeaderHtmlAttributes(new { title = "Updated by agent" });
-} // end if
-if (hasAdminAccess) {
-col.Bound(row => row.DeletedOn).Title("DeletedOn").Format(UtcdtFormat)
-.HeaderHtmlAttributes(new { title = "Deleted on date"});
-col.Bound(row => row.DeletedByAgentName).Title("DeletedBy")
-.HeaderHtmlAttributes(new { title = "Deleted by agent" });
-} // end if
 }) // end Columns
 .Pageable(pgb => pgb.Refresh(true)).Sortable()
-.ToClientTemplate()) </text>); 
+.ToClientTemplate()) </text>);
 // end FairMetric
 
-}).SelectedIndex(0).ToClientTemplate()
-)
+}).SelectedIndex(0).ToClientTemplate())
 </script>
 
 <partial name="_NexusJavascriptTkgp" />

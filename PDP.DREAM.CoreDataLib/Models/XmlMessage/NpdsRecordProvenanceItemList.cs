@@ -1,5 +1,5 @@
 ﻿// NpdsRecordProvenanceItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsRecordProvenanceItem : ANpdsXsgBaseItem<string>
 {
   public NpdsRecordProvenanceItem() : base() { this.Initialize(); }
-  public NpdsRecordProvenanceItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsRecordProvenanceItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsRecordProvenanceItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsRecordProvenanceItem(NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.ProvenanceItemXnam, PdpAppConst.ProvenanceListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, ProvenanceItemXnam, ProvenanceListXnam); }
 
   public string Provenance
   {
@@ -26,6 +26,6 @@ public class NpdsRecordProvenanceItem : ANpdsXsgBaseItem<string>
 public class NpdsRecordProvenanceList : ANpdsXsgItemList<NpdsRecordProvenanceItem>
 {
   public NpdsRecordProvenanceList() : base() { }
-  public NpdsRecordProvenanceList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsRecordProvenanceList(NpdsFieldRule rul) : base(rul) { }
 }
 

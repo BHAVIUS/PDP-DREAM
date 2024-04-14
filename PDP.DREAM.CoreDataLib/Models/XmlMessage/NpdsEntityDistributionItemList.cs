@@ -1,5 +1,5 @@
 ﻿// NpdsEntityDistributionItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsEntityDistributionItem : ANpdsXsgBaseItem<string>
 {
   public NpdsEntityDistributionItem() : base() { this.Initialize(); }
-  public NpdsEntityDistributionItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityDistributionItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsEntityDistributionItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsEntityDistributionItem(NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.DistributionItemXnam, PdpAppConst.DistributionListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, DistributionItemXnam, DistributionListXnam); }
 
   public string Distribution
   {
@@ -26,6 +26,6 @@ public class NpdsEntityDistributionItem : ANpdsXsgBaseItem<string>
 public class NpdsEntityDistributionList : ANpdsXsgItemList<NpdsEntityDistributionItem>
 {
   public NpdsEntityDistributionList() : base() { }
-  public NpdsEntityDistributionList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsEntityDistributionList(NpdsFieldRule rul) : base(rul) { }
 }
 

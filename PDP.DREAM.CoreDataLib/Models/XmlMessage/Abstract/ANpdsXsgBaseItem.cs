@@ -1,11 +1,11 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListItem
 {
-  #region Constructors
+  // Constructors
 
   protected ANpdsXsgBaseItem() { }
   protected ANpdsXsgBaseItem(TValue value) { ItemValue = value; }
@@ -14,7 +14,7 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
   protected ANpdsXsgBaseItem(TValue value, Guid? guidKey) { ItemGuidKey = guidKey; ItemValue = value; }
   protected ANpdsXsgBaseItem(TValue value, ItemIdentityKeys itemKeys) { ItemIndexKeys = itemKeys; ItemValue = value; }
 
-  protected void InitNpdsItem(PdpAppConst.NpdsFieldRule itmRule, string itmXnam, string lstXnam = "", string keyXnam = "")
+  protected void InitNpdsItem(NpdsFieldRule itmRule, string itmXnam, string lstXnam = "", string keyXnam = "")
   {
     ItemRule = itmRule;
     if (!string.IsNullOrEmpty(itmXnam)) ItemXnam = itmXnam;
@@ -22,15 +22,13 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
     if (!string.IsNullOrEmpty(keyXnam)) ItemKeyXnam = keyXnam;
   }
 
-  #endregion
+  // Rule and Existence Properties
 
-  #region Rule and Existence Properties
-
-  public PdpAppConst.NpdsFieldRule ItemRule { set; get; } = default;
+  public NpdsFieldRule ItemRule { set; get; } = default;
 
   public bool ItemMayExist
   {
-    get { return (ItemRule != PdpAppConst.NpdsFieldRule.Prohibited); }
+    get { return (ItemRule != NpdsFieldRule.Prohibited); }
   }
 
   public bool ItemDoesExist // only if item has at least either value or key
@@ -38,9 +36,8 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
     get { return (ItemMayExist && (ItemHasValue || ItemHasKey)); }
   }
 
-  #endregion
 
-  #region *Xnam and other related properties
+  // *Xnam and other related properties
 
   // properties named with prefix "NpdsItem" or "NpdsList" to identify more easily in derived classes
   //  all of these properties that are declared here in this abstract base class
@@ -71,12 +68,11 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
   public bool IsResolvable { set; get; } = false;
 
   // TODO: make generic, ie, move to base item so applicable to any derived item class
-  public string DisplayText { set; get; } = string.Empty;
+  public string DisplayText { set; get; } = ESS;
   public Uri? DisplayImageUrl { set; get; } = null;
 
-  #endregion
 
-  #region ItemValue Properties
+  // ItemValue Properties
 
   // ItemValues could be either C# value (eg, bool, int, float) or C# reference types (eg, string)
 
@@ -103,9 +99,8 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
     get { return itmVal; }
   }
 
-  #endregion
 
-  #region ItemKey Properties
+  // ItemKey Properties
 
   public bool ItemHasKey
   {
@@ -141,7 +136,7 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
   public bool ItemHasGuidKey { set; get; } = false;
 
 
-  private string itmHdlKey = string.Empty;
+  private string itmHdlKey = ESS;
   public string ItemHandleKey
   {
     get { return itmHdlKey; }
@@ -166,9 +161,7 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
   }
   public bool ItemHasIndexKeys { set; get; } = false;
 
-  #endregion
-
-  #region IXmlSerializable Methods
+  // IXmlSerializable Methods
 
   public virtual XmlSchema GetSchema()
   {
@@ -179,24 +172,24 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
   public virtual void WriteXml(XmlWriter xWriter)
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
-    if (ItemHasValue || writer.QURC.ItemDoesVerbose)
+    if (ItemHasValue || writer.WRACE.ItemDoesVerbose)
     {
       // write open tag for element
       writer.WriteStartElement(ItemXnam);
-      if (ItemHasValue && writer.QURC.ItemCanBeAccessed)
+      if (ItemHasValue && writer.WRACE.ItemCanBeAccessed)
       {
         // write all attributes for element
-        if (ItemIndexKeys.Index.HasValue && (writer.QURC.ItemDoesVerbose || writer.QURC.ItemDoesArchive))
+        if (ItemIndexKeys.Index.HasValue && (writer.WRACE.ItemDoesVerbose || writer.WRACE.ItemDoesArchive))
         {
-          writer.WriteAttributeString(PdpAppConst.ItemPriorityXnam, ItemIndexKeys.Index.ToString());
+          writer.WriteAttributeString(ItemFacetPriorityXnam, ItemIndexKeys.Index.ToString());
         }
-        if (ItemIndexKeys.GuidForeignKey.HasValue && writer.QURC.ItemDoesArchive)
+        if (ItemIndexKeys.GuidForeignKey.HasValue && writer.WRACE.ItemDoesArchive)
         {
-          writer.WriteAttributeString(PdpAppConst.ItemForeignKeyXnam, ItemIndexKeys.GuidForeignKey.ToString());
+          writer.WriteAttributeString(ItemForeignKeyXnam, ItemIndexKeys.GuidForeignKey.ToString());
         }
-        if (ItemIndexKeys.GuidPrimaryKey.HasValue && writer.QURC.ItemDoesArchive)
+        if (ItemIndexKeys.GuidPrimaryKey.HasValue && writer.WRACE.ItemDoesArchive)
         {
-          writer.WriteAttributeString(PdpAppConst.ItemPrimaryKeyXnam, ItemIndexKeys.GuidPrimaryKey.ToString());
+          writer.WriteAttributeString(ItemPrimaryKeyXnam, ItemIndexKeys.GuidPrimaryKey.ToString());
         }
         // write inner content for element
         if (ItemValue != null)
@@ -232,15 +225,15 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
         {
           string attrNam = reader.LocalName;
           string attrVal = reader.GetAttribute(attrNam);
-          if (attrNam == PdpAppConst.ItemPriorityXnam)
+          if (attrNam == ItemFacetPriorityXnam)
           {
             ItemIndexKeys.Index = Convert.ToInt16(attrVal);
           }
-          else if (attrNam == PdpAppConst.ItemPrimaryKeyXnam)
+          else if (attrNam == ItemPrimaryKeyXnam)
           {
             ItemIndexKeys.GuidPrimaryKey = PdpGuid.ParseToNonNullable(attrVal);
           }
-          else if (attrNam == PdpAppConst.ItemForeignKeyXnam)
+          else if (attrNam == ItemForeignKeyXnam)
           {
             ItemIndexKeys.GuidForeignKey = PdpGuid.ParseToNonNullable(attrVal);
           }
@@ -256,9 +249,7 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
     }
   }
 
-  #endregion
-
-  #region Other Methods
+  // Other Methods
 
   public override bool Equals(object obj)
   {
@@ -352,7 +343,7 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
         writer.WriteElementString(elemName, elemValue);
       }
     }
-    else if (writer.QURC.ItemDoesVerbose)
+    else if (writer.WRACE.ItemDoesVerbose)
     {
       writer.WriteStartElement(elemName);
       writer.WriteEndElement();
@@ -362,19 +353,19 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
     if (elemValue != null) { WriteItemPropAsElem(elemValue.ToString(), elemName, writer, writAsRaw); }
-    else if (writer.QURC.ItemDoesVerbose) { WriteItemPropAsElem(string.Empty, elemName, writer, writAsRaw); }
+    else if (writer.WRACE.ItemDoesVerbose) { WriteItemPropAsElem(ESS, elemName, writer, writAsRaw); }
   }
   protected void WriteItemPropAsElem(XElement elemValue, string elemName, XmlWriter xWriter, bool writAsRaw = true)
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
     if (elemValue != null) { WriteItemPropAsElem(elemValue.ToString(), elemName, writer, writAsRaw); }
-    else if (writer.QURC.ItemDoesVerbose) { WriteItemPropAsElem(string.Empty, elemName, writer, writAsRaw); }
+    else if (writer.WRACE.ItemDoesVerbose) { WriteItemPropAsElem(ESS, elemName, writer, writAsRaw); }
   }
 
   protected string ReadItemPropAsString(string elemName, XmlReader xReader)
   {
     var reader = (NpdsXmlWrappingReader)xReader;
-    string elemVal = string.Empty;
+    string elemVal = ESS;
     reader.MoveToContent();
     if (reader.IsStartElement(elemName))
     {
@@ -411,6 +402,5 @@ public abstract class ANpdsXsgBaseItem<TValue> : IXmlSerializable, INpdsXsgListI
     return elemVal;
   }
 
-  #endregion
 }
 

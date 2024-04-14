@@ -1,63 +1,52 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-
-using PDP.DREAM.CoreDataLib.Models;
-using PDP.DREAM.CoreDataLib.Services;
-using PDP.DREAM.CoreDataLib.Stores;
-using PDP.DREAM.CoreWebLib.Controllers;
-
-using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
-using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
-
-namespace PDP.DREAM.NexusRestApi.Pages;
+namespace PDP.DREAM.NexusWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class NraHomeIndex : CoreDataRazorPageControllerBase
+public class NraHomeIndex : TkgnPageController
 {
   private const string rzrClass = nameof(NraHomeIndex);
-  public NraHomeIndex(ILoggerFactory lgrFtry,
-    IEmailSender emlSndr, ISmsSender smsSndr)
-    : base(lgrFtry, emlSndr, smsSndr) { }
+  public NraHomeIndex() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseType = NpdsDatabaseType.Core,
-      DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
-      RecordAccess = NpdsRecordAccess.AnonUser,
+      ServiceType = NPDSCD.ServiceTypeNexus,
+      DatabaseType = NPDSCD.DatabaseTypeNexus,
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
+      RecordAccess = NPDSCD.RecordAccessAnon,
       UserModeClientRequired = false,
       SessionClientRequired = false
     };
     PSRM = new PdpSiteRazorModel("/NraHome/Index", PdpSitePathKey);
     PSRM.InitRazorPageMenus("_NraHomeSpanPageMenu");
     ResetCoreRepository();
+    ResetNexusRepository();
+#if DEBUG
+    var rzrHndlr = nameof(OnPageHandlerExecuting);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+#endif
   }
 
   // OnGet before OnPageHandlerExecuted
   public IActionResult OnGet()
   {
 #if DEBUG
-    CatchNullQurc(nameof(OnGet), rzrClass);
-    PSRM.DebugRazorPageStrings();
+    var rzrHndlr = nameof(OnGet);
+    CatchNullWrace(rzrHndlr, rzrClass);
+    CatchNullCore(rzrHndlr, rzrClass);
+    CatchNullNexus(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     return Page();
   }
 
   // OnPageHandlerExecuted before the [RazorPage].cshtml
-  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
-  {
-#if DEBUG
-    CatchNullQurc(nameof(OnPageHandlerExecuted), rzrClass);
-    DebugQurcData(exeCntxt.Result);
-#endif
-  }
 
 } // end class
 

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 
@@ -16,7 +16,7 @@ public static class QebHttpRequestExtensions
 
   public static string UrlMain(this HttpRequestMessage req)
   {
-    var urlMain = string.Empty;
+    var urlMain = ESS;
     var reqUri = req.RequestUri;
     if (reqUri != null) { urlMain = RemoveQuery(reqUri); }
     return urlMain;
@@ -24,7 +24,7 @@ public static class QebHttpRequestExtensions
 
   public static string UrlBase(this HttpRequestMessage req)
   {
-    var urlBase = string.Empty;
+    var urlBase = ESS;
     var reqUri = req.RequestUri;
     if (reqUri != null) { urlBase = RemovePathAndQuery(reqUri); }
     return urlBase;
@@ -53,7 +53,7 @@ public static class QebHttpRequestExtensions
   public static string RemovePathAndQuery(Uri url)
   {
     string paq = url.PathAndQuery;
-    return url.ToString().Replace(paq, string.Empty);
+    return url.ToString().Replace(paq, ESS);
   }
   public static string AddForwardSlash(string url)
   {

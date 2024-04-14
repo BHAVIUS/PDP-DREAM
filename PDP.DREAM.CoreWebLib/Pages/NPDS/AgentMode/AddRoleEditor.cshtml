@@ -1,5 +1,5 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -7,33 +7,32 @@
 @attribute [PdpRazorPageRoute(DepCoreWebLib, DepAgentModeAddRoleEditor)]
 @model AgentModeAddRoleEditor
 @{
-  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
   PdpSiteRazorModel psrm = Model.PSRM;
   PdpSiteInfoModel psim = psrm.PdpSiteInfo;
-  QebiUserRestContext qurc = Model.QURC;
-  var clientIsEditor = qurc.ClientIsEditor;
-  var userIsEditor = User.IsInRole(NamesForClientRoles.NpdsEditor.ToString());
+  NpdsClientWrace wrace = Model.WRACE;
+  bool userAuth = wrace.ClientIsAuthenticated;
+  bool clientHasRole = wrace.ClientIsEditor;
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
 { <p><partial name="@psrm.RazorBodyMenu" /></p> }
 
-@if (userIsEditor)
+@if (userAuth && clientHasRole)
 {
   <p class="pdpTaskPassed">
-    You are registered as a Site User and NPDS Resource Agent Editor.
+    You are registered as a PdpSite QEBI User and NPDS Editor.
   </p>
 }
 else
 {
   <p>
-    You are registered as a Site User but not yet as a member of any other roles. Please note that you
+    You are registered as a PdpSite User but not yet as a member of any other roles. Please note that you
     must add the NPDS Resource Agent role to your account before you can register resource labels and publish
     resource descriptions in any of the NEXUS diristries, PORTAL registries and DOORS directories managed by
     @psim.SiteOwnerName.
-      Adding the Agent Editor role automatically confers read/write
-      privileges as an NPDS Editor (registry scope); 
-      other higher read/write privilege levels include NPDS Admin (registrar scope).
+    Adding the Agent Editor role automatically confers read/write
+    privileges as an NPDS Editor (registry scope);
+    other higher read/write privilege levels include NPDS Admin (registrar scope).
   </p>
   <p>
     The original description of the PORTAL-DOORS system of metadata registries and directories distinguished
@@ -93,9 +92,9 @@ else
     To confirm your agreement, click the button:
   </p>
 
-  <form id="frmAddRole"  asp-page="@DepAgentModeAddRoleEditor"
-      method="post" role="form" class="form-horizontal">
-      @Html.AntiForgeryToken()
+  <form id="frmAddRole" asp-page="@DepAgentModeAddRoleEditor"
+        method="post" role="form" class="form-horizontal">
+    @Html.AntiForgeryToken()
     <div class="textcenter">
       <button id="btnSubmit" type="submit" class="btn btn-outline-primary">Add Editor Role</button>
       <button id="btnCancel" type="reset" class="btn btn-outline-primary">Cancel</button>

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -6,10 +6,10 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsClientRequestItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsClientRequestItem : ANpdsXsgBaseItem<XElement>
 {
-  public NpdsClientRequestItem() : base() { this.Initialize(); }
+  public NpdsClientRequestItem() : base() { this.Initialize(NPDSCD.ResrepFormatDefault); }
   public NpdsClientRequestItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
 
-  private void Initialize(NpdsResrepFormat rrf = default(NpdsResrepFormat))
+  private void Initialize(NpdsResrepFormat rrf)
   {
     base.InitNpdsItem(NpdsFieldRule.Required, RequestXnam);
   }
@@ -19,34 +19,34 @@ public class NpdsClientRequestItem : ANpdsXsgBaseItem<XElement>
     var writer = (NpdsXmlWrappingWriter)xWriter;
     // start ClientRequest element
     writer.WriteStartElement(ItemXnam); 
-    if (writer.QURC.EchoFormat)
+    if (writer.WRACE.EchoFormat)
     {
       // Request URL
-      if (!(string.IsNullOrEmpty(writer.QURC.NpdsReqstEncodedUrl)))
+      if (!(string.IsNullOrEmpty(writer.WRACE.NpdsReqstEncodedUrl)))
       {
-        writer.WriteElementString(RequestUrlXnam, writer.QURC.NpdsReqstEncodedUrl);
+        writer.WriteElementString(RequestUrlXnam, writer.WRACE.NpdsReqstEncodedUrl);
       }
-      else if (writer.QURC.VerboseFormat)
+      else if (writer.WRACE.VerboseFormat)
       {
         writer.WriteStartElement(RequestUrlXnam);
         writer.WriteEndElement();
       }
       // Request Note
-      if (!(string.IsNullOrEmpty(writer.QURC.RequestNote)))
+      if (!(string.IsNullOrEmpty(writer.WRACE.RequestNote)))
       {
-        writer.WriteElementString(RequestNoteXnam, writer.QURC.RequestNote);
+        writer.WriteElementString(RequestNoteXnam, writer.WRACE.RequestNote);
       }
-      else if (writer.QURC.VerboseFormat)
+      else if (writer.WRACE.VerboseFormat)
       {
         writer.WriteStartElement(RequestNoteXnam);
         writer.WriteEndElement();
       }
       // Request Question
-      if (!(string.IsNullOrEmpty(writer.QURC.RequestQuestion)))
+      if (!(string.IsNullOrEmpty(writer.WRACE.RequestQuestion)))
       {
-        writer.WriteElementString(RequestQuestionXnam, writer.QURC.RequestQuestion);
+        writer.WriteElementString(RequestQuestionXnam, writer.WRACE.RequestQuestion);
       }
-      else if (writer.QURC.VerboseFormat)
+      else if (writer.WRACE.VerboseFormat)
       {
         writer.WriteStartElement(RequestQuestionXnam);
         writer.WriteEndElement();
@@ -68,9 +68,9 @@ public class NpdsClientRequestItem : ANpdsXsgBaseItem<XElement>
     if (reader.IsStartElement(RequestXnam))
     {
       reader.Read();
-      reader.QURC.NpdsReqstEncodedUrl = reader.ReadElementString(RequestUrlXnam);
-      reader.QURC.RequestNote = reader.ReadElementString(RequestNoteXnam);
-      reader.QURC.RequestQuestion = reader.ReadElementString(RequestQuestionXnam);
+      reader.WRACE.NpdsReqstEncodedUrl = reader.ReadElementString(RequestUrlXnam);
+      reader.WRACE.RequestNote = reader.ReadElementString(RequestNoteXnam);
+      reader.WRACE.RequestQuestion = reader.ReadElementString(RequestQuestionXnam);
     }
 
   }

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -6,56 +6,56 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsMetadataRecordItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsMetadataRecordItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataRecordNexus
 {
-  public NpdsMetadataRecordItem() : base() { this.Initialize(); }
-  public NpdsMetadataRecordItem(PdpAppConst.NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
+  public NpdsMetadataRecordItem() : base() { this.Initialize(NPDSCD.ResrepFormatDefault); }
+  public NpdsMetadataRecordItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
 
-  private void Initialize(PdpAppConst.NpdsResrepFormat rrf = default(PdpAppConst.NpdsResrepFormat))
+  private void Initialize(NpdsResrepFormat rrf)
   {
     // initialize base
-    base.InitNpdsItem(PdpAppConst.NpdsFieldRule.Required, PdpAppConst.RecordItemXnam, PdpAppConst.RecordListXnam, PdpAppConst.RecordKeyXnam);
+    base.InitNpdsItem(NpdsFieldRule.Required, RecordItemXnam, RecordListXnam, RecordKeyXnam);
 
     // pdsroot.xsd group G_RecordNexusCore
-    this.RecordCreatedBy = new NpdsRecordCreatedByItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordCreatedOn = new NpdsRecordCreatedOnItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordUpdatedBy = new NpdsRecordUpdatedByItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordUpdatedOn = new NpdsRecordUpdatedOnItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordManagedBy = new NpdsRecordManagedByItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordDiristry = new NpdsRecordDiristryItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordRegistry = new NpdsRecordRegistryItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordDirectory = new NpdsRecordDirectoryItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordRegistrar = new NpdsRecordRegistrarItem(PdpAppConst.NpdsFieldRule.Required);
-    this.RecordRegistrant = new NpdsRecordRegistrantItem(PdpAppConst.NpdsFieldRule.Permitted);
-    this.RecordSignatureList = new NpdsRecordSignatureList(PdpAppConst.NpdsFieldRule.Permitted);
+    this.RecordCreatedBy = new NpdsRecordCreatedByItem(NpdsFieldRule.Permitted);
+    this.RecordCreatedOn = new NpdsRecordCreatedOnItem(NpdsFieldRule.Permitted);
+    this.RecordUpdatedBy = new NpdsRecordUpdatedByItem(NpdsFieldRule.Permitted);
+    this.RecordUpdatedOn = new NpdsRecordUpdatedOnItem(NpdsFieldRule.Permitted);
+    this.RecordManagedBy = new NpdsRecordManagedByItem(NpdsFieldRule.Permitted);
+    this.RecordDiristry = new NpdsRecordDiristryItem(NpdsFieldRule.Permitted);
+    this.RecordRegistry = new NpdsRecordRegistryItem(NpdsFieldRule.Permitted);
+    this.RecordDirectory = new NpdsRecordDirectoryItem(NpdsFieldRule.Permitted);
+    this.RecordRegistrar = new NpdsRecordRegistrarItem(NpdsFieldRule.Required);
+    this.RecordRegistrant = new NpdsRecordRegistrantItem(NpdsFieldRule.Permitted);
+    this.RecordSignatureList = new NpdsRecordSignatureList(NpdsFieldRule.Permitted);
 
     // pdsroot.xsd group G_RecordPortal
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus || rrf == PdpAppConst.NpdsResrepFormat.PORTAL)
+    if (rrf == NPDSCD.ResrepFormatNexus || rrf == NPDSCD.ResrepFormatPORTAL)
     {
-      this.RecordRegistry = new NpdsRecordRegistryItem(PdpAppConst.NpdsFieldRule.Required);
-      this.RecordCrossReferenceList = new NpdsRecordCrossReferenceList(PdpAppConst.NpdsFieldRule.Permitted);
-      this.RecordOtherTextList = new NpdsRecordOtherTextList(PdpAppConst.NpdsFieldRule.Permitted);
+      this.RecordRegistry = new NpdsRecordRegistryItem(NpdsFieldRule.Required);
+      this.RecordCrossReferenceList = new NpdsRecordCrossReferenceList(NpdsFieldRule.Permitted);
+      this.RecordOtherTextList = new NpdsRecordOtherTextList(NpdsFieldRule.Permitted);
     }
     else
     {
-      this.RecordDirectory = new NpdsRecordDirectoryItem(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.RecordCrossReferenceList = new NpdsRecordCrossReferenceList(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.RecordOtherTextList = new NpdsRecordOtherTextList(PdpAppConst.NpdsFieldRule.Prohibited);
+      this.RecordDirectory = new NpdsRecordDirectoryItem(NpdsFieldRule.Prohibited);
+      this.RecordCrossReferenceList = new NpdsRecordCrossReferenceList(NpdsFieldRule.Prohibited);
+      this.RecordOtherTextList = new NpdsRecordOtherTextList(NpdsFieldRule.Prohibited);
     }
     // pdsroot.xsd group G_RecordDoors
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus || rrf == PdpAppConst.NpdsResrepFormat.DOORS)
+    if (rrf == NPDSCD.ResrepFormatNexus || rrf == NPDSCD.ResrepFormatDOORS)
     {
-      this.RecordDirectory = new NpdsRecordDirectoryItem(PdpAppConst.NpdsFieldRule.Required);
-      this.RecordProvenanceList = new NpdsRecordProvenanceList(PdpAppConst.NpdsFieldRule.Permitted);
-      this.RecordDistributionList = new NpdsRecordDistributionList(PdpAppConst.NpdsFieldRule.Permitted);
+      this.RecordDirectory = new NpdsRecordDirectoryItem(NpdsFieldRule.Required);
+      this.RecordProvenanceList = new NpdsRecordProvenanceList(NpdsFieldRule.Permitted);
+      this.RecordDistributionList = new NpdsRecordDistributionList(NpdsFieldRule.Permitted);
     }
     else
     {
-      this.RecordRegistry = new NpdsRecordRegistryItem(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.RecordProvenanceList = new NpdsRecordProvenanceList(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.RecordDistributionList = new NpdsRecordDistributionList(PdpAppConst.NpdsFieldRule.Prohibited);
+      this.RecordRegistry = new NpdsRecordRegistryItem(NpdsFieldRule.Prohibited);
+      this.RecordProvenanceList = new NpdsRecordProvenanceList(NpdsFieldRule.Prohibited);
+      this.RecordDistributionList = new NpdsRecordDistributionList(NpdsFieldRule.Prohibited);
     }
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus)
+    if (rrf == NPDSCD.ResrepFormatNexus)
     {
-      this.RecordDiristry = new NpdsRecordDiristryItem(PdpAppConst.NpdsFieldRule.Required);
+      this.RecordDiristry = new NpdsRecordDiristryItem(NpdsFieldRule.Required);
     }
   }
 
@@ -94,23 +94,22 @@ public class NpdsMetadataRecordItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataR
   public NpdsRecordDistributionItem? RecordDistributionItem { set; get; }
   public NpdsRecordDistributionList? RecordDistributionList { set; get; }
 
-
   //Private dtFrmStr As String = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"
   public override void WriteXml(XmlWriter xWriter)
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
     writer.WriteStartElement(ItemXnam);
-    if (ItemHasKey && writer.QURC.ItemDoesArchive)
+    if (ItemHasKey && writer.WRACE.ItemDoesArchive)
     {
       writer.WriteAttributeString(ItemKeyXnam, RecordHandle.ToString());
     }
-    if (writer.QURC.ItemDoesVerbose || writer.QURC.ItemDoesArchive)
+    if (writer.WRACE.ItemDoesVerbose || writer.WRACE.ItemDoesArchive)
     {
-      if (RecordCreatedBy.ItemMayExist && writer.QURC.ItemDoesArchive) { RecordCreatedBy.WriteXml(writer); }
-      if (RecordCreatedOn.ItemMayExist) { writer.WriteElementString(PdpAppConst.RecordCreatedOnXnam, RecordCreatedOn.CreatedOn.ToUniversalTime().ToString(PdpAppConst.UnivDateTimeFormat)); }
-      if (RecordUpdatedBy.ItemMayExist && writer.QURC.ItemDoesArchive) { RecordUpdatedBy.WriteXml(writer); }
-      if (RecordUpdatedOn.ItemMayExist) { writer.WriteElementString(PdpAppConst.RecordUpdatedOnXname, RecordUpdatedOn.UpdatedOn.ToUniversalTime().ToString(PdpAppConst.UnivDateTimeFormat)); }
-      if (RecordManagedBy.ItemMayExist && writer.QURC.ItemDoesArchive) { RecordManagedBy.WriteXml(writer); }
+      if (RecordCreatedBy.ItemMayExist && writer.WRACE.ItemDoesArchive) { RecordCreatedBy.WriteXml(writer); }
+      if (RecordCreatedOn.ItemMayExist) { writer.WriteElementString(RecordCreatedOnXnam, RecordCreatedOn.CreatedOn.ToUniversalTime().ToString(UnivDateTimeFormat)); }
+      if (RecordUpdatedBy.ItemMayExist && writer.WRACE.ItemDoesArchive) { RecordUpdatedBy.WriteXml(writer); }
+      if (RecordUpdatedOn.ItemMayExist) { writer.WriteElementString(RecordUpdatedOnXnam, RecordUpdatedOn.UpdatedOn.ToUniversalTime().ToString(UnivDateTimeFormat)); }
+      if (RecordManagedBy.ItemMayExist && writer.WRACE.ItemDoesArchive) { RecordManagedBy.WriteXml(writer); }
       if (RecordDiristry.ItemMayExist) { RecordDiristry.WriteXml(writer); }
       if (RecordRegistry.ItemMayExist) { RecordRegistry.WriteXml(writer); }
       if (RecordDirectory.ItemMayExist) { RecordDirectory.WriteXml(writer); }
@@ -124,8 +123,8 @@ public class NpdsMetadataRecordItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataR
     }
     else
     {
-      if (RecordCreatedOn.ItemDoesExist) { writer.WriteElementString(PdpAppConst.RecordCreatedOnXnam, RecordCreatedOn.CreatedOn.ToUniversalTime().ToString(PdpAppConst.UnivDateTimeFormat)); }
-      if (RecordUpdatedOn.ItemDoesExist) { writer.WriteElementString(PdpAppConst.RecordUpdatedOnXname, RecordUpdatedOn.UpdatedOn.ToUniversalTime().ToString(PdpAppConst.UnivDateTimeFormat)); }
+      if (RecordCreatedOn.ItemDoesExist) { writer.WriteElementString(RecordCreatedOnXnam, RecordCreatedOn.CreatedOn.ToUniversalTime().ToString(UnivDateTimeFormat)); }
+      if (RecordUpdatedOn.ItemDoesExist) { writer.WriteElementString(RecordUpdatedOnXnam, RecordUpdatedOn.UpdatedOn.ToUniversalTime().ToString(UnivDateTimeFormat)); }
       if (RecordDiristry.ItemDoesExist) { RecordDiristry.WriteXml(writer); }
       if (RecordRegistry.ItemDoesExist) { RecordRegistry.WriteXml(writer); }
       if (RecordDirectory.ItemDoesExist) { RecordDirectory.WriteXml(writer); }
@@ -167,28 +166,28 @@ public class NpdsMetadataRecordItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataR
       }
       reader.Read();
 
-      // pdsroot.xsd group G_RecordNexusCore
+      // pdsroot.xsd group G_RecordNexus
       RecordRegistrar.ReadXml(reader);
       RecordRegistrant.ReadXml(reader);
       RecordCreatedBy.ReadXml(reader);
-      RecordCreatedOn.CreatedOn = Convert.ToDateTime(reader.ReadElementString(PdpAppConst.RecordCreatedOnXnam));
+      RecordCreatedOn.CreatedOn = Convert.ToDateTime(reader.ReadElementString(RecordCreatedOnXnam));
       RecordUpdatedBy.ReadXml(reader);
-      RecordUpdatedOn.UpdatedOn = Convert.ToDateTime(reader.ReadElementString(PdpAppConst.RecordUpdatedOnXname));
+      RecordUpdatedOn.UpdatedOn = Convert.ToDateTime(reader.ReadElementString(RecordUpdatedOnXnam));
       RecordManagedBy.ReadXml(reader);
       RecordSignatureItem.ReadXml(reader);
       RecordDistributionList.ReadXml(reader);
       RecordProvenanceList.ReadXml(reader);
 
       // pdsroot.xsd group G_RecordPortal
-      if (reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.Nexus ||
-          reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.PORTAL)
+      if (reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatNexus ||
+          reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatPORTAL)
       {
         RecordDirectory.ReadXml(reader);
       }
 
       // pdsroot.xsd group G_RecordDoors
-      if (reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.Nexus ||
-          reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.DOORS)
+      if (reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatNexus ||
+          reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatDOORS)
       {
         RecordRegistry.ReadXml(reader);
       }

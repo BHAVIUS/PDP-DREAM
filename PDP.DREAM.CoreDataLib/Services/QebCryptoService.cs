@@ -1,5 +1,4 @@
-﻿// QebCryptoService.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Services;
@@ -64,7 +63,6 @@ public static class QebCryptoService
   public static bool TokenEqualsHash(string plainToken, string hashedToken)
   {
     bool valid;
-    // valid = string.Equals(HashToken(token), hash, StringComparison.Ordinal);
     valid = VerifyHashedToken(hashedToken, plainToken);
     return valid;
   }
@@ -96,7 +94,6 @@ public static class QebCryptoService
 public class QebIdentityResult
 {
   public QebIdentityResult() { }
-
   public List<QebIdentityError> Errors { get; set; }
   public bool Failed { get; set; }
   public bool LockedOut { get; set; }

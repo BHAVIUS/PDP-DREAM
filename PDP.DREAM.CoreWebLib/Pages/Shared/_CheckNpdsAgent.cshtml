@@ -1,0 +1,45 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (Model.QebRcp.IsAuthenticated ?? false);
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+}
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+@Html.Raw(psrm.FormatBodyTitle())
+
+@if (userAuth && PDPSS.AppUseDevtestFeature)
+{
+  <h5>NPDS Agent from Core Repository</h5>
+
+  <p>UserName: @wrace.CiaamUserName, UserAlias: @wrace.CiaamUserAlias</p>
+  <p>Guids from webapp cookies, keys from request querystring.</p>
+  <p>User: Guid = @wrace.QebiUserGuid, Key = @wrace.ClientUserKey</p>
+  <p>Agent: Guid = @wrace.NpdsAgentGuid, Key = @wrace.ClientAgentKey</p>
+  <p>Session: Guid = @wrace.CiaamSessionGuid, Key = @wrace.ClientSessionKey</p>
+
+  <p>
+    NPDS Agent HasRole: Agent = @wrace.ClientIsAgent,
+    Author = @wrace.ClientIsAuthor, Reviewer = @wrace.ClientIsReviewer, 
+    Editor = @wrace.ClientIsEditor, Admin = @wrace.ClientIsAdmin
+  </p>
+
+  <p>
+    NPDS Agent HasMode: Agent = @wrace.ClientHasAgentMode,
+    Author = @wrace.ClientHasAuthorMode, Reviewer = @wrace.ClientHasReviewerMode, 
+    Editor = @wrace.ClientHasEditorMode, Admin = @wrace.ClientHasAdminMode
+  </p>
+
+  <p>
+    NPDS Agent CanWrite: Agent = @wrace.ClientCanAgentWrite,
+    Author = @wrace.ClientCanAuthorWrite, Reviewer = @wrace.ClientCanReviewerWrite, 
+    Editor = @wrace.ClientCanEditorWrite, Admin = @wrace.ClientCanAdminWrite
+  </p>
+}
+

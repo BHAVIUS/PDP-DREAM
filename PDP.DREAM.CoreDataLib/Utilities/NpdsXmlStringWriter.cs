@@ -1,36 +1,37 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
-public class NpdsXmlStringWriter<T>
+public class NpdsXmlStringWriter<Tdto>
 {
+  // Tdto is generic Type of the Data Transfer Object
   // ATTN: compare with PdpXmlResponseWriter
 
-  public NpdsXmlStringWriter(T dataTransferObjectToSerialize, QebiUserRestContext pdpRestContext, XmlWriterSettings? xmlWriterSettings = null)
+  public NpdsXmlStringWriter(Tdto dtoToSerialize, NpdsClientWrace pdpRestContext, XmlWriterSettings? xmlWriterSettings = null)
   {
-    if (dataTransferObjectToSerialize == null)  // ?? operator cannot be applied to generic types
+    if (dtoToSerialize == null)  // ?? operator cannot be applied to generic types
     {
       throw new ArgumentNullException("dataTransferObjectToSerialize in PdpXmlStringWriter");
     }
-    DTO = dataTransferObjectToSerialize;
-    QURC = pdpRestContext ?? throw new ArgumentNullException("pdpRestContext in PdpXmlStringWriter");
+    DTO = dtoToSerialize;
+    WRACE = pdpRestContext ?? throw new ArgumentNullException("pdpRestContext in PdpXmlStringWriter");
     // TODO: recode the ResponseStatus feature
     // PRC.ResponseStatus = HttpResponseExtensions.ResponseStatus();
     XWS = xmlWriterSettings ?? QebXml.CreateXmlWriterSettings();
   }
 
-  // the Data Transfer Object
-  public T DTO { set; get; }
+  // Data Transfer Object
+  public Tdto DTO { set; get; }
 
-  // the QEB User REST Context
-  public QebiUserRestContext QURC { set; get; }
+  // QEBI User REST Context
+  public NpdsClientWrace WRACE { set; get; }
 
-  // the XML Writer and Settings
+  // XML Writer and Settings
   public NpdsXmlWrappingWriter NXWW { set; get; }
   public XmlWriterSettings XWS { set; get; }
 
-  // the XML string result
+  // XML string result
 
   public string XML
   {
@@ -43,11 +44,11 @@ public class NpdsXmlStringWriter<T>
 
   public void BuildXmlString()
   {
-    var sb = new EncodedStringWriter();
-    NXWW = new NpdsXmlWrappingWriter(QURC, sb, XWS);
+    var esw = new EncodedStringWriter();
+    NXWW = new NpdsXmlWrappingWriter(WRACE, esw, XWS);
     var xs = new XmlSerializer(DTO.GetType());
     xs.Serialize(NXWW, DTO);  // .SerializeAsXElement ???
-    xml = sb.ToString();  // retain copy in xml property
+    xml = esw.ToString();  // retain copy in xml property
   }
 
 }

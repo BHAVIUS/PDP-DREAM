@@ -1,23 +1,28 @@
 ﻿// NpdsRecordRegistryItem.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 [KnownType(typeof(NpdsRecordRegistryItem)), XmlSchemaProvider(null, IsAny = true)]
-public class NpdsRecordRegistryItem : ANpdsXsgTypedLabelItem
+public class NpdsRecordRegistryItem : ANpdsXsgEntityLabelItem
 {
-  public NpdsRecordRegistryItem() : base() { this.Initialize(); }
-  public NpdsRecordRegistryItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsRecordRegistryItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsRecordRegistryItem() : base()
+  { this.Initialize(); }
+  public NpdsRecordRegistryItem(NpdsFieldRule rul) : base()
+  { this.Initialize(rul); }
+  public NpdsRecordRegistryItem(NpdsFieldRule rul, Uri? val) : base(val)
+  { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.RegistryItemXnam, PdpAppConst.RegistryListXnam); }
+  private void Initialize(NpdsFieldRule rul = default)
+  { base.InitNpdsItem(rul, RegistryItemXnam, RegistryListXnam); }
 
-  public string Registry
+  public string? Registry
   {
-    get { return ItemValue; }
-    set { ItemValue = value; }
+    get { return ItemValue.AbsoluteUri; }
+    set { ParseEntityLabel(value); }
   }
-}
 
+} // end class
+
+// end file

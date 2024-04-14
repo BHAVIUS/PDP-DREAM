@@ -1,9 +1,9 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, AllowAnonymous]
+[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
 public class DebugModeRazorEndpoints : CoreDataRazorPageControllerBase
 {
   private const string rzrClass = nameof(DebugModeRazorEndpoints);
@@ -12,19 +12,23 @@ public class DebugModeRazorEndpoints : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NpdsDatabaseAccess.AnonReadOnly,
-      RecordAccess = NpdsRecordAccess.AnonUser,
-      UserModeClientRequired = false,
-      SessionClientRequired = false
+      DatabaseType = NPDSCD.DatabaseTypeCore,
+      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
+      RecordAccess = NPDSCD.RecordAccessUser,
+      AdminModeClientRequired = true,
+      SessionClientRequired = true
     };
     PSRM = new PdpSiteRazorModel(DepDebugModeRazorEndpoints, $"{DepPdpDream}: RazorEndpoints");
-    PSRM.InitRazorPageMenus("_DebugModeSpanPageMenu");
-    ResetQebiRepository();
+    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_DebugModeSpanPageMenu");
     ResetCoreRepository();
-    var isVerified = CheckCoreUserSession();
-    if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    var isVerified = CheckNpdsAgentSession();
+    if (!isVerified) { RedirectToPage(DepAgentModeCheckNpdsAgent); }
+#if DEBUG
+    var rzrHndlr = nameof(OnPageHandlerExecuting);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+#endif
   }
 
   // OnGet before OnPageHandlerExecuted

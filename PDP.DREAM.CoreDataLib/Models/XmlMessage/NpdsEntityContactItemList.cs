@@ -1,23 +1,26 @@
 ﻿// NpdsEntityContactItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 [KnownType(typeof(NpdsEntityContactItem)), XmlSchemaProvider(null, IsAny = true)]
-public class NpdsEntityContactItem : ANpdsXsgTypedLabelItem
+public class NpdsEntityContactItem : ANpdsXsgEntityLabelItem
 {
-  public NpdsEntityContactItem() : base() { this.Initialize(); }
-  public NpdsEntityContactItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityContactItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsEntityContactItem() : base()
+  { this.Initialize(); }
+  public NpdsEntityContactItem(NpdsFieldRule rul) : base()
+  { this.Initialize(rul); }
+  public NpdsEntityContactItem(NpdsFieldRule rul, Uri? val) : base(val)
+  { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.ContactItemXnam, PdpAppConst.ContactListXnam); }
+  private void Initialize(NpdsFieldRule rul = default)
+  { base.InitNpdsItem(rul, ContactItemXnam, ContactListXnam); }
 
-  public string Contact
+  public string? Contact
   {
-    get { return ItemValue; }
-    set { ItemValue = value; }
+    get { return ItemValue.AbsoluteUri; }
+    set { ParseEntityLabel(value); }
   }
 }
 
@@ -25,6 +28,6 @@ public class NpdsEntityContactItem : ANpdsXsgTypedLabelItem
 public class NpdsEntityContactList : ANpdsXsgItemList<NpdsEntityContactItem>
 {
   public NpdsEntityContactList() : base() { }
-  public NpdsEntityContactList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsEntityContactList(NpdsFieldRule rul) : base(rul) { }
 }
 

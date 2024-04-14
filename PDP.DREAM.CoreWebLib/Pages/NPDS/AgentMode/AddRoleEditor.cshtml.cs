@@ -1,32 +1,29 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, Authorize]
-public class AgentModeAddRoleEditor : TkgcPageController
+public class AgentModeAddRoleEditor : QebiDataRazorPageControllerBase
 {
   private const string rzrClass = nameof(AgentModeAddRoleEditor);
-  public AgentModeAddRoleEditor(ILoggerFactory lgrFtry,
-    IEmailSender emlSndr, ISmsSender smsSndr)
-    : base(lgrFtry, emlSndr, smsSndr) { }
+  public AgentModeAddRoleEditor() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NpdsDatabaseAccess.AuthReadWrite,
-      RecordAccess = NpdsRecordAccess.AuthUser,
+      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
+      RecordAccess = NPDSCD.RecordAccessUser,
       UserModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepAgentModeAddRoleEditor, $"{PDPSS.AppOwnerShortName}: Add NPDS Editor Role");
-    PSRM.InitRazorPageMenus("_AgentModeSpanPageMenu");
+    PSRM = new PdpSiteRazorModel(DepAgentModeAddRoleEditor, $"{PDPSS.AppOwnerNameShort}: Add NPDS Editor Role");
+    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AgentModeSpanPageMenu");
     ResetQebiRepository();
-    ResetCoreRepository();
-    var isVerified = CheckCoreAgentSession();
-    if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    var isVerified = CheckQebiUserSession();
+    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -37,19 +34,12 @@ public class AgentModeAddRoleEditor : TkgcPageController
 
   public IActionResult OnPost()
   {
-    var usrRoles = QUDC.GetAppUserRolesForUserGuid(QebUserGuid);
-    var strAgent = NamesForClientRoles.NpdsEditor.ToString();
-    Guid? roleGuid = null;
-    if (!usrRoles.Contains(strAgent))
-    {
-      roleGuid = QUDC.GetAppRoleGuidByRoleName(strAgent);
-      if (!roleGuid.IsNullOrEmpty())
-      {
-        var roleAdded = AddRoleUser(roleGuid);
-        if (roleAdded) { return RedirectToPage(DepAuthModeLogoutUser); }
-      }
-    }
-    return Page();
+    var rol1Name = NpdsAgent;
+    var rol1Added = AddQebiRoleByRoleName(rol1Name);
+    var rol2Name = NpdsEditor;
+    var rol2Added = AddQebiRoleByRoleName(rol2Name);
+    if (rol1Added || rol2Added) { return RedirectToPage(DepUserModeLogoutUser); }
+    else { return RedirectToPage(DepAgentModeIndex); }
   }
 
 } // end class

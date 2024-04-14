@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -21,23 +21,23 @@ public abstract class ANpdsXsgValidationItem : ANpdsXsgBaseItem<string>
   public override void WriteXml(XmlWriter xWriter)
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
-    if (ItemHasValue || writer.QURC.ItemDoesVerbose)
+    if (ItemHasValue || writer.WRACE.ItemDoesVerbose)
     {
       // write open tag for element
       writer.WriteStartElement(ItemXnam); // PortalValidation and DoorsValidation
-      if (ItemHasValue && writer.QURC.ItemCanBeAccessed)
+      if (ItemHasValue && writer.WRACE.ItemCanBeAccessed)
       {
         // write attributes for element
 
         // write content for element PdsItemValue
-        writer.WriteElementString(PdpAppConst.ItemStatusXnam, InfosetStatus.ToString());
+        writer.WriteElementString(ItemStatusXnam, InfosetStatus.ToString());
         // write other content
-        if (InfosetTestedOn.HasValue && (writer.QURC.ItemDoesVerbose || writer.QURC.ItemDoesArchive))
+        if (InfosetTestedOn.HasValue && (writer.WRACE.ItemDoesVerbose || writer.WRACE.ItemDoesArchive))
         {
-          writer.WriteStartElement(PdpAppConst.ItemTestedOnXnam);
+          writer.WriteStartElement(ItemTestedOnXnam);
           if (InfosetTestedOn.HasValue)
           {
-            writer.WriteString(InfosetTestedOn.Value.ToUniversalTime().ToString(PdpAppConst.UnivDateTimeFormat));
+            writer.WriteString(InfosetTestedOn.Value.ToUniversalTime().ToString(UnivDateTimeFormat));
           }
           writer.WriteEndElement();
         }
@@ -54,10 +54,10 @@ public abstract class ANpdsXsgValidationItem : ANpdsXsgBaseItem<string>
     if (reader.IsStartElement(ItemXnam))
     {
       reader.Read();
-      InfosetStatus = reader.ReadElementString(PdpAppConst.ItemStatusXnam);
+      InfosetStatus = reader.ReadElementString(ItemStatusXnam);
       try
       {
-        InfosetTestedOn = Convert.ToDateTime(reader.ReadElementString(PdpAppConst.ItemTestedOnXnam));
+        InfosetTestedOn = Convert.ToDateTime(reader.ReadElementString(ItemTestedOnXnam));
       }
       catch
       {

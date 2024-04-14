@@ -1,15 +1,15 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public class NpdsXmlValidater
 {
-  public NpdsXmlValidater(QebiUserRestContext qurc, XmlReaderSettings? xrs = null)
+  public NpdsXmlValidater(NpdsClientWrace wrace, XmlReaderSettings? xrs = null)
   {
-    if (qurc == null) 
-    { throw new ArgumentNullException("qurc in PdpPrcXmlValidater"); }
-    QURC = qurc;
+    if (wrace == null)
+    { throw new ArgumentNullException("wrace in PdpPrcXmlValidater"); }
+    WRACE = wrace;
     XRS = xrs ?? QebXml.CreateXmlReaderSettings(true);
     // Create the XmlSchemaSet class.
     // note that default XmlResolver for resolving external entities, schema locations,
@@ -22,7 +22,7 @@ public class NpdsXmlValidater
   }
 
   // the QEB User REST Context
-  public QebiUserRestContext QURC { set; get; }
+  public NpdsClientWrace WRACE { set; get; }
 
   // the XML Reader and Settings
   public NpdsXmlWrappingReader NXWR { set; get; }
@@ -35,35 +35,37 @@ public class NpdsXmlValidater
     var xmlErrors = 0;
     var xmlWarnings = 0;
     var isValidNpdsXml = false;
-    var xsdBaseUrl = QURC.NpdsReqstXmlSchemaUrl;
+    var xsdBaseUrl = WRACE.NpdsReqstXmlSchemaUrl;
+    // var newLine = Environment.NewLine;
+
     // TODO: recode path with relative path
     if (string.IsNullOrEmpty(xsdBaseUrl))
-    { QURC.ResponseNote = "xsdBaseUrl is null or empty; "; }
+    { WRACE.ResponseNote = "xsdBaseUrl is null or empty; "; }
 
     // Add the NPDS schema to the collection.
     // null on target namespace URI defaults to use of target namespace defined in schema
     // but that null default does not appear to be working as of 7/5/2017 ????
     // string xsigTNS = "http://www.w3.org/2000/09/xmldsig#";
     // XSS.Add(xsigTNS, xsdBaseUrl + "xmldsig-core-schema-pdp.xsd");
-    // string npdsTNS = "http://npds.portaldoors.org/nsvo/npdsystem#";
-    // XSS.Add(npdsTNS, xsdBaseUrl + "npdsroot.xsd");
-    XSS.Add("http://npds.portaldoors.org/nsvo/npdsystem#", xsdBaseUrl + "npdsroot.xsd");
+    // XSS.Add(NpdsNamespace, xsdBaseUrl + NpdsXmlSchema);
+    XSS.Add(NpdsNamespace, xsdBaseUrl + NpdsXmlSchema);
     try { XSS.Compile(); }
-    catch (Exception er) { QURC.ResponseNote += er.Message; }
+    catch (Exception er) { WRACE.ResponseNote += er.Message; }
 
     if (!XSS.IsCompiled)
     {
-      QURC.ResponseNote = "XML Schema set did not compile. ";
+      WRACE.ResponseNote = "XML Schema set did not compile. ";
     }
     else
     {
-      QURC.ResponseNote = "XML Schema set compiled with schemas: ";
-      if (QURC.VerboseFormat)
+      WRACE.ResponseNote = $"XML Schema set compiled with schemas: ";
+      if (WRACE.VerboseFormat)
       {
         // list target namespace for all schemas in set
         foreach (XmlSchema schema in XSS.Schemas())
         {
-          QURC.ResponseNote = $"SourceUri = {schema.SourceUri} with TargetNamespace = {schema.TargetNamespace}; ";
+          WRACE.ResponseNote = $"SourceUri = {schema.SourceUri}; ";
+          WRACE.ResponseNote = $"TargetNamespace = {schema.TargetNamespace}; ";
         }
       }
       // XRS.Schemas.Add(targetNamespace, schemaUri) and 3 other overloads
@@ -83,7 +85,7 @@ public class NpdsXmlValidater
           }
           if (!string.IsNullOrEmpty(veaMsg))
           {
-            QURC.ResponseNote = veaMsg;
+            WRACE.ResponseNote = veaMsg;
           }
         };
 
@@ -93,26 +95,26 @@ public class NpdsXmlValidater
 
       var sr = new StringReader(xmlDocument);
       var xr = XmlReader.Create(sr, XRS);
-      var ppxwr = new NpdsXmlWrappingReader(QURC, xr, XRS);
+      var ppxwr = new NpdsXmlWrappingReader(WRACE, xr, XRS);
 
       // Parse the file.
       try
       {
         while (ppxwr.Read()) { };
         if (xmlErrors == 0 && xmlWarnings == 0) { isValidNpdsXml = true; }
-        QURC.ResponseNote = $"NPDS XML Schema Validity: {isValidNpdsXml} with {xmlErrors} errors and {xmlWarnings} warnings.";
+        WRACE.ResponseNote = $"NPDS XML Schema Validity: {isValidNpdsXml} with {xmlErrors} errors and {xmlWarnings} warnings.";
       }
       catch (XmlSchemaException er)
       {
-        QURC.ResponseNote = "XSD error: " + er.Message;
+        WRACE.ResponseNote = "XSD error: " + er.Message;
       }
       catch (XmlException er)
       {
-        QURC.ResponseNote = "XML error: " + er.Message;
+        WRACE.ResponseNote = "XML error: " + er.Message;
       }
       catch (Exception er)
       {
-        QURC.ResponseNote = "Exception: " + er.Message;
+        WRACE.ResponseNote = "Exception: " + er.Message;
       }
       // finally { }
     }

@@ -1,0 +1,52 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@model AnonModeResetUsername2
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+  var pdpFormGroup = "form-group mb-3 col-md-3";
+}
+@Html.Raw(psrm.FormatBodyTitle())
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    A security token has been sent to you for resetting your username.
+    Please check your email and click on the confirmation link to complete the change.
+  </p>
+}
+else
+{
+  <form id="frmResetUsername2" asp-page="@DepAnonModeResetUsername2"
+      method="post" role="form" class="form-horizontal">
+    <p>
+      To reset your username, please enter your password and then answer the security question.
+    </p>
+    <div class="@pdpFormGroup">
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(m => m.UXM.FormTitle, new { Value = Model.UXM.FormTitle })
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="@pdpFormGroup">
+      @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3", Value = Model.UXM.PassWord })
+      @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="@pdpFormGroup">
+      @Html.LabelFor(m => m.UXM.SecurityQuestion, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityQuestion, new { @class = "form-control col-md-3", Value = Model.UXM.SecurityQuestion })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityQuestion, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <div class="@pdpFormGroup">
+      @Html.LabelFor(m => m.UXM.SecurityAnswer, new { @class = "form-label col-md-3" })
+      @Html.TextBoxFor(m => m.UXM.SecurityAnswer, new { @class = "form-control col-md-3" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityAnswer, null, new { @class = "form-label col-md-6 text-danger" })
+    </div>
+    <br />
+    <button id="btnResetUsername2" type="submit" class="btn btn-outline-primary">Next Step</button>
+  </form>
+}

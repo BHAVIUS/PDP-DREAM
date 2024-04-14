@@ -1,0 +1,37 @@
+@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+}
+
+<h5>Help Info and Examples by NPDS RecordAccess</h5>
+
+<ul>
+  <li>
+    Agent: <a asp-page="@DepAgentModeHelp">Help</a> |
+    <a asp-page="@DepScribeServiceAgentResreps">Resreps</a>
+  </li>
+  <li>
+    Author: <a asp-page="@DepAuthorModeHelp">Help</a> |
+    <a asp-page="@DepScribeServiceAuthorResreps">Resreps</a>
+  </li>
+  <li>
+    Editor: <a asp-page="@DepEditorModeHelp">Help</a> |
+    <a asp-page="@DepScribeServiceEditorResreps">Resreps</a>
+  </li>
+  <li>
+    Admin: <a asp-page="@DepAdminModeHelp">Help</a> |
+    <a asp-page="@DepScribeServiceAdminResreps">Resreps</a>
+  </li>
+  <li>
+    Admin Core: 
+    <a asp-page="@DepScribeServiceCccResrepServices">Defaults</a> |
+    <a asp-page="@DepScribeServiceCccEntityLabels">EntityLabels</a> |
+    <a asp-page="@DepScribeServiceCccRestrictions">Restrictions</a> |
+    <a asp-page="@DepScribeServiceCccResrepStatus">Status</a>
+  </li>
+</ul>

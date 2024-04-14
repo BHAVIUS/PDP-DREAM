@@ -1,5 +1,4 @@
-﻿// Globals.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 global using System;
@@ -8,23 +7,25 @@ global using System.Collections.Generic;
 global using System.Collections.Specialized;
 global using System.ComponentModel;
 global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
 global using System.Data;
 global using System.Data.SqlTypes;
 global using System.Diagnostics;
-global using System.Linq;
-global using System.Linq.Expressions;
+global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
+global using System.Linq;
+global using System.Linq.Expressions;
 global using System.Net;
 global using System.Net.Http;
 global using System.Net.Http.Headers;
 global using System.Net.Mail;
 global using System.Reflection;
-global using System.Reflection.Metadata;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.Serialization;
 global using System.Runtime.Serialization.Json;
 global using System.Security.Claims;
+global using System.Security.Principal;
 global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.Encodings.Web;
@@ -37,15 +38,21 @@ global using System.Xml.Linq;
 global using System.Xml.Schema;
 global using System.Xml.Serialization;
 
+global using Microsoft.AspNetCore.Antiforgery;
 global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.CookiePolicy;
+global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Http.Extensions;
+global using Microsoft.AspNetCore.Http.Features;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.ApplicationModels;
+global using Microsoft.AspNetCore.Mvc.ApplicationParts;
 global using Microsoft.AspNetCore.Mvc.Controllers;
 global using Microsoft.AspNetCore.Mvc.Filters;
+global using Microsoft.AspNetCore.Mvc.Infrastructure;
 global using Microsoft.AspNetCore.Mvc.Razor;
 global using Microsoft.AspNetCore.Mvc.RazorPages;
 global using Microsoft.AspNetCore.Mvc.Rendering;
@@ -59,8 +66,16 @@ global using Microsoft.EntityFrameworkCore.Migrations;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.FileProviders;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.Extensions.Primitives;
+
+// ATTN: do not include references to Kendo if/when
+//    causes ambiguous references elsewhere in project
+// global using Kendo.Mvc;
+// global using Kendo.Mvc.Extensions;
+// global using Kendo.Mvc.UI;
 
 global using SendGrid;
 global using SendGrid.Helpers.Mail;
@@ -75,6 +90,6 @@ global using static PDP.DREAM.CoreDataLib.Models.PdpAppConst;
 global using static PDP.DREAM.CoreDataLib.Models.PdpAppStatus;
 global using static PDP.DREAM.CoreDataLib.Models.PdpSiteRoutes;
 global using static PDP.DREAM.CoreDataLib.Types.PdpGuid;
-global using static PDP.DREAM.CoreDataLib.Utilities.QebFile;
+global using static PDP.DREAM.CoreDataLib.Utilities.QebSqlLinq;
 global using static PDP.DREAM.CoreDataLib.Utilities.QebString;
-global using static PDP.DREAM.CoreDataLib.Utilities.QebSql;
+

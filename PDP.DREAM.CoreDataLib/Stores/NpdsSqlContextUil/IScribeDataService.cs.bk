@@ -1,0 +1,91 @@
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+namespace PDP.DREAM.CoreDataLib.Models;
+
+public interface IScribeDataService
+{
+  // TODO: update to include FairMetrics in the interface
+
+  WebApiContext PRC { get; set; }
+
+  // User Interface/Interaction Layer (with acronym "uil") for viewable ViewModel objects and editable Uxm objects
+
+  void SetRestContext(ref WebApiContext warc);
+  bool CreatePdpAgent();
+  bool CreatePdpAgentSession();
+  bool IdentifyPdpAgent();
+  bool IdentifyPdpAgentSession();
+
+  NexusResrepUxm ArchiveRecord(NexusResrepUxm editObj);
+  void CreateLocationXhtml(LocationUxm editObj);
+
+  ResrepAuthorRequestEditModel DeleteAgentResourceRequest(ResrepAuthorRequestEditModel editObj);
+  NexusSnapshotUxm DeleteArchivedRecord(NexusSnapshotUxm editObj);
+  CrossReferenceUxm DeleteCrossReference(CrossReferenceUxm editObj);
+  LocationUxm DeleteLocation(LocationUxm editObj);
+  NexusResrepUxm DeleteRecord(NexusResrepUxm editObj);
+  SupportingLabelUxm DeleteSupportingLabel(SupportingLabelUxm editObj);
+  SupportingTagUxm DeleteSupportingTag(SupportingTagUxm editObj);
+  EntityLabelUxm DeleteTagAndLabel(EntityLabelUxm editObj);
+
+
+  ResrepAuthorRequestEditModel EditAgentResourceRequest(ResrepAuthorRequestEditModel editObj);
+  NexusSnapshotUxm EditArchivedRecord(NexusSnapshotUxm editObj);
+  CrossReferenceUxm EditCrossReference(CrossReferenceUxm editObj);
+  LocationUxm EditLocation(LocationUxm editObj);
+  NexusResrepUxm EditRecord(NexusResrepUxm editObj);
+  SupportingLabelUxm EditSupportingLabel(SupportingLabelUxm editObj);
+  SupportingTagUxm EditSupportingTag(SupportingTagUxm editObj);
+  EntityLabelUxm EditTagAndLabel(EntityLabelUxm editObj);
+
+  IList<SelectListItem> GetEntityTypeSelectListItems();
+  IList<SelectListItem> GetInfosetStatusSelectListItems();
+  IList<SelectListItem> GetSupportingLabelSelectListItems();
+  //IList<SelectListItem> GetRegistrarSelectListItems();
+  //IList<SelectListItem> GetRegistrySelectListItems();
+  //IList<SelectListItem> GetDirectorySelectListItems();
+
+  IEnumerable<ResrepAuthorRequestEditModel> ListEditableAgentRecordRequests();
+  IEnumerable<NexusSnapshotUxm> ListEditableArchivedRecords(Guid guidKey);
+  IEnumerable<CrossReferenceUxm> ListEditableCrossReferences(Guid guidKey);
+  IEnumerable<LocationUxm> ListEditableLocations(Guid guidKey);
+  IEnumerable<NexusResrepUxm> ListEditableRecords();
+  IEnumerable<NexusResrepUxm> ListEditableResourcesWithAgent(Guid guidKey);
+  IEnumerable<SupportingLabelUxm> ListEditableSupportingLabels(Guid guidKey);
+  IEnumerable<SupportingTagUxm> ListEditableSupportingTags(Guid guidKey);
+  IEnumerable<EntityLabelUxm> ListEditableTagAndLabels(Guid guidKey);
+
+  NexusResrepUxm GetEditableResourceByIKey(Guid guidKey);
+  NexusSnapshotUxm GetEditableArchivedResourceByKey(Guid guidKey);
+  CrossReferenceUxm GetEditableCrossReferenceByKey(Guid guidKey);
+  LocationUxm GetEditableLocationByKey(Guid guidKey);
+  SupportingLabelUxm GetEditableSupportingLabelByKey(Guid guidKey);
+  SupportingTagUxm GetEditableSupportingTagByKey(Guid guidKey);
+  EntityLabelUxm GetEditableTagAndLabelByKey(Guid guidKey);
+  ResrepAuthorRequestEditModel GetEditableAgentResourceRequestByKey(Guid guidKey);
+
+  NexusResrepUxm GetViewableRecordByKey(Guid guidKey, bool isInfosetKey = false);
+  IEnumerable<NexusResrepUxm> ListViewableRecords();
+  IEnumerable<NexusResrepUxm> ListViewableRecordsWithAgent(Guid guidKey);
+  IEnumerable<NexusSnapshotUxm> ListViewableArchivedRecords(Guid guidKey);
+  IEnumerable<CrossReferenceUxm> ListViewableCrossReferences(Guid guidKey);
+  IEnumerable<EntityTypeUxm> ListViewableEntityTypes();
+  IEnumerable<LocationUxm> ListViewableLocations(Guid guidKey);
+  IEnumerable<SupportingLabelUxm> ListViewableSupportingLabels(Guid guidKey);
+  IEnumerable<SupportingTagUxm> ListViewableSupportingTags(Guid guidKey);
+  IEnumerable<EntityLabelUxm> ListViewableTagAndLabels(Guid guidKey);
+
+  NexusResrepUxm RequestReleaseRecord(NexusResrepUxm viewObj);
+  NexusResrepUxm ValidateRecord(NexusResrepUxm editObj);
+  LocationUxm ValidateLocation(LocationUxm editObj);
+
+  // Message Exchange Layer (with acronym "mel") for serializable data transfer objects
+
+  NpdsResrepItem MelNrrItem { get; set; } // TODO ?
+  NpdsResrepList MelNrrList { get; set; } // TODO ?
+  NpdsResrepXmlRoot GetXmlmsgFormtdNexusResourceByKey(Guid guidKey, bool isInfosetKey = false);
+  NpdsResrepXmlRoot GetXmlmsgFormtdNexusResourcesWithPredicateFilters();
+
+}
+

@@ -1,5 +1,4 @@
-﻿// QebiExtensions.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -10,36 +9,53 @@ public static class QebiExtensions
   // private IPrincipal pdpPrincipal; // with readonly Identity (type IIdentity) and IsInRole (type bool) for current user
   // using System.Security.Principal.IIdentity
   // private IIdentity pdpIdentity; // with readonly AuthenticationType (string), IsAuthenticated (bool), Name (string) for current user
-  public static string GetUserName(this ClaimsPrincipal principal)
+
+  public static string GetUserAlias(this QebiRcp principal)
+  {
+    string userAlias;
+    if (principal == null) { throw new ArgumentNullException("QEBI RoleClaimsPrincipal is null for UserAlias"); }
+    userAlias = principal.FindFirstValue(QebiClaimTypes.UserAlias);
+    return userAlias;
+  }
+
+  public static string GetUserEmail(this QebiRcp principal)
+  {
+    string userAlias;
+    if (principal == null) { throw new ArgumentNullException("QEBI RoleClaimsPrincipal is null for UserEmail"); }
+    userAlias = principal.FindFirstValue(QebiClaimTypes.UserEmail);
+    return userAlias;
+  }
+
+  public static string GetUserName(this QebiRcp principal)
   {
     string userName;
-    if (principal == null) { throw new ArgumentNullException("PDP Identity ClaimsPrincipal is null for PDP UserName"); }
+    if (principal == null) { throw new ArgumentNullException("QEBI RoleClaimsPrincipal is null for UserName"); }
     userName = principal.FindFirstValue(QebiClaimTypes.UserName);
     return userName;
   }
 
-  public static Guid GetUserGuid(this ClaimsPrincipal principal)
+  public static Guid GetUserGuid(this QebiRcp principal)
   {
     Guid userGuid;
-    if (principal == null) { throw new ArgumentNullException("PDP Identity ClaimsPrincipal is null for PDP UserGuid"); }
+    if (principal == null) { throw new ArgumentNullException("QEBI RoleClaimsPrincipal is null for UserGuid"); }
     var strGuid = principal.FindFirstValue(QebiClaimTypes.UserGuid);
     Guid.TryParse(strGuid, out userGuid);
     return userGuid;
   }
 
-  public static Guid GetAgentGuid(this ClaimsPrincipal principal)
+  public static Guid GetAgentGuid(this QebiRcp principal)
   {
     Guid agentGuid;
-    if (principal == null) { throw new ArgumentNullException("PDP Identity ClaimsPrincipal is null for PDP AgentGuid"); }
+    if (principal == null) { throw new ArgumentNullException("QEBI RoleClaimsPrincipal is null for AgentGuid"); }
     var strGuid = principal.FindFirstValue(QebiClaimTypes.AgentGuid);
     Guid.TryParse(strGuid, out agentGuid);
     return agentGuid;
   }
 
-  public static Guid GetSessionGuid(this ClaimsPrincipal principal)
+  public static Guid GetSessionGuid(this QebiRcp principal)
   {
     Guid sessionGuid;
-    if (principal == null) { throw new ArgumentNullException("PDP Identity ClaimsPrincipal is null for PDP SessionGuid"); }
+    if (principal == null) { throw new ArgumentNullException("QEBI RoleClaimsPrincipal is null for SessionGuid"); }
     var strGuid = principal.FindFirstValue(QebiClaimTypes.SessionGuid);
     Guid.TryParse(strGuid, out sessionGuid);
     return sessionGuid;
@@ -51,53 +67,45 @@ public static class QebiExtensions
     await cntxt.SignOutAsync(authMethod).ConfigureAwait(useAwaiter);
     return;
   }
-  public static async Task SignoutUserAsync(this HttpContext cntxt, string authMethod, bool useAwaiter = false)
-  {
-    if (string.IsNullOrEmpty(authMethod)) { authMethod = PdpIdentityScheme; }
-    await cntxt.SignOutAsync(authMethod).ConfigureAwait(useAwaiter);
-    return;
-  }
+  //public static async Task SignoutUserAsync(this HttpContext cntxt, string authMethod, bool useAwaiter = false)
+  //{
+  //  if (string.IsNullOrEmpty(authMethod)) { authMethod = PdpIdentityScheme; }
+  //  await cntxt.SignOutAsync(authMethod).ConfigureAwait(useAwaiter);
+  //  return;
+  //}
 
-  public static async Task<QebIdentityResult> SigninUserAsync(this HttpContext cntxt, string userName,
-    Guid? userGuid, Guid? agentGuid, Guid? sessionGuid, List<string> userRoles, bool useAwaiter = false)
+  public static async Task<QebIdentityResult> SigninUserAsync(this HttpContext cntxt,
+    string? userAlias, string? userEmail, string? userName,
+    Guid? userGuid, List<string> userRoles, bool useAwaiter = false)
   {
     var authProps = new AuthenticationProperties();
     var authMethod = PdpIdentityScheme;
-    var principal = CreateUserPrincipal(userName, userGuid.Value, agentGuid.Value, sessionGuid.Value, userRoles, authMethod);
-    await cntxt.SignInAsync(PdpIdentityScheme, principal, authProps).ConfigureAwait(useAwaiter);
-    var result = principal.CheckUserPrincipal(); // recheck current online user
+    var authPrincipal = CreateUserPrincipal(userAlias, userEmail, userName,
+      userGuid.Value, userRoles, authMethod);
+    await cntxt.SignInAsync(authMethod, authPrincipal, authProps).ConfigureAwait(useAwaiter);
+    var result = authPrincipal.CheckUserPrincipal(); // recheck current online user
     return result;
   }
 
-  public static async Task<QebIdentityResult> SigninUserAsync(this HttpContext cntxt, string userName,
-    Guid? userGuid, Guid? agentGuid, Guid? sessionGuid, List<string> userRoles,
-    AuthenticationProperties authProps, string authMethod, bool useAwaiter = false)
+  public static QebiRcp CreateUserPrincipal(
+    string? userAlias, string? userEmail, string? userName,
+    Guid? userGuid, List<string> userRoles, string authMethod)
   {
-    if (authProps == null) { authProps = new AuthenticationProperties(); }
     if (string.IsNullOrEmpty(authMethod)) { authMethod = PdpIdentityScheme; }
-    var principal = CreateUserPrincipal(userName, userGuid.Value, agentGuid.Value, sessionGuid.Value, userRoles, authMethod);
-    await cntxt.SignInAsync(PdpIdentityScheme, principal, authProps).ConfigureAwait(useAwaiter);
-    var result = principal.CheckUserPrincipal(); // recheck current online user
-    return result;
-  }
-
-  public static ClaimsPrincipal CreateUserPrincipal(string? userName, Guid? userGuid,
-    Guid? agentGuid, Guid? sessionGuid, List<string> userRoles, string authMethod)
-  {
-    if (string.IsNullOrEmpty(userName) && userGuid.IsNullOrEmpty() &&
-      agentGuid.IsNullOrEmpty() && sessionGuid.IsNullOrEmpty())
-    { throw new ArgumentNullException("all identifiers are null or empty in CreateUserPrincipal"); }
-    if (string.IsNullOrEmpty(authMethod)) { authMethod = PdpIdentityScheme; }
+    // TODO: migrate to QebiClaimTypes only
     var authMethodClaim = new Claim(ClaimTypes.AuthenticationMethod, authMethod);
-    var principalClaim = new Claim(ClaimTypes.Name, userName); // required for use of User.Identity.Name
+    // var principalClaim = new Claim(ClaimTypes.Name, userName);
     var userNameClaim = new Claim(QebiClaimTypes.UserName, userName);
+    var userAliasClaim = new Claim(QebiClaimTypes.UserAlias, userAlias);
+    var userEmailClaim = new Claim(QebiClaimTypes.UserEmail, userEmail);
     var userGuidClaim = new Claim(QebiClaimTypes.UserGuid, userGuid.ToString());
-    var agentGuidClaim = new Claim(QebiClaimTypes.AgentGuid, agentGuid.ToString());
-    var sessionGuidClaim = new Claim(QebiClaimTypes.SessionGuid, sessionGuid.ToString());
+
     var allClaims = new List<Claim>
       {
-        authMethodClaim, principalClaim, userNameClaim, userGuidClaim, agentGuidClaim, sessionGuidClaim
+        authMethodClaim,
+        userNameClaim, userAliasClaim, userEmailClaim, userGuidClaim,
       };
+
     if ((userRoles != null) && (userRoles.Count > 0))
     {
       foreach (var userRole in userRoles)
@@ -107,11 +115,11 @@ public static class QebiExtensions
       }
     }
     var userIdentity = new ClaimsIdentity(allClaims, authMethod);
-    var userPrincipal = new ClaimsPrincipal(userIdentity);
+    var userPrincipal = new QebiRcp(userIdentity);
     return userPrincipal;
   }
 
-  public static QebIdentityResult CheckUserPrincipal(this ClaimsPrincipal userPrincipal)
+  public static QebIdentityResult CheckUserPrincipal(this QebiRcp userPrincipal)
   {
     var result = new QebIdentityResult();
     if (userPrincipal.Identity.IsAuthenticated) { result.Succeeded = true; }

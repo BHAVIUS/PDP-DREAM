@@ -1,5 +1,5 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -11,7 +11,9 @@
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
-{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 
 <h4 class="text-danger">Error</h4>
 <p class="text-danger">An error occurred while processing your request.</p>

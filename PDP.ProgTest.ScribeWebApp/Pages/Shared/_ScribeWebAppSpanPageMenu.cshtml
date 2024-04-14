@@ -1,10 +1,10 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
-  bool userAuth = (User?.Identity?.IsAuthenticated ?? false);
+  bool userAuth = (Model.QebRcp.IsAuthenticated ?? false);
 }
 
 <span>
@@ -13,7 +13,7 @@
   <span> | </span>
   @if (userAuth)
   {
-    <a asp-page="@DepAuthModeIndex">AuthMode</a>
+    <a asp-page="@DepUserModeIndex">UserMode</a>
   }
   else
   {
@@ -24,3 +24,4 @@
   <span> | </span>
   <a asp-page="/SwaHome/Index">ScribeWebApp</a>
 </span>
+

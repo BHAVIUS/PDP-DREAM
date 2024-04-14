@@ -1,34 +1,29 @@
-﻿// TkgPageControllerNexusSnapshot.cs 
-// Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Code license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
 
 public partial class TkgnPageController
 {
-  private const string eidNexusSnapshotStatus = "span#NexusSnapshotStatus";
-
-  public virtual JsonResult OnPostReadNexusSnapshots([DataSourceRequest] DataSourceRequest dsRequest,
-   // string searchFilter, string serviceTag, string entityType,
+  public virtual JsonResult OnPostReadResrepSnapshots([DataSourceRequest] DataSourceRequest dsRequest,
    Guid recordGuid, bool isLimited = false)
   {
-    var rzrHndlr = nameof(OnPostReadNexusSnapshots);
-    // QURC.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    var rzrHndlr = nameof(OnPostReadResrepSnapshots);
     OpenNexusConnection(); // use PNDC
 #if DEBUG
     DebugNexusRepo(rzrHndlr, rzrClass);
-    QURC.DebugClientAccess(rzrHndlr, rzrClass);
-    QURC.DebugNpdsParams(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
     try
     {
       if (recordGuid.IsInvalid())
-      { ModelState.AddModelError("NexusSnapshots", "RRRecordGuid invalid."); }
+      { ModelState.AddModelError("ResrepSnapshots", "RRRecordGuid invalid."); }
       else
       {
-        dsResult = PNDC.ListViewableNexusSnapshots(recordGuid, isLimited)
-        .ToDataSourceResult(dsRequest);
+        dsResult = PNDC.ListEditableResrepSnapshots(recordGuid, isLimited)
+        .ToDataSourceResult(dsRequest, ModelState);
       }
     }
     catch (SqlException exc)

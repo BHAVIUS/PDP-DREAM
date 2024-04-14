@@ -1,29 +1,40 @@
-﻿// SqldbcSessionAgent.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Stores;
 
 public partial class CoreDbsqlContext
 {
-  public bool EditCoreSessionAgent(ref QebiUserRestContext qurc)
+  public bool EditSessionNpdsAgent(ref NpdsClientWrace wrace)
   {
-    if (!PdpGuid.IsInvalidGuid(PDPSS.AppSecureUiaaGuid) && !PdpGuid.IsInvalidGuid(qurc.ClientUserGuid))
+    if (!PdpGuid.IsInvalidGuid(PDPSS.CiaamAppGuid) && !PdpGuid.IsInvalidGuid(wrace.QebiUserGuid))
     {
       dbsqlCnctn = DbsqlConnect();
-      var dbsqlCmmnd = OpenSqlCommand("CoreSessionAgentEdit", dbsqlCnctn);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityAppGuid", PDPSS.AppSecureUiaaGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityUserGuid", qurc.ClientUserGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.NVarChar, 64, "@IdentityUserNameDisp", qurc.ClientUserNameDisplayed);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentGuid", ParameterDirection.InputOutput, qurc.ClientAgentGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@SessionGuid", ParameterDirection.InputOutput, qurc.ClientSessionGuid);
-      int errorExists = QebSql.ExecuteCommand(ref dbsqlCmmnd);
+      var dbsqlCmmnd = OpenSqlCommand("CoreAgentSessionEdit", dbsqlCnctn);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, "@CiaamUserGuid", ParameterDirection.Input, wrace.QebiUserGuid);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.NVarChar, 64, "@CiaamUserAlias", ParameterDirection.Input, wrace.CiaamUserAlias);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, "@AgentGuid", ParameterDirection.InputOutput, wrace.NpdsAgentGuid);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsAuthor", ParameterDirection.InputOutput, wrace.ClientIsAuthor);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsReviewer", ParameterDirection.InputOutput, wrace.ClientIsReviewer);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsEditor", ParameterDirection.InputOutput, wrace.ClientIsEditor);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsAdmin", ParameterDirection.InputOutput, wrace.ClientIsAdmin);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.DateTime2, "@DateAccessed", ParameterDirection.Output);
+      int errorExists = QebSqlLinq.ExecuteCommand(ref dbsqlCmmnd);
       // may have same PdpAgentGuid associated with different AspnetUserGuid
       //   and/or may have same AspnetUserGuid associated with different AspnetSystemIid
       if (errorExists == 0)
       {
-        qurc.ClientAgentGuid = QebSql.GetGuid(ref dbsqlCmmnd, "@AgentGuid");
-        qurc.ClientSessionGuid = QebSql.GetGuid(ref dbsqlCmmnd, "@SessionGuid");
+        wrace.NpdsAgentGuid = QebSqlLinq.GetGuid(ref dbsqlCmmnd, "@AgentGuid");
+        wrace.ClientIsAuthor = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsAuthor");
+        wrace.ClientIsReviewer = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsReviewer");
+        wrace.ClientIsEditor = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsEditor");
+        wrace.ClientIsAdmin = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsAdmin");
+#if DEBUG
+        var dateAccessed = QebSqlLinq.GetDateTime(ref dbsqlCmmnd, "@DateAccessed");
+        Debug.WriteLine($"NpdsCoreSessionAgent for {wrace.CiaamUserAlias} edited on {dateAccessed}");
+        Debug.WriteLine($"NpdsAgentGuid {wrace.NpdsAgentGuid} with isAuthor = {wrace.ClientIsAuthor},");
+        Debug.WriteLine($"isReviewer = {wrace.ClientIsReviewer}, isAdmin = {wrace.ClientIsAdmin}");
+#endif
       }
       DbsqlDisconnect();
       if (errorExists == 0) { return true; }
@@ -31,74 +42,48 @@ public partial class CoreDbsqlContext
     return false;
   }
 
-  public bool CheckCoreSessionAgent(ref QebiUserRestContext qurc)
+  public bool CheckSessionNpdsAgent(ref NpdsClientWrace wrace)
   {
-    if (!PdpGuid.IsInvalidGuid(PDPSS.AppSecureUiaaGuid) && !PdpGuid.IsInvalidGuid(qurc.ClientUserGuid))
+    if (!PdpGuid.IsInvalidGuid(PDPSS.CiaamAppGuid) && !PdpGuid.IsInvalidGuid(wrace.QebiUserGuid))
     {
       dbsqlCnctn = DbsqlConnect();
-      var dbsqlCmmnd = OpenSqlCommand("CoreSessionAgentCheck", dbsqlCnctn);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@IdentityAppGuid", PDPSS.AppSecureUiaaGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, 1, "@SessionValueIsRequired", qurc.SessionClientRequired);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@SessionGuid", ParameterDirection.InputOutput, qurc.ClientSessionGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@UserGuid", ParameterDirection.InputOutput, qurc.ClientUserGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentGuid", ParameterDirection.InputOutput, qurc.ClientAgentGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, 38, "@AgentInfosetGuid", ParameterDirection.Output, qurc.ClientAgentInfosetGuid);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.NVarChar, 64, "@AgentUserNameDisp", ParameterDirection.Output, qurc.ClientUserNameDisplayed);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, 1, "@AgentIsAuthor", ParameterDirection.Output);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, 1, "@AgentIsEditor", ParameterDirection.Output);
-      QebSql.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, 1, "@AgentIsAdmin", ParameterDirection.Output);
-      int errorExists = QebSql.ExecuteCommand(ref dbsqlCmmnd);
+      var dbsqlCmmnd = OpenSqlCommand("CoreAgentSessionCheck", dbsqlCnctn);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@SessionIsRequired", ParameterDirection.Input, wrace.SessionClientRequired);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, "@CiaamUserGuid", ParameterDirection.Input, wrace.QebiUserGuid);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.NVarChar, 64, "@CiaamUserAlias", ParameterDirection.Output);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, "@AgentGuid", ParameterDirection.Output);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.UniqueIdentifier, "@AgentInfosetGuid", ParameterDirection.Output);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsAuthor", ParameterDirection.Output);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsReviewer", ParameterDirection.Output);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsEditor", ParameterDirection.Output);
+      QebSqlLinq.AddParameter(ref dbsqlCmmnd, SqlDbType.Bit, "@AgentIsAdmin", ParameterDirection.Output);
+      int errorExists = QebSqlLinq.ExecuteCommand(ref dbsqlCmmnd);
       if (errorExists == 0)
       {
-        qurc.ClientSessionGuid = QebSql.GetGuid(ref dbsqlCmmnd, "@SessionGuid");
-        qurc.ClientUserGuid = QebSql.GetGuid(ref dbsqlCmmnd, "@UserGuid");
-        qurc.ClientAgentGuid = QebSql.GetGuid(ref dbsqlCmmnd, "@AgentGuid");
-        qurc.ClientAgentInfosetGuid = QebSql.GetGuid(ref dbsqlCmmnd, "@AgentInfosetGuid");
+       // wrace.CiaamSessionGuid = QebSqlLinq.GetGuid(ref dbsqlCmmnd, "@SessionGuid");
+       // wrace.CiaamUserGuid = QebSqlLinq.GetGuid(ref dbsqlCmmnd, "@UserGuid");
+        wrace.NpdsAgentGuid = QebSqlLinq.GetGuid(ref dbsqlCmmnd, "@AgentGuid");
+        wrace.NpdsAgentInfosetGuid = QebSqlLinq.GetGuid(ref dbsqlCmmnd, "@AgentInfosetGuid");
         // next 3 properties implicit by existence of row in table
         // TODO: until or unless privilege revocation implemented
-        qurc.ClientIsAuthenticated = true;
-        qurc.ClientIsUser = true;
-        qurc.ClientIsAgent = true;
+        wrace.ClientIsAuthenticated = true;
+        wrace.ClientIsUser = true;
+        wrace.ClientIsAgent = true;
         // next 4 properties must check column value
-        qurc.ClientUserNameDisplayed = QebSql.GetChar(ref dbsqlCmmnd, "@AgentUserNameDisp");
-        qurc.ClientIsAuthor = QebSql.GetBit(ref dbsqlCmmnd, "@AgentIsAuthor");
-        qurc.ClientIsEditor = QebSql.GetBit(ref dbsqlCmmnd, "@AgentIsEditor");
-        qurc.ClientIsAdmin = QebSql.GetBit(ref dbsqlCmmnd, "@AgentIsAdmin");
-        // TODO: enhance PdsAgent table to enable revocation of agent privileges
+        wrace.CiaamUserAlias = QebSqlLinq.GetChar(ref dbsqlCmmnd, "@CiaamUserAlias");
+        wrace.ClientIsAuthor = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsAuthor");
+        wrace.ClientIsReviewer = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsReviewer");
+        wrace.ClientIsEditor = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsEditor");
+        wrace.ClientIsAdmin = QebSqlLinq.GetBit(ref dbsqlCmmnd, "@AgentIsAdmin");
+        // TODO: enhance CiaaNetUser table to enable revocation of privileges
       }
       DbsqlDisconnect();
+#if DEBUG
+      wrace.DebugClientAccess("CheckSessionNpdsAgent", "CoreDbsqlContext");
+#endif
       if (errorExists == 0) { return true; }
     }
     return false;
-  }
-
-  public bool AddRoleCoreSessionAgent(NamesForClientRoles role)
-  {
-    var roleAdded = false;
-    var csa = this.CoreSessionAgents
-      .Single(a => (a.AgentGuidKey == NPDSCP.ClientAgentGuid));
-    switch (role)
-    {
-      case NamesForClientRoles.NpdsAuthor:
-        csa.AgentIsAuthor = true; // secure default with false
-        break;
-      case NamesForClientRoles.NpdsEditor:
-        csa.AgentIsEditor = true; // secure default with false
-        break;
-      case NamesForClientRoles.NpdsAdmin:
-        csa.AgentIsAdmin = true; // secure default with false
-        break;
-      default:
-        throw new InvalidEnumArgumentException();
-    }
-    try
-    {
-      var errorCode = CoreSessionAgentAddRole(csa.IdentityUserGuidRef,
-        csa.AgentGuidKey, csa.AgentIsAuthor, csa.AgentIsEditor, csa.AgentIsAdmin);
-      roleAdded = true;
-    }
-    catch (Exception ex) { var error = ex.Message; }
-    return roleAdded;
   }
 
 } // end class

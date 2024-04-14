@@ -1,5 +1,5 @@
 ﻿// NpdsEntityNameItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsEntityNameItem : ANpdsXsgBaseItem<string>
 {
   public NpdsEntityNameItem() : base() { this.Initialize(); }
-  public NpdsEntityNameItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityNameItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsEntityNameItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsEntityNameItem(NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.NameItemXnam, PdpAppConst.NameListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, NameItemXnam, NameListXnam); }
 
   public string Name
   {
@@ -25,5 +25,5 @@ public class NpdsEntityNameItem : ANpdsXsgBaseItem<string>
 public class NpdsEntityNameList : ANpdsXsgItemList<NpdsEntityNameItem>
 {
   public NpdsEntityNameList() : base() { }
-  public NpdsEntityNameList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsEntityNameList(NpdsFieldRule rul) : base(rul) { }
 }

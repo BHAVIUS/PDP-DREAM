@@ -1,32 +1,30 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, Authorize]
-public class AgentModeIndex : TkgcPageController
+[RequireHttps, Authorize] 
+public class AgentModeIndex : QebiDataRazorPageControllerBase
 {
   private const string rzrClass = nameof(AgentModeIndex);
-  public AgentModeIndex(ILoggerFactory lgrFtry,
-    IEmailSender emlSndr, ISmsSender smsSndr)
-    : base(lgrFtry, emlSndr, smsSndr) { }
+  public AgentModeIndex() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    QURC = new QebiUserRestContext(exeCntxt.HttpContext)
+    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NpdsDatabaseAccess.AuthReadOnly,
-      RecordAccess = NpdsRecordAccess.AuthUser,
+      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
+      RecordAccess = NPDSCD.RecordAccessUser,
       UserModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepAgentModeIndex, $"{PDPSS.AppOwnerShortName}: Agent Mode");
-    PSRM.InitRazorPageMenus("_AgentModeSpanPageMenu");
+    // do not include optional params in pageName
+    PSRM = new PdpSiteRazorModel(DepAgentModeIndex, $"{PDPSS.AppOwnerNameShort}: Agent Mode");
+    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AgentModeSpanPageMenu");
     ResetQebiRepository();
-    ResetCoreRepository();
-    var isVerified = CheckCoreAgentSession();
-    if (!isVerified) { RedirectToPage(DepQebIdentRequired); }
+    var isVerified = CheckQebiUserSession();
+    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted

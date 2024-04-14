@@ -1,5 +1,5 @@
 ﻿// NpdsEntityNatureItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -8,11 +8,11 @@ namespace PDP.DREAM.CoreDataLib.Models;
 public class NpdsEntityNatureItem : ANpdsXsgBaseItem<string>
 {
   public NpdsEntityNatureItem() : base() { this.Initialize(); }
-  public NpdsEntityNatureItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityNatureItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsEntityNatureItem(NpdsFieldRule rul) : base() { this.Initialize(rul); }
+  public NpdsEntityNatureItem(NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.NatureItemXnam, PdpAppConst.NatureListXnam); }
+  private void Initialize(NpdsFieldRule rul = default(NpdsFieldRule))
+  { base.InitNpdsItem(rul, NatureItemXnam, NatureListXnam); }
 
   public string Nature
   {
@@ -25,6 +25,6 @@ public class NpdsEntityNatureItem : ANpdsXsgBaseItem<string>
 public class NpdsEntityNatureList : ANpdsXsgItemList<NpdsEntityNatureItem>
 {
   public NpdsEntityNatureList() : base() { }
-  public NpdsEntityNatureList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsEntityNatureList(NpdsFieldRule rul) : base(rul) { }
 }
 

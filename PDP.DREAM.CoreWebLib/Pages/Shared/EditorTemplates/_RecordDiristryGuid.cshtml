@@ -1,8 +1,6 @@
 ﻿@model Guid?
 
-@(
-  Html.Kendo().DropDownListFor(m => m)
-  .DataValueField("RecordDiristryGuid").DataTextField("RecordDiristryName").OptionLabel("Select Diristry")
-  .BindTo((System.Collections.IEnumerable)ViewData["CoreDiristryList"])
-  .HtmlAttributes(new { style = "width: 11em;", title = "Select Nexus Diristry" })
-)
+@(Html.Kendo().DropDownListFor(m => m)
+  .DataValueField("Value").DataTextField("Text").OptionLabel("Select Diristry")
+  .BindTo((System.Collections.IEnumerable)NPDSCD.NpdsDdlists.RegcDiristryList)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select Nexus Diristry" }))

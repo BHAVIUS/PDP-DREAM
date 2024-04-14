@@ -1,14 +1,14 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
-[XmlRoot(ElementName = PdpAppConst.NpdsRootXnam, Namespace = PdpAppConst.NpdsNamespace)]
+[XmlRoot(ElementName = NpdsRootXnam, Namespace = NpdsNamespace)]
 public class NpdsResrepXmlRoot : IXmlSerializable
 {
   public NpdsResrepXmlRoot() { }
 
-  public string Version { set; get; } = PdpAppConst.NpdsVersion;
+  public string Version { set; get; } = NpdsVersion;
 
   public void WriteXml(XmlWriter xWriter)
   {
@@ -19,8 +19,8 @@ public class NpdsResrepXmlRoot : IXmlSerializable
     // writer.WriteStartElement(NpdsConstants.NpdsRootXnam);
     // writer.WriteAttributeString("xmlns", NpdsConstants.NpdsNamespace); // causes error
     // writer.WriteAttributeString("", "xmlns", "", NpdsConstants.NpdsNamespace); // causes error
-    writer.WriteAttributeString(PdpAppConst.NpdsVersionXnam, PdpAppConst.NpdsVersion);
-    writer.WriteComment(PdpAppConst.NpdsCopyright);
+    writer.WriteAttributeString(NpdsVersionXnam, NpdsVersion);
+    writer.WriteComment(NpdsCopyright);
 
     (new NpdsClientRequestItem()).WriteXml(writer);
     (new NpdsServerResponseItem()).WriteXml(writer);
@@ -44,7 +44,7 @@ public class NpdsResrepXmlRoot : IXmlSerializable
     {
       reader.ReadStartElement();
     }
-    else if (reader.IsStartElement(PdpAppConst.NpdsRootXnam))
+    else if (reader.IsStartElement(NpdsRootXnam))
     {
       if (reader.HasAttributes)
       {
@@ -54,7 +54,7 @@ public class NpdsResrepXmlRoot : IXmlSerializable
           string attrval = reader.GetAttribute(attrnam);
           if (!string.IsNullOrEmpty(attrval))
           {
-            if (attrnam == PdpAppConst.NpdsVersionXnam)
+            if (attrnam == NpdsVersionXnam)
             { this.Version = attrval; }
           }
         }

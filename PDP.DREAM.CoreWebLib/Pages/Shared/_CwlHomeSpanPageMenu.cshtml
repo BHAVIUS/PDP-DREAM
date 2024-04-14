@@ -1,17 +1,29 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
+
+@{
+  bool userAuth = (Model.QebRcp.IsAuthenticated ?? false);
+  string userName = (User?.Identity?.Name ?? ESS);
+}
 
 <span>
   CwlHome:
   <a asp-page="@DepCwlHomeIndex">Index</a>
   <span> | </span>
-  <a asp-page="@DepCwlHomeAgentHelp">AgentHelp</a>
-  <span> | </span>
-  <a asp-page="@DepCwlHomeAuthorHelp">AuthorHelp</a>
-  <span> | </span>
-  <a asp-page="@DepCwlHomeEditorHelp">EditorHelp</a>
-  <span> | </span>
-  <a asp-page="@DepCwlHomeAdminHelp">AdminHelp</a>
+  @if (userAuth)
+  {
+    <a asp-page="@DepUserModeDisplayProfile">@userName</a>
+    @if (PDPSS.AppUseDevtestFeature)
+    {
+      <span> | </span>
+      <a asp-page="@DepCwlHomeDevTest">DevTest</a>
+    }
+  }
+  else
+  {
+    <a asp-page="@DepAnonModeLoginUser">LoginUser</a>
+  }
 </span>
+

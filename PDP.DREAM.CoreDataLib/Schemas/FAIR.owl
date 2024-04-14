@@ -1,0 +1,1307 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#" 
+	xml:base="http://npds.portaldoors.org/schema/pdp/fair" 
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#" 
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+	ontologyIRI="http://npds.portaldoors.org/schema/pdp/fair" 
+	versionIRI="http://npds.portaldoors.org/schema/pdp/fair/2.4">
+   <Prefix name="fair" IRI="http://npds.portaldoors.org/schema/pdp/fair#"/>
+   <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+   <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+   <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+   <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+   <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+   <Annotation>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <Literal>Last Updated: 2023/06/11</Literal>
+   </Annotation>
+   <Annotation>
+      <AnnotationProperty abbreviatedIRI="owl:versionInfo"/>
+      <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">2.4</Literal>
+   </Annotation>
+   <Declaration>
+      <Class IRI="#Claim"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Document"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#FairMetricCategorizedStatement"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#FairMetricsRelatedEntity"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#MisquotedStatement"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#NovelStatement"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#PotentiallyPlagiarizedStatement"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#QuotedStatement"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Statement"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#hasAttribtution"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#hasFairMetricObjectProperty"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#hasFairMetricStatementCategory"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasEquivalenceScore"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFairMetricCountValue"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFairMetricDataProperty"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFairMetricRatioValue"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFmFairMetricValue"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFnFairMetricValue"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFpFairMetricValue"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasFqFairMetricValue"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasMisquotedClaimCount"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasName"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasNovelClaimCount"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasPotentiallyPlagiarizedClaimCount"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasQuotedClaimCount"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#hasText"/>
+   </Declaration>
+   <SubClassOf>
+      <Class IRI="#Claim"/>
+      <Class IRI="#Statement"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Document"/>
+      <Class IRI="#FairMetricsRelatedEntity"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#FairMetricCategorizedStatement"/>
+      <Class IRI="#Statement"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#MisquotedStatement"/>
+      <Class IRI="#FairMetricCategorizedStatement"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#NovelStatement"/>
+      <Class IRI="#FairMetricCategorizedStatement"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#PotentiallyPlagiarizedStatement"/>
+      <Class IRI="#FairMetricCategorizedStatement"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#QuotedStatement"/>
+      <Class IRI="#FairMetricCategorizedStatement"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Statement"/>
+      <Class IRI="#FairMetricsRelatedEntity"/>
+   </SubClassOf>
+   <SubObjectPropertyOf>
+      <ObjectProperty IRI="#hasAttribtution"/>
+      <ObjectProperty IRI="#hasFairMetricObjectProperty"/>
+   </SubObjectPropertyOf>
+   <SubObjectPropertyOf>
+      <ObjectProperty IRI="#hasFairMetricStatementCategory"/>
+      <ObjectProperty IRI="#hasFairMetricObjectProperty"/>
+   </SubObjectPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasEquivalenceScore"/>
+      <DataProperty IRI="#hasFairMetricDataProperty"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasFairMetricCountValue"/>
+      <DataProperty IRI="#hasFairMetricDataProperty"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasFairMetricRatioValue"/>
+      <DataProperty IRI="#hasFairMetricDataProperty"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasFmFairMetricValue"/>
+      <DataProperty IRI="#hasFairMetricRatioValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasFnFairMetricValue"/>
+      <DataProperty IRI="#hasFairMetricRatioValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasFpFairMetricValue"/>
+      <DataProperty IRI="#hasFairMetricRatioValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasFqFairMetricValue"/>
+      <DataProperty IRI="#hasFairMetricRatioValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasMisquotedClaimCount"/>
+      <DataProperty IRI="#hasFairMetricCountValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasName"/>
+      <DataProperty IRI="#hasFairMetricDataProperty"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasNovelClaimCount"/>
+      <DataProperty IRI="#hasFairMetricCountValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasPotentiallyPlagiarizedClaimCount"/>
+      <DataProperty IRI="#hasFairMetricCountValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasQuotedClaimCount"/>
+      <DataProperty IRI="#hasFairMetricCountValue"/>
+   </SubDataPropertyOf>
+   <SubDataPropertyOf>
+      <DataProperty IRI="#hasText"/>
+      <DataProperty IRI="#hasFairMetricDataProperty"/>
+   </SubDataPropertyOf>
+   <Declaration>
+      <Class IRI="#Algorithm"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Author"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#AuthorDeclaration"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#C"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#ComponentArticleVerbatimPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Components"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#CreditedUnclearDelineationPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Declarations"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Editor"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#EditorDeclaration"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#F1"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#F2"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#F3"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#F4"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#FAIR"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#FAIRMetrics"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#FAIRProtocols"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#FullArticleVerbatimPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#IdeaLaunderingPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#M"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#N"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#NotPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#P"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#PartialArticleVerbatimPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Publisher"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#PublisherDeclaration"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Q"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#R"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Reviewer"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#ReviewerDeclaration"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Roles"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#S"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Statements"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#Status"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#T"/>
+   </Declaration>
+   <Declaration>
+      <Class IRI="#UncreditedParaphrasingPlagiarized"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#cites"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#constituentOf"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#constitutedBy"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#creates"/>
+   </Declaration>
+   <Declaration>
+      <ObjectProperty IRI="#similarTo"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#F1_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#F2_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#F3_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#F4_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#M_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#N_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#P_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#Q_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#R_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#S_Value"/>
+   </Declaration>
+   <Declaration>
+      <DataProperty IRI="#Statement"/>
+   </Declaration>
+   <Declaration>
+      <NamedIndividual IRI="#FAIRMetricsProtocol"/>
+   </Declaration>
+   <Declaration>
+      <NamedIndividual IRI="#Misquoted"/>
+   </Declaration>
+   <Declaration>
+      <NamedIndividual IRI="#Novel"/>
+   </Declaration>
+   <Declaration>
+      <NamedIndividual IRI="#Plagiarized"/>
+   </Declaration>
+   <Declaration>
+      <NamedIndividual IRI="#Quoted"/>
+   </Declaration>
+   <Declaration>
+      <NamedIndividual IRI="#RDFAnalysisProtocol"/>
+   </Declaration>
+   <EquivalentClasses>
+      <Class IRI="#F1"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#F1_Value"/>
+         <Datatype abbreviatedIRI="xsd:double"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#F2"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#F2_Value"/>
+         <Datatype abbreviatedIRI="xsd:double"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#F3"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#F3_Value"/>
+         <Datatype abbreviatedIRI="xsd:double"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#F4"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#F4_Value"/>
+         <Datatype abbreviatedIRI="xsd:double"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#M"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#M_Value"/>
+         <Datatype abbreviatedIRI="xsd:integer"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#N"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#N_Value"/>
+         <Datatype abbreviatedIRI="xsd:integer"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#P"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#P_Value"/>
+         <Datatype abbreviatedIRI="xsd:integer"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#Q"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#Q_Value"/>
+         <Datatype abbreviatedIRI="xsd:integer"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#R"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#R_Value"/>
+         <Datatype abbreviatedIRI="xsd:integer"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <EquivalentClasses>
+      <Class IRI="#S"/>
+      <DataAllValuesFrom>
+         <DataProperty IRI="#S_Value"/>
+         <Datatype abbreviatedIRI="xsd:integer"/>
+      </DataAllValuesFrom>
+   </EquivalentClasses>
+   <SubClassOf>
+      <Class IRI="#Algorithm"/>
+      <Class IRI="#Roles"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Author"/>
+      <Class IRI="#Roles"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#AuthorDeclaration"/>
+      <Class IRI="#Declarations"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#C"/>
+      <Class IRI="#Statements"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#ComponentArticleVerbatimPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Components"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#CreditedUnclearDelineationPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Declarations"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Editor"/>
+      <Class IRI="#Roles"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#EditorDeclaration"/>
+      <Class IRI="#Declarations"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F1"/>
+      <Class IRI="#FAIRMetrics"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F1"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#Q"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F1"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#S"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F2"/>
+      <Class IRI="#FAIRMetrics"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F2"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#M"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F2"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#Q"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F2"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#S"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F3"/>
+      <Class IRI="#FAIRMetrics"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F3"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#P"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F3"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#Q"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F3"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#S"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F4"/>
+      <Class IRI="#FAIRMetrics"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F4"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#N"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F4"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#Q"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#F4"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constitutedBy"/>
+         <Class IRI="#R"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#FAIRMetrics"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#FAIRProtocols"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#FullArticleVerbatimPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#IdeaLaunderingPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#M"/>
+      <Class IRI="#Components"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#M"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F2"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#N"/>
+      <Class IRI="#Components"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#N"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F4"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#NotPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#P"/>
+      <Class IRI="#Components"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#P"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F3"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#PartialArticleVerbatimPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Publisher"/>
+      <Class IRI="#Roles"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#PublisherDeclaration"/>
+      <Class IRI="#Declarations"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Q"/>
+      <Class IRI="#Components"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Q"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F1"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Q"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F2"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Q"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F3"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Q"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F4"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#R"/>
+      <Class IRI="#Components"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#R"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F4"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Reviewer"/>
+      <Class IRI="#Roles"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#ReviewerDeclaration"/>
+      <Class IRI="#Declarations"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Roles"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Roles"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#creates"/>
+         <Class IRI="#Statements"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#S"/>
+      <Class IRI="#Components"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#S"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F1"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#S"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F2"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#S"/>
+      <ObjectSomeValuesFrom>
+         <ObjectProperty IRI="#constituentOf"/>
+         <Class IRI="#F3"/>
+      </ObjectSomeValuesFrom>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Statements"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#Status"/>
+      <Class IRI="#FAIR"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#T"/>
+      <Class IRI="#Statements"/>
+   </SubClassOf>
+   <SubClassOf>
+      <Class IRI="#UncreditedParaphrasingPlagiarized"/>
+      <Class IRI="#Status"/>
+   </SubClassOf>
+   <DisjointClasses>
+      <Class IRI="#F1"/>
+      <Class IRI="#F2"/>
+      <Class IRI="#F3"/>
+      <Class IRI="#F4"/>
+   </DisjointClasses>
+   <DisjointClasses>
+      <Class IRI="#M"/>
+      <Class IRI="#N"/>
+      <Class IRI="#P"/>
+      <Class IRI="#Q"/>
+   </DisjointClasses>
+   <ClassAssertion>
+      <Class IRI="#FAIRProtocols"/>
+      <NamedIndividual IRI="#FAIRMetricsProtocol"/>
+   </ClassAssertion>
+   <ClassAssertion>
+      <Class IRI="#T"/>
+      <NamedIndividual IRI="#Misquoted"/>
+   </ClassAssertion>
+   <ClassAssertion>
+      <Class IRI="#T"/>
+      <NamedIndividual IRI="#Novel"/>
+   </ClassAssertion>
+   <ClassAssertion>
+      <Class IRI="#T"/>
+      <NamedIndividual IRI="#Plagiarized"/>
+   </ClassAssertion>
+   <ClassAssertion>
+      <Class IRI="#T"/>
+      <NamedIndividual IRI="#Quoted"/>
+   </ClassAssertion>
+   <ClassAssertion>
+      <Class IRI="#FAIRProtocols"/>
+      <NamedIndividual IRI="#RDFAnalysisProtocol"/>
+   </ClassAssertion>
+   <InverseObjectProperties>
+      <ObjectProperty IRI="#constituentOf"/>
+      <ObjectProperty IRI="#constitutedBy"/>
+   </InverseObjectProperties>
+   <DataPropertyDomain>
+      <DataProperty IRI="#F1_Value"/>
+      <Class IRI="#F1"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#F2_Value"/>
+      <Class IRI="#F2"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#F3_Value"/>
+      <Class IRI="#F3"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#F4_Value"/>
+      <Class IRI="#F4"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#M_Value"/>
+      <Class IRI="#M"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#N_Value"/>
+      <Class IRI="#N"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#P_Value"/>
+      <Class IRI="#P"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#Q_Value"/>
+      <Class IRI="#Q"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#R_Value"/>
+      <Class IRI="#R"/>
+   </DataPropertyDomain>
+   <DataPropertyDomain>
+      <DataProperty IRI="#Statement"/>
+      <Class IRI="#Statements"/>
+   </DataPropertyDomain>
+   <DataPropertyRange>
+      <DataProperty IRI="#F1_Value"/>
+      <Datatype abbreviatedIRI="xsd:double"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F1_Value"/>
+      <DatatypeRestriction>
+         <Datatype abbreviatedIRI="xsd:double"/>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">-1.0</Literal>
+         </FacetRestriction>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">1.0</Literal>
+         </FacetRestriction>
+      </DatatypeRestriction>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F2_Value"/>
+      <Datatype abbreviatedIRI="xsd:double"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F2_Value"/>
+      <DatatypeRestriction>
+         <Datatype abbreviatedIRI="xsd:double"/>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">-1.0</Literal>
+         </FacetRestriction>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">1.0</Literal>
+         </FacetRestriction>
+      </DatatypeRestriction>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F3_Value"/>
+      <Datatype abbreviatedIRI="xsd:double"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F3_Value"/>
+      <DatatypeRestriction>
+         <Datatype abbreviatedIRI="xsd:double"/>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">-1.0</Literal>
+         </FacetRestriction>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">1.0</Literal>
+         </FacetRestriction>
+      </DatatypeRestriction>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F4_Value"/>
+      <Datatype abbreviatedIRI="xsd:double"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#F4_Value"/>
+      <DatatypeRestriction>
+         <Datatype abbreviatedIRI="xsd:double"/>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">0.0</Literal>
+         </FacetRestriction>
+         <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
+            <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">1.0</Literal>
+         </FacetRestriction>
+      </DatatypeRestriction>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#M_Value"/>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#N_Value"/>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#P_Value"/>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#Q_Value"/>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#R_Value"/>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#S_Value"/>
+      <Datatype abbreviatedIRI="xsd:integer"/>
+   </DataPropertyRange>
+   <DataPropertyRange>
+      <DataProperty IRI="#Statement"/>
+      <Datatype abbreviatedIRI="xsd:string"/>
+   </DataPropertyRange>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Algorithm</IRI>
+      <Literal xml:lang="en">Refers to the Natural-Language Processing semantic analysis algorithms which will extract key RDF triples from the paper in an automated fashion.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Author</IRI>
+      <Literal xml:lang="en">Refers to the author of the paper who is extracting the key triples of their own paper, presumably in a manual fashion.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#AuthorDeclaration</IRI>
+      <Literal>a) I have neither financial nor personal conflicts of interest with the reviewers, editors, and/or publishers. I participate in the peer review process independently of them or have otherwise fully disclosed the nature of the relationship such as current or former co-author or colleague working in the same research group. 
+
+b) I have cited all relevant and appropriate literature known at the time of submission in a manner consistent with scholarly publishing ethics that refrains from plagiarism including idea-laundering plagiarism. 
+
+c) I have made all claims truthfully in this submission in a consistent logical manner to the best of my knowledge, and each claim either cites previously published work correctly or represents a valid novel contribution. 
+
+d) I agree to remain in contact with the editor and publisher and to respond to them if and when any concerns arise during the peer review process and also later after publication if the submission is published. 
+
+e) I agree to correct any mistakes in citation of references, both omission of citation as well as incorrect citation, to correct any mistakes in data, analysis, results, or presentation and interpretation of results, whenever brought to my attention, both during the peer review process and also later after publication if the submission is published. 
+
+f) As submitting and/or corresponding author, I agree to be held responsible and accountable for the authenticity and integrity of the submitted work. 
+
+g) I assert that any and all of my co-authors have also agreed to be held responsible and accountable for the authenticity and integrity of the submitted work.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#C</IRI>
+      <Literal xml:lang="en">Statements in a Control paper or in a Comparison Collection of papers</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#ComponentArticleVerbatimPlagiarized</IRI>
+      <Literal>A case of plagiarism is when a section or portion (less than 50%) of an article is directly copied and any name of the original author list is replaced with another person.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#Components</IRI>
+      <Literal xml:lang="en">Individual components which are utilized to calculate the FAIR Metrics. These include M, N, P, and Q which are direct attributes of (T|C). Also includes R and S which are calculated from M, N, P, and Q.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#CreditedUnclearDelineationPlagiarized</IRI>
+      <Literal>This is when an article correctly cites the correct author in the references, however the specifc delineation of the quoted section is unclear.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Declarations</IRI>
+      <Literal>To counter both idea-laundering plagiarism by authors and idea-bleaching censorship by editors, declarations of statements expressed in first-person voice by authors, reviewers, editors, and publishers are intended to promote and support research integrity in scholarly publishing.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Editor</IRI>
+      <Literal xml:lang="en">Refers to the editor or section chair for the particular conference or journal who is in charge of submissions for that section in general. Will also presumably be extracting the triples manually.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#EditorDeclaration</IRI>
+      <Literal>a) I have neither financial nor personal conflicts of interest with the authors, reviewers, and/or publishers. I participate in the peer review process independently of them or have otherwise fully disclosed the nature of the relationship. 
+
+b) I have organized the peer review committee and managed the review of this submission fairly without bias. Otherwise, I have informed the authors that their submission has not been processed for peer review because it was considered outside the scope of the journal. 
+
+c) I have refrained from ‘editor reference padding’, ie, requesting citations of the journal’s published papers unless these papers are directly related to the substantive content of the paper under review and I have explained the rational reasons why they should be cited and discussed by the paper under review. 
+
+d) I have examined the reviewers’ evaluations of the authors’ submission to assure that the reviewers have complied with their ethical peer review requirements. 
+
+e) I agree to respond to reader complaints by investigating and publishing their concerns in a manner consistent with scholarly publishing ethics that refrains from censorship including idea-bleaching censorship. 
+
+f) I agree to publish corrections of submission errors whenever brought to my attention after publication if the submission is published.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#F1</IRI>
+      <Literal xml:lang="en">FAIR metric scaled on interval [0, 1] for T compared with C (dependent on Q and S)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F1</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#F1_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F1</IRI>
+      <Literal>F1(T |C) = Q(T |C)/S(T |C)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F1</IRI>
+      <Literal xml:lang="en">The ratio of the Quoted count to Similar count. When Misquoted and Quoted counts are zero withM(T |C) = Q(T |C) = 0 and the Plagiarized and Similar counts are equal with P(T |C) = S(T |C) &gt; 0, then F1(T |C) = 0. When Misquoted and Plagiarized counts are zero with M(T |C) = P(T |C) = 0 and the Quoted and Similar counts are equal with Q(T |C) = S(T |C) &gt; 0, then F1(T |C) = 1. Observe that increasing F1 between 0 and 1 means increasing FAIRness.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#F2</IRI>
+      <Literal xml:lang="en">FAIR metric scaled on interval [−1, +1] for T compared with C (dependent on Q, M and S)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F2</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#F2_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F2</IRI>
+      <Literal>F2(T |C) = [Q(T |C) − M(T |C)]/S(T |C)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F2</IRI>
+      <Literal xml:lang="en">The ratio of the Quoted-Misquoted difference count to Similar count. When Quoted and Plagiarized counts are zero with Q(T |C) = P(T |C) = 0 and the Misquoted and Similar counts are equal with M(T |C) = S(T |C) &gt; 0, then F2(T |C) = −1. When Misquoted and Plagiarized counts are zero with M(T |C) = P(T |C) = 0 and the Quoted and Similar counts are equal with Q(T |C) = S(T |C) &gt; 0, then F2(T |C) = 1. Observe that increasing F2 between -1 and 1 means increasing FAIRness with a zero boundary and sign change indicating a transition when Q(T |C) &gt; M(T |C).</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#F3</IRI>
+      <Literal xml:lang="en">FAIR metric scaled on interval [−1, +1] for T compared with C (dependent on Q, P and S)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F3</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#F3_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F3</IRI>
+      <Literal>F2(T |C) = [Q(T |C) − P(T |C)]/S(T |C)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F3</IRI>
+      <Literal xml:lang="en">The ratio of the Quoted-Plagiarized difference count to Similar count. When Misquoted and Quoted counts are zero with M(T |C) = Q(T |C) = 0 and the Plagiarized and Similar counts are equal with P(T |C) = S(T |C) &gt; 0, then F3(T |C) = −1. When Misquoted and Plagiarized counts are zero with M(T |C) = P(T |C) = 0 and the Quoted and Similar counts are equal with Q(T |C) = S(T |C) &gt; 0, then F3(T |C) = 1. Observe that increasing F3 between -1 and 1 means increasing FAIRness with a zero boundary and sign change indicating a transition when Q(T |C) &gt; P(T |C).</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#F4</IRI>
+      <Literal xml:lang="en">FAIR metric scaled on interval [−1, +1] for T compared with C (dependent on Q, N and R)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F4</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#F4_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F4</IRI>
+      <Literal>F2(T |C) = [Q(T |C) − N(T |C)]/R(T |C)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#F4</IRI>
+      <Literal xml:lang="en">The ratio of the Quoted-Novel difference count to Reported count. When Misquoted and Quoted counts are zero with M(T |C) = Q(T |C) = 0 and the Novel and Reported counts are equal with N(T |C) = R(T |C) &gt; 0, then F4(T |C) = −1. When Misquoted, Plagiarized and Novel counts are zero with M(T |C) = P(T |C) = N(T |C) = 0 and the Quoted and Reported counts are equal with Q(T |C) = R(T |C) &gt; 0, then F4(T |C) = 1. Observe that increasing F4 between -1 and 1 means increasing FAIRness with a zero boundary and sign change indicating a transition when Q(T |C) &gt; N(T |C).</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#FAIR</IRI>
+      <Literal>The FAIR metrics (Fair Attribution to Index Reports) are a set of metrics used to guide researchers to adhere to high quality citation standards and to prevent plagiarism.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#FAIRMetrics</IRI>
+      <Literal xml:lang="en">The FAIR metrics provide a quantitative tool to measure the relative numbers of pairs of matching and mismatching statements found through semantic analysis. As such, they are primarily meant to alert peer reviewers to prioritize low-scoring manuscripts for closer scrutiny. Each of the four metrics is meant to provide insight into a different aspect of paper T&apos;s adherence to citation practices.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#FAIRMetricsProtocol</IRI>
+      <Literal>1. Extract statements of the control paper which it claims to be novel(most likely to be found in Introduction, Abstract, and Conclusion).
+2. Determine the set of these novel statements which could be considered the most important or primary focus
+of the paper.
+3. Render these key statements into subject-verb-object triples using WordNet to describe plain words and a
+mixture of other domain ontologies to represent terminology.
+4. Extract statements of the test paper which it claims to be novel(most likely to be found in Introduction, Abstract,
+and Conclusion).
+5. Determine the set of these novel statements which could be considered the most important or primary focus
+of the paper.
+6. Render these key statements into subject-verb-object triples using WordNet to describe plain words and a
+mixture of other domain ontologies to represent terminology.
+7. Check if the statement can be considered common/domain knowledge which can be defined as a fact/claim
+which can readily be found in a reference book for the subject.
+8. Compare the set of novel test triples to the set of novel control triples and check for similarity between the two.
+9. If a statement which the test claims is novel is found in the control and isn’t considered common/domain
+knowledge (basically a claim which originates from the control paper), mark as plagiarized. Else mark as
+novel.
+10. Extract all statements of the test paper which are attributed to a prior work (have a citation for them).
+11. Render these key statements into subject-verb-object triples using WordNet to describe plain words and a
+mixture of other domain ontologies to represent terminology.
+12. Reference the set of key novel claim triples made by the cited paper (if the paper doesn’t already have these
+then generates this set of triples in the same manner by which the novel triples are generated by the control).
+13. Check if the cited triples statement from the test paper has an approximaly equivalent claim in the cited paper.
+14. If the cited statement has an equivalent claim in the cited paper, compare the context with which the statement
+is used in the test paper with the context of the claim in the cited paper.
+15. Does the test paper correctly use and not misrepresent the claim made by the cited paper (i.e. is the interpretation
+similar)?
+16. If the cited paper does have an equivalent claim for the cited statement, can that cited statement be attributed
+to originate in an earlier paper. (i.e. is the cited paper being merely confirmatory/contradictory/compiling of
+said statement).
+17. If the cited statement does originate from an earlier paper, is the context by which the statement is analyzed
+different from the context of the original paper (i.e. is the interpretation, usage, etc. different). If so count the
+cited statement as originating from the cited paper.
+18. If the cited statement does have an equivalent claim in the cited paper, the usage of the statement doesn’t
+misrepresent the finding in the cited paper, and said statement does originate from the cited paper, mark the
+cited statement as quoted.
+19. If any of the above aren’t true, mark the statement as misquoted
+20. Compile the number of misquoted statement = M, quoted statements = Q, novel statement = N, and plagiarized
+statements = P.
+21. Find S by adding M, Q, and P together. Find R by adding M, Q, P, N together.
+22. Calculate F1 = Q/S. Check if between 0 and 1. If not, there was a calculation error
+23. Calculate F2 = (Q-M)/S. Check if between -1 and 1. If not, there was a calculation error
+24. Calculate F3 = (Q-P)/S. Check if between -1 and 1. If not, there was a calculation error
+25. Calculate F4 = (Q-N)/R. Check if between -1 and 1. If not, there was a calculation error</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#FAIRProtocols</IRI>
+      <Literal>A protocol which is used to analyze a particular paper using the FAIR metrics.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#FullArticleVerbatimPlagiarized</IRI>
+      <Literal>The most extreme case of plagiarism is when a full paper is directly copied and any name of the original author list is replaced with another person.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#IdeaLaunderingPlagiarized</IRI>
+      <Literal>Analogous to the concept and practice of money laundering, in which ideas are plagiarized and then the plagiarism is hidden in plain sight. These ideas were illegitimately obtained through another illegitimate process with the intent of making it appear legitimate, i.e., making dirty ideas look clean.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#M</IRI>
+      <Literal xml:lang="en">number M of Misquoted (incorrectly cited) statements found in T compared with C</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#M</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#M_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#N</IRI>
+      <Literal xml:lang="en">number N of Novel (uncited) statements found in T compared with C</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#N</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#N_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#NotPlagiarized</IRI>
+      <Literal>This is when an article does not plagiarize another article and all its concepts are known to be novel.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#P</IRI>
+      <Literal xml:lang="en">number P of Plagiarized (uncited) statements found in T compared with C</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#P</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#P_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#PartialArticleVerbatimPlagiarized</IRI>
+      <Literal>A case of plagiarism is when a section or portion (50%) of an article is directly copied and any name of the original author list is replaced with another person.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Publisher</IRI>
+      <Literal>Refers to the publisher of the journal of the paper. Will also presumably be extracting the triples manually.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#PublisherDeclaration</IRI>
+      <Literal>a) I have neither financial nor personal conflicts of interest with the authors, reviewers, and/or editors. I participate in the peer review process independently of them or have otherwise fully disclosed the nature of the relationship. 
+
+b) I have confirmed that the reviewers and editors have completed their tasks satisfactorily to prevent any violations of copyright, trademark, patent, and intellectual property law. 
+
+c) I agree to investigate fairly any future inquiry concerning this publication should it later be suspected of misconduct after publication. As part of a fair investigation, I agree to issue a formal report based on objective evidence and rational argument for the judgment and decision recommended by the analysis.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Q</IRI>
+      <Literal xml:lang="en">number Q of Quoted (correctly cited) statements found in T compared with C</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#Q</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#Q_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#R</IRI>
+      <Literal xml:lang="en">number R of Reported statements found in T compared with C</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#R</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#R_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#R</IRI>
+      <Literal>R(T |C) = M(T |C) + Q(T |C) + P(T |C) + N(T |C) ≥ K(C)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#R</IRI>
+      <Literal xml:lang="en">R(T |C) represents the total number R of all Reported statements (= misquoted + quoted + plagiarized + novel statements) found in setT when compared to
+statements found in set C. As such, it is the union of statements found in both T and C, ie, both those that have and have not been repeated in T from C.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#RDFAnalysisProtocol</IRI>
+      <Literal>1. Choose a base url to be used to describe the claims in the RDF document, input this into the xml:base field
+2. Record the url for paper (into rdf:about field), title, first author (into creator field), co-authors (into contributor field), abstract, shortened description (into description field), date published, and doi/uri into respective fields for citation metadata section
+3. Input the M, N, P, Q, F1, F2, F3, F4 calues into the FAIR values section, each for their respective field.
+4. Each grouping of information for the statements will be inputted into description fields with the rdf:about field being &apos;Identifer.X.Y&apos;. Where the identifer represents a 9 character string, X representing the Xth statement, and Y being the Yth section. (Ex. #OV4AQT491.1.2)
+5. For each statement, input a title (only if said claim has a clear title), location (only if said claim has a clear url location), and description (plain lexical representation of statement) into field for Identifer.X.1. Put the statement isDefinedBy ”Identifer.X.2”.
+6. For description ”Identifer.X.2”, refer by rdf:first to the first triple in set of triples describing that particular statement as ”Identifer.X.2.1”
+7. Each triple for ”Identifer.X.2.1” to ”Identifer.X.2.Z” with each section from 1-Z representing a triple that composes ”Identifer.X” will have a field for subject, predicate, and object. Each of these fields will contain a reference for the subject, verb, and object respectively extracted for said triple earlier.
+8. The type for these triples should be http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement and each except the end should refer via rdf:rest to ”Identifer.X.2.Z+1”
+9. For ”Identifer.X.3”, have the type be a statement, the subject referring to ”Identifer.X.1”, and the resource being an instance of either http://npds.portaldoors.org/nsvo/npdsystem/FAIR#Plagiarized, http://npds.portaldoors.org/nsvo/npdsystem/FAIR#Novel, http://npds.portaldoors.org/nsvo/npdsystem/FAIR#Quoted, or http://npds.portaldoors.org/nsvo/npdsystem/FAIR#Misquoted depending on the classification of the statement.
+10. If the statement is either Plagiarized, Quoted, or Misquoted, have a section for ”Identifer.X.4”. For this statement, have the subject be ”Identifer.X.1” and then have a fair:similarTo statement containing an rdf:Bag section. If the claim is plagiarized, input the reference to the paper the statement was plagiarized from. If the claim is quoted, input the reference to the paper the statement was cited from. If the claim was misquoted, either input the correct origin of the statement or if the cited claim was misinterpreted the given citation.
+11. Continue steps 4-10 for each of the statement (Novel, Plagiarized, Quoted, Misquoted) in the paper.
+12. At the end in the Final Result section, have a description statement with the url referring to the paper. In the hasRole field, input http://npds.portaldoors.org/nsvo/npdsystem/FAIR#NotPlagiarized if the paper meets the threshold for not being plagiarized. 13) Else, input one of the six defined plagiarism levels depending on the level of infraction of the paper (”ComponentArticleVerbatimPlagiarized”,”CreditedUnclearDelineation-Plagiarized”,”FullArticleVerbatimPlagiarized”,”IdeaLaunderingPlagiarized”,”PartialArticleVerbatimPlagiarized”,”UncreditedParaphrasingPlagiarized”)
+13. 5 of these levels are defined by Section 8.2.4.D ”Plagiarism Levels and Corrective Actions” of the PSPB Operations Manual from IEEE (reference: https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/Level_description.pdf). Use this document to determine which of the 5 levels the plagiarism falls into.
+14. It should be noted that in order to qualify for ”IdeaLaunderingPlagiarized” the author, editor, or publisher have to fall into a set of specified actions that are beyond the scope of this instruction set.
+15. If there are any papers which the paper notably plagiarizes from, use an fair:similarTo and rdf:bag statement to list the papers</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Reviewer</IRI>
+      <Literal xml:lang="en">Refers to the reviewer of the paper who is doing the peer-review/investigation of the paper for plagiarism. Will presumambly manually extract the triples.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#ReviewerDeclaration</IRI>
+      <Literal>a) I have neither financial nor personal conflicts of interest with the authors, editors, and/or publishers. I participate in the peer review process independently of them or have otherwise fully disclosed the nature of the relationship such as current or former competitor working on the same research problem. 
+
+b) I have refrained from the use of personal insults and ad hominem attacks directed against the authors. 
+
+c) I have refrained from fallacious criticisms of the authors, and instead, have justified all criticisms with evidence supported by detailed explanations and cited references. 
+
+d) I have refrained from ‘reviewer reference padding’, ie, requesting citations of the reviewer’s published papers unless these papers are directly related to the substantive content of the paper under review and I have explained the rational reasons why they should be cited and discussed by the paper under review. 
+
+e) I have reviewed and checked for correctness all citations referenced in the authors’ submission. I am not aware of any published literature in the research field that should have been cited by the authors but was omitted by them. 
+
+f) I agree that all claims made in this submission by the authors are true to the best of my knowledge, and each one either cites previously published work correctly or represents a valid novel contribution</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Roles</IRI>
+      <Literal>These roles refer to the different roles involved in marking up a test paper and calculating FAIR metric values in the manual and algorithmic FAIR metric test experiments.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#S</IRI>
+      <Literal xml:lang="en">number S of Similar statements found in T compared with C</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#S</IRI>
+      <IRI>http://www.semanticweb.org/dutta/ontologies/2019/5/untitled-ontology-11#S_Value</IRI>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#S</IRI>
+      <Literal>S(T |C) = M(T |C) + Q(T |C) + P(T |C) ≤ K(C)</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+      <IRI>#S</IRI>
+      <Literal xml:lang="en">S(T |C) represents the total number S of Similar statements (= misquoted + quoted + plagiarized statements) found in set T repeated from and similar
+to known statements found in set C. As such it is the  the intersection of statements found in both T and C, ie, those that have been repeated in T from C.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Statements</IRI>
+      <Literal xml:lang="en">Superclass which specifies the various types of statements in either a T paper or C paper. A statement is a key piece of information or assertion which is featured in a given paper.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#Status</IRI>
+      <Literal>These are the six defined plagiarism levels that depend on the level of infraction of the paper, determined by the FAIR metrics experiment.</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#T</IRI>
+      <Literal xml:lang="en">set T of statements in a Test paper</Literal>
+   </AnnotationAssertion>
+   <AnnotationAssertion>
+      <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+      <IRI>#UncreditedParaphrasingPlagiarized</IRI>
+      <Literal>This is when an article paraphrases the ideas/concepts of another author, without properly crediting that said author.</Literal>
+   </AnnotationAssertion>
+</Ontology>
+<!-- Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi -->

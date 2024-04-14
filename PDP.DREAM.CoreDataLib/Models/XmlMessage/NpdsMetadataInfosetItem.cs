@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -6,37 +6,37 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsMetadataInfosetItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsMetadataInfosetItem : ANpdsXsgBaseItem<XElement>, INpdsMetadataInfosetNexus
 {
-  public NpdsMetadataInfosetItem() : base() { this.Initialize(); }
-  public NpdsMetadataInfosetItem(PdpAppConst.NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
+  public NpdsMetadataInfosetItem() : base() { this.Initialize(NPDSCD.ResrepFormatDefault); }
+  public NpdsMetadataInfosetItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
 
   // initialize only in this private method, not with the private fields of properties
-  private void Initialize(PdpAppConst.NpdsResrepFormat rrf = default(PdpAppConst.NpdsResrepFormat))
+  private void Initialize(NpdsResrepFormat rrf)
   {
     // initialize base
-    base.InitNpdsItem(PdpAppConst.NpdsFieldRule.Required, PdpAppConst.InfosetItemXnam, PdpAppConst.InfosetListXnam, PdpAppConst.InfosetKeyXnam);
+    base.InitNpdsItem(NpdsFieldRule.Required, InfosetItemXnam, InfosetListXnam, InfosetKeyXnam);
 
     // pdsroot.xsd group G_InfosetNexusCore
 
     // pdsroot.xsd group G_InfosetPortal
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus || rrf == PdpAppConst.NpdsResrepFormat.PORTAL)
+    if (rrf == NPDSCD.ResrepFormatNexus || rrf == NPDSCD.ResrepFormatPORTAL)
     {
-      this.InfosetPortalValidation = new NpdsInfosetValidationPortalItem(PdpAppConst.NpdsFieldRule.Permitted);
+      this.InfosetPortalValidation = new NpdsInfosetValidationPortalItem(NpdsFieldRule.Permitted);
     }
     else
     {
-      this.InfosetPortalValidation = new NpdsInfosetValidationPortalItem(PdpAppConst.NpdsFieldRule.Prohibited);
+      this.InfosetPortalValidation = new NpdsInfosetValidationPortalItem(NpdsFieldRule.Prohibited);
     }
 
     // pdsroot.xsd group G_InfosetDoors
-    if (rrf == PdpAppConst.NpdsResrepFormat.Nexus || rrf == PdpAppConst.NpdsResrepFormat.DOORS)
+    if (rrf == NPDSCD.ResrepFormatNexus || rrf == NPDSCD.ResrepFormatDOORS)
     {
-      this.InfosetDoorsValidation = new NpdsInfosetValidationDoorsItem(PdpAppConst.NpdsFieldRule.Permitted);
-      this.InfosetNexusEntailment = new NpdsInfosetEntailmentNexusItem(PdpAppConst.NpdsFieldRule.Permitted);
+      this.InfosetDoorsValidation = new NpdsInfosetValidationDoorsItem(NpdsFieldRule.Permitted);
+      this.InfosetNexusEntailment = new NpdsInfosetEntailmentItem(NpdsFieldRule.Permitted);
     }
     else
     {
-      this.InfosetDoorsValidation = new NpdsInfosetValidationDoorsItem(PdpAppConst.NpdsFieldRule.Prohibited);
-      this.InfosetNexusEntailment = new NpdsInfosetEntailmentNexusItem(PdpAppConst.NpdsFieldRule.Prohibited);
+      this.InfosetDoorsValidation = new NpdsInfosetValidationDoorsItem(NpdsFieldRule.Prohibited);
+      this.InfosetNexusEntailment = new NpdsInfosetEntailmentItem(NpdsFieldRule.Prohibited);
     }
   }
 
@@ -57,7 +57,7 @@ public class NpdsMetadataInfosetItem : ANpdsXsgBaseItem<XElement>, INpdsMetadata
   public bool InfosetIsUpdaterLimited { set; get; } = false;
   public bool InfosetIsManagerReleased { set; get; } = false;
   public bool InfosetIsConcise { set; get; } = false;
-  public NpdsInfosetEntailmentNexusItem InfosetNexusEntailment { set; get; }
+  public NpdsInfosetEntailmentItem InfosetNexusEntailment { set; get; }
   public NpdsInfosetValidationPortalItem InfosetPortalValidation { set; get; }
   public NpdsInfosetValidationDoorsItem InfosetDoorsValidation { set; get; }
 
@@ -65,11 +65,11 @@ public class NpdsMetadataInfosetItem : ANpdsXsgBaseItem<XElement>, INpdsMetadata
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
     writer.WriteStartElement(ItemXnam);
-    if (ItemHasKey && writer.QURC.ItemDoesArchive)
+    if (ItemHasKey && writer.WRACE.ItemDoesArchive)
     {
       writer.WriteAttributeString(ItemKeyXnam, InfosetGuid.ToString());
     }
-    if (writer.QURC.ItemDoesVerbose || writer.QURC.ItemDoesArchive)
+    if (writer.WRACE.ItemDoesVerbose || writer.WRACE.ItemDoesArchive)
     {
       if (InfosetPortalValidation.ItemMayExist) { InfosetPortalValidation.WriteXml(writer); }
       if (InfosetDoorsValidation.ItemMayExist) { InfosetDoorsValidation.WriteXml(writer); }
@@ -111,18 +111,18 @@ public class NpdsMetadataInfosetItem : ANpdsXsgBaseItem<XElement>, INpdsMetadata
       }
       reader.Read();
 
-      // pdsroot.xsd group G_InfosetNexusCore
+      // pdsroot.xsd group G_InfosetNexus
 
       // pdsroot.xsd group G_InfosetPortal
-      if (reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.Nexus ||
-          reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.PORTAL)
+      if (reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatNexus ||
+          reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatPORTAL)
       {
         InfosetPortalValidation.ReadXml(reader);
       }
 
       // pdsroot.xsd group G_InfosetDoors
-      if (reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.Nexus ||
-          reader.QURC.ResrepFormat == PdpAppConst.NpdsResrepFormat.DOORS)
+      if (reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatNexus ||
+          reader.WRACE.ResrepFormat == NPDSCD.ResrepFormatDOORS)
       {
         InfosetDoorsValidation.ReadXml(reader);
         InfosetNexusEntailment.ReadXml(reader);

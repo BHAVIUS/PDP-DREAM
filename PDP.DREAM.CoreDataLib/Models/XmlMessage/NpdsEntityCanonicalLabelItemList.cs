@@ -1,31 +1,34 @@
-﻿// NpdsEntityCanonicalLabelItemList.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
 
 [KnownType(typeof(NpdsEntityCanonicalLabelItem)), XmlSchemaProvider(null, IsAny = true)]
-public class NpdsEntityCanonicalLabelItem : ANpdsXsgTypedLabelItem
+public class NpdsEntityCanonicalLabelItem : ANpdsXsgEntityLabelItem
 {
-  public NpdsEntityCanonicalLabelItem() : base() { this.Initialize(); }
-  public NpdsEntityCanonicalLabelItem(PdpAppConst.NpdsFieldRule rul) : base() { this.Initialize(rul); }
-  public NpdsEntityCanonicalLabelItem(PdpAppConst.NpdsFieldRule rul, string val) : base(val) { this.Initialize(rul); }
+  public NpdsEntityCanonicalLabelItem() : base()
+  { this.Initialize(); }
+  public NpdsEntityCanonicalLabelItem(NpdsFieldRule rul) : base()
+  { this.Initialize(rul); }
+  public NpdsEntityCanonicalLabelItem(NpdsFieldRule rul, Uri? val) : base(val)
+  { this.Initialize(rul); }
 
-  private void Initialize(PdpAppConst.NpdsFieldRule rul = default(PdpAppConst.NpdsFieldRule))
-  { base.InitNpdsItem(rul, PdpAppConst.CanonicalLabelItemXnam, PdpAppConst.CanonicalLabelListXnam); }
+  private void Initialize(NpdsFieldRule rul = default)
+  { base.InitNpdsItem(rul, CanonicalLabelItemXnam, CanonicalLabelListXnam); }
 
-  public string CanonicalLabel
+  public string? CanonicalLabel
   {
-    get { return ItemValue; }
-    set { if (value != null) { ItemValue = value; } }
+    get { return ItemValue.AbsoluteUri; }
+    set { ParseEntityLabel(value); }
   }
 
-}
+} // end class
 
 [KnownType(typeof(NpdsEntityCanonicalLabelList)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsEntityCanonicalLabelList : ANpdsXsgItemList<NpdsEntityCanonicalLabelItem>
 {
   public NpdsEntityCanonicalLabelList() : base() { }
-  public NpdsEntityCanonicalLabelList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
-}
+  public NpdsEntityCanonicalLabelList(NpdsFieldRule rul) : base(rul) { }
+} // end class
 
+// end file

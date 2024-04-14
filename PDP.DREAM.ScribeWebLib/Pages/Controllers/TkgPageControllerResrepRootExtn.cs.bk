@@ -1,0 +1,75 @@
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+namespace PDP.DREAM.ScribeWebLib.Controllers;
+
+public partial class TkgsPageController
+{
+
+  public virtual JsonResult OnPostWriteResrepRootExtn([DataSourceRequest] DataSourceRequest dsRequest,
+    CoreResrepRootExtnUxm rrr, string searchFilter, string serviceTag, string entityType)
+  {
+    WARC.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag, entityType, "", searchFilter);
+    OpenScribeConnection();  // use PSDC
+#if DEBUG
+    DebugScribeRepo(nameof(OnPostWriteResrepRoot));
+    WARC.DebugNpdsSelectFilter();
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (ModelState.IsValid)
+      {
+        rrr = PSDC.EditResrepRoot(rrr);
+      }
+      rrr.NdisElemId = eidResrepStatus;
+      dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
+    return jsonData;
+  }
+
+  public virtual JsonResult OnPostDeleteResrepRootExtn([DataSourceRequest] DataSourceRequest dsRequest,
+    CoreResrepRootExtnUxm rrr, string searchFilter, string serviceTag, string entityType)
+  {
+    WARC.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag, entityType, "", searchFilter);
+    OpenScribeConnection();  // use PSDC
+#if DEBUG
+    DebugScribeRepo(nameof(OnPostDeleteResrepRoot));
+    WARC.DebugNpdsSelectFilter();
+#endif
+    DataSourceResult? dsResult = null;
+    try
+    {
+      if (ModelState.IsValid)
+      {
+        using (var psdc = new ScribeDbsqlContext((INpdsClient)WARC))
+        { rrr = psdc.DeleteResrepRoot(rrr); }
+      }
+      rrr.NdisElemId = eidResrepStatus;
+      dsResult = (new[] { rrr }).ToDataSourceResult(dsRequest, ModelState);
+    }
+    catch (SqlException exc)
+    {
+#if DEBUG
+      Debug.WriteLine(ParseSqlException(exc));
+#endif
+    }
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    CloseScribeConnection();
+    return jsonData;
+  }
+
+ 
+
+
+} // end class
+
+// end file

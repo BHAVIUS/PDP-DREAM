@@ -1,5 +1,5 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -7,7 +7,7 @@
 @model CwlHomeIndex
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  QebiUserRestContext qurc = Model.QURC;
+  NpdsClientWrace wrace = Model.WRACE;
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
@@ -16,10 +16,9 @@
 <h5>Help Info and Examples by NPDS RecordAccess</h5>
 
 <ul>
-  <li>Anon: <a asp-page="/NPDS/NwlHome/AnonHelp">/NPDS/NwlHome/AnonHelp</a></li>
-  <li>User: <a asp-page="/NPDS/NwlHome/UserHelp">/NPDS/NwlHome/UserHelp</a></li>
-  <li>Agent: <a asp-page="/NPDS/NwlHome/AgentHelp">/NPDS/NwlHome/AgentHelp</a></li>
-  <li>Author: <a asp-page="/NPDS/NwlHome/AuthorHelp">/NPDS/NwlHome/AuthorHelp</a></li>
-  <li>Editor: <a asp-page="/NPDS/NwlHome/EditorHelp">/NPDS/NwlHome/EditorHelp</a></li>
-  <li>Admin: <a asp-page="/NPDS/NwlHome/AdminHelp">/NPDS/NwlHome/AdminHelp</a></li>
+  <li>Agent: <a asp-page="@DepAgentModeHelp">@DepAgentModeHelp</a></li>
+  <li>Author: <a asp-page="@DepAuthorModeHelp">@DepAuthorModeHelp</a></li>
+  <li>Reviewer: <a asp-page="@DepReviewerModeHelp">@DepReviewerModeHelp</a></li>
+  <li>Editor: <a asp-page="@DepEditorModeHelp">@DepEditorModeHelp</a></li>
+  <li>Admin: <a asp-page="@DepAdminModeHelp">@DepAdminModeHelp</a></li>
 </ul>

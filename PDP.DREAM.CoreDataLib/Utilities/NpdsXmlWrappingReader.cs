@@ -1,30 +1,27 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
 
 public class NpdsXmlWrappingReader : XmlReader, IXmlLineInfo
 {
-  public NpdsXmlWrappingReader(XmlReader reader)
-  {
-    BaseXmlReader = reader;
-  }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, XmlReader reader)
-  { QURC = context; BaseXmlReader = reader; }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, TextReader reader)
-  { QURC = context; BaseXmlReader = Create(reader); }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, Stream inputStream)
-  { QURC = context; BaseXmlReader = Create(inputStream); }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, XmlReader reader, XmlReaderSettings settings)
-  { QURC = context; BaseXmlReader = Create(reader, settings); }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, TextReader reader, XmlReaderSettings settings)
-  { QURC = context; BaseXmlReader = Create(reader, settings); }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, Stream inputStream, XmlReaderSettings settings)
-  { QURC = context; BaseXmlReader = Create(inputStream, settings); }
-  public NpdsXmlWrappingReader(QebiUserRestContext context, string inputUri, XmlReaderSettings settings)
-  { QURC = context; BaseXmlReader = Create(inputUri, settings); }
+  public NpdsXmlWrappingReader(XmlReader reader) { baseXmlReader = reader; }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, XmlReader reader)
+  { WRACE = context; baseXmlReader = reader; }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, TextReader reader)
+  { WRACE = context; baseXmlReader = Create(reader); }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, Stream inputStream)
+  { WRACE = context; baseXmlReader = Create(inputStream); }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, XmlReader reader, XmlReaderSettings settings)
+  { WRACE = context; baseXmlReader = Create(reader, settings); }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, TextReader reader, XmlReaderSettings settings)
+  { WRACE = context; baseXmlReader = Create(reader, settings); }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, Stream inputStream, XmlReaderSettings settings)
+  { WRACE = context; baseXmlReader = Create(inputStream, settings); }
+  public NpdsXmlWrappingReader(NpdsClientWrace context, string inputUri, XmlReaderSettings settings)
+  { WRACE = context; baseXmlReader = Create(inputUri, settings); }
 
-  public QebiUserRestContext QURC { get; set; }
+  public NpdsClientWrace WRACE { get; set; }
 
   private XmlReader baseXmlReader;
   protected XmlReader BaseXmlReader
@@ -43,17 +40,14 @@ public class NpdsXmlWrappingReader : XmlReader, IXmlLineInfo
   public override bool CanReadValueChunk { get { return BaseXmlReader.CanReadValueChunk; } }
   public override bool CanResolveEntity { get { return BaseXmlReader.CanResolveEntity; } }
 
+  public override void Close() { baseXmlReader.Close(); }
   protected override void Dispose(bool disposing)
   {
-    if (this.ReadState != ReadState.Closed)
-    {
-      this.Close();
-    }
-    ((IDisposable)BaseXmlReader).Dispose();
+    if (this.ReadState != ReadState.Closed) { this.Close(); }
+    ((IDisposable)baseXmlReader).Dispose();
   }
 
   public override bool Read() { return BaseXmlReader.Read(); }
-  public override void Close() { BaseXmlReader.Close(); }
   public override string GetAttribute(int i) { return BaseXmlReader.GetAttribute(i); }
   public override string GetAttribute(string name) { return BaseXmlReader.GetAttribute(name); }
   public override string GetAttribute(string localName, string namespaceURI) { { return BaseXmlReader.GetAttribute(localName, namespaceURI); } }

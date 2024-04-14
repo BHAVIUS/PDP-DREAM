@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // Microsoft.AspNetCore.Http.HttpContext has both HttpRequest and HttpResponse
@@ -11,12 +11,12 @@ public static class QebHttpResponseExtensions
   {
     if (webCont == null)
     {
-      return string.Empty;
+      return ESS;
     }
     HttpResponse webResp = webCont.Response;
     if (webResp == null)
     {
-      return string.Empty;
+      return ESS;
     }
     webResp.StatusCode = (int)statCode;
     // TODO: create method in class PdpEnum to return Enum.GetName of current Enum value

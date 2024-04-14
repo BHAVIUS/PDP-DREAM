@@ -4,17 +4,22 @@
   <PropertyGroup>
     <AssemblyName>PDP.ProgTest.ScribeRestApi</AssemblyName>
     <RootNamespace>PDP.DREAM.ScribeRestApi</RootNamespace>
-    <AssemblyVersion>10.3.*</AssemblyVersion>
-    <FileVersion>10.3.4</FileVersion>
-    <Version>10.3.4</Version>
+    <Description>PDP-DREAM ScribeRestApi</Description>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <!-- dev/test/build/debug configuration -->
   <PropertyGroup>
     <Deterministic>false</Deterministic>
-    <NoWarn>CS8600;CS8601;CS8602;CS8604;IDE0047;</NoWarn>
+    <NoWarn>CS8032;CS8600;CS8601;CS8602;CS8604;</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.7.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
   <!-- required references -->
   <ItemGroup>

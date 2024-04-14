@@ -1,0 +1,48 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeLoginUser)]
+@model AnonModeLoginUser
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace wrace = Model.WRACE;
+  var pdpFormGroup = "form-group mb-3 col-md-3";
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<form id="frmLoginUser" asp-page="@DepAnonModeLoginUser"
+      method="post" role="form" class="form-horizontal">
+  <p>
+    Please enter your username and password to login.
+    <a asp-page="@DepAnonModeRegisterUser">Register User</a>
+    if you do not yet have an account with username and password.
+    <a asp-page="@DepAnonModeResetPassword1">Reset Password</a>
+    if you have forgotten it.
+    To contact the site admin, 
+    you must first create a user account.
+  </p>
+  <div class="@pdpFormGroup">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UXM.FormTitle, new { Value = Model.UXM.FormTitle })
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+  </div>
+  <div class="@pdpFormGroup">
+    @Html.LabelFor(m => m.UXM.UserName, new { @class = "form-label" })
+    @Html.TextBoxFor(m => m.UXM.UserName, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.UXM.UserName, null, new { @class = "form-label text-danger" })
+  </div>
+  <div class="@pdpFormGroup">
+    @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label" })
+    @Html.PasswordFor(m => m.UXM.PassWord, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label text-danger" })
+  </div>
+  <br />
+  <button id="btnLoginUser" type="submit" class="btn btn-outline-primary">Login User</button>
+</form>

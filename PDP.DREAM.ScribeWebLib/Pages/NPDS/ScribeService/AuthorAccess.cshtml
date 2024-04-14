@@ -1,0 +1,109 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+//
+// Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
+// var TkgPath in HTML tag <div id="NpdsGrid" data-tkgpath="@TkgPath">
+*@
+
+@page "{recordAccess?}"
+@attribute [PdpRazorPageRoute(DepScribeWebLib, DepScribeServiceAuthorAccess)]
+@model ScribeServiceAuthorAccess
+
+@{
+PdpSiteRazorModel psrm = Model.PSRM;
+PdpSiteInfoModel psim = psrm.PdpSiteInfo;
+NpdsClientWrace wrace = Model.WRACE;
+var recordAccess = wrace.RecordAccess.ToString();
+var hasScribeAccess = wrace.ClientCanAuthorWrite;
+var TkgPath = psrm.RazorPagePath + $"/{recordAccess}";
+var TkgParam = "&requestedRole=Author";
+var TkgStatusLabel = "Record status";
+// column formatting
+var FipmpWidth = "6em"; // width for index priority marked principal (and other int/bool) columns
+var FonbyWidth = "11em"; // width for date-on person-by columns
+var FcmdbWidth = "21em"; // width for command button columns
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+<p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+@Html.Raw(psrm.FormatBodyTitle(recordAccess + " Manage Requests for NPDS Author"))
+
+<div id="NpdsGrid" data-tkgpath="@TkgPath">
+@(Html.Kendo()
+.Grid<AccessResrepRequestUxm>()
+.Name("ResrepRecordGrid")
+.HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(15)
+.Model(m => {
+m.Id<Guid?>(p => p.RRFgroupGuid);
+m.Field<Guid?>(p => p.RRFgroupGuid).Editable(false).DefaultValue(EGS);
+m.Field<Guid?>(p => p.RRRecordGuid).Editable(false).DefaultValue(EGS);
+m.Field(p => p.RecordHandle).Editable(false);
+m.Field(p => p.EntityName).Editable(false);
+m.Field(p => p.RequestedForAgentAlias).Editable(false);
+m.Field(p => p.AllowedByAgentAlias).Editable(false);
+m.Field(p => p.DeniedByAgentAlias).Editable(false);
+m.Field(p => p.AccessIsAllowed).Editable(hasScribeAccess);
+m.Field(p => p.AccessIsDenied).Editable(hasScribeAccess);
+m.Field(p => p.AuthorHasResrepAccess).Editable(false);
+m.Field(p => p.CreatedOn).Editable(false);
+m.Field(p => p.CreatedByAgentAlias).Editable(false);
+m.Field(p => p.UpdatedOn).Editable(false);
+m.Field(p => p.UpdatedByAgentAlias).Editable(false);
+m.Field(p => p.DeletedOn).Editable(false);
+m.Field(p => p.DeletedByAgentAlias).Editable(false);
+}) // end Model
+.Read(rr => rr.Url(TkgPath + "?handler=ReadAccessRequests" + TkgParam).Data(TkndoToken))
+.Create(rr => rr.Url(TkgPath + "?handler=WriteAccessRequest" + TkgParam).Data(TkndoToken))
+.Update(rr => rr.Url(TkgPath + "?handler=WriteAccessRequest" + TkgParam).Data(TkndoToken))
+.Destroy(rr => rr.Url(TkgPath + "?handler=DeleteAccessRequest").Data(TkndoToken))
+.Events(evn => evn.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))) // end DataSource
+.Columns(col => {
+col.Bound(row => row.RRFgroupGuid).Title("RRFgroupGuid").Hidden(true);
+col.Bound(row => row.RRRecordGuid).Title("RRRecordGuid").Hidden(true);
+col.Bound(row => row.RecordHandle).Title("RecordHandle")
+.HeaderHtmlAttributes(new { title = "Resource RecordHandle" });
+col.Bound(row => row.EntityName).Title("EntityName")
+.HeaderHtmlAttributes(new { title = "Resource EntityName" });
+col.Bound(row => row.RequestedForAgentAlias).Title("RequestedFor")
+.HeaderHtmlAttributes(new { title = "Alias of RequestedForAgent" });
+col.Bound(row => row.AccessIsAllowed).Title("Allowed?")
+.HeaderHtmlAttributes(new { title = "Access is Allowed?" });
+col.Bound(row => row.AllowedByAgentAlias).Title("AllowedBy")
+.HeaderHtmlAttributes(new { title = "Alias of AllowedByAgent" });
+col.Bound(row => row.AccessIsDenied).Title("Denied?")
+.HeaderHtmlAttributes(new { title = "Request is Denied?" });
+col.Bound(row => row.DeniedByAgentAlias).Title("DeniedBy")
+.HeaderHtmlAttributes(new { title = "Alias of DeniedByAgent" });
+col.Bound(row => row.AuthorHasResrepAccess).Title("CoAuthor?")
+.HeaderHtmlAttributes(new { title = "RequestedForAgent has CoAuthor Access" });
+if (hasScribeAccess) {
+col.Command(com => { com.Edit(); com.Destroy(); }).Title("");
+col.Bound(row => row.CreatedOn).Title("CreatedOn").Format(UtcdtFormat)
+.HeaderHtmlAttributes(new { title = "Date that Agent requested or released resource" });
+col.Bound(row => row.CreatedByAgentAlias).Title("CreatedBy")
+.HeaderHtmlAttributes(new { title = "Alias of CreatedByAgent" });
+} // end if
+col.Bound(row => row.UpdatedOn).Title("UpdatedOn").Format(UtcdtFormat)
+.HeaderHtmlAttributes(new { title = "Date that Editor or Admin approved or denied transfer" });
+col.Bound(row => row.UpdatedByAgentAlias).Title("UpdatedBy")
+.HeaderHtmlAttributes(new { title = "Alias of UpdatedByAgent" });
+}) // end Columns
+.Editable(edt => edt.Mode(GridEditMode.InLine).Enabled(hasScribeAccess))
+.Events(evn => evn.Page("HideStatus").Edit("HideStatus"))
+.Pageable(pgb => pgb.AlwaysVisible(true).Responsive(false).Info(true).Refresh(true)
+.Position(GridPagerPosition.Top).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }))
+.Sortable(srt => srt.SortMode(GridSortMode.SingleColumn).ShowIndexes(false).AllowUnsort(false))
+.Filterable().Navigatable().Resizable(rs => rs.Columns(true))
+.ToolBar(tlb => {
+if (hasScribeAccess) { tlb.Create();
+tlb.Custom().Text(TkgStatusLabel).HtmlAttributes(new { id = "ResrepStatus", @class = "pdpResrepStatus" });
+} // end if
+}))
+</div>
+
+<partial name="_ScribeJavascriptTkgp" />
+

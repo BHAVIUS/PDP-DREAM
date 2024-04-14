@@ -1,20 +1,21 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Stores;
 
 public partial class CoreDbsqlContext
 {
-  public IList<EntityTypeViewModel> ListViewableEntityTypes()
+  public IList<EntityTypeUxm> ListViewableEntityTypes()
   {
     // query from CoreEntityTypeItem
     IOrderedQueryable<CoreEntityTypeItem> dalItems = this.CoreEntityTypeItems
-         // where clause
-         .OrderBy(dali => dali.TypeName);
-    // query to EntityTypeViewModel
-    IQueryable<EntityTypeViewModel> uilItems =
+      // where clause
+      // order clause
+      .OrderBy(dali => dali.TypeName);
+    // query to EntityTypeUxm
+    IQueryable<EntityTypeUxm> uilItems =
       from dali in dalItems
-      select new EntityTypeViewModel
+      select new EntityTypeUxm
       {
         CodeKey = dali.CodeKey,
         TypeName = dali.TypeName,
@@ -28,14 +29,16 @@ public partial class CoreDbsqlContext
     return uilList;
   }
 
-  public IEnumerable<EntityTypeViewModel> ListEditableEntityTypes()
+  public IEnumerable<EntityTypeUxm> ListEditableEntityTypes()
   {
     var qry = this.CoreEntityTypeItems
+      // where clause
       .Where(itm => (itm.TypeEditedByAdmin == true))
+      // order clause
       .OrderBy(itm => itm.CodeKey);
-    IEnumerable<EntityTypeViewModel> rows
+    IEnumerable<EntityTypeUxm> rows
       = from itm in qry
-        select new EntityTypeViewModel
+        select new EntityTypeUxm
         {
           CodeKey = itm.CodeKey,
           TypeName = itm.TypeName,

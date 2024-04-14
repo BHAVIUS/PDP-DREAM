@@ -1,4 +1,5 @@
 {
+  "hotReloadEnabled": false,
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
@@ -27,5 +28,5 @@
       "applicationUrl": "https://localhost:44352/",
       "sslPort": 44352
     }
-  }
+  },
 }

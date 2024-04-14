@@ -1,5 +1,4 @@
-﻿// QebStringPhrase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Utilities;
@@ -9,12 +8,17 @@ public static partial class QebString
   public static string[] PdpGramArtPrepConj
     = { "A", "AN", "AND", "AT", "BY", "FOR", "FROM", "IN", "OF", "THE", "TO", "WITH" };
 
-  public static char[] PdpGramWordSplit = { ' ', '.', ':', '?' };
+  public static char[] PdpGramWordSplit = { ' ', '.', '_', '-', ':', '?' };
 
+  public static string DateTimeSortString(this DateTime? ndt)
+  {
+    var dt = ndt ?? DateTime.UtcNow;
+    var ss = dt.ToString(PdpDateTimeSortFormat);
+    return ss;
+  }
   public static string DateTimeNowSortString()
   {
-    // var dtnSort = DateTime.Now.ToString("s").RemoveHyphen().RemoveColon();
-    var dtnSort = DateTime.Now.ToString(PdpDateTimeNowSortFormat);
+    var dtnSort = DateTime.UtcNow.ToString(PdpDateTimeSortFormat);
     return dtnSort;
   }
   public static string AssureInitialSlash(this string content)
@@ -39,6 +43,10 @@ public static partial class QebString
   public static string RemoveHyphen(this string phrase)
   {
     return phrase.Replace("-", "");
+  }
+  public static string RemoveQuotes(this string phrase)
+  {
+    return phrase.Replace("\"", "");
   }
   public static string RemoveBraces(this string phrase)
   {
@@ -73,10 +81,13 @@ public static partial class QebString
     return puncfree;
   }
 
-
+  public static string CreateUniqueAcronym(this string phrase)
+  {
+    return (phrase.CleanPhrase().CreateAcronym() + DateTimeNowSortString());
+  }
   public static string CleanPhrase(this string phrase)
   {
-    return phrase.RemoveBraces().RemoveBrackets().RemoveAngles().RemoveParens();
+    return phrase.RemoveQuotes().RemoveBraces().RemoveBrackets().RemoveAngles().RemoveParens();
   }
   public static string CreateAcronym(this string phrase, int minChars = 5, int maxChars = 9)
   {
@@ -108,8 +119,35 @@ public static partial class QebString
     return acronym;
   }
 
-  // TODO: convert status string to enum with invalid|valid|unknown|pending|partial
+  // OSFNMC = Operating System File Name Max Chars
+  public const int OSFNMC = 256;
+
+  // OSFPMC = Operating System File Path Max Chars
+  public const int OSFPMC = 512;
+
+  // JSAM = JavaScript Alert Maxchars 
+  public const int JSAM = 9999;
+
+  public static string TruncateToMaxChars(this string? allText, int maxChars)
+  {
+    var partText = ESS;
+    if (!string.IsNullOrEmpty(allText))
+    {
+      partText = ((allText.Length > maxChars) ?
+       allText.Substring(0, maxChars) : allText);
+    }
+    return partText;
+  }
+  public static string? TruncateToJsam(this string? strLong)
+  {
+    string? strShort = strLong.TruncateToMaxChars(JSAM);
+    return strShort;
+  }
+
+  // TODO: convert status string to enum
+  //   for invalid|valid|unknown|pending|partial|complete|truncated
   // TODO: convert css class strings to enum for pdpStatus* series 
+  // TODO: recode all the keys in ToColorSpan() with string constants
   public static string ToColorSpan(this string? phrase, string status = "")
   {
     string spanHtml = "";
@@ -123,21 +161,44 @@ public static partial class QebString
     { spanHtml = $"<span class='pdpStatusUnknown'>{phrase}</span>"; }
     else if (status.Contains("pending", StringComparison.OrdinalIgnoreCase))
     { spanHtml = $"<span class='pdpStatusPending'>{phrase}</span>"; }
-    else if (status.Contains("partial", StringComparison.OrdinalIgnoreCase))
-    { spanHtml = $"{phrase} <span class='pdpStatusPartial'> --> </span>"; }
+    else if (status.Contains("pdpHover", StringComparison.OrdinalIgnoreCase))
+    { spanHtml = $"{phrase} <span class='pdpHover'> --> </span>"; }
+    else if (status.Contains("truncated", StringComparison.OrdinalIgnoreCase))
+    { spanHtml = $"{phrase} <span class='pdpStatusTruncated'> --> </span>"; }
     return spanHtml;
   }
-  // TODO: recode all the keys above with string constants
-  //  and use alternative key to replace "partial" with "truncated"
-  public static string ToTruncatedPhrase(this string? fullPhrase, int maxChars)
+  // TODO: recode all the keys in ToColorSpan() with string constants
+
+  // TODO: deprecate all use of the TruncateToHtml* methods ???
+  // instead simply use the ShowInfosubset buttons ???
+  // or just use a single version TruncateToHtmlFixlen
+  // renamed as TruncateToHtml
+
+  // TODO: rebuild/retest use of this method to avoid use <img /> tag
+  // <img> tag with title not necessary if using ShowInfosubset button
+  // intended for FIXed LENgth properties
+  // (EntityName, EntityNature, SupportingTag)
+
+  // TODO: reconcile/deconflict these constants 
+  //  with similar related declarations elsewhere in code
+  public const int MCGenShort = 128; // max chars generic short
+  public const int MCGenLong = 512; // max chars generic long
+  public static string TruncateForTkgr(this string? allText, int maxChars)
   {
-    var partPhrase = string.Empty;
-    if (fullPhrase != null)
+    var hhHtml = ESS;
+    if (!string.IsNullOrEmpty(allText))
     {
-      partPhrase = ((fullPhrase.Length > maxChars) ?
-       fullPhrase.Substring(0, maxChars).ToColorSpan("partial") : fullPhrase);
+      var lenPhrase = allText.Length;
+      if (lenPhrase > maxChars)
+      {
+        var partText = allText.Substring(0, maxChars);
+        // TODO: consider use of both title for json alert,
+        // also fulltext in popup window with JavaScript method call
+        hhHtml = $"{partText}<img src='/RAB3v1.ico' title='{allText}' />";
+      }
+      else { hhHtml = allText; }
     }
-    return partPhrase;
+    return hhHtml;
   }
 
   public static string ToDigitNumberString(this string? str, int digits)
@@ -149,7 +210,6 @@ public static partial class QebString
     var dnumstr = num.ToString(ds);
     return dnumstr;
   }
-
 
 } // end class
 

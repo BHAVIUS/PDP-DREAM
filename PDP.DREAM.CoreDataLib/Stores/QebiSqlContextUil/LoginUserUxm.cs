@@ -1,26 +1,18 @@
 ﻿// LoginUserUxm.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models
 {
-  public class LoginUserUxm : IFormTaskUxm
+  public class LoginUserUxm : FormTaskUxmBase
   {
-    // begin IFormTaskUxm
-    public string? FormTitle { get; set; } = string.Empty;
-    public string? FormMessage { get; set; } = string.Empty;
-    public bool FormCompleted { get; set; }
-    public bool ErrorOccurred { get; set; }
-    public Exception? Error { get; set; } = null;
-    // end IFormTaskUxm
-
     [Required, Display(Name = "Username")]
     [DataType(DataType.Text)] // non-nullable
-    public string UserName { get; set; } = string.Empty;
+    public string UserName { get; set; } = ESS;
 
     [Required, Display(Name = "Password")]
     [DataType(DataType.Password)] // non-nullable
-    public string PassWord { get; set; } = string.Empty;
+    public string PassWord { get; set; } = ESS;
 
     [Display(Name = "Remember?")]
     public bool RememberMe { get; set; } = false;
@@ -32,7 +24,7 @@ namespace PDP.DREAM.CoreDataLib.Models
 
     public string? ReturnUrl { get; set; } = PDPSS.AppSiteDefPath;
 
-    public string? QueryString { get; set; } = string.Empty;
+    public string? QueryString { get; set; } = ESS;
 
     public bool UserLoginOk { get; set; } = false;
 

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Types;
@@ -14,7 +14,7 @@ public class PdpRazorPageRouteAttribute : Attribute, IRouteTemplateProvider
     if (string.IsNullOrWhiteSpace(routeNamePrefix))
     { routeNamePrefix = DepRanRazorPage; }
     if (string.IsNullOrWhiteSpace(routeTemplate))
-    { routeTemplate = string.Empty; }
+    { routeTemplate = ESS; }
     prrTemplate = routeTemplate;
     var revTemplate = prrTemplate.Replace("/", "_");
     if (!string.IsNullOrWhiteSpace(routeTemplateSuffix))

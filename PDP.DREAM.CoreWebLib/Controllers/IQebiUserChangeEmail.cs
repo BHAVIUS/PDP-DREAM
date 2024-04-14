@@ -1,0 +1,118 @@
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+
+namespace PDP.DREAM.CoreWebLib.Controllers;
+
+public partial interface IQebiUser
+{
+  protected static ChangeEmailUxm ConfirmEmailWithToken(ChangeEmailUxm uxm, QebiDalContext qudc)
+  {
+    try
+    {
+      var usr = qudc.GetUserByUserName(uxm.UserName);
+      if ((usr == null) || (usr.UserGuid == EGS))
+      {
+        uxm.ErrorOccurred = true;
+        uxm.FormMessage += "User not found. ";
+      }
+      else if (!IsTokenDateValid(usr.DateTokenExpired))
+      {
+        uxm.ErrorOccurred = true;
+        uxm.FormMessage += "Security token expired. ";
+      }
+      else if (!QebCryptoService.TokenEqualsToken(uxm.SecurityToken, usr.SecurityToken))
+      {
+        uxm.ErrorOccurred = true;
+        uxm.FormMessage += "Security token invalid. ";
+      }
+      else
+      {
+        uxm.TokenConfirmed = true;
+        usr.SecurityToken = ESS;  
+        usr.DateTokenExpired = null;
+        usr.DateEmailConfirmed = DateTime.UtcNow;
+        usr.DateLastEdit = usr.DateEmailConfirmed;
+        usr.EmailConfirmed = true;
+        uxm = StoreEmail(uxm, usr, qudc);
+      }
+    }
+    catch (Exception error)
+    {
+      uxm.FormError = error;
+      uxm.ErrorOccurred = true;
+      uxm.FormMessage += "Server error occurred confirming email. ";
+    }
+    return uxm;
+  }
+
+   // requires authenticated login to change Email
+  protected static ChangeEmailUxm ChangeEmailWithOld(ChangeEmailUxm uxm, QebiDalContext qudc)
+  {
+    uxm.ErrorOccurred = false;
+    uxm.DbfieldReset = false;
+    uxm.EmailChanged = false;
+    try
+    {
+      var usr = qudc.GetUserByUserGuid(uxm.UserGuid);
+      uxm.DbtestPassed = string.Equals(usr.EmailAddress, uxm.OldEmail, StringComparison.OrdinalIgnoreCase);
+      if (usr == null)
+      {
+        uxm.ErrorOccurred = true;
+        uxm.FormMessage += "User not found. ";
+      }
+      else if (!uxm.DbtestPassed)
+      {
+        uxm.ErrorOccurred = true;
+        uxm.FormMessage += "Email not matched to current. ";
+      }
+      else
+      {
+        // TODO: rebuild to require confirmation by return token of 
+        // new email received by user at that new email address
+        uxm.UserName = usr.UserName;
+        uxm.PersonName = uxm.ConcatNames(usr.FirstName, usr.LastName);
+        uxm.SecurityToken = QebCryptoService.GenerateToken();
+        uxm.EmailChanged = true; uxm.EmailConfirmed = false;
+        usr.SecurityToken = uxm.SecurityToken;
+        usr.EmailAlternate = uxm.NewEmail;
+        usr.DateTokenExpired = DateTime.UtcNow.AddHours(24);
+        usr.DateEmailConfirmed = null;
+        usr.DateLastEdit = DateTime.UtcNow;
+        usr.EmailConfirmed = uxm.EmailConfirmed;
+        // or if no token confirmation, then
+        // the new email => EmailAddress and old email => EmailAlternate
+        // or do both, ie, do the swap and send token confirmation to new email
+        uxm = StoreEmail(uxm, usr, qudc);
+      }
+    }
+    catch (Exception error)
+    {
+      uxm.FormError = error;
+      uxm.ErrorOccurred = true;
+      uxm.FormMessage += "Server error occurred changing email. ";
+    }
+    return uxm;
+  }
+
+  protected static ChangeEmailUxm StoreEmail(ChangeEmailUxm uxm, QebiUser usr, QebiDalContext qudc)
+  {
+    var errorCode = qudc.QebiUserUpdateEmail(usr.AppGuid, usr.UserGuid,
+      usr.EmailAddress, usr.EmailAlternate, usr.SecurityToken, usr.DateTokenExpired,
+      usr.DateEmailConfirmed, usr.DateLastEdit, usr.EmailConfirmed);
+
+    if (errorCode < 0)
+    {
+      uxm.ErrorOccurred = true;
+      uxm.FormMessage += $"Error code = {errorCode} while writing to user with Username {usr.UserName}";
+    }
+    else
+    {
+      uxm.DbfieldReset = true;
+      uxm.EmailChanged = true;
+    }
+    return uxm;
+  }
+
+} // end interface
+
+// end file

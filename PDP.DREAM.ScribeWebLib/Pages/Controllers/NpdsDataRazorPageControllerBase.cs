@@ -1,16 +1,15 @@
-﻿// NpdsDataRazorPageControllerBase.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
+// convention: name abstract controllers with suffix ControllerBase
 public abstract class ScribeDataRazorPageControllerBase : NexusDataRazorPageControllerBase
 {
-  // prefix rzr from RaZoR page class
+  // prefix rzr from RaZoR page
   private const string rzrClass = nameof(ScribeDataRazorPageControllerBase);
 
-  // data contexts: QEB User REST/Data, PDP NPDS Data/Metadata
-  // QEB User REST Context = QURC for user config settings and web api requests
+  // Web API REST Context = WRACE for user config settings and web api requests/responses
   // QEB User Data Context = QUDC for user identification, authentication, authorization
   // PDP Core Data Context = PCDC for Core data repositories of data/metadata records
   // PDP Nexus Data Context = PNDC for Nexus data repositories of data/metadata records
@@ -25,60 +24,94 @@ public abstract class ScribeDataRazorPageControllerBase : NexusDataRazorPageCont
     get { return pdpScribeDataCntxt; }
   }
 
+  public ScribeDataRazorPageControllerBase()
+  {
+    wrace = InitWrace();
+  }
+  public ScribeDataRazorPageControllerBase(ILoggerFactory lgrFtry)
+  {
+    qebLogger = InitLoggerScribe(lgrFtry);
+    wrace = InitWrace();
+  }
+  public ScribeDataRazorPageControllerBase(ILoggerFactory lgrFtry, IEmailSender emlSndr, ISmsSender smsSndr)
+  {
+    qebLogger = InitLoggerScribe(lgrFtry);
+    qebEmailSender = emlSndr;
+    qebSmsSender = smsSndr;
+    wrace = InitWrace();
+  }
+
+  protected ILogger InitLoggerScribe(ILoggerFactory lgrFtry)
+  {
+    var logger = lgrFtry.CreateLogger<ScribeDataRazorPageControllerBase>();
+    return logger;
+  }
   protected void CatchNullScribe(string methodName = "", string className = "")
   {
+    PSDC.CatchNullObject(PsdcKey, methodName, className);
     Debug.WriteLine($"{nameof(CatchNullScribe)} called from Class = '{className}'; Method = '{methodName}';");
-    PSDC.CatchNullObject(PndcKey, methodName, className);
-    Debug.WriteLine($"PSDC DatabaseType: {PSDC.NPDSCP.DatabaseType}");
-    Debug.WriteLine($"PSDC DatabaseConstr: {PSDC.NPDSCP.DatabaseConstr}");
+    Debug.WriteLine($"PSDC DatabaseType: {PSDC.NPDSDC.DatabaseType}");
+    Debug.WriteLine($"PSDC DatabaseConstr: {PSDC.NPDSDC.DatabaseConstr}");
   }
   protected void DebugScribeRepo(string methodName = "", string className = "")
   {
     Debug.WriteLine($"{nameof(DebugScribeRepo)} called from Class = '{className}'; Method = '{methodName}';");
-    Debug.WriteLine($"/{QURC.SearchFilter}/{QURC.ServiceTag}/{QURC.EntityType}");
+    Debug.WriteLine($"/{WRACE.SearchFilter}/{WRACE.ServiceTag}/{WRACE.ServiceType}/{WRACE.EntityType}/{WRACE.RecordAccess}");
     Debug.WriteLine($"with database connection strings in method {methodName}");
-    Debug.WriteLine($"QURC ScribeDbconstr: {QURC.ScribeDbconstr}");
-    Debug.WriteLine($"QURC DatabaseConstr: {QURC.DatabaseConstr}");
-    Debug.WriteLine($"PSDC DatabaseType: {PSDC?.NPDSCP.DatabaseType}");
-    Debug.WriteLine($"PSDC DatabaseConstr: {PSDC?.NPDSCP.DatabaseConstr}");
+    Debug.WriteLine($"WRACE ScribeDbconstr: {WRACE.DbcnstrScribe}");
+    Debug.WriteLine($"WRACE DatabaseConstr: {WRACE.DatabaseConstr}");
+    Debug.WriteLine($"PSDC DatabaseType: {PSDC?.NPDSDC.DatabaseType}");
+    Debug.WriteLine($"PSDC DatabaseConstr: {PSDC?.NPDSDC.DatabaseConstr}");
   }
 
+  // TODO: refactor params and rebuild Reset*Repositories wrt Open*Connection
   // protected so not visible as public action for controller routes
-  protected void ResetScribeRepository(bool openCnctn = false, string? dbcs = "")
+  protected void ResetScribeRepository(bool openCnctn = false, bool buildDdlists = false, string? dbcs = "")
   {
 #if DEBUG
     var rzrMethod = nameof(ResetScribeRepository);
-    CatchNullQurc(rzrMethod, rzrClass);
+    CatchNullWrace(rzrMethod, rzrClass);
 #endif
     // assure correct DatabaseType
-    if (QURC.DatabaseType != NpdsDatabaseType.Scribe)
-    { QURC.DatabaseType = NpdsDatabaseType.Scribe; }
+    if (WRACE.DatabaseType != NPDSCD.DatabaseTypeScribe)
+    { WRACE.DatabaseType = NPDSCD.DatabaseTypeScribe; }
     // override DatabaseConstr if dbcs input
     if (!string.IsNullOrEmpty(dbcs))
-    { QURC.ScribeDbconstr = dbcs; }
-    // reset viewdata with current QEB User Rest Context
-    // ViewData[QurcKey] = QURC; // required for Views, but not for Pages
+    { WRACE.DbcnstrScribe = dbcs; }
     // reset NPDS data context with current QEB User Rest Context
-    pdpScribeDataCntxt = new ScribeDbsqlContext((INpdsClient)QURC);
+    pdpScribeDataCntxt = new ScribeDbsqlContext((INpdscwClient)WRACE);
     // open connection if switched on
     if (openCnctn)
-    { pdpScribeDataCntxt.DbsqlConnect(); }
+    {
+      pdpScribeDataCntxt.DbsqlConnect();
+      if (buildDdlists)
+      {
+        BuildScribeDropDownLists();
+      }
+    }
+    WRACE.DbciScribe = (INpdsDbsqlContext)pdpScribeDataCntxt;
 #if DEBUG
     CatchNullScribe(rzrMethod, rzrClass);
 #endif
   }
-  protected void OpenScribeConnection(bool resetRepo = false)
+  protected void OpenScribeConnection(string recordAccess = "", bool resetRepo = false)
   {
-    if (resetRepo) { ResetScribeRepository(false); }
+    if (!string.IsNullOrEmpty(recordAccess))
+    { WRACE.RecordAccessReqst = recordAccess; }
+#if DEBUG
+    WRACE.DebugClientAccess(nameof(OpenScribeConnection), rzrClass);
+#endif
+    if (resetRepo) { ResetScribeRepository(); }
     pdpScribeDataCntxt.DbsqlConnect();
   }
   protected void CloseScribeConnection()
   {
-    pdpScribeDataCntxt.DbsqlDisconnect();
+    if (pdpScribeDataCntxt != null)
+    { pdpScribeDataCntxt.DbsqlDisconnect(); }
   }
   protected override void CloseAllConnections()
   {
-    qebiUserDataCntxt?.DbsqlDisconnect();
+    // qebiUserDataCntxt?.DbsqlDisconnect();
     pdpCoreDataCntxt?.DbsqlDisconnect();
     pdpNexusDataCntxt?.DbsqlDisconnect();
     pdpScribeDataCntxt?.DbsqlDisconnect();
@@ -87,80 +120,33 @@ public abstract class ScribeDataRazorPageControllerBase : NexusDataRazorPageCont
   {
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuted);
-    this.CatchNullQurc(rzrHndlr, rzrClass);
-    QURC.DebugClientAccess(rzrHndlr, rzrClass);
-    this.DebugQurcData(exeCntxt.Result);
+    this.CatchNullWrace(rzrHndlr, rzrClass);
+    // TODO: deconflict redundancies between debug methods
+    this.DebugWraceData(rzrHndlr, rzrClass);
+    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     this.CloseAllConnections();
   }
 
-  // ATTN: assure that these controllers create both the
-  // public QURC with private qebUserRestCntxt
-  // public QUDC with private qebUserDataCntxt
-
-  public ScribeDataRazorPageControllerBase()
-  {
-    qebiUserRestCntxt = InitRestContext().SetDatabaseType(NpdsDatabaseType.SIAA);
-    qebiUserDataCntxt = new QebiDbsqlContext((INpdsClient)qebiUserRestCntxt);
-  }
-  public ScribeDataRazorPageControllerBase(ILoggerFactory lgrFtry, IEmailSender emlSndr, ISmsSender smsSndr)
-  {
-    qebLogger = InitLogger<ScribeDataRazorPageControllerBase>(lgrFtry);
-    qebEmailSender = emlSndr;
-    qebSmsSender = smsSndr;
-    qebiUserRestCntxt = InitRestContext().SetDatabaseType(NpdsDatabaseType.SIAA);
-    qebiUserDataCntxt = new QebiDbsqlContext((INpdsClient)qebiUserRestCntxt);
-  }
-
-  // TODO: migrate dropdownlists from Scribe*ControllerBase to Core*ControllerBase
-  // via analogous core version then transition from scribe version to core version
   protected void BuildScribeDropDownLists()
   {
-    var rrddl = new UilDropDownLists()
+    BuildCoreDropDownLists();
+    // using current PSDC, add Scribe lists
+    OpenScribeConnection();
+    var canAdminWrite = WRACE.ClientCanAdminWrite;
+    if (WRACE.ClientCanAuthorWrite)
     {
-      EntityTypeList = PSDC.GetEntityTypeSelectList(),
-      FieldFormatList = PSDC.GetFieldFormatSelectList(),
-    };
-    ViewData[nameof(UilDropDownLists.EntityTypeList)] = rrddl.EntityTypeList;
-    ViewData[nameof(UilDropDownLists.FieldFormatList)] = rrddl.FieldFormatList;
-
-    if (QURC.ClientHasScribeEditAccess)
-    {
-      rrddl.CoreDiristryList = PSDC.GetCoreDiristrySelectList();
-      ViewData[nameof(UilDropDownLists.CoreDiristryList)] = rrddl.CoreDiristryList;
-      rrddl.CoreDiristryListMvc = PSDC.GetCoreDiristrySelectListMvc();
-      ViewData[nameof(UilDropDownLists.CoreDiristryListMvc)] = rrddl.CoreDiristryListMvc;
-      rrddl.RegcDiristryListMvc = PSDC.GetRegistrarDiristriesSelectListMvc();
-      ViewData[nameof(UilDropDownLists.RegcDiristryListMvc)] = rrddl.RegcDiristryListMvc;
-      // ATTN: SupportingLabelList available in Scribe but not in Core
-      // TODO: rebuild with default list from the defined problem domain for the specialty diristry
-      rrddl.SupportingLabelList = PSDC.GetItemsForSupportingLabelSelectList();
-      ViewData[nameof(UilDropDownLists.SupportingLabelList)] = rrddl.SupportingLabelList;
+      // NPDSSD.NpdsDdlists.RegcDiristryTGList = PSDC.GetCccRegistrarDiristriesTGList();
+      NPDSCD.NpdsDdlists.RegcDiristryList = PSDC.GetCccRegistrarDiristriesList(canAdminWrite);
+      NPDSCD.NpdsDdlists.RegcRegistryList = PSDC.GetCccRegistrarRegistriesList(canAdminWrite);
+      NPDSCD.NpdsDdlists.RegcDirectoryList = PSDC.GetCccRegistrarDirectoriesList(canAdminWrite);
+      NPDSCD.NpdsDdlists.RegcSupportingLabelList = PSDC.GetCccRegistrySupportingLabelList();
     }
-
-    if (QURC.ClientHasEditorOrAdminAccess)
-    {
-      rrddl.CoreRegistryList = PSDC.GetCoreRegistrySelectList();
-      ViewData[nameof(UilDropDownLists.CoreRegistryList)] = rrddl.CoreRegistryList;
-      rrddl.CoreDirectoryList = PSDC.GetCoreDirectorySelectList();
-      ViewData[nameof(UilDropDownLists.CoreDirectoryList)] = rrddl.CoreDirectoryList;
-      rrddl.CoreRegistrarList = PSDC.GetCoreRegistrarSelectList();
-      ViewData[nameof(UilDropDownLists.CoreRegistrarList)] = rrddl.CoreRegistrarList;
-    }
-
-    if (QURC.ClientHasAdminAccess)
-    {
-      rrddl.InfosetPortalStatusList = PSDC.GetInfosetPortalStatusSelectList();
-      ViewData[nameof(UilDropDownLists.InfosetPortalStatusList)] = rrddl.InfosetPortalStatusList;
-      rrddl.InfosetDoorsStatusList = PSDC.GetInfosetDoorsStatusSelectList();
-      ViewData[nameof(UilDropDownLists.InfosetDoorsStatusList)] = rrddl.InfosetDoorsStatusList;
-    }
-
-    // ATTN: SupportingLabelList available in Scribe but not in Core
-    // TODO: rebuild with default list from the defined problem domain for the specialty diristry
-    // UilDdlists.SupportingLabelList = PSDC.GetItemsForSupportingLabelSelectList();
-    // ViewData[nameof(UilDropDownLists.SupportingLabelList)] = UilDdlists.SupportingLabelList;
-
+    CloseScribeConnection();
+#if DEBUG
+    var testLists = NPDSCD.NpdsDdlists;
+#endif
   }
 
 } // end class

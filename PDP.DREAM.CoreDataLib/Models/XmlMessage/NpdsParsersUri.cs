@@ -1,5 +1,5 @@
 ﻿// NpdsParsersUri.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -11,21 +11,20 @@ public static partial class NpdsParsers
     return ParseUri(strUri);
   }
 
-  public static Uri ParseUri(string strUri)
+  public static Uri? ParseUri(string? strUri)
   {
-    Uri objUri = null;
+    Uri? objUri = null;
     if ((!(string.IsNullOrEmpty(strUri))) && Uri.IsWellFormedUriString(strUri, UriKind.Absolute))
     {
       objUri = new Uri(strUri, UriKind.Absolute);
     }
     else
     {
-      objUri = new Uri("invalid.uri");
+      objUri = new Uri("http://invalid.uri", UriKind.Absolute);
     }
     return objUri;
   }
-
-  public static Uri ParseUrl(string strUrl)
+  public static Uri? ParseUrl(string? strUrl)
   {
     Uri objUrl = null;
     if (!(string.IsNullOrEmpty(strUrl)) && (Uri.IsWellFormedUriString(strUrl, UriKind.Absolute)))
@@ -43,28 +42,19 @@ public static partial class NpdsParsers
     return objUrl;
   }
 
-  public static Uri ParseLabel(string strLabel)
+  public static Uri? ParseEntityLabel(string? strEntityLabel)
   {
-    Uri uriLabel;
-    if ((!(string.IsNullOrEmpty(strLabel))) && Uri.IsWellFormedUriString(strLabel, UriKind.Absolute))
-    {
-      uriLabel = new Uri(strLabel, UriKind.Absolute);
-    }
-    else
-    {
-      uriLabel = new Uri("http://invalid.uri", UriKind.Absolute);
-    }
-    return uriLabel;
+    return ParseUri(strEntityLabel);
   }
-
-  public static Uri ParseLabel(string strNameSpace, string strPrincipalTag)
+  public static Uri? ParseEntityLabel(string? strNameSpace, string? strPrincipalTag)
   {
-    return ParseLabel(strNameSpace + strPrincipalTag);
+    return ParseUri(strNameSpace + strPrincipalTag);
   }
-
-  public static Uri ParseLabel(Uri uriNameSpace, string strPrincipalTag)
+  public static Uri? ParseEntityLabel(Uri? uriNameSpace, string? strPrincipalTag)
   {
-    return ParseLabel(uriNameSpace.ToString() + strPrincipalTag);
+    return ParseUri(uriNameSpace.ToString() + strPrincipalTag);
   }
 
 } // class
+
+// end file

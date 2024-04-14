@@ -1,5 +1,4 @@
-﻿// PdpNullableType.cs 
-// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Types;
@@ -31,12 +30,10 @@ public class PdpNullableType<TValueType>
   private bool pnHasValue = false;
   public bool HasValue
   {
-    get
-    {
+    get {
       return pnHasValue;
     }
-    set
-    {
+    set {
       pnHasValue = value;
     }
   }
@@ -44,12 +41,10 @@ public class PdpNullableType<TValueType>
   private bool pnHasDefaultValue = false;
   public bool HasDefaultValue
   {
-    get
-    {
+    get {
       return pnHasDefaultValue;
     }
-    set
-    {
+    set {
       pnHasDefaultValue = value;
     }
   }
@@ -57,12 +52,10 @@ public class PdpNullableType<TValueType>
   private TValueType pnValue;
   public virtual TValueType Value
   {
-    get
-    {
+    get {
       return pnValue;
     }
-    set
-    {
+    set {
       if ((value == null) || Convert.IsDBNull(value))
       {
         pnHasValue = false;
@@ -78,12 +71,10 @@ public class PdpNullableType<TValueType>
   private TValueType pnDefaultValue;
   public virtual TValueType DefaultValue
   {
-    get
-    {
-        return pnDefaultValue;
+    get {
+      return pnDefaultValue;
     }
-    set
-    {
+    set {
       if ((value == null) || Convert.IsDBNull(value))
       {
         pnHasDefaultValue = false;

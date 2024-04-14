@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2007 - 2023 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreDataLib.Models;
@@ -10,13 +10,13 @@ namespace PDP.DREAM.CoreDataLib.Models;
 [KnownType(typeof(NpdsResrepItem)), XmlSchemaProvider(null, IsAny = true)]
 public class NpdsResrepItem : ANpdsXsgBaseItem<Object>, INpdsResrep
 {
-  public NpdsResrepItem() : base() { this.Initialize(); }
-  public NpdsResrepItem(PdpAppConst.NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
-  public NpdsResrepItem(PdpAppConst.NpdsResrepFormat rrf, Guid? key) : base(typeof(Guid?), key) { this.Initialize(rrf); }
+  public NpdsResrepItem() : base() { this.Initialize(NPDSCD.ResrepFormatDefault); }
+  public NpdsResrepItem(NpdsResrepFormat rrf) : base() { this.Initialize(rrf); }
+  public NpdsResrepItem(NpdsResrepFormat rrf, Guid? key) : base(typeof(Guid?), key) { this.Initialize(rrf); }
 
-  protected void Initialize(PdpAppConst.NpdsResrepFormat rrf = default(PdpAppConst.NpdsResrepFormat))
+  protected void Initialize(NpdsResrepFormat rrf)
   {
-    base.InitNpdsItem(PdpAppConst.NpdsFieldRule.Required, PdpAppConst.NexusResrepItemXnam, PdpAppConst.NexusResrepListXnam, PdpAppConst.ResrepKeyXnam);
+    base.InitNpdsItem(NpdsFieldRule.Required, NexusResrepItemXnam, NexusResrepListXnam, ResrepKeyXnam);
     this.EntityMetadata = new NpdsMetadataEntityItem(rrf);
     this.RecordMetadata = new NpdsMetadataRecordItem(rrf);
     this.InfosetMetadata = new NpdsMetadataInfosetItem(rrf);
@@ -53,10 +53,10 @@ public class NpdsResrepItem : ANpdsXsgBaseItem<Object>, INpdsResrep
   {
     var writer = (NpdsXmlWrappingWriter)xWriter;
     writer.WriteStartElement(ItemXnam);
-    writer.WriteAttributeString(PdpAppConst.ItemIsAuthorPrivateXnam, ResrepIsAuthorPrivate.ToString().ToLower());
-    writer.WriteAttributeString(PdpAppConst.ItemIsAgentSharedXnam, ResrepIsAgentShared.ToString().ToLower());
-    writer.WriteAttributeString(PdpAppConst.ItemIsUpdaterLimitedXnam, ResrepIsUpdaterLimited.ToString().ToLower());
-    writer.WriteAttributeString(PdpAppConst.ItemIsManagerReleasedXnam, ResrepIsManagerReleased.ToString().ToLower());
+    writer.WriteAttributeString(ItemIsAuthorPrivateXnam, ResrepIsAuthorPrivate.ToString().ToLower());
+    writer.WriteAttributeString(ItemIsAgentSharedXnam, ResrepIsAgentShared.ToString().ToLower());
+    writer.WriteAttributeString(ItemIsUpdaterLimitedXnam, ResrepIsUpdaterLimited.ToString().ToLower());
+    writer.WriteAttributeString(ItemIsManagerReleasedXnam, ResrepIsManagerReleased.ToString().ToLower());
     EntityMetadata.WriteXml(writer);
     RecordMetadata.WriteXml(writer);
     InfosetMetadata.WriteXml(writer);
@@ -80,16 +80,16 @@ public class NpdsResrepItem : ANpdsXsgBaseItem<Object>, INpdsResrep
           string attrVal = reader.GetAttribute(attrNam);
           switch (attrNam)
           {
-            case PdpAppConst.ItemIsAuthorPrivateXnam:
+            case ItemIsAuthorPrivateXnam:
               ResrepIsAuthorPrivate = Convert.ToBoolean(attrVal);
               break;
-            case PdpAppConst.ItemIsAgentSharedXnam:
+            case ItemIsAgentSharedXnam:
               ResrepIsAgentShared = Convert.ToBoolean(attrVal);
               break;
-            case PdpAppConst.ItemIsUpdaterLimitedXnam:
+            case ItemIsUpdaterLimitedXnam:
               ResrepIsUpdaterLimited = Convert.ToBoolean(attrVal);
               break;
-            case PdpAppConst.ItemIsManagerReleasedXnam:
+            case ItemIsManagerReleasedXnam:
               ResrepIsManagerReleased = Convert.ToBoolean(attrVal);
               break;
             default:
@@ -111,6 +111,6 @@ public class NpdsResrepItem : ANpdsXsgBaseItem<Object>, INpdsResrep
 public class NpdsResrepList : ANpdsXsgItemList<NpdsResrepItem>
 {
   public NpdsResrepList() : base() { }
-  public NpdsResrepList(PdpAppConst.NpdsFieldRule rul) : base(rul) { }
+  public NpdsResrepList(NpdsFieldRule rul) : base(rul) { }
 }
 
