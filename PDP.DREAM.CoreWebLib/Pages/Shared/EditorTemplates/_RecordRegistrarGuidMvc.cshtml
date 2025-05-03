@@ -1,0 +1,6 @@
+﻿@model Guid?
+
+@(Html.Kendo().DropDownListFor(p => p)
+  .BindTo(new SelectList((System.Collections.IEnumerable)ViewData["CoreRegistrarListMvc"], "Value", "Text"))
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select Registrar" })
+)

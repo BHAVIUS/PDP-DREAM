@@ -1,0 +1,124 @@
+﻿@{ 
+var qurc = (QebUserRestContext) ViewData["QURC"]; 
+var NpdsController = "AdminScribeTkgr"; 
+var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}"; 
+}
+
+@(Html.Kendo().Grid<NexusResrepEditModel>()
+.Name("ResrepRecordGrid").HtmlAttributes(new { style = "float:left;" })
+.DataSource(ds => ds.Ajax().PageSize(5)
+.Model(m => {
+  m.Id(p => p.RRRecordGuid);
+  m.Field(p => p.RecordHandle).Editable(false);
+  m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.RRInfosetGuid).Editable(false).DefaultValue(Guid.Empty);
+  m.Field(p => p.InfosetPortalStatusCode).Editable(true).DefaultValue(PdpAppConst.DefaultInfosetStatusCode);
+  m.Field(p => p.InfosetDoorsStatusCode).Editable(true).DefaultValue(PdpAppConst.DefaultInfosetStatusCode);
+  m.Field(p => p.EntityTypeCode).Editable(true).DefaultValue(PdpAppConst.DefaultEntityTypeCode);
+  m.Field(p => p.EntityName).Editable(true);
+  m.Field(p => p.EntityNature).Editable(true);
+  m.Field(p => p.RecordDiristryGuid).Editable(true).DefaultValue(qurc.DiristryGuid);
+  m.Field(p => p.RecordRegistryGuid).Editable(true).DefaultValue(qurc.RegistryGuid);
+  m.Field(p => p.RecordDirectoryGuid).Editable(true).DefaultValue(qurc.DirectoryGuid);
+  m.Field(p => p.RecordRegistrarGuid).Editable(true).DefaultValue(qurc.RegistrarGuid);
+  m.Field(p => p.InfosetIsAuthorPrivate).Editable(true).DefaultValue(false);
+  m.Field(p => p.InfosetIsAgentShared).Editable(true).DefaultValue(false);
+  m.Field(p => p.InfosetIsUpdaterLimited).Editable(true).DefaultValue(false);
+  m.Field(p => p.InfosetIsManagerReleased).Editable(true).DefaultValue(false);
+}) // end Model
+.Read(get => get.Action("SelectScribeResrepRecordsForEditWithAgent", NpdsController,
+new { serviceType = qurc.ServiceType.ToString(), serviceTag = qurc.ServiceTag, entityType = qurc.EntityType.ToString() }))
+.Create(post => post.Action("InsertScribeResrepRecord", NpdsController,
+new { serviceType = qurc.ServiceType.ToString(), serviceTag = qurc.ServiceTag, entityType = qurc.EntityType.ToString() }))
+.Update(put => put.Action("UpdateScribeResrepRecord", NpdsController,
+new { serviceType = qurc.ServiceType.ToString(), serviceTag = qurc.ServiceTag, entityType = qurc.EntityType.ToString() }))
+.Destroy(delete => delete.Action("DeleteScribeResrepRecord", NpdsController,
+new { serviceType = qurc.ServiceType.ToString(), serviceTag = qurc.ServiceTag, entityType = qurc.EntityType.ToString() }))
+.Events(e => e.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))
+) // end DataSource
+.Columns(col => {
+  col.Command(com1 => {
+    com1.Edit();
+    com1.Custom("ValidateRecord").Click("OnValidateRecord").Text("Validate")
+    .HtmlAttributes(new { @class = "scribeValidateRecord", title = "Validate Resource Metadata Record" });
+  }).Title(""); // end Command
+  col.Bound(row => row.RecordHandle).Title("Handle")
+  .HeaderHtmlAttributes(new { title = "Resource Record Handle" });
+  col.Bound(row => row.RRRecordGuid).Hidden(true);
+  col.Bound(row => row.RRInfosetGuid).Hidden(true);
+  col.Bound(row => row.InfosetPortalStatusCode).Title("PORTAL")
+  .HeaderHtmlAttributes(new { title = "Resource Infoset PORTAL Status" })
+  .HtmlAttributes(new { @class = "scribePortalStatus", title = "#=InfosetPortalStatusCode#" })
+  .ClientTemplate("#=InfosetPortalStatusName#")
+  .EditorTemplateName("_InfosetPortalStatusCode")
+  ;
+  col.Bound(row => row.InfosetDoorsStatusCode).Title("DOORS")
+  .HeaderHtmlAttributes(new { title = "Resource Infoset DOORS Status" })
+  .HtmlAttributes(new { @class = "scribeDoorsStatus", title = "#=InfosetDoorsStatusCode#" })
+  .ClientTemplate("#=InfosetDoorsStatusName#")
+  .EditorTemplateName("_InfosetDoorsStatusCode")
+  ;
+  col.Bound(row => row.RRRecordGuid).Title("Authorship")
+  .HeaderHtmlAttributes(new { title = "Request Authorship for resource metadata record from current Author; requests may be mediated by the Editor or Admin." })
+  .ClientTemplate("<span id='ReqRel#=RecordHandle#'> #=AgentRequestHtml# </span>");
+  col.Bound(row => row.EntityTypeCode).Title("Type")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Type" })
+  .HtmlAttributes(new { title = "#=EntityTypeCode#" })
+  .ClientTemplate("#=EntityTypeName#")
+  .EditorTemplateName("_EntityTypeCode")
+  ;
+  col.Bound(row => row.EntityName).Title("Name")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Name" })
+  .HtmlAttributes(new { title = "#=EntityName#" });
+  col.Bound(row => row.EntityNature).Title("Nature")
+  .HeaderHtmlAttributes(new { title = "Resource Entity Nature" })
+  .HtmlAttributes(new { title = "#=EntityNature#" });
+  col.Bound(row => row.RecordDiristryGuid).Title("Diristry")
+  .HeaderHtmlAttributes(new { title = "Resource Record Diristry" })
+  .HtmlAttributes(new { title = "#=RecordDiristryGuid#" })
+  .ClientTemplate("#=RecordDiristryName#")
+  .EditorTemplateName("_RecordDiristryGuid");
+  col.Bound(row => row.RecordRegistryGuid).Title("Registry")
+  .HeaderHtmlAttributes(new { title = "Resource Record Registry" })
+  .HtmlAttributes(new { title = "#=RecordRegistryGuid#" })
+  .ClientTemplate("#=RecordRegistryName#")
+  .EditorTemplateName("_RecordRegistryGuid");
+  col.Bound(row => row.RecordDirectoryGuid).Title("Directory")
+  .HeaderHtmlAttributes(new { title = "Resource Record Directory" })
+  .HtmlAttributes(new { title = "#=RecordDirectoryGuid#" })
+  .ClientTemplate("#=RecordDirectoryName#")
+  .EditorTemplateName("_RecordDirectoryGuid");
+  col.Bound(row => row.RecordRegistrarGuid).Title("Registrar")
+  .HeaderHtmlAttributes(new { title = "Resource Record Registrar" })
+  .HtmlAttributes(new { title = "#=RecordRegistrarGuid#" })
+  .ClientTemplate("#=RecordRegistrarName#")
+  .EditorTemplateName("_RecordRegistrarGuid");
+  col.Bound(row => row.InfosetIsAuthorPrivate).Title("Private?")
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is private to author?" })
+  ;
+  col.Bound(row => row.InfosetIsAgentShared).Title("Shared?")
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is shared with agents?" })
+  ;
+  col.Bound(row => row.InfosetIsUpdaterLimited).Title("Limited?")
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is limited to most recent updater?" })
+  ;
+  col.Bound(row => row.InfosetIsManagerReleased).Title("Released?")
+  .HeaderHtmlAttributes(new { title = "Resource infoset read-write is released by most recent manager?" })
+  ;
+  col.Command(com2 => {
+    com2.Custom("ArchiveRecord").Click("OnArchiveRecord").Text("Archive")
+    .HtmlAttributes(new { @class = "scribeArchiveRecord", title = "Archive Resource Metadata Record" });
+    com2.Destroy();
+  }).Title(""); // end Command
+  col.Bound(row => row.DeletedOn).Title("SoftDeleted").Format(UtcdtFormat)
+  .HtmlAttributes(new { @class = "scribeDeletedOn" });
+  col.Bound(row => row.DeletedByAgentName).Title("Deleted")
+  .HeaderHtmlAttributes(new { title = "Record deleted by AgentName" });
+}) // end Columns
+.ToolBar(tb => tb.ClientTemplateId("ResrepRecordToolbar"))
+.ClientDetailTemplateId("ResrepRecordTabStrip")
+.Editable(ed => ed.Mode(GridEditMode.InLine))
+.Events(ce => ce.Edit("HideStatus").Page("HideStatus").DetailInit("HideStatus").DetailExpand("HideStatus").DetailCollapse("HideStatus"))
+.Pageable(pg => pg.AlwaysVisible(true).Responsive(false).Info(true).ButtonCount(3).PageSizes(new[] { 5, 15, 25, 50, 100 }).Refresh(true))
+.Sortable().Filterable().Resizable(rs => rs.Columns(true))
+)

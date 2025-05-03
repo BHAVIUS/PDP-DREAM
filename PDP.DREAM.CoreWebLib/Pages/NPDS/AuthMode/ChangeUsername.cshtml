@@ -1,0 +1,61 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "/NPDS/AuthMode/ChangeUsername"
+@model AuthModeChangeUsername
+@{
+  var psr = (PdpSiteRazorModel)Model.PSR;
+  // var qurc = (QebUserRestContext)Model.QURC;
+}
+@Html.Raw(psr.FormatBodyTitle())
+<p><partial name="@psr.RazorBodyMenu" /></p>
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    Your username has been changed.
+    You may now <a  asp-page="/AnonMode/LoginUser">login</a> again with your new username.
+  </p>
+}
+else
+{
+<form id="frmChangeUsername"  asp-page="/AuthMode/ChangeUsername" 
+    method="post" role="form" class="form-horizontal">
+  <p>
+    Use the form below to change your username.
+  </p>
+  <div class="form-group">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UXM.RequireSecTok, new { Value = Model.UXM.RequireSecTok })
+    @Html.HiddenFor(m => m.UXM.SecurityToken, new { Value = Model.UXM.SecurityToken })
+    @Html.HiddenFor(m => m.UXM.UserGuid, new { Value = Model.UXM.UserGuid })
+    @Html.HiddenFor(m => m.UXM.UserName, new { Value = Model.UXM.UserName })
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.OldUsername, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.OldUsername, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.OldUsername, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.NewUsername, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.NewUsername, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.NewUsername, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.AltUsername, new { @class = "form-label col-md-3" })
+    @Html.TextBoxFor(m => m.UXM.AltUsername, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.AltUsername, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <div class="form-group">
+    @Html.LabelFor(m => m.UXM.PassWord, new { @class = "form-label col-md-3" })
+    @Html.PasswordFor(m => m.UXM.PassWord, new { @class = "form-control col-md-3" })
+    @Html.ValidationMessageFor(m => m.UXM.PassWord, null, new { @class = "form-label col-md-6 text-danger" })
+  </div>
+  <br />
+  <button id = "btnChangeUsername" type="submit" class="btn btn-outline-primary">Change Username</button>
+</form>
+}
+

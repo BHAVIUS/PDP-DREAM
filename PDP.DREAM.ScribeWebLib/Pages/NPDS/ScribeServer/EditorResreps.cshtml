@@ -1,0 +1,13 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+  //
+  // equivalent URL pattern for query string values
+  // "/NPDS/NexusServer/AuthResreps/{serviceType}/{serviceTag}/{entityType?}"
+  // TODO: must differentiate serverType, serviceType, and selectType (aka filterType)
+*@
+
+@page "/NPDS/ScribeServer/EditorResreps/{serviceType}/{serviceTag}/{entityType?}/{recordAccess?}"
+@model ScribeServerEditorResreps
+<partial name="_ScribeWriteResrepsTkgp" />
+

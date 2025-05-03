@@ -1,0 +1,49 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2007 - 2022 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeDonateGift)]
+@model AnonModeDonateGift
+@{
+  PdpSiteRazorModel psr = Model.PSR;
+  // QebUserRestContext qurc = Model.QURC;
+}
+@Html.Raw(psr.FormatBodyTitle())
+
+@if (!string.IsNullOrEmpty(psr.RazorBodyMenu))
+{
+  <p><partial name="@psr.RazorBodyMenu" /></p>
+}
+
+@{
+  if (Model.Thanks)
+  {
+    <p>
+      <em style="color:green">Thank you for your generous donation to Brain Health Alliance.</em>
+    </p>
+  }
+}
+
+<p>
+  Brain Health Alliance disburses funds only as educational stipends and prizes to students.
+  BHA directors, officers and advisors volunteer their time and do not receive any compensation for their service.
+  BHA does not spend any money on advertising or fund-raising.
+  We welcome donations from individuals and organizations in any amount. Please use the PayPal service donate button:
+</p>
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+  <input type="hidden" name="cmd" value="_s-xclick" />
+  <input type="hidden" name="hosted_button_id" value="7DY5YPQ73ZSGQ" />
+  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+  <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+</form>
+
+<p>
+  <emph>
+    If you wish to make a donation more than $500, we encourage you to mail us a check payable to
+    "Brain Health Alliance, Inc." so that 100% of your money can be used to support our mission.
+  </emph>
+  Brain Health Alliance has been approved as a 501(c)(3) tax-exempt charitable organization with US Federal TIN 26-1350615.
+</p>
