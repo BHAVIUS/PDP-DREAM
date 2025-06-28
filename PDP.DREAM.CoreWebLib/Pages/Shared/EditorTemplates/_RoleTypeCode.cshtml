@@ -1,0 +1,6 @@
+﻿@model Byte
+
+@(Html.Kendo().DropDownListFor(p => p)
+  .DataValueField("CodeKey").DataTextField("TypeName").OptionLabel("Select RoleType")
+  .BindTo((System.Collections.IEnumerable)NPDSCD.NpdsDdlists.RoleTypeList)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate RoleType." }))

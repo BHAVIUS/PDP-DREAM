@@ -1,27 +1,25 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class AnonModeResetPassword1 : QebiDataRazorPageControllerBase
+public class QebiAnonModeResetPassword1 : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(AnonModeResetPassword1);
-  public AnonModeResetPassword1() : base() { }
+  private const string rzrClass = nameof(QebiAnonModeResetPassword1);
+  public QebiAnonModeResetPassword1() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NPDSCD.ParseDatabaseAccess(DdeDatabaseAccess.AnonReadOnly),
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessAnon,
-      UserModeClientRequired = false,
-      SessionClientRequired = false
     };
-    PSRM = new PdpSiteRazorModel(DepAnonModeResetPassword1, $"{PDPSS.AppOwnerNameShort}: Reset Password");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AnonModeSpanPageMenu");
-    ResetQebiRepository();
+    PSRM = new PdpSiteRazorModel(DepqAnonModeResetPassword1, "Reset Password", true);
+    PSRM.InitRazorPageMenus("_QebiAnonModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -33,7 +31,7 @@ public class AnonModeResetPassword1 : QebiDataRazorPageControllerBase
 #endif
     if (!string.IsNullOrWhiteSpace(id) && !string.IsNullOrWhiteSpace(ct))
     {
-      return RedirectToPage(DepAnonModeResetPassword3, new { id = id, ct = ct });
+      return RedirectToPage(DepqAnonModeResetPassword3, new { id = id, ct = ct });
     }
     else
     {
@@ -60,14 +58,14 @@ public class AnonModeResetPassword1 : QebiDataRazorPageControllerBase
   {
     if (ModelState.IsValid && !string.IsNullOrWhiteSpace(UXM.UserName))
     {
-      var usr = QUDC.GetUserByUserName(UXM.UserName);
+      var usr = NPDSCW.QUDC.GetUserByUserName(UXM.UserName);
       if ((usr != null) && (!usr.UserGuid.IsInvalid()))
       {
-        return RedirectToPage(DepAnonModeResetPassword2, new { username = UXM.UserName });
+        return RedirectToPage(DepqAnonModeResetPassword2, new { username = UXM.UserName });
       }
-      else { WraceUxmAddErrors("Username not found. "); }
+      else { WraceAddErrors("Username not found. "); }
     }
-    else { WraceUxmAddErrors("Username not input. "); }
+    else { WraceAddErrors("Username not input. "); }
     return Page();
   }
 

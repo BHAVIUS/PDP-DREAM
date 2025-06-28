@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 // using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
@@ -7,7 +7,7 @@ namespace PDP.DREAM.CoreWebLib.Controllers;
 
 public partial interface IQebiUser
 {
-  protected static ContactSiteUxm ContactSupportViaUserEmail(ContactSiteUxm uxm, QebiDalContext qudc)
+  protected static ContactSiteUxm ContactSupportViaUserEmail(ContactSiteUxm uxm, QebiDbsqlContext qudc)
   {
     try
     {
@@ -15,7 +15,7 @@ public partial interface IQebiUser
       if ((usr == null) || (usr.UserGuid == EGS))
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "User not found. ";
+        uxm.FormNote += "User not found. ";
       }
       else
       {
@@ -37,7 +37,7 @@ public partial interface IQebiUser
         }
 
         // recipient (toEmailAddress for user)
-        var emlRecpt = usr.EmailAddress ?? PdpAppStatus.PDPSS.AppOwnerEmail;
+        var emlRecpt = usr.EmailAddress ?? PDPSS.AppOwnerEmail;
         // TODO: is bcc working now ?
         uxm.NoticeSent = QebNotifyService.SendEmail(emlRecpt, emlSubject, emlBody);
         if (uxm.NoticeSent)
@@ -47,7 +47,7 @@ public partial interface IQebiUser
         else
         {
           uxm.ErrorOccurred = true;
-          uxm.FormMessage += "Email could not be sent. Please contact support via alternate email.";
+          uxm.FormNote += "Email could not be sent. Please contact support via alternate email.";
         }
       }
     }
@@ -55,7 +55,7 @@ public partial interface IQebiUser
     {
       uxm.FormError = error;
       uxm.ErrorOccurred = true;
-      uxm.FormMessage += "Server error occurred checking email. ";
+      uxm.FormNote += "Server error occurred checking email. ";
     }
     return uxm;
   }

@@ -1,28 +1,28 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class AnonModeRegisterUser : QebiDataRazorPageControllerBase
+public class QebiAnonModeRegisterUser : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(AnonModeRegisterUser);
-  public AnonModeRegisterUser() : base() { }
+  private const string rzrClass = nameof(QebiAnonModeRegisterUser);
+  public QebiAnonModeRegisterUser() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NPDSCD.ParseDatabaseAccess(DdeDatabaseAccess.AnonReadOnly),
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessAnon,
       // no session on initial anon login/register
       UserModeClientRequired = false,
       SessionClientRequired = false
     };
-    PSRM = new PdpSiteRazorModel(DepAnonModeRegisterUser, $"{PDPSS.AppOwnerNameShort}: Register User");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AnonModeSpanPageMenu");
-    ResetQebiRepository();
+    PSRM = new PdpSiteRazorModel(DepqAnonModeRegisterUser, "Register User", true);
+    PSRM.InitRazorPageMenus("_QebiAnonModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -32,7 +32,7 @@ public class AnonModeRegisterUser : QebiDataRazorPageControllerBase
     CatchNullWrace(nameof(OnGet), rzrClass);
     PSRM.DebugRazorPageStrings();
 #endif
-      QebUserSignoutAsync(); // clear authentication cookie
+    QebiUserSignoutAsync(); // clear authentication cookie
     UXM = new RegisterUserUxm();
     return Page();
   }
@@ -49,31 +49,33 @@ public class AnonModeRegisterUser : QebiDataRazorPageControllerBase
     UXM.FormCompleted = false;
     if (ModelState.IsValid)
     {
-      if (QUDC.CountUsersByUserName(UXM.UserName) == 0)
+      if (NPDSCW.QUDC.CountUsersByUserName(UXM.UserName) == 0)
       {
-        QUDC.RegisterQebiUser(UXM);
-        var usr = QUDC.GetUserByUserName(UXM.UserName); // updated with current SecurityToken
-        if (string.Equals(UXM.UserName, usr.UserName, StringComparison.OrdinalIgnoreCase) == true) // consistency check on UserName
+        var usrNam1 = UXM.UserName;
+        UXM.UserRoleNames = PDPSS.AppCiaamRolesInit;
+        UXM = NPDSCW.QUDC.RegisterQebiUser(UXM);
+        var usrNam2 = UXM.UserName;
+        if (string.Equals(usrNam1, usrNam2, StringComparison.OrdinalIgnoreCase) == true) // consistency check on UserName
         {
           UXM.UserRegistered = true;
-          var exm = new ChangeEmailUxm(usr.UserName, usr.SecurityToken, usr.FirstName, usr.LastName, usr.EmailAddress);
+          var exm = new ChangeEmailUxm(UXM.UserName, UXM.SecurityToken, UXM.FirstName, UXM.LastName, UXM.EmailAddress);
           exm = IQebiUser.ArgCheckModel(exm);
           exm = IQebiUser.NotifyEmailWithToken(exm, HttpContext);
           if (exm.NoticeSent) { UXM.FormCompleted = true; }
-          else { UXM.FormMessage += exm.FormMessage; }
+          else { UXM.FormNote += exm.FormNote; }
         }
         else
         {
           UXM.UserRegistered = false;
-          UXM.FormMessage += "User not registered for requested Username.";
+          UXM.FormNote += "User not registered for requested Username.";
         }
       }
       else
       {
         UXM.UserRegistered = false;
-        UXM.FormMessage += "Username already exists. Please try a different one. ";
+        UXM.FormNote += "Username already exists. Please try a different one. ";
       }
-      WraceUxmAddErrors(UXM.FormMessage);
+      WraceAddErrors(UXM.FormNote);
     }
     return Page();
   }

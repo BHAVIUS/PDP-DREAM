@@ -1,14 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepUserModeChangeUsername)]
-@model UserModeChangeUsername
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqUserModeChangeUsername)]
+@model QebiUserModeChangeUsername
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
@@ -21,12 +21,12 @@
 {
   <p class="pdpTaskPassed">
     Your username has been changed.
-    You may now <a asp-page="@DepAnonModeLoginUser">login</a> again with your new username.
+    You may now <a asp-page="@DepqAnonModeLoginUser">login</a> again with your new username.
   </p>
 }
 else
 {
-  <form id="frmChangeUsername" asp-page="@DepUserModeChangeUsername"
+  <form id="frmChangeUsername" asp-page="DepqUserModeChangeUsernamee"
         method="post" role="form" class="form-horizontal">
     <p>
       Use the form below to change your username.

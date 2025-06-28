@@ -1,14 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepUserModeChangeProfile)]
-@model UserModeChangeProfile
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqUserModeChangeProfile)]
+@model QebiUserModeChangeProfile
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
   var pdpFormGroup = "form-group col-md-6 mb-3";
   var pdpFormLabel = "form-label col-md-3";
 }
@@ -24,7 +24,7 @@
 }
 else
 {
-  <form id="frmChangeProfile" asp-page="@DepUserModeChangeProfile"
+  <form id="frmChangeProfile" asp-page="@DepqUserModeChangeProfile"
         method="post" role="form" class="form-horizontal">
     <p>
       Use the form below to change your profile.

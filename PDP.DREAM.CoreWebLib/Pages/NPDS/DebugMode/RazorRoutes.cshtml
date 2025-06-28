@@ -1,5 +1,5 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -17,7 +17,7 @@
 @inject IEnumerable<EndpointDataSource> epDataSources
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
   var rrepList = epDataSources.SelectMany(s => s.Endpoints)
     .OfType<RouteEndpoint>().OrderBy(p => p.Order).ThenBy(p => p.DisplayName).ToList();
 }
@@ -29,10 +29,10 @@
 
 <h4>PDP Current Route</h4>
 <ul>
-  <li>RequestUrl: @wrace.NpdsRequest.GetDisplayUrl()</li>
-  <li>Endpoint: @wrace.NpdsContext.GetEndpoint().DisplayName</li>
-  <li>RouteDataValues: @string.Join(',', wrace.NpdsContext.GetRouteData().Values.Select(p => p.ToString()))</li>
-  <li>QueryString: @wrace.NpdsRequest.QueryString</li>
+  <li>RequestUrl: @npdscw.NpdsRequest.GetDisplayUrl()</li>
+  <li>Endpoint: @npdscw.NpdsContext.GetEndpoint().DisplayName</li>
+  <li>RouteDataValues: @string.Join(',', npdscw.NpdsContext.GetRouteData().Values.Select(p => p.ToString()))</li>
+  <li>QueryString: @npdscw.NpdsRequest.QueryString</li>
 </ul>
 
 <h4>PDP Razor Routes (Endpoints)</h4>

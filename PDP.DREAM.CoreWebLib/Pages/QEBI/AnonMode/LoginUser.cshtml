@@ -1,14 +1,13 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeLoginUser)]
-@model AnonModeLoginUser
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqAnonModeLoginUser)]
+@model QebiAnonModeLoginUser
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
@@ -17,13 +16,13 @@
   <p><partial name="@psrm.RazorBodyMenu" /></p>
 }
 
-<form id="frmLoginUser" asp-page="@DepAnonModeLoginUser"
+<form id="frmLoginUser" asp-page="@DepqAnonModeLoginUser"
       method="post" role="form" class="form-horizontal">
   <p>
     Please enter your username and password to login.
-    <a asp-page="@DepAnonModeRegisterUser">Register User</a>
+    <a asp-page="@DepqAnonModeRegisterUser">Register User</a>
     if you do not yet have an account with username and password.
-    <a asp-page="@DepAnonModeResetPassword1">Reset Password</a>
+    <a asp-page="@DepqAnonModeResetPassword1">Reset Password</a>
     if you have forgotten it.
     To contact the site admin, 
     you must first create a user account.

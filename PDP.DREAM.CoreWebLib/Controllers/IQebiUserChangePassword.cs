@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
@@ -11,11 +11,11 @@ public partial interface IQebiUser
     uxm.UserName = username;
     uxm.SecurityToken = securitytoken;
     uxm.NewPassword = newpassword;
-    uxm = ChangePasswordWithToken(uxm, new QebiDalContext());
+    uxm = ChangePasswordWithToken(uxm, new QebiDbsqlContext());
     return uxm;
   }
 
-  protected static ChangePasswordUxm ChangePasswordWithToken(ChangePasswordUxm uxm, QebiDalContext qudc)
+  protected static ChangePasswordUxm ChangePasswordWithToken(ChangePasswordUxm uxm, QebiDbsqlContext qudc)
   {
     try
     {
@@ -23,22 +23,22 @@ public partial interface IQebiUser
       if ((usr == null) || (usr.UserGuid == EGS))
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "User not found. ";
+        uxm.FormNote += "User not found. ";
       }
       else if (!IsTokenDateValid(usr.DateTokenExpired))
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "Security token expired. ";
+        uxm.FormNote += "Security token expired. ";
       }
       else if (!QebCryptoService.TokenEqualsToken(uxm.SecurityToken, usr.SecurityToken))
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "Security token invalid. ";
+        uxm.FormNote += "Security token invalid. ";
       }
       else if (string.IsNullOrEmpty(uxm.NewPassword))
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "New password not submitted. ";
+        uxm.FormNote += "New password not submitted. ";
       }
       else
       {
@@ -58,13 +58,13 @@ public partial interface IQebiUser
     {
       uxm.FormError = error;
       uxm.ErrorOccurred = true;
-      uxm.FormMessage += "Server error occurred changing password. ";
+      uxm.FormNote += "Server error occurred changing password. ";
     }
     return uxm;
   }
 
   // requires authenticated login to change Password
-  protected static ChangePasswordUxm ChangePasswordWithOld(ChangePasswordUxm uxm, QebiDalContext qudc)
+  protected static ChangePasswordUxm ChangePasswordWithOld(ChangePasswordUxm uxm, QebiDbsqlContext qudc)
   {
     uxm.ErrorOccurred = false;
     uxm.DbfieldReset = false;
@@ -75,12 +75,12 @@ public partial interface IQebiUser
       if (usr == null)
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "User not found. ";
+        uxm.FormNote += "User not found. ";
       }
       else if (!QebCryptoService.VerifyHashedToken(usr.PasswordHash, uxm.PassWord))
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "Password not matched to current. ";
+        uxm.FormNote += "Password not matched to current. ";
       }
       else
       {
@@ -101,12 +101,12 @@ public partial interface IQebiUser
     {
       uxm.FormError = error;
       uxm.ErrorOccurred = true;
-      uxm.FormMessage += "Server error occurred changing password. ";
+      uxm.FormNote += "Server error occurred changing password. ";
     }
     return uxm;
   }
 
-  protected static ChangePasswordUxm StorePassword(ChangePasswordUxm uxm, QebiUser usr, QebiDalContext qudc)
+  protected static ChangePasswordUxm StorePassword(ChangePasswordUxm uxm, QebiUser usr, QebiDbsqlContext qudc)
   {
     var errorCode = qudc.QebiUserUpdatePassword(usr.AppGuid,
       usr.UserGuid, usr.PasswordHash, usr.SecurityToken,
@@ -115,7 +115,7 @@ public partial interface IQebiUser
     if (errorCode < 0)
     {
       uxm.ErrorOccurred = true;
-      uxm.FormMessage += $"Error code = {errorCode} while writing to user with Username {usr.UserName}";
+      uxm.FormNote += $"Error code = {errorCode} while writing to user with Username {usr.UserName}";
     }
     else
     {

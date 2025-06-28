@@ -1,14 +1,13 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeRegisterUser)]
-@model AnonModeRegisterUser
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqAnonModeRegisterUser)]
+@model QebiAnonModeRegisterUser
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
@@ -27,7 +26,7 @@
 }
 else
 {
-  <form id="frmRegisterUser" asp-page="@DepAnonModeRegisterUser"
+  <form id="frmRegisterUser" asp-page="@DepqAnonModeRegisterUser"
         method="post" role="form" class="form-horizontal">
     <p>
       Use the form below to register a new user account.

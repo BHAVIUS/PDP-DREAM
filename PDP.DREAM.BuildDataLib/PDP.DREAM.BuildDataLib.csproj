@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- project declaration -->
+  <PropertyGroup>
+    <AssemblyName>PDP.DREAM.CheckDataLib</AssemblyName>
+    <RootNamespace>PDP.DREAM.CheckDataLib</RootNamespace>
+    <Product>CheckDataLib</Product>
+    <Description>PDP-DREAM CheckDataLib</Description>
+    <IsPackable>false</IsPackable>
+    <Platforms>x64;ARM64;AnyCPU;</Platforms>
+  </PropertyGroup>
+
+  <!-- dev/test/build/debug configuration -->
+  <PropertyGroup>
+    <NoWarn>CS8600;CS8602;CS8604;NU1608;</NoWarn>
+  </PropertyGroup>
+
+  <!-- required lib references -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6"><!-- .NET Core CLI Tools for EF
+      <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+       -->
+    
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6"><!-- VS Package Manager Console Tools for EF 
+      <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+      -->
+    
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- required PDP references -->
+  <ItemGroup>
+    <ProjectReference Include="..\PDP.DREAM.CoreWebLib\PDP.DREAM.CoreWebLib.csproj" />
+  </ItemGroup>
+
+</Project>

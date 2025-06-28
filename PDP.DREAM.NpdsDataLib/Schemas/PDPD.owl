@@ -1,0 +1,618 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://npds.portaldoors.org/schema/pdp/pdpd"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://npds.portaldoors.org/schema/pdp/pdpd"
+     versionIRI="http://npds.portaldoors.org/schema/pdp/pdpd/3.2">
+    <Prefix name="pdpd" IRI="https://npds.portaldoors.org/schema/pdp/pdpd#"/>
+    <Prefix name="owl" IRI="https://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="https://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="https://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="xml" IRI="https://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="https://www.w3.org/2001/XMLSchema#"/>
+    <Import>http://npds.portaldoors.org/schema/pdp/crlp</Import>
+    <Import>http://npds.portaldoors.org/schema/pdp/dream</Import>
+    <Import>http://npds.portaldoors.org/schema/pdp/eeeee</Import>
+    <Import>http://npds.portaldoors.org/schema/pdp/fair</Import>
+    <Import>http://npds.portaldoors.org/schema/pdp/hdmm</Import>
+    <Import>http://npds.portaldoors.org/schema/pdp/npds</Import>
+    <Import>http://purl.org/dc/elements/1.1/</Import>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <Literal>Last Updated: 2023/06/11</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="owl:versionInfo"/>
+        <Literal datatypeIRI="https://www.w3.org/2001/XMLSchema#decimal">3.2</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/description"/>
+        <Literal xml:lang="en">To codify the principles from the PORTAL-DOORS Project and NPDS Cyberinfrastructure, an ontology named PDP-DREAM has been created for the  DREAM principles in order to consolidate the entire collection of principles (those for software architecture, experimental science, and social engineering) into a formal specification. This PDP-DREAM ontology has been developed in OWL 2.0. The current version of this ontology has four main sections corresponding to the DREAM principles, the HDMM architectural style, the NPDS cyberinfrastructure, and the FAIR metrics.</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/modified"/>
+        <Literal xml:lang="en">v2.1 - Updated the ontology with a number of supporting foundational ontologies and have begun integration for FAIR metrics experiment
+
+v1.4 - Further split NPDS-DREAM ontology into five-parts: FAIR, NPDS, HDMM, DREAM, and PDP-DREAM. Created PDP-DREAM core file.
+v1.3 - Split NPDS-DREAM ontology into three subsections: FAIR, DREAM, and NPDS.
+v1.2 - Merged the NPDS-DREAM and FAIR ontology into a single ontology, added elements beyond class hierarchy such as object properties.
+v1.1 - Original creation of two-part PDP-DREAM ontology consisting of NPDS-DREAM and FAIR ontologies.</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/title"/>
+        <Literal>PDP-DREAM</Literal>
+    </Annotation>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/nsvo/npds#Nexus"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://web.resource.org/cc/License"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="NumberOfRecords"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="BrainWatch_Diristry"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="EywaDiristry"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/FAIR#RDFAnalysisProtocol"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://purl.org/dc/elements/1.1/date"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/description"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/modified"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/title"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/DREAM#DREAM"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#NPDS"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#R_Value"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Novel"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Data"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Quoted"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#RecordMetadata"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#Hierarchical"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Repositories"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Registry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#User"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Roles"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#EditorDeclaration"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Resources"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#NPDSPrinciples"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F2_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Function"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#IdeaLaunderingPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#Related"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Descriptions"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Names"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallyDifferent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#AuthorDeclaration"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Misquoted"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#ScribeReadWrite"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Progressive"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#connectedTo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Reviewer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#Similar"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#denoterOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#creates"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Authoritative"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Statements"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#DOORS"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#ComponentArticleVerbatimPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#Authority"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#FAIRMetrics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Editor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#SeperationOfConcerns"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Statement"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallySimilar"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/NPDS#PDP-Meru"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#FAIRProtocols"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Enhanced"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F4_Value"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#P_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#Distributed"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Administrator"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Labels"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Available"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#contains"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#PORTAL"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Nexus"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Roles"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/issued"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#constituentOf"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Usable"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Democratized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#LexicallyDifferent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Tags"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Plagiarized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Accessible"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#S"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#R"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F3_Value"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#connectedTo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Components"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#T"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Distributed"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/DREAM#mainPhrase"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#PartialArticleVerbatimPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#consistsOf"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#ReviewerDeclaration"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#denoterOf"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#M"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#FullArticleVerbatimPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#N"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Q_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Q"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#P"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://purl.org/dc/terms/publisher"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://www.w3.org/2004/02/skos/core#note"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#C"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#FAIR"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/DREAM#phrase"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Status"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#EEE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Author"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#governs"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/NPDS#GeneScene"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#CreditedUnclearDelineationPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#Same"/>
+    </Declaration>
+    <Declaration>
+        <Datatype abbreviatedIRI="xsd:date"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Directories"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#contains"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Algorithm"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#RDFAnalysisProtocol"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallySame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#NonAuthoritative"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Extensible"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Locations"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#N_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Agent"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Metadata"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#WebServiceAPI"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Adaptable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#NotPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#EntityMetadata"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#UncreditedParaphrasingPlagiarized"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#FAIRMetricsProtocol"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#Democratized"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Language"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Decentralized"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#NonSpecific"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Equivalent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#NPDReadOnly"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#hasQuality"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Accessible"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F1_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Bootstrapping"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#consistsOf"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/NPDS#PDP-Aoraki"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#similarTo"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Diristry"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#governs"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://www.w3.org/ns/prov#Location"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#Multilevel"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/NPDS#BrainWatch"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Author"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Measurable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/DREAM#A"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Declarations"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/DREAM#D"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/DREAM#E"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#LocalGoverance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Reusable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Server"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F1"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F3"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F2"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#LexicallySimilar"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#F4"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#M_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/DREAM#M"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Owner"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#S_Value"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#Publisher"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/DREAM#R"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#Evolutionary"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#accessURL"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/DREAM#alternativePhrase"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#constitutedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#cites"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#LexicallySame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Expandable"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Accurate"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Inclusive"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Manageable"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/EEEEE#Different"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/NPDS#PDP-Zunil"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/NPDS#DaVinci"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="https://npds.portaldoors.org/schema/pdp/DREAM#Records"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Entity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/HDMM#HDMM"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#Editor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/pdp/NPDS#InfosetMetadata"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="https://npds.portaldoors.org/schema/pdp/NPDS#hasQuality"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="https://npds.portaldoors.org/schema/bhavi/FAIR#PublisherDeclaration"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="https://web.resource.org/cc/License"/>
+        <Class IRI="https://www.w3.org/ns/prov#Location"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <Class IRI="https://npds.portaldoors.org/nsvo/npds#Nexus"/>
+        <NamedIndividual IRI="BrainWatch_Diristry"/>
+    </ClassAssertion>
+    <DataPropertyRange>
+        <DataProperty IRI="NumberOfRecords"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>https://npds.portaldoors.org/schema/pdp/FAIR#RDFAnalysisProtocol</IRI>
+        <Literal>1. Choose a base url to be used to describe the claims in the RDF document, input this into the xml:base field
+2. Record the url for paper (into rdf:about field), title, first author (into creator field), co-authors (into contributor field), abstract, shortened description (into description field), date published, and doi/uri into respective fields for citation metadata section
+3. Input the M, N, P, Q, F1, F2, F3, F4 calues into the FAIR values section, each for their respective field.
+4. Each grouping of information for the statements will be inputted into description fields with the rdf:about field being &quot;StatementX.Y&quot;, X representing the Xth statement and Y being the Yth section
+5. For each statement, input a title (only if said claim has a clear title), location (only if said claim has a clear url location), and description (plain lexical representation of statement) into field for StatementX.1. Put the statement isDefinedBy &quot;StatementX.2&quot;.
+6. For description &quot;StatementX.2&quot;, refer by rdf:first to the first triple in set of triples describing that particular statement as &quot;StatementX.2.1&quot;
+7. Each triple for &quot;StatementX.2.1&quot; to &quot;StatementX.2.Z&quot; with each section from 1-Z representing a triple that composes &quot;StatementX&quot; will have a field for subject, predicate, and object. Each of these fields will contain a reference for the subject, verb, and object respectively extracted for said triple earlier.
+8. The type for these triples should be https://www.w3.org/1999/02/22-rdf-syntax-ns#Statement and each except the end should refer via rdf:rest to &quot;StatementX.2.Z+1&quot;
+9. For &quot;StatementX.3&quot;, have the type be a statement, the subject referring to &quot;StatementX.1&quot;, and the resource being an instance of either https://npds.portaldoors.org/schema/pdp/FAIR#Plagiarized, https://npds.portaldoors.org/schema/pdp/FAIR#Novel, https://npds.portaldoors.org/schema/pdp/FAIR#Quoted, or https://npds.portaldoors.org/schema/pdp/FAIR#Misquoted depending on the classification of the statement.
+10. If the statement is either Plagiarized, Quoted, or Misquoted, have a section for &quot;StatementX.4&quot;. For this statement, have the subject be &quot;StatementX.1&quot; and then have a fair:similarTo statement containing an rdf:Bag section. If the claim is plagiarized, input the reference to the paper the statement was plagiarized from. If the claim is quoted, input the reference to the paper the statement was cited from. If the claim was misquoted, either input the correct origin of the statement or if the cited claim was misinterpreted the given citation.
+11. Continue steps 4-10 for each of the statement (Novel, Plagiarized, Quoted, Misquoted) in the paper.
+12. At the end in the Final Result section, have a description statement with the url referring to the paper. In the hasRole field, input https://npds.portaldoors.org/schema/pdp/FAIR#NotPlagiarized if the paper meets the threshold for not being plagiarized. 13) Else, input one of the six defined plagiarism levels depending on the level of infraction of the paper (&quot;ComponentArticleVerbatimPlagiarized&quot;,&quot;CreditedUnclearDelineation-Plagiarized&quot;,&quot;FullArticleVerbatimPlagiarized&quot;,&quot;IdeaLaunderingPlagiarized&quot;,&quot;PartialArticleVerbatimPlagiarized&quot;,&quot;UncreditedParaphrasingPlagiarized&quot;)
+13. 5 of these levels are defined by Section 8.2.4.D &quot;Plagiarism Levels and Corrective Actions&quot; of the PSPB Operations Manual from IEEE (reference: https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/Level_description.pdf). Use this document to determine which of the 5 levels the plagiarism falls into.
+14. It should be noted that in order to qualify for &quot;IdeaLaunderingPlagiarized&quot; the author, editor, or publisher have to fall into a set of specified actions that are beyond the scope of this instruction set.
+15. If there are any papers which the paper notably plagiarizes from, use an fair:similarTo and rdf:bag statement to list the papers</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi -->
+

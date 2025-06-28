@@ -1,30 +1,28 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, Authorize]
-public class UserModeCheckQebiUser : QebiDataRazorPageControllerBase
+public class QebiUserModeCheckQebiUser : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(UserModeCheckQebiUser);
-  public UserModeCheckQebiUser() : base() { }
+  private const string rzrClass = nameof(QebiUserModeCheckQebiUser);
+  public QebiUserModeCheckQebiUser() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
       RecordAccess = NPDSCD.RecordAccessUser,
-      UserModeClientRequired = true,
-      SessionClientRequired = true
     };
     // do not include optional params in pageName
-    PSRM = new PdpSiteRazorModel(DepUserModeCheckQebiUser, $"{PDPSS.AppOwnerNameShort}: Check QEBI User");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_UserModeSpanPageMenu");
-    ResetQebiRepository();
-    var isVerified = CheckQebiUserSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    PSRM = new PdpSiteRazorModel(DepqUserModeCheckQebiUser, "Check QEBI User", true);
+    PSRM.InitRazorPageMenus("_QebiUserModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted

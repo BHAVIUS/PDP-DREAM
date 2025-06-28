@@ -1,27 +1,25 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class AnonModeResetPassword3 : QebiDataRazorPageControllerBase
+public class QebiAnonModeResetPassword3 : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(AnonModeResetPassword3);
-  public AnonModeResetPassword3() : base() { }
+  private const string rzrClass = nameof(QebiAnonModeResetPassword3);
+  public QebiAnonModeResetPassword3() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NPDSCD.ParseDatabaseAccess(DdeDatabaseAccess.AnonReadOnly),
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessAnon,
-      UserModeClientRequired = false,
-      SessionClientRequired = false
     };
-    PSRM = new PdpSiteRazorModel(DepAnonModeResetPassword3, $"{PDPSS.AppOwnerNameShort}: Reset Password");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AnonModeSpanPageMenu");
-    ResetQebiRepository();
+    PSRM = new PdpSiteRazorModel(DepqAnonModeResetPassword3, "Reset Password", true);
+    PSRM.InitRazorPageMenus("_QebiAnonModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -58,7 +56,7 @@ public class AnonModeResetPassword3 : QebiDataRazorPageControllerBase
     {
       var uxm = IQebiUser.ChangePasswordWithToken(UXM.UserName, UXM.SecurityToken, UXM.NewPassword);
       if (uxm.PasswordChanged) { UXM.FormCompleted = true; }
-      if (!string.IsNullOrEmpty(uxm.FormMessage)) { WraceUxmAddErrors(uxm.FormMessage); }
+      if (!string.IsNullOrEmpty(uxm.FormNote)) { WraceAddErrors(uxm.FormNote); }
     }
     return Page();
   }

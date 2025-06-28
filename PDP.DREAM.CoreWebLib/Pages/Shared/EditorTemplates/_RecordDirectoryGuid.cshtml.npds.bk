@@ -1,8 +1,0 @@
-﻿@model Guid?
-
-@(
-  Html.Kendo().DropDownListFor(m => m)
-  .DataValueField("RecordDirectoryGuid").DataTextField("RecordDirectoryName").OptionLabel("Select Directory")
-  .BindTo((System.Collections.IEnumerable)NPDSSD.NpdsDdlists.RegcDirectoryListNpds)
-  .HtmlAttributes(new { style = "width: 11em;", title = "Select DOORS Directory" })
-)

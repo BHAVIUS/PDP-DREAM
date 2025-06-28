@@ -1,27 +1,25 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class AnonModeDonateGift : QebiDataRazorPageControllerBase
+public class QebiAnonModeDonateGift : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(AnonModeDonateGift);
-  public AnonModeDonateGift() : base() { }
+  private const string rzrClass = nameof(QebiAnonModeDonateGift);
+  public QebiAnonModeDonateGift() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessAnon,
-      UserModeClientRequired = false,
-      SessionClientRequired = false
     };
-    PSRM = new PdpSiteRazorModel(DepAnonModeDonateGift, $"{PDPSS.AppOwnerNameShort}: Donate Gift");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AnonModeSpanPageMenu");
-    ResetQebiRepository();
+    PSRM = new PdpSiteRazorModel(DepqAnonModeDonateGift, "Donate Gift", true);
+    PSRM.InitRazorPageMenus("_QebiAnonModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
   }
 
   // OnGet before OnPageHandlerExecuted

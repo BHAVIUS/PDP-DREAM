@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
@@ -12,16 +12,16 @@ public class DebugModeDotnetErrors : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessUser,
       UserModeClientRequired = false,
       SessionClientRequired = false
     };
-    PSRM = new PdpSiteRazorModel(DepDebugModeDotnetErrors, $"{DepPdpDream}: DotnetErrors");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_DebugModeSpanPageMenu");
-    ResetCoreRepository();
+    PSRM = new PdpSiteRazorModel(DepDebugModeDotnetErrors, "PDP-DREAM DotnetErrors", true);
+    PSRM.InitRazorPageMenus("_DebugModeSpanPageMenu");
+    NPDSCW.ResetCoreRepository();
   }
 
   // OnGet before OnPageHandlerExecuted

@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
@@ -7,99 +7,99 @@ public partial class TkgsPageController
 {
   private const string eidCrossReferenceStatus = TkndoElemPrfx + "CrossReferenceStatus";
 
-  public virtual JsonResult OnPostReadCrossReferences([DataSourceRequest] DataSourceRequest dsRequest,
-   // string searchFilter, string serviceTag, string entityType,
-   Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostReadCrossReferences([DataSourceRequest] DataSourceRequest dsRequest,
+   string serviceTag, Guid recordGuid, bool isLimited = false)
   {
     var rzrHndlr = nameof(OnPostReadCrossReferences);
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
 #if DEBUG
-    DebugScribeRepo(rzrHndlr, rzrClass);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    NPDSCW.DebugWraceData(rzrHndlr, rzrClass);
+    NPDSCW.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+#endif
+    NPDSCW.OpenScribeConnection(); // use PSDC
+#if DEBUG
+    NPDSCW.DebugScribeRepo(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
-    try
+    if (recordGuid.IsInvalid())
+    { ModelState.AddModelError("CrossReferences", "RRRecordGuid invalid."); }
+    else
     {
-      if (recordGuid.IsInvalid())
-      { ModelState.AddModelError("CrossReferences", "RRRecordGuid invalid."); }
-      else
-      {
-        dsResult = PSDC.ListEditableCrossReferences(recordGuid, isLimited)
-        .ToDataSourceResult(dsRequest);
-      }
-    }
-    catch (SqlException exc)
-    {
-#if DEBUG
-      Debug.WriteLine(ParseSqlException(exc));
-#endif
+      dsResult = NPDSCW.PSDC.ListEditableCrossReferences(recordGuid, isLimited)
+      .ToDataSourceResult(dsRequest, ModelState);
     }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
-  public virtual JsonResult OnPostWriteCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
-    CrossReferenceUxm fgr, Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostWriteCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
+    CrossReferenceUxm fgr, string serviceTag, Guid recordGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
     if (fgr.RRRecordGuid.IsInvalid())
     { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
-    if (!string.IsNullOrWhiteSpace(fgr.CrossReference))
+    if (!string.IsNullOrWhiteSpace(fgr.CrossReferenceText))
     {
       var rgx = new Regex(RgxsCrossReference);
-      var isMatch = rgx.IsMatch(fgr.CrossReference);
+      var isMatch = rgx.IsMatch(fgr.CrossReferenceText);
       if (!isMatch)
       { ModelState.AddModelError(fgr.ItemXnam, $"String is not a valid {fgr.ItemXnam}."); }
     }
-    if (ModelState.IsValid) { fgr = PSDC.EditCrossReference(fgr); }
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.EditCrossReference(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidCrossReferenceStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
-  public virtual JsonResult OnPostDeleteCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
-    CrossReferenceUxm fgr, Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostCheckCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
+    string serviceTag, Guid fgroupGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
+    CrossReferenceUxm? fgr = NPDSCW.PSDC.GetEditableCrossReferenceByKey(fgroupGuid);
+    if (fgr?.RRFgroupGuid == fgroupGuid)
+    { fgr = NPDSCW.PSDC.CheckCrossReference(fgr); }
+    fgr.NdisElemId = eidCrossReferenceStatus;
+    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    NPDSCW.CloseScribeConnection();
+    return jsonData;
+  }
+
+  public JsonResult OnPostReseqCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
+    string serviceTag, Guid fgroupGuid, bool isLimited = false)
+  {
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
+    CrossReferenceUxm? fgr = NPDSCW.PSDC.GetEditableCrossReferenceByKey(fgroupGuid);
+    if (fgr?.RRFgroupGuid == fgroupGuid)
+    { fgr = NPDSCW.PSDC.ReseqCrossReference(fgr); }
+    fgr.NdisElemId = eidCrossReferenceStatus;
+    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    NPDSCW.CloseScribeConnection();
+    return jsonData;
+  }
+
+  public JsonResult OnPostDeleteCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
+    CrossReferenceUxm fgr, string serviceTag, Guid recordGuid, bool isLimited = false)
+  {
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteCrossReference(fgr); }
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.DeleteCrossReference(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidCrossReferenceStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
-    return jsonData;
-  }
-
-  public virtual JsonResult OnPostCheckCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid fgroupGuid, bool isLimited = false)
-  {
-    OpenScribeConnection(); // use PSDC
-    CrossReferenceUxm? fgr = PSDC.GetEditableCrossReferenceByKey(fgroupGuid);
-    if (fgr?.RRFgroupGuid == fgroupGuid)
-    { fgr = PSDC.CheckCrossReference(fgr); fgr.NdisElemId = eidCrossReferenceStatus; }
-    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
-    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
-    return jsonData;
-  }
-
-  public virtual JsonResult OnPostReseqCrossReference([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid fgroupGuid, bool isLimited = false)
-  {
-    OpenScribeConnection(); // use PSDC
-    CrossReferenceUxm? fgr = PSDC.GetEditableCrossReferenceByKey(fgroupGuid);
-    if (fgr?.RRFgroupGuid == fgroupGuid)
-    { fgr = PSDC.ReseqCrossReference(fgr); fgr.NdisElemId = eidCrossReferenceStatus; }
-    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
-    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 

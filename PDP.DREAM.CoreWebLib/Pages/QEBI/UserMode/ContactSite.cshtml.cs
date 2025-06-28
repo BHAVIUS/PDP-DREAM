@@ -1,29 +1,29 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, Authorize]
-public class UserModeContactSite : QebiDataRazorPageControllerBase
+public class QebiUserModeContactSite : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(UserModeContactSite);
-  public UserModeContactSite() : base() { }
+  private const string rzrClass = nameof(QebiUserModeContactSite);
+  public QebiUserModeContactSite() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
       RecordAccess = NPDSCD.RecordAccessUser,
       UserModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepUserModeContactSite, $"{PDPSS.AppOwnerNameShort}: Contact Site");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_UserModeSpanPageMenu");
-    ResetQebiRepository();
-    var isVerified = CheckQebiUserSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    PSRM = new PdpSiteRazorModel(DepqUserModeContactSite, "Contact Site", true);
+    PSRM.InitRazorPageMenus("_QebiUserModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -53,7 +53,7 @@ public class UserModeContactSite : QebiDataRazorPageControllerBase
     if (ModelState.IsValid)
     {
       var name = UXM.FirstName + " " + UXM.LastName;
-      var subj = PdpAppStatus.PDPSS.AppOwnerNameLong + " Contact " + name;
+      var subj = PDPSS.AppOwnerNameLong + " Contact " + name;
       var body = new StringBuilder();
       body.AppendLine("Name: " + name);
       body.AppendLine();
@@ -63,11 +63,11 @@ public class UserModeContactSite : QebiDataRazorPageControllerBase
       body.AppendLine("Subject: " + UXM.EmailSubject);
       body.AppendLine("Message: " + UXM.EmailBody);
       body.AppendLine();
-      var mail = UXM.EmailAddress ?? PdpAppStatus.PDPSS.AppHostEmail;
+      var mail = UXM.EmailAddress ?? PDPSS.AppHostEmail;
       UXM.FormCompleted = QebNotifyService.SendEmail(mail, subj, body.ToString());
-      if (!UXM.FormCompleted) { WraceUxmAddErrors("Your message could not be sent. Please try again later."); }
+      if (!UXM.FormCompleted) { WraceAddErrors("Your message could not be sent. Please try again later."); }
     }
-    else { WraceUxmAddErrors("Submitted form not valid. "); }
+    else { WraceAddErrors("Submitted form not valid. "); }
     return Page();
   }
 

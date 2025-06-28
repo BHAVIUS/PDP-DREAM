@@ -1,34 +1,53 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
-public class AdminModeIndex : QebiDataRazorPageControllerBase
+[RequireHttps, PdpAuthorizeRoles(NpdsAdminRS)]
+public class NpdsAdminModeIndex : TkgcPageController
 {
-  private const string rzrClass = nameof(AdminModeIndex);
-  public AdminModeIndex() { }
+  private const string rzrClass = nameof(NpdsAdminModeIndex);
+  public NpdsAdminModeIndex() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
+      ServiceType = NPDSCD.ServiceTypeCore,
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
       RecordAccess = NPDSCD.RecordAccessAdmin,
-      AdminModeClientRequired = true,
-      SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepAdminModeIndex, $"{PDPSS.AppOwnerNameShort}: Admin Mode");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AdminModeSpanPageMenu");
-    ResetQebiRepository();
-    var isVerified = CheckQebiUserSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    // do not include optional params in pageName
+    PSRM = new PdpSiteRazorModel(DepnAdminModeIndex, "NPDS Admin Mode", true);
+    PSRM.InitRazorPageMenus("_NpdsAdminModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository(); // for QebiUser
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
+    NPDSCW.ResetCoreRepository(); // for NpdsAgent
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepnAgentModeAddRoleAgent); }
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuting), rzrClass);
+#endif
   }
 
   // OnGet before OnPageHandlerExecuted
+  public IActionResult OnGet()
+  {
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnGet), rzrClass);
+#endif
+    return Page();
+  }
 
-  // OnPageHandlerExecuted before the [RazorPage].cshtml
+  // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
+  {
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuted), rzrClass);
+#endif
+  }
 
   // Other page handlers and properties
 

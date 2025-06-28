@@ -1,29 +1,29 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, Authorize]
-public class UserModeChangePassword : QebiDataRazorPageControllerBase
+public class QebiUserModeChangePassword : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(UserModeChangePassword);
-  public UserModeChangePassword() : base() { }
+  private const string rzrClass = nameof(QebiUserModeChangePassword);
+  public QebiUserModeChangePassword() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
       RecordAccess = NPDSCD.RecordAccessUser,
       UserModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepUserModeChangePassword, $"{PDPSS.AppOwnerNameShort}: Change Password");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_UserModeSpanPageMenu");
-    ResetQebiRepository();
-    var isVerified = CheckQebiUserSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    PSRM = new PdpSiteRazorModel(DepqUserModeChangePassword, "Change Password", true);
+    PSRM.InitRazorPageMenus("_QebiUserModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -34,11 +34,11 @@ public class UserModeChangePassword : QebiDataRazorPageControllerBase
     PSRM.DebugRazorPageStrings();
 #endif
     UXM = new ChangePasswordUxm();
-    var usr = QUDC.GetUserByPrincipal(QebRcp);
-    if (QebRcp.IsAuthenticated)
+    var usr = NPDSCW.QUDC.GetUserByPrincipal(QebiRcp);
+    if (QebiRcp.IsAuthenticated)
     {
-      usr = QUDC.GetUserByUserNameAndUserGuid(QebRcp.UserName, QebRcp.UserGuid);
-      UXM = new ChangePasswordUxm(QebRcp.UserGuid);
+      usr = NPDSCW.QUDC.GetUserByUserNameAndUserGuid(QebiRcp.UserName, QebiRcp.UserGuid);
+      UXM = new ChangePasswordUxm(QebiRcp.UserGuid);
     }
     return Page();
   }
@@ -52,17 +52,17 @@ public class UserModeChangePassword : QebiDataRazorPageControllerBase
 
   public IActionResult OnPost()
   {
-    QUDC.GetUserByPrincipal(QebRcp);
-    if ((ModelState.IsValid) && (QebRcp.IsAuthenticated))
+    NPDSCW.QUDC.GetUserByPrincipal(QebiRcp);
+    if ((ModelState.IsValid) && (QebiRcp.IsAuthenticated))
     {
-      UXM.UserGuid = QebRcp.UserGuid;
-      UXM.UserName = QebRcp.UserName;
-      UXM = IQebiUser.ChangePasswordWithOld(UXM, QUDC);
+      UXM.UserGuid = QebiRcp.UserGuid;
+      UXM.UserName = QebiRcp.UserName;
+      UXM = IQebiUser.ChangePasswordWithOld(UXM, NPDSCW.QUDC);
       if (UXM.PasswordChanged)
       {
         UXM.FormCompleted = true;
       }
-      WraceUxmAddErrors(UXM.FormMessage);
+      WraceAddErrors(UXM.FormNote);
     }
     return Page();
   }

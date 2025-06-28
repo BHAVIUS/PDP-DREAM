@@ -1,15 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAnonModeContactSite)]
-@model AnonModeContactSite
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqAnonModeContactSite)]
+@model QebiAnonModeContactSite
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace warc = Model.WRACE;
-  var pdpFormGroup = "form-group mb-3 col-md-3";
+   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
@@ -21,7 +20,7 @@
 }
 else
 {
-  <form id="frmContactSite"  asp-page="@DepAnonModeContactSite"
+  <form id="frmContactSite"  asp-page="@DepqAnonModeContactSite"
     method="post" role="form" class="form-horizontal">
     <p>
       To contact the site administrator, please complete the form below with your information and message.

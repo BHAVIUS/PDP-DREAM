@@ -1,0 +1,31 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  string appName = (Model.PSRM.SiteAppName ?? ESS);
+  bool userAuth = (Model.QebiRcp.IsAuthenticated ?? false);
+  string userName = (Model.QebiRcp.UserName ?? ESS);
+  if (userAuth)
+  {
+    <span>
+      QEBI UserMode:
+      <a asp-page="@DepqUserModeIndex">Index</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeDisplayProfile">Display Profile</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeChangeProfile">Change Profile</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeChangeEmail">Change Email</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeChangePassword">Change Password</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeChangeUsername">Change Username</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeContactSite">Contact Site</a>
+      <span> | </span>
+      <a asp-page="@DepqUserModeLogoutUser">Logout User</a>
+    </span>
+  }
+}

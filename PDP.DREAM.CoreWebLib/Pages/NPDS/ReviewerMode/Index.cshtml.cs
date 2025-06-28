@@ -1,18 +1,18 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsReviewer)]
-public class ReviewerModeIndex : QebiDataRazorPageControllerBase
+[RequireHttps, PdpAuthorizeRoles(NpdsReviewerRS)]
+public class NpdsReviewerModeIndex : TkgcPageController
 {
-  private const string rzrClass = nameof(ReviewerModeIndex);
-  public ReviewerModeIndex() { }
+  private const string rzrClass = nameof(NpdsReviewerModeIndex);
+  public NpdsReviewerModeIndex() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
       RecordAccess = NPDSCD.RecordAccessReviewer,
@@ -20,11 +20,11 @@ public class ReviewerModeIndex : QebiDataRazorPageControllerBase
       SessionClientRequired = true
     };
     // do not include optional params in pageName
-    PSRM = new PdpSiteRazorModel(DepReviewerModeIndex, $"{PDPSS.AppOwnerNameShort}: Reviewer Mode");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_ReviewerModeSpanPageMenu");
-    ResetQebiRepository();
-    var isVerified = CheckQebiUserSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    PSRM = new PdpSiteRazorModel(DepnReviewerModeIndex, "NPDS Reviewer Mode", true);
+    PSRM.InitRazorPageMenus("_NpdsReviewerModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted

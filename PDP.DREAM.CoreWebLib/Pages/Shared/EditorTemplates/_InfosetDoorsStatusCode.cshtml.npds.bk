@@ -1,9 +1,0 @@
-﻿@model Int16
-
-@(
-  Html.Kendo().DropDownListFor(m => m)
-  .DataValueField("InfosetDoorsStatusCode").DataTextField("InfosetDoorsStatusName")
-  .BindTo((System.Collections.IEnumerable)NPDSSD.NpdsDdlists.InfosetDoorsStatusListNpds)
-  .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate InfosetDoorsStatus." })
-)
-

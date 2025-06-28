@@ -1,18 +1,17 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class AnonModeResetEmail : QebiDataRazorPageControllerBase
+public class QebiAnonModeResetEmail : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(AnonModeResetEmail);
-  public AnonModeResetEmail() : base() { }
+  private const string rzrClass = nameof(QebiAnonModeResetEmail);
+  public QebiAnonModeResetEmail() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    base.OnPageHandlerExecuting(exeCntxt);
   }
 
 
@@ -33,7 +32,7 @@ public class AnonModeResetEmail : QebiDataRazorPageControllerBase
   {
     if (ModelState.IsValid)
     {
-      UXM = IQebiUser.ConfirmEmailWithToken(UXM, QUDC);
+      UXM = IQebiUser.ConfirmEmailWithToken(UXM, NPDSCW.QUDC);
       if (UXM.TokenConfirmed && UXM.EmailChanged) { return Redirect("EmailConfirmed"); }
       else { ModelState.AddModelError("", "The security token was not validated."); }
     }

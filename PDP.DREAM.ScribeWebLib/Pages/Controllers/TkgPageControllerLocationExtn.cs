@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
@@ -7,101 +7,134 @@ public partial class TkgsPageController
 {
   private const string eidLocationExtnStatus = TkndoElemPrfx + "LocationExtnStatus";
 
-  public virtual JsonResult OnPostReadLocationExtns([DataSourceRequest] DataSourceRequest dsRequest,
-   Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostReadLocationExtns([DataSourceRequest] DataSourceRequest dsRequest,
+   string serviceTag, Guid recordGuid, bool isLimited = false)
   {
     var rzrHndlr = nameof(OnPostReadLocationExtns);
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
 #if DEBUG
-    DebugScribeRepo(rzrHndlr, rzrClass);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    NPDSCW.DebugWraceData(rzrHndlr, rzrClass);
+    NPDSCW.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+#endif
+    NPDSCW.OpenScribeConnection(); // use PSDC
+#if DEBUG
+    NPDSCW.DebugScribeRepo(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
-    try
+    if (recordGuid.IsInvalid())
+    { ModelState.AddModelError("LocationExtns", "RRRecordGuid invalid."); }
+    else
     {
-      if (recordGuid.IsInvalid())
-      { ModelState.AddModelError("LocationExtns", "RRRecordGuid invalid."); }
-      else
-      {
-        dsResult = PSDC.ListEditableLocationExtns(recordGuid, isLimited)
-        .ToDataSourceResult(dsRequest);
-      }
-    }
-    catch (SqlException exc)
-    {
-#if DEBUG
-      Debug.WriteLine(ParseSqlException(exc));
-#endif
+      dsResult = NPDSCW.PSDC.ListEditableLocationExtns(recordGuid, isLimited)
+      .ToDataSourceResult(dsRequest, ModelState);
     }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
-  public virtual JsonResult OnPostWriteLocationExtn([DataSourceRequest] DataSourceRequest dsRequest,
+  public JsonResult OnPostWriteLocationExtn([DataSourceRequest] DataSourceRequest dsRequest,
     LocationExtnUxm fgr, Guid recordGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
     if (fgr.RRRecordGuid.IsInvalid())
     { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
-    Regex? rgx = null; bool isMatch = false;
-    if (!string.IsNullOrWhiteSpace(fgr.DisplayImageUrl))
-    {
-      rgx = new Regex(RgxsLocationUrl);
-      isMatch = rgx.IsMatch(fgr.DisplayImageUrl);
-      if (!isMatch)
-      { ModelState.AddModelError(fgr.ItemXnam, "String not a valid DisplayImageUrl."); }
-    }
-    if (!string.IsNullOrWhiteSpace(fgr.UrlWebAddress))
-    {
-      rgx = new Regex(RgxsLocationUrl);
-      isMatch = rgx.IsMatch(fgr.UrlWebAddress);
-      if (!isMatch)
-      { ModelState.AddModelError(fgr.ItemXnam, "String not a valid UrlWebAddress."); }
-    }
-    if (!string.IsNullOrWhiteSpace(fgr.EmailAddress))
-    {
-      rgx = new Regex(RgxsEmailAddress);
-      isMatch = rgx.IsMatch(fgr.EmailAddress);
-      if (!isMatch)
-      { ModelState.AddModelError(fgr.ItemXnam, "String not a valid EmailAddress."); }
-    }
-    if (ModelState.IsValid) { fgr = PSDC.EditLocation(fgr); }
+    // Parse method in extension but not base
+    if (ModelState.IsValid) { fgr = ParseLocationExtn(fgr); }
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.EditLocationExtn(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidLocationExtnStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
-  public virtual JsonResult OnPostDeleteLocationExtn([DataSourceRequest] DataSourceRequest dsRequest,
-    LocationExtnUxm fgr, Guid recordGuid, bool isLimited = false)
-  {
-    OpenScribeConnection(); // use PSDC
-    fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteLocation(fgr); }
-    else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
-    fgr.NdisElemId = eidLocationExtnStatus;
-    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
-    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
-    return jsonData;
-  }
+  // Check method in both base and extension
 
-  public virtual JsonResult OnPostCheckLocationExtn([DataSourceRequest] DataSourceRequest dsRequest,
+  public JsonResult OnPostCheckLocationExtn([DataSourceRequest] DataSourceRequest dsRequest,
     Guid fgroupGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
-    LocationExtnUxm? fgr = PSDC.GetEditableLocationExtnByKey(fgroupGuid);
+    NPDSCW.OpenScribeConnection(); // use PSDC
+    LocationExtnUxm? fgr = NPDSCW.PSDC.GetEditableLocationExtnByKey(fgroupGuid);
     if (fgr?.RRFgroupGuid == fgroupGuid)
-    { fgr = PSDC.CheckLocationExtn(fgr); fgr.NdisElemId = eidLocationStatus; }
+    { fgr = NPDSCW.PSDC.CheckLocationExtn(fgr); }
+    fgr.NdisElemId = eidLocationExtnStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
+  }
+
+  // Reseq and Delete methods in base but not extension
+  // Parse method in extension but not base
+
+  public LocationExtnUxm ParseLocationExtn(LocationExtnUxm uxm)
+  {
+    // ATTN: this hook for parsing the extension
+    Regex? rgx = null; bool isMatch = false;
+    if (!string.IsNullOrWhiteSpace(uxm.DisplayImageUrl))
+    {
+      rgx = new Regex(RgxsLocationUrl);
+      isMatch = rgx.IsMatch(uxm.DisplayImageUrl);
+      if (!isMatch)
+      { ModelState.AddModelError(uxm.ItemXnam, "String not a valid DisplayImageUrl."); }
+    }
+    if (!string.IsNullOrWhiteSpace(uxm.UrlWebAddress))
+    {
+      rgx = new Regex(RgxsLocationUrl);
+      isMatch = rgx.IsMatch(uxm.UrlWebAddress);
+      if (!isMatch)
+      { ModelState.AddModelError(uxm.ItemXnam, "String not a valid UrlWebAddress."); }
+    }
+    if (!string.IsNullOrWhiteSpace(uxm.EmailAddress))
+    {
+      rgx = new Regex(RgxsEmailAddress);
+      isMatch = rgx.IsMatch(uxm.EmailAddress);
+      if (!isMatch)
+      { ModelState.AddModelError(uxm.ItemXnam, "String not a valid EmailAddress."); }
+    }
+    if (!string.IsNullOrWhiteSpace(uxm.StreetAddress + uxm.CityLocality + uxm.StateRegion + uxm.Country + uxm.PostalCode))
+    {
+      var country = uxm.Country ?? "";
+      var stateRegion = uxm.StateRegion ?? "";
+      var postalCode = uxm.PostalCode ?? "";
+      var cityLocality = uxm.CityLocality ?? "";
+      var streetAddress = uxm.StreetAddress ?? "";
+      var reqUrl = bingMaps.BingMapsRequestUrl(PDPSS.ApiKeyBingMaps, country, stateRegion, postalCode, cityLocality, streetAddress);
+      var bingResp = bingMaps.GetBingResponse(reqUrl);
+      var loc = bingMaps.ParseBingResponse(bingResp);
+      if (loc != null)
+      {
+        uxm.StreetAddressValidated = DateTime.UtcNow;
+        uxm.GeocodeType = bingMaps.GetBingEntityType(loc);
+        uxm.GeocodeConfidence = bingMaps.GetBingConfidence(loc);
+        uxm.Latitude = bingMaps.GetBingLatitude(loc);
+        uxm.Longitude = bingMaps.GetBingLongitude(loc);
+        uxm.FormattedAddress = bingMaps.GetBingFormattedAddress(loc);
+        uxm.NdisElemMsg = $"Latitude = {uxm.Latitude}, Longitude = {uxm.Longitude}, Address = {uxm.FormattedAddress}, ";
+      }
+      else
+      {
+        uxm.StreetAddressValidated = null;
+      }
+    }
+    if (!string.IsNullOrWhiteSpace(uxm.UrlWebAddress))
+    {
+      var urlIsValid = uxm.UrlWebAddress.UrlIsValid();
+      if (urlIsValid)
+      {
+        uxm.UrlWebAddressValidated = DateTime.UtcNow;
+        uxm.NdisElemMsg += $"URL = {uxm.UrlWebAddressHtml}, ";
+      }
+      else
+      {
+        uxm.UrlWebAddressValidated = null;
+      }
+    }
+    return uxm;
   }
 
 } // end class

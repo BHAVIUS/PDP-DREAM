@@ -1,14 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepUserModeDisplayProfile)]
-@model UserModeDisplayProfile
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqUserModeDisplayProfile)]
+@model QebiUserModeDisplayProfile
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
   var pdpFormGroup = "form-group col-md-6 mb-3";
   var pdpFormLabel = "form-label col-md-3";
 }
@@ -18,7 +18,7 @@
   <p><partial name="@psrm.RazorBodyMenu" /></p>
 }
 
-<form id="frmDisplayProfile" asp-page="@DepUserModeDisplayProfile"
+<form id="frmDisplayProfile" asp-page="@DepqUserModeDisplayProfile"
       method="get" role="form" class="form-horizontal">
   <div class="@pdpFormGroup">
     @Html.LabelFor(m => m.UXM.FirstName, new { @class = pdpFormLabel })
@@ -37,8 +37,8 @@
     @Html.TextBoxFor(m => m.UXM.UserAlias, new { @class = "form-control", disabled = "disabled" })
   </div>
   <div class="@pdpFormGroup">
-    @Html.LabelFor(m => m.UXM.UserRoleNames, new { @class = pdpFormLabel })
-    @Html.TextBoxFor(m => m.UXM.UserRoleNames, new { @class = "form-control", disabled = "disabled" })
+    @Html.LabelFor(m => m.UXM.RandAlias, new { @class = pdpFormLabel })
+    @Html.TextBoxFor(m => m.UXM.RandAlias, new { @class = "form-control", disabled = "disabled" })
   </div>
   <div class="@pdpFormGroup">
     @Html.LabelFor(m => m.UXM.PhoneNumber, new { @class = pdpFormLabel })

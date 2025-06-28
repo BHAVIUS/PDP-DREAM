@@ -1,0 +1,23 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  string appName = (Model.PSRM.SiteAppName ?? ESS);
+  bool userAuth = (Model.QebiRcp.IsAuthenticated ?? false);
+  string userName = (Model.QebiRcp.UserName ?? ESS);
+}
+
+<span>
+  NPDS AnonMode:
+  <a asp-page="@DepnAnonModeIndex">Index</a>
+  <span> | </span>
+  <a asp-page="@DepnAnonModeHelp">Help</a>
+  <span> | </span>
+  <a asp-page="@DepqAnonModeLoginUser">Login User</a>
+  <span> | </span>
+  <a asp-page="@DepqAnonModeContactSite">Contact Site</a>
+  <span> | </span>
+  <a asp-page="@DepqAnonModeDonateGift">Donate Gift</a>
+</span>

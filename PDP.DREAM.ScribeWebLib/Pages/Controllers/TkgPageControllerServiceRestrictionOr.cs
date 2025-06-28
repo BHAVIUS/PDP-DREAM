@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
@@ -7,83 +7,71 @@ public partial class TkgsPageController
 {
   public const string eidRestrictionOrStatus = TkndoElemPrfx + "ServiceRestrictionOrStatus";
 
-  // ATTN: current implementation does not allow use of parameter isLimited
-  // ATTN: compare OnPostReadServiceRestrictionOrsByAndGuid
   public JsonResult OnPostReadServiceRestrictionOrs([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid rstrctAndGuid, Guid recordGuid, Guid infosetGuid)
+    string serviceTag, Guid rstrctAndGuid, Guid recordGuid, bool isLimited = false)
   {
     var rzrHndlr = nameof(OnPostReadServiceRestrictionAnds);
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
 #if DEBUG
-    DebugScribeRepo(rzrHndlr, rzrClass);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    NPDSCW.DebugWraceData(rzrHndlr, rzrClass);
+    NPDSCW.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+#endif
+    NPDSCW.OpenScribeConnection(); // use PSDC
+#if DEBUG
+    NPDSCW.DebugScribeRepo(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
-    try
+    if (recordGuid.IsInvalid())
+    { ModelState.AddModelError("RestrictionOr", "RRRecordGuid invalid."); }
+    else if (rstrctAndGuid.IsInvalid())
+    { ModelState.AddModelError("RestrictionOr", "RestrictionAndGuid invalid."); }
+    else
     {
-      if (recordGuid.IsInvalid())
-      { ModelState.AddModelError("RestrictionOr", "RRRecordGuid invalid."); }
-      else
-      {
-        dsResult = PSDC.ListEditableRestrictionOrsByRGuid(recordGuid)
-        .ToDataSourceResult(dsRequest);
-      }
-    }
-    catch (SqlException exc)
-    {
-#if DEBUG
-      Debug.WriteLine(ParseSqlException(exc));
-#endif
+      dsResult = NPDSCW.PSDC.ListEditableRestrictionOrsByAGuid(rstrctAndGuid, isLimited)
+      .ToDataSourceResult(dsRequest, ModelState);
     }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
-    return jsonData;
-  }
-
-  // ATTN: current implementation does not allow use of parameter isLimited
-  // ATTN: compare OnPostReadServiceRestrictionOrs
-  public JsonResult OnPostReadServiceRestrictionOrsByAndGuid([DataSourceRequest] DataSourceRequest dsRequest,
-     Guid rstrctAndGuid, Guid recordGuid, Guid infosetGuid)
-  {
-    OpenScribeConnection(); // use PSDC
-    if (rstrctAndGuid.IsInvalid())
-    { ModelState.AddModelError("RestrictionOr", $"{nameof(rstrctAndGuid)} invalid"); }
-    var records = PSDC.ListEditableRestrictionOrsByAndGuid(rstrctAndGuid);
-    var dsResult = records.ToDataSourceResult(dsRequest, ModelState);
-    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
   public JsonResult OnPostWriteServiceRestrictionOr([DataSourceRequest] DataSourceRequest dsRequest,
-    ServiceRestrictionOrUxm fgr, Guid rstrctAndGuid, Guid recordGuid, Guid infosetGuid)
+    ServiceRestrictionOrUxm fgr, Guid rstrctAndGuid, Guid recordGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (fgr.RRInfosetGuid.IsInvalid()) { fgr.RRInfosetGuid = infosetGuid; }
-    if (fgr.RRRecordGuid.IsInvalid()) { fgr.RRRecordGuid = recordGuid; }
-    if (fgr.RestrictionAndGuid.IsInvalid()) { fgr.RestrictionAndGuid = rstrctAndGuid; }
-    if (ModelState.IsValid) { fgr = PSDC.EditRestrictionOr(fgr); }
+    if (fgr.RRRecordGuid.IsInvalid())
+    { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
+    if (fgr.RestrictionAndGuid.IsInvalid())
+    { ModelState.AddModelError(fgr.ItemXnam, "RestrictionAndGuid invalid because null or empty."); }
+    // Parse method in extension but not base
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.EditRestrictionOr(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidRestrictionOrStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
+  // Check method in both base and extension
+
+
+  // Reseq and Delete methods in base but not extension
+  // Parse method in extension but not base
+
   public JsonResult OnPostDeleteServiceRestrictionOr([DataSourceRequest] DataSourceRequest dsRequest,
-     ServiceRestrictionOrUxm fgr, Guid rstrctAndGuid, Guid recordGuid, Guid infosetGuid)
+     ServiceRestrictionOrUxm fgr, Guid rstrctAndGuid, Guid recordGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteRestrictionOr(fgr); }
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.DeleteRestrictionOr(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidRestrictionOrStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 

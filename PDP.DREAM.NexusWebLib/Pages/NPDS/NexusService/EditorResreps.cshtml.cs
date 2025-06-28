@@ -1,59 +1,64 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.NexusWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsEditor, NpdsAdmin)]
+[RequireHttps, PdpAuthorizeRoles(NpdsEditorRS, NpdsAdminRS)]
 public class NexusServiceEditorResreps : TkgnPageController
 {
   private const string rzrClass = nameof(NexusServiceEditorResreps);
-  public NexusServiceEditorResreps() { }
+  public NexusServiceEditorResreps() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      ServiceType = NPDSCD.ServiceTypeNexus,
+      ServiceType = NPDSCD.ServiceTypeNexus, // resets DatabaseType, SearchFilter, ServiceTag
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
-      RecordAccess = NPDSCD.RecordAccessEditor,
-      EditorModeClientRequired = true,
-      SessionClientRequired = true
+      RecordAccess = NPDSCD.RecordAccessEditor // resets *ClientRequired
     };
     // do not include optional params in pageName
     PSRM = new PdpSiteRazorModel(DepNexusServiceEditorResreps, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_NexusWebLibSpanPageMenu", "_NexusServiceSpanPageMenu");
-    ResetCoreRepository(); // CoreRepo resets WRACE/QUDC if/when necessary
-    var isVerified = CheckNpdsAgentSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
-    ResetNexusRepository(); // for both OnGet and OnPost incl TKG AJAX callbacks
+    PSRM.InitRazorPageMenus("_NexusServiceSpanPageMenu");
+    NPDSCW.ResetQebiRepository(); // for Index and QebiUser
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
+    NPDSCW.ResetCoreRepository(); // for DevTest and NpdsAgent
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepnAgentModeAddRoleAgent); }
+    NPDSCW.ResetNexusRepository(); // required for OnGet, OnPost, TKG Ajax post callbacks
 #if DEBUG
-    var rzrHndlr = nameof(OnPageHandlerExecuting);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuting), rzrClass);
 #endif
   }
 
   // OnGet before OnPageHandlerExecuted
-  public IActionResult OnGet(string searchFilter, string serviceTag, string entityType)
+  public IActionResult OnGet(string searchFilter, string serviceTag, string entityType, string resrepFormat)
   {
-#if DEBUG
-    var rzrHndlr = nameof(OnGet);
-    CatchNullWrace(rzrHndlr, rzrClass);
-#endif
+    if (string.IsNullOrEmpty(searchFilter)) { searchFilter = NPDSCD.SearchFilterDfltSrch.EName; }
+    if (string.IsNullOrEmpty(serviceTag)) { serviceTag = NPDSCD.ServiceTagDfltSrch; }
+    if (string.IsNullOrEmpty(entityType)) { entityType = NPDSCD.EntityTypeDfltSrch.EName; }
+    if (string.IsNullOrEmpty(resrepFormat)) { resrepFormat = NPDSCD.ResrepFormatDfltSrch.EName; }
     // SelectFilter constrained to Nexus service
-    WRACE.ParseNpdsSelectFilter(DdeServiceType.Nexus, serviceTag, entityType, "", searchFilter);
-    PSRM.NpdsRazorBodyTitle(WRACE.ServiceTitle);
-    ResetCoreRepository(true);
-    ResetNexusRepository(true);
+    var entityTag = ESS;
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Nexus, serviceTag, entityType, entityTag, searchFilter, resrepFormat);
+    PSRM.NpdsRazorBodyTitle(NPDSCW.ServiceTitle);
+    NPDSCW.ResetCoreRepository(true);
+    NPDSCW.ResetNexusRepository(true);
 #if DEBUG
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
-    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
+    this.DebugWraceRazorPage(nameof(OnGet), rzrClass);
 #endif
     return Page();
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
+  {
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuted), rzrClass);
+#endif
+  }
 
   // Other page handlers and properties
 

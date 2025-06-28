@@ -1,11 +1,11 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
 }
 
 <h4>REST API Service Help</h4>
@@ -19,8 +19,8 @@
     to the URL. These keys can be used independently or in combination as shown in the following examples:
   </p>
   <ul>
-    <li><a href="@wrace.UrlHelp">@wrace.UrlHelp</a></li>
-    <li><a href="@wrace.UrlDebug">@wrace.UrlDebug</a></li>
+    <li><a href="@npdscw.UrlHelp">@npdscw.UrlHelp</a></li>
+    <li><a href="@npdscw.UrlDebug">@npdscw.UrlDebug</a></li>
   </ul>
   <p>
     Help information displayed by use of the "help" querystring key provides the syntax for all URLs together
@@ -46,7 +46,8 @@
         "ef": Echo Format with ef={1|0} or ef={true|false} turns on/off response that includes a copy of the request URL
       </li>
       <li>
-        "qf": Query Format with qf={1|0} or qf={true|false} turns on/off case-sensitive find intended for unique exact match instead of case-insensitive search for multiple partial matches
+        "qf": Query Format with qf={1|0} or qf={true|false} turns on/off case-sensitive find intended for unique exact match 
+        instead of case-insensitive search for multiple partial matches
       </li>
       <li>"vf": Verbose Format with ef={1|0} or ef={true|false} turns on/off response with more detailed information</li>
     </ul>

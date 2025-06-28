@@ -1,14 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepUserModeIndex)]
-@model UserModeIndex
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqUserModeIndex)]
+@model QebiUserModeIndex
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))

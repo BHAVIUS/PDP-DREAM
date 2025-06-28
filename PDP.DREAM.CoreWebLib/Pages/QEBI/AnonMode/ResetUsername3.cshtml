@@ -1,14 +1,13 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@model AnonModeResetUsername3
+@model QebiAnonModeResetUsername3
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
-  var pdpFormGroup = "form-group mb-3 col-md-3";
+   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
 
@@ -20,7 +19,7 @@
 }
 else
 {
-  <form id="frmResetUsername3" asp-page="@DepAnonModeResetUsername3"
+  <form id="frmResetUsername3" asp-page="@DepqAnonModeResetUsername3"
       method="post" role="form" class="form-horizontal">
     <p>
       To reset your username, please enter your password and then answer the security question.

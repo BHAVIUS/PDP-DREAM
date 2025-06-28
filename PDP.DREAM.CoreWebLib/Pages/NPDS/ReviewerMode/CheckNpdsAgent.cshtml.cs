@@ -1,38 +1,54 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsReviewer)]
-public class ReviewerModeCheckNpdsAgent : TkgcPageController
+[RequireHttps, PdpAuthorizeRoles(NpdsReviewerRS)]
+public class NpdsReviewerModeCheckNpdsAgent : TkgcPageController
 {
-  private const string rzrClass = nameof(ReviewerModeCheckNpdsAgent);
-  public ReviewerModeCheckNpdsAgent() { }
+  private const string rzrClass = nameof(NpdsReviewerModeCheckNpdsAgent);
+  public NpdsReviewerModeCheckNpdsAgent() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
+      ServiceType = NPDSCD.ServiceTypeCore,
+      DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
       RecordAccess = NPDSCD.RecordAccessReviewer,
-      ReviewerModeClientRequired = true,
-      SessionClientRequired = true
     };
     // do not include optional params in pageName
-    PSRM = new PdpSiteRazorModel(DepReviewerModeCheckNpdsAgent, $"{PDPSS.AppOwnerNameShort}: Check NPDS Reviewer");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_ReviewerModeSpanPageMenu");
-    // ResetQebiRepository();
-    // var isUserVerified = CheckQebiUserSession();
-    // if (!isUserVerified) { RedirectToPage(DepAnonModeAccessDenied); }
-    ResetCoreRepository(); // required for TKG Ajax post callbacks
-    var isAgentVerified = CheckNpdsAgentSession();
-    if (!isAgentVerified) { RedirectToPage(DepAgentModeAddRoleAgent); }
+    PSRM = new PdpSiteRazorModel(DepnReviewerModeCheckNpdsAgent, "Check NPDS Reviewer", true);
+    PSRM.InitRazorPageMenus("_NpdsReviewerModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository(); // for QebiUser
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
+    NPDSCW.ResetCoreRepository(); // for DevTest and NpdsAgent
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepnAgentModeAddRoleAgent); }
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuting), rzrClass);
+#endif
   }
 
   // OnGet before OnPageHandlerExecuted
+  public IActionResult OnGet(string recordAccess)
+  {
+    if (!string.IsNullOrEmpty(recordAccess)) { NPDSCW.RecordAccessReqst = recordAccess; }
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnGet), rzrClass);
+#endif
+    return Page();
+  }
 
-  // OnPageHandlerExecuted before the [RazorPage].cshtml
+  // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
+  {
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuted), rzrClass);
+#endif
+  }
 
   // Other page handlers and properties
 

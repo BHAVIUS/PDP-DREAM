@@ -1,0 +1,110 @@
+<kendo-menu name="CoreWebAppTkddlPageMenu"
+            direction="Kendo.Mvc.UI.MenuDirection.Right" style="float:left"
+            orientation="Kendo.Mvc.UI.MenuOrientation.Horizontal">
+  <items>
+    <menu-item text="NPDS" url="@DepPdpInfoIndex">
+      <sub-items>
+        <menu-item text="NPDS Info" url="@DepPdpInfoNpds" />
+        <menu-item text="NPDS Design" url="@DepPdpInfoDesign" />
+        <menu-item text="NPDS Reports" url="@DepPdpInfoReports" />
+        <menu-item text="NPDS Home" url="https://www.npdslinks.org/" rel="external" target="_blank" />
+        <menu-item text="NPDS Registrar" url="https://www.npdslinks.net/" rel="external" target="_blank" />
+        <menu-item text="BHA Home" url="https://www.brainhealthalliance.org/" rel="external" target="_blank" />
+        <menu-item text="BHA Registrar" url="https://www.brainhealthalliance.net/" rel="external" target="_blank" />
+        <menu-item text="GTG Home" url="https://www.telegenetics.com/" rel="external" target="_blank" />
+        <menu-item text="GTG Registrar" url="https://www.telegenetics.net/" rel="external" target="_blank" />
+        <menu-item text="PDP Home" url="https://www.portaldoors.org/" rel="external" target="_blank" />
+        <menu-item text="PDP Registrar" url="https://www.portaldoors.net/" rel="external" target="_blank" />
+      </sub-items>
+    </menu-item>
+
+    @if (Model.QebiRcp.IsAuthenticated ?? false)
+    {
+      <menu-item text="@Model.QebiRcp.UserName" url="@DepqUserModeIndex">
+        <sub-items>
+          <menu-item text="Display Profile" url="@DepqUserModeDisplayProfile" />
+          <menu-item text="Change Profile" url="@DepqUserModeChangeProfile" />
+          <menu-item text="Change Email" url="@DepqUserModeChangeEmail" />
+          <menu-item text="Change Password" url="@DepqUserModeChangePassword" />
+          <menu-item text="Change Username" url="@DepqUserModeChangeUsername" />
+          @if (PDPSS.AppCiaamRolesMenu)
+          {
+            <menu-item text="View Agent Index" url="@DepnAgentModeIndex" />
+            <menu-item text="Add Agent Role" url="@DepnAgentModeAddRoleAgent" />
+            <menu-item text="Add Author Role" url="@DepnAgentModeAddRoleAuthor" />
+            <menu-item text="Add Reviewer Role" url="@DepnAgentModeAddRoleReviewer" />
+            <menu-item text="Add Editor Role" url="@DepnAgentModeAddRoleEditor" />
+          }
+          <menu-item text="Contact Site" url="@DepqUserModeContactSite" />
+          <menu-item text="Logout User" url="@DepqUserModeLogoutUser" />
+        </sub-items>
+      </menu-item>
+    }
+    else
+    {
+      <menu-item text="User" url="@DepqAnonModeIndex">
+        <sub-items>
+          <menu-item text="Login User" url="@DepqAnonModeLoginUser" />
+          <menu-item text="Register User" url="@DepqAnonModeRegisterUser" />
+        </sub-items>
+      </menu-item>
+    }
+
+    @if (Model.QebiRcp.IsInRole(NpdsAdminRS))
+    {
+      <menu-item text="Admin" url="@DepnAdminModeIndex">
+        <sub-items>
+          <menu-item text="View Records" url="@DepCoreServiceIndex">
+            <sub-items>
+              <menu-item text="NPDS-Root" url="/NPDS/CoreService/AdminResreps/Diristry/NPDS-Root" />
+              <menu-item text="BHA-Nexus" url="/NPDS/CoreService/AdminResreps/Diristry/BHA-Nexus" />
+              <menu-item text="BHA-PORTAL" url="/NPDS/CoreService/AdminResreps/Registry/BHA-PORTAL" />
+              <menu-item text="BHA-DOORS" url="/NPDS/CoreService/AdminResreps/Directory/BHA-DOORS" />
+              <menu-item text="BHA-Scribe" url="/NPDS/CoreService/AdminResreps/Registrar/BHA-Scribe" />
+              <menu-item text="GTG-Nexus" url="/NPDS/CoreService/AdminResreps/Diristry/GTG-Nexus" />
+              <menu-item text="GTG-PORTAL" url="/NPDS/CoreService/AdminResreps/Registry/GTG-PORTAL" />
+              <menu-item text="GTG-DOORS" url="/NPDS/CoreService/AdminResreps/Directory/GTG-DOORS" />
+              <menu-item text="GTG-Scribe" url="/NPDS/CoreService/AdminResreps/Registrar/GTG-Scribe" />
+              <menu-item text="PDP-Nexus" url="/NPDS/CoreService/AdminResreps/Diristry/PDP-Nexus" />
+              <menu-item text="PDP-PORTAL" url="/NPDS/CoreService/AdminResreps/Registry/PDP-PORTAL" />
+              <menu-item text="PDP-DOORS" url="/NPDS/CoreService/AdminResreps/Directory/PDP-DOORS" />
+              <menu-item text="PDP-Scribe" url="/NPDS/CoreService/AdminResreps/Registrar/PDP-Scribe" />
+              <menu-item text="PDP-DREAM" url="/NPDS/CoreService/AdminResreps/Diristry/PDP-DREAM" />
+              <menu-item text="Ashurbanipal" url="/NPDS/CoreService/AdminResreps/Diristry/Ashurbanipal" />
+              <menu-item text="Avicenna" url="/NPDS/CoreService/AdminResreps/Diristry/Avicenna" />
+              <menu-item text="Beacon" url="/NPDS/CoreService/AdminResreps/Diristry/Beacon" />
+              <menu-item text="BioPORT" url="/NPDS/CoreService/AdminResreps/Diristry/BioPORT" />
+              <menu-item text="BrainIACS" url="/NPDS/CoreService/AdminResreps/Diristry/BrainIACS" />
+              <menu-item text="BrainWatch" url="/NPDS/CoreService/AdminResreps/Diristry/BrainWatch" />
+              <menu-item text="CTGaming" url="/NPDS/CoreService/AdminResreps/Diristry/CTGaming" />
+              <menu-item text="DaVinci" url="/NPDS/CoreService/AdminResreps/Diristry/DaVinci" />
+              <menu-item text="Eywa" url="/NPDS/CoreService/AdminResreps/Diristry/Eywa" />
+              <menu-item text="Fidentinus" url="/NPDS/CoreService/AdminResreps/Diristry/Fidentinus" />
+              <menu-item text="Gaia" url="/NPDS/CoreService/AdminResreps/Diristry/Gaia" />
+              <menu-item text="GeneScene" url="/NPDS/CoreService/AdminResreps/Diristry/GeneScene" />
+              <menu-item text="Guidotti" url="/NPDS/CoreService/AdminResreps/Diristry/Guidotti" />
+              <menu-item text="HELPME" url="/NPDS/CoreService/AdminResreps/Diristry/HELPME" />
+              <menu-item text="Jubatus" url="/NPDS/CoreService/AdminResreps/Diristry/Jubatus" />
+              <menu-item text="Knuth" url="/NPDS/CoreService/AdminResreps/Diristry/Knuth" />
+              <menu-item text="Lovelace" url="/NPDS/CoreService/AdminResreps/Diristry/Lovelace" />
+              <menu-item text="ManRay" url="/NPDS/CoreService/AdminResreps/Diristry/ManRay" />
+              <menu-item text="Martialis" url="/NPDS/CoreService/AdminResreps/Diristry/Martialis" />
+              <menu-item text="NLMMeSH" url="/NPDS/CoreService/AdminResreps/Diristry/NLMMeSH" />
+              <menu-item text="NLMMICAD" url="/NPDS/CoreService/AdminResreps/Diristry/NLMMICAD" />
+              <menu-item text="Osler" url="/NPDS/CoreService/AdminResreps/Diristry/Osler" />
+              <menu-item text="Socrates" url="/NPDS/CoreService/AdminResreps/Diristry/Socrates" />
+              <menu-item text="SOLOMON" url="/NPDS/CoreService/AdminResreps/Diristry/SOLOMON" />
+              <menu-item text="TransAI" url="/NPDS/CoreService/AdminResreps/Diristry/TransAI" />
+            </sub-items>
+          </menu-item>
+          <menu-item text="Manage NPDS" url="@DepnAdminModeHelp">
+            <sub-items>
+              <menu-item text="Users and Roles" url="@DepnAdminModeIndex" />
+            </sub-items>
+          </menu-item>
+        </sub-items>
+      </menu-item>
+    }
+  </items>
+</kendo-menu>
+

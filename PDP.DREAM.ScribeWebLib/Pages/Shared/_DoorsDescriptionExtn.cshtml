@@ -1,0 +1,140 @@
+@*
+// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+//
+// Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
+// var tkgRzrPagePath in HTML tag <div id="NpdsGrid" data-tkgpath="@tkgRzrPagePath">
+*@
+
+@{
+PdpSiteRazorModel psrm = Model.PSRM;
+NpdsClientWrace npdscw = Model.NPDSCW;
+var hasAnonMode = npdscw.ClientIsAnonymous;
+var hasAgentMode = npdscw.ClientHasAgentMode;
+var hasAuthorMode = npdscw.ClientHasAuthorMode;
+var hasReviewerMode = npdscw.ClientHasReviewerMode;
+var hasEditorMode = npdscw.ClientHasEditorMode;
+var hasAdminMode = npdscw.ClientHasAdminMode;
+var canAgentWrite = npdscw.ClientCanAgentWrite;
+var canAuthorWrite = npdscw.ClientCanAuthorWrite;
+var canReviewerWrite = npdscw.ClientCanReviewerWrite;
+var canEditorWrite = npdscw.ClientCanEditorWrite;
+var canAdminWrite = npdscw.ClientCanAdminWrite;
+// correct path remains critical for Razor routing for WebApp pages
+// paths for RestApi services may be different from paths for WebApp pages
+// TODO: reconcile and re-align paths for both WebApp pages and RestApi services
+var tkgRzrPageParams = npdscw.ResrepSrchPageParams;
+var tkgRzrPagePath = npdscw.GetResrepSrchRzrPagePath(psrm.RazorPagePath);
+var tkgRzrPageHndlr = tkgRzrPagePath + "?handler=";
+var tkgCoreAlink = npdscw.GetResrepSrchPathCore(psrm.RazorPagePath);
+var tkgPortalAlink = npdscw.GetResrepSrchPathPortal(psrm.RazorPagePath);
+var tkgDoorsAlink = npdscw.GetResrepSrchPathDoors(psrm.RazorPagePath);
+var tkgNexusAlink = npdscw.GetResrepSrchPathNexus(psrm.RazorPagePath);
+var tkgFgroupQrystr = $"&recordGuid=#=RRRecordGuid#&isLimited=#=InfosetIsUpdaterLimited#";
+var srchFilterPortal = (new[] { DdeSearchFilter.Registry, DdeSearchFilter.Diristry, DdeSearchFilter.Registrar }).Contains(npdscw.SearchFilter.EName);
+var srchFilterDoors = (new[] { DdeSearchFilter.Directory, DdeSearchFilter.Diristry, DdeSearchFilter.Registrar }).Contains(npdscw.SearchFilter.EName);
+var srchFilterNexus = (new[] { DdeSearchFilter.Diristry, DdeSearchFilter.Registrar }).Contains(npdscw.SearchFilter.EName);
+// page and column formatting
+var tkgFpageSize = 15;
+var tkgFpageSizes = new int[] { 5, 15, 25, 50, 100 };
+var tkgFipmpWidth = "5rem"; // width for Index Priority Marked Principal (IPMP) columns
+var tkgFipmpWidthE = "6rem"; // widthE (edit/extend) for IPMP columns (editable integers only)
+var tkgFfrmtWidth = "11rem"; // width for field format column
+var tkgFcmdbWidth = "12rem"; // width for ComManD Button columns
+var tkgFdtonWidth = "9rem"; // width for DaTe-ON columns
+var tkgFprbyWidth = "7rem"; // width for PeRson-BY columns
+var tkgTxtAreaRows = 9; // TextArea number rows
+}
+
+<script id="ResrepRecordTabStrip" type="text/x-kendo-template">
+@(Html.Kendo()
+.TabStrip()
+.Name("TabStrip#=RRRecordGuid#")
+.Events(evn => evn.Select("HideStatus").Activate("OnInitFgroup"))
+.Items(itm =>
+{
+
+itm.Add().Text("DescriptionExtns").Content(@<text>
+@(Html.Kendo()
+.Grid<DescriptionExtnUxm>()
+.Name("DescriptionExtn#=RRRecordGuid#").AutoBind(false)
+.DataSource(ds => ds.Ajax().ServerOperation(false).PageSize(tkgFpageSize)
+.Model(m => {
+m.Id(p => p.RRFgroupGuid);
+m.Field(p => p.RRFgroupGuid).Editable(false).DefaultValue(EGS);
+m.Field(p => p.RRRecordGuid).Editable(false).DefaultValue(EGS);
+m.Field(p => p.HasIndex).Editable(false).DefaultValue(0);
+m.Field(p => p.HasPriority).Editable(true).DefaultValue(0);
+m.Field(p => p.IsMarked).Editable(true).DefaultValue(false);
+m.Field(p => p.IsPrincipal).Editable(true).DefaultValue(false);
+m.Field(p => p.FieldFormatCode).Editable(true).DefaultValue(NPDSCD.FieldFormatFreeForm.ECode);
+m.Field(p => p.DescriptionText).Editable(true).DefaultValue(ESS);
+m.Field(p => p.DescriptionTkgr).Editable(false).DefaultValue(ESS);
+m.Field(p => p.DescriptionJsam).Editable(false).DefaultValue(ESS);
+m.Field(p => p.UpdatedOn).Editable(false);
+m.Field(p => p.UpdatedByAgentAlias).Editable(false);
+m.Field(p => p.DeletedOn).Editable(false);
+m.Field(p => p.DeletedByAgentAlias).Editable(false);
+}) // end Model
+.Read(fg => fg.Url(tkgRzrPageHndlr+"ReadDescriptionExtns"+tkgFgroupQrystr).Data(TkndoToken))
+.Create(fg => fg.Url(tkgRzrPageHndlr+"WriteDescriptionExtn"+tkgFgroupQrystr).Data(TkndoToken))
+.Update(fg => fg.Url(tkgRzrPageHndlr+"WriteDescriptionExtn"+tkgFgroupQrystr).Data(TkndoToken))
+.Events(evn => evn.RequestEnd("OnChangeRecord").Error("HandleAjaxErrors"))) // end DataSource
+.Columns(col => {
+col.Bound(row => row.RRRecordGuid).Hidden(true)
+.Title("RRRecordGuid").HeaderHtmlAttributes(new { title = "Resource Representation RRRecordGuid" });
+col.Bound(row => row.RRFgroupGuid).Hidden(true)
+.Title("RRFgroupGuid").HeaderHtmlAttributes(new { title = "Description RRFgroupGuid" });
+col.Bound(row => row.HasIndex).Width(tkgFipmpWidth)
+.Title("Index").HeaderHtmlAttributes(new { title = "Description has Index in integer range [0,1,...,255]" });
+col.Bound(row => row.HasPriority).Width(tkgFipmpWidthE)
+.EditorTemplateName("_PriorityInteger")
+.Title("Priority").HeaderHtmlAttributes(new { title = "Description has Priority in integer range [0,1,...,255]" });
+col.Bound(row => row.IsMarked).Width(tkgFipmpWidth)
+.Title("Marked").HeaderHtmlAttributes(new { title = "Description is Marked?" });
+col.Bound(row => row.IsPrincipal).Width(tkgFipmpWidth)
+.Title("Principal").HeaderHtmlAttributes(new { title = "Description is Principal?" });
+col.ForeignKey(row => row.FieldFormatCode, NPDSCD.NpdsDdlists.FieldFormatList, "CodeKey", "TypeName").Width(tkgFipmpWidth)
+.EditorTemplateName("_FieldFormatCode")
+.Title("Format").HeaderHtmlAttributes(new { title = "Description Format" });
+col.Bound(row => row.DescriptionText).Hidden(false).ClientTemplate("\\#=DescriptionTkgr\\#")
+.Encoded(true) // true flag for final to display markup tags
+.EditorTemplateName("_TextAreaBox")
+.Title("Content").HeaderHtmlAttributes(new { title = "DescriptionText Content" });
+col.Bound(row => row.DescriptionTkgr).Hidden(true)
+.Title("DescriptionTkgr").HeaderHtmlAttributes(new { title = "DescriptionTkgr Content" });
+col.Bound(row => row.DescriptionJsam).Hidden(true)
+.Title("DescriptionJsam").HeaderHtmlAttributes(new { title = "DescriptionJsam Content" });
+col.Command(com => {
+com.Edit();
+com.Custom("ShowDescriptionExtn").Click("OnShowInfosubset").Text("Show").HtmlAttributes(new { title = "DescriptionExtn" });
+com.Custom("CheckDescriptionExtn").Click("OnCheckInfosubset").Text("Check").HtmlAttributes(new { title = "DescriptionExtn" });
+}).Title("Actions").Width(tkgFcmdbWidth); // end Command
+col.Bound(row => row.UpdatedOn).Width(tkgFdtonWidth).Format(PdpUtcdtFormat)
+.Title("UpdatedOn").HeaderHtmlAttributes(new { title = "Updated on date" });
+col.Bound(row => row.UpdatedByAgentAlias).Width(tkgFprbyWidth)
+.Title("UpdatedBy").HeaderHtmlAttributes(new { title = "Updated by agent" });
+if (canAdminWrite) {
+col.Bound(row => row.DeletedOn).Width(tkgFdtonWidth).Format(PdpUtcdtFormat)
+.Title("DeletedOn").HeaderHtmlAttributes(new { title = "Deleted on date" });
+col.Bound(row => row.DeletedByAgentAlias).Width(tkgFprbyWidth)
+.Title("DeletedBy").HeaderHtmlAttributes(new { title = "Deleted by agent" });
+} // end canAdminWrite
+}) // end Columns
+.Pageable(pgb => pgb.Refresh(true)).Sortable()
+.Editable(edt => edt.Mode(Kendo.Mvc.UI.GridEditMode.InLine).Enabled(true))
+.Events(evn => evn.Page("HideStatus").Sort("HideStatus").Edit("HideStatus"))
+.ToolBar(tlb => {
+tlb.Create();
+tlb.Custom().Name("DescriptionExtnStatus").Text("DescriptionExtn")
+.HtmlAttributes(new { id = "DescriptionExtnStatus", @class = "pdpResrepStatus" });
+}) // end ToolBar
+.ToClientTemplate()) </text>);
+// end DescriptionExtn
+
+}).SelectedIndex(0)
+.ToClientTemplate())
+</script>
+
+<partial name="_ScribeJavascriptTkgp" />
+

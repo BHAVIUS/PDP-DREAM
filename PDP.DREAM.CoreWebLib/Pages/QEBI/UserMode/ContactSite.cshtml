@@ -1,14 +1,14 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepUserModeContactSite)]
-@model UserModeContactSite
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqUserModeContactSite)]
+@model QebiUserModeContactSite
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
@@ -21,7 +21,7 @@
 }
 else
 {
-  <form id="frmContactSite"  asp-page="@DepUserModeContactSite"
+  <form id="frmContactSite"  asp-page="@DepqUserModeContactSite"
     method="post" role="form" class="form-horizontal">
     <p>      
     To contact the site admin for user help, 

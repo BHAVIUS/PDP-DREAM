@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<efcore context-namespace="PDP.DREAM.CoreDataLib.Stores" namespace="PDP.DREAM.CoreDataLib.Stores" p1:name="NexusDbsqlContext" p1:Guid="9b64ffd1-c35c-4f35-bdab-3febf7b505a6" p1:ContextBase="PDP.DREAM.CoreDataLib.Stores.CoreDbsqlContext" p1:DoNotGenerateDefaultConstructor="True" p1:DoNotGenerateConstructorWithDbContextOptionsArgument="True" p1:UseGenericDbContextOptionsConstructorArgument="False" p1:DoNotGenerateOnConfiguringMethod="True" xmlns:p1="http://devart.com/schemas/EntityDeveloper/1.0" />

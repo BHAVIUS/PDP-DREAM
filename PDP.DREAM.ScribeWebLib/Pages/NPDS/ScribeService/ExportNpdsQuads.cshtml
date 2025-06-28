@@ -1,5 +1,5 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
@@ -8,18 +8,17 @@
 @model ScribeServiceExportNpdsQuads
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
-  NpdsClientWrace wrace = Model.WRACE;
-  bool userAuth = wrace.ClientIsAuthenticated;
+  NpdsClientWrace npdscw = Model.NPDSCW;
+  bool userAuth = npdscw.ClientIsAuthenticated;
   // TODO: convert DiristryList to some analogous equivalent usable by GetEnumSelectList
   // TODO: write a PDP variant of GetEnumSelectList sourced dynamically from database
-  IEnumerable<SelectListItem>? DiristryList = PdpAppStatus.NPDSCD.NpdsDdlists.RegcDiristryList;
+  IEnumerable<SelectListItem>? DiristryList = NPDSCD.NpdsDdlists.RegcDiristryList;
   var DiristryLabel = "Select diristry";
   // var BcrFormatList = Html.GetEnumSelectList<BcrConstants.BbnewtFormatName>();
   // var BcrFormatLabel = "Select format";
   // column formatting
-  var UtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
-  var Numf3Format = "{0:n3}";
+  var PdpUtcdtFormat = "{0:yyyy-MM-dd HH:mm}";
+  var PdpNumF3Format = "{0:n3}";
   var pdpFormGroup = "form-group mb-3";
   var labelNormal = "form-label col-md-3";
   var controlNormal = "form-control col-md-3";
@@ -32,7 +31,7 @@
 {
   <p><partial name="@psrm.RazorBodyMenu" /></p>
 }
-@Html.Raw(psrm.FormatBodyTitle(wrace.RecordAccess + " Export Metadata Records by BibCitRef File"))
+@Html.Raw(psrm.FormatBodyTitle(npdscw.RecordAccess.EName + " Export Metadata Records by BibCitRef File"))
 
 <p>
   This form must be used with selection of a Nexus diristry.

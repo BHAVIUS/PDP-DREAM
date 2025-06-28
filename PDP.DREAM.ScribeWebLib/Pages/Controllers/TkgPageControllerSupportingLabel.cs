@@ -1,104 +1,105 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Controllers;
 
 public partial class TkgsPageController
 {
-  private const string eidSupportingLabelStatus = TkndoElemPrfx + "SupportingLabelStatus";
+  public const string eidSupportingLabelStatus = TkndoElemPrfx + "SupportingLabelStatus";
 
-  public virtual JsonResult OnPostReadSupportingLabels([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostReadSupportingLabels([DataSourceRequest] DataSourceRequest dsRequest,
+   string serviceTag, Guid recordGuid, bool isLimited = false)
   {
     var rzrHndlr = nameof(OnPostReadSupportingLabels);
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
 #if DEBUG
-    DebugScribeRepo(rzrHndlr, rzrClass);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    NPDSCW.DebugWraceData(rzrHndlr, rzrClass);
+    NPDSCW.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+#endif
+    NPDSCW.OpenScribeConnection(); // use PSDC
+#if DEBUG
+    NPDSCW.DebugScribeRepo(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
     DataSourceResult? dsResult = null;
-    try
+    if (recordGuid.IsInvalid())
+    { ModelState.AddModelError("SupportingLabels", "RRRecordGuid invalid."); }
+    else
     {
-      if (recordGuid.IsInvalid())
-      { ModelState.AddModelError("SupportingLabels", "RRRecordGuid invalid."); }
-      else
-      {
-        dsResult = PSDC.ListEditableSupportingLabels(recordGuid, isLimited)
-        .ToDataSourceResult(dsRequest);
-      }
-    }
-    catch (SqlException exc)
-    {
-#if DEBUG
-      Debug.WriteLine(ParseSqlException(exc));
-#endif
+      dsResult = NPDSCW.PSDC.ListEditableSupportingLabels(recordGuid, isLimited)
+        .ToDataSourceResult(dsRequest, ModelState);
     }
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
-  public virtual JsonResult OnPostWriteSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
-   SupportingLabelUxm fgr, Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostWriteSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
+   SupportingLabelUxm fgr, string serviceTag, Guid recordGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
     if (fgr.RRRecordGuid.IsInvalid())
     { ModelState.AddModelError(fgr.ItemXnam, "RRRecordGuid invalid because null or empty."); }
-    if (!string.IsNullOrWhiteSpace(fgr.SupportingLabel))
+    if (!string.IsNullOrWhiteSpace(fgr.SupportingLabelText))
     {
       var rgx = new Regex(RgxsSupportingLabel);
-      var isMatch = rgx.IsMatch(fgr.SupportingLabel);
+      var isMatch = rgx.IsMatch(fgr.SupportingLabelText);
       if (!isMatch)
       { ModelState.AddModelError(fgr.ItemXnam, $"String is not a valid {fgr.ItemXnam}."); }
     }
-    if (ModelState.IsValid) { fgr = PSDC.EditSupportingLabel(fgr); }
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.EditSupportingLabel(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidSupportingLabelStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 
-  public virtual JsonResult OnPostDeleteSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
-   SupportingLabelUxm fgr, Guid recordGuid, bool isLimited = false)
+  public JsonResult OnPostCheckSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
+    string serviceTag, Guid fgroupGuid, bool isLimited = false)
   {
-    OpenScribeConnection(); // use PSDC
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
+    SupportingLabelUxm? fgr = NPDSCW.PSDC.GetEditableSupportingLabelByKey(fgroupGuid);
+    if (fgr?.RRFgroupGuid == fgroupGuid)
+    { fgr = NPDSCW.PSDC.CheckSupportingLabel(fgr); }
+    fgr.NdisElemId = eidSupportingLabelStatus;
+    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    NPDSCW.CloseScribeConnection();
+    return jsonData;
+  }
+
+  public JsonResult OnPostReseqSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
+    string serviceTag, Guid fgroupGuid, bool isLimited = false)
+  {
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
+    SupportingLabelUxm? fgr = NPDSCW.PSDC.GetEditableSupportingLabelByKey(fgroupGuid);
+    if (fgr?.RRFgroupGuid == fgroupGuid)
+    { fgr = NPDSCW.PSDC.ReseqSupportingLabel(fgr); }
+    fgr.NdisElemId = eidSupportingLabelStatus;
+    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
+    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
+    NPDSCW.CloseScribeConnection();
+    return jsonData;
+  }
+
+  public JsonResult OnPostDeleteSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
+    SupportingLabelUxm fgr, string serviceTag, Guid recordGuid, bool isLimited = false)
+  {
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag);
+    NPDSCW.OpenScribeConnection(); // use PSDC
     fgr.RRRecordGuid = ParseResRepRecordGuid(fgr.ItemXnam, fgr.RRRecordGuid, recordGuid);
-    if (ModelState.IsValid) { fgr = PSDC.DeleteSupportingLabel(fgr); }
+    if (ModelState.IsValid) { fgr = NPDSCW.PSDC.DeleteSupportingLabel(fgr); }
     else { fgr.NdisElemMsg = $"ModelState invalid with {ModelState.ErrorCount} errors."; }
     fgr.NdisElemId = eidSupportingLabelStatus;
     DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
     var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
-    return jsonData;
-  }
-
-  public virtual JsonResult OnPostCheckSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid fgroupGuid, bool isLimited = false)
-  {
-    OpenScribeConnection(); // use PSDC
-    SupportingLabelUxm? fgr = PSDC.GetEditableSupportingLabelByKey(fgroupGuid);
-    if (fgr?.RRFgroupGuid == fgroupGuid)
-    { fgr = PSDC.CheckSupportingLabel(fgr); fgr.NdisElemId = eidSupportingLabelStatus; }
-    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
-    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
-    return jsonData;
-  }
-
-  public virtual JsonResult OnPostReseqSupportingLabel([DataSourceRequest] DataSourceRequest dsRequest,
-    Guid fgroupGuid, bool isLimited = false)
-  {
-    OpenScribeConnection(); // use PSDC
-    SupportingLabelUxm? fgr = PSDC.GetEditableSupportingLabelByKey(fgroupGuid);
-    if (fgr?.RRFgroupGuid == fgroupGuid)
-    { fgr = PSDC.ReseqSupportingLabel(fgr); fgr.NdisElemId = eidSupportingLabelStatus; }
-    DataSourceResult dsResult = (new[] { fgr }).ToDataSourceResult(dsRequest, ModelState);
-    var jsonData = new JsonResult(dsResult, QebKendoJsonOptions);
-    CloseScribeConnection();
+    NPDSCW.CloseScribeConnection();
     return jsonData;
   }
 

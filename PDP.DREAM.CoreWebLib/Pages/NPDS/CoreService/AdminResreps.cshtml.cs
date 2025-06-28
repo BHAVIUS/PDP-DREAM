@@ -1,9 +1,9 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
+[RequireHttps, PdpAuthorizeRoles(NpdsAdminRS)]
 public class CoreServiceAdminResreps : TkgcPageController
 {
   private const string rzrClass = nameof(CoreServiceAdminResreps);
@@ -12,26 +12,24 @@ public class CoreServiceAdminResreps : TkgcPageController
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       ServiceType = NPDSCD.ServiceTypeCore,
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
       RecordAccess = NPDSCD.RecordAccessAdmin,
-      AdminModeClientRequired = true,
-      SessionClientRequired = true
     };
     // do not include optional params in pageName
-    PSRM = new PdpSiteRazorModel(DepCoreServiceAdminResreps, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_CoreServiceSpanPageMenu");
-    //ResetQebiRepository();
-    //var isUserVerified = CheckQebiUserSession();
-    //if (!isUserVerified) { RedirectToPage(DepAnonModeAccessDenied); }
-    ResetCoreRepository(); // required for TKG Ajax post callbacks
-    var isAgentVerified = CheckNpdsAgentSession();
-    if (!isAgentVerified) { RedirectToPage(DepAgentModeAddRoleAgent); }
+    PSRM = new PdpSiteRazorModel(DepCoreServiceAdminResreps, "NPDS CoreService AdminResreps", true);
+    PSRM.InitRazorPageMenus("_CoreServiceSpanPageMenu");
+    NPDSCW.ResetQebiRepository();  // for QebiUser
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
+    NPDSCW.ResetCoreRepository(); // for NpdsAgent and TKG Ajax post callbacks
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepnAgentModeAddRoleAgent); }
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
   }
 
@@ -41,16 +39,16 @@ public class CoreServiceAdminResreps : TkgcPageController
 #if DEBUG
     var rzrHndlr = nameof(OnGet);
     CatchNullWrace(rzrHndlr, rzrClass);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
     // SelectFilter constrained to Scribe service
     var entityTag = ESS;
-    WRACE.ParseNpdsSelectFilter(DdeServiceType.Core, serviceTag, entityType, entityTag, searchFilter);
-    PSRM.NpdsRazorBodyTitle(WRACE.ServiceTitle);
-    ResetCoreRepository(true);
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Core, serviceTag, entityType, entityTag, searchFilter);
+    PSRM.NpdsRazorBodyTitle(NPDSCW.ServiceTitle);
+    NPDSCW.ResetCoreRepository(true);
 #if DEBUG
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
+    NPDSCW.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
     PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     return Page();

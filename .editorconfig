@@ -6,7 +6,7 @@ root = true
 [*.cs]
 
 # Copyright for fileheaders
-file_header_template = {fileName} \nPORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. \nSoftware license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+file_header_template = {fileName} \nPORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. \nSoftware license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 #Core editorconfig formatting - indentation
 
@@ -161,6 +161,7 @@ csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
 csharp_style_prefer_primary_constructors = true:suggestion
+csharp_prefer_system_threading_lock = true:suggestion
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -244,3 +245,4 @@ dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_event = false:silent
+dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion

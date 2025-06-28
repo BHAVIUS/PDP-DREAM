@@ -1,14 +1,14 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepUserModeChangeEmail)]
-@model UserModeChangeEmail
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepqUserModeChangeEmail)]
+@model QebiUserModeChangeEmail
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  NpdsClientWrace wrace = Model.WRACE;
+  NpdsClientWrace npdscw = Model.NPDSCW;
   var pdpFormGroup = "form-group mb-3 col-md-3";
 }
 @Html.Raw(psrm.FormatBodyTitle())
@@ -26,7 +26,7 @@
 }
 else
 {
-  <form id="frmChangeEmail" asp-page="@DepUserModeChangeEmail"
+  <form id="frmChangeEmail" asp-page="@DepqUserModeChangeEmail"
         method="post" role="form" class="form-horizontal">
     <p>
       Use the form below to change your email address.

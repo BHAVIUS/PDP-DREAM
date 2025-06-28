@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Controllers;
@@ -11,12 +11,12 @@ public partial interface IQebiUser
     var uxm = new ChangeEmailUxm();
     uxm.UserName = username;
     uxm.SecurityAnswer = securityanswer;
-    uxm = ResetEmailWithToken(uxm, new QebiDalContext());
+    uxm = ResetEmailWithToken(uxm, new QebiDbsqlContext());
     return uxm;
   }
 
   // requires known current UserName and Security Q&A to reset forgotten Email
-  protected static ChangeEmailUxm ResetEmailWithToken(ChangeEmailUxm uxm, QebiDalContext qudc)
+  protected static ChangeEmailUxm ResetEmailWithToken(ChangeEmailUxm uxm, QebiDbsqlContext qudc)
   {
     uxm.DbtestPassed = false;
     uxm.DbfieldReset = false;
@@ -27,17 +27,17 @@ public partial interface IQebiUser
       if (usr == null)
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "User not found. ";
+        uxm.FormNote += "User not found. ";
       }
       else if (!usr.UserIsApproved)
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "User not approved. ";
+        uxm.FormNote += "User not approved. ";
       }
       else if (!uxm.DbtestPassed)
       {
         uxm.ErrorOccurred = true;
-        uxm.FormMessage += "Security answer not matched to current. ";
+        uxm.FormNote += "Security answer not matched to current. ";
       }
       else
       {
@@ -60,7 +60,7 @@ public partial interface IQebiUser
         else
         {
           uxm.ErrorOccurred = true;
-          uxm.FormMessage += "Security token not generated. ";
+          uxm.FormNote += "Security token not generated. ";
         }
       }
     }
@@ -68,7 +68,7 @@ public partial interface IQebiUser
     {
       uxm.FormError = error;
       uxm.ErrorOccurred = true;
-      uxm.FormMessage += "Server error occurred resetting email.";
+      uxm.FormNote += "Server error occurred resetting email.";
     }
     return uxm;
   }

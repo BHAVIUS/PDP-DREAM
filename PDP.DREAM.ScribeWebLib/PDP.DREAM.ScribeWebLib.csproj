@@ -4,20 +4,21 @@
   <PropertyGroup>
     <AssemblyName>PDP.DREAM.ScribeWebLib</AssemblyName>
     <RootNamespace>PDP.DREAM.ScribeWebLib</RootNamespace>
-    <Authors>Carl Taswell and the PORTAL-DOORS Project Team</Authors>
-    <Company>Brain Health Alliance</Company>
+    <Description>PDP-DREAM ScribeWebLib</Description>
     <IsPackable>true</IsPackable>
+    <Platforms>x64;ARM64;AnyCPU;</Platforms>
   </PropertyGroup>
 
   <!-- dev/test/build/debug configuration -->
   <PropertyGroup>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <NoWarn>CS1998;CS0103;CS0120;CS0219;CS8032;CS8600;CS8601;CS8602;CS8604;CS8629;CS8669;IDE0047;</NoWarn>
+    <NoWarn>CS1998;CS0103;CS0120;CS0219;CS8032;CS8600;CS8601;CS8602;CS8604;CS8629;CS8669;IDE0047;NU1902;NU1903;</NoWarn>
   </PropertyGroup>
 
   <!-- required lib references -->
+  <ItemGroup>
+  </ItemGroup>
 
-  <!-- required references -->
+  <!-- required PDP references -->
   <ItemGroup>
     <ProjectReference Include="..\PDP.DREAM.NexusWebLib\PDP.DREAM.NexusWebLib.csproj" />
   </ItemGroup>

@@ -1,24 +1,19 @@
 ﻿@*
-// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @page
-@attribute [PdpRazorPageRoute(DepCoreWebLib, DepAgentModeIndex)]
-@model AgentModeIndex
+@attribute [PdpRazorPageRoute(DepCoreWebLib, DepnAgentModeIndex)]
+@model NpdsAgentModeIndex
 @{
   PdpSiteRazorModel psrm = Model.PSRM;
-  PdpSiteInfoModel psim = psrm.PdpSiteInfo;
-  NpdsClientWrace wrace = Model.WRACE;
-  bool userAuth = wrace.ClientIsAuthenticated;
+  NpdsClientWrace npdscw = Model.NPDSCW;
+  bool userAuth = npdscw.ClientIsAuthenticated;
 }
 @Html.Raw(psrm.FormatBodyTitle())
 @if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
-{ <p><partial name="@psrm.RazorBodyMenu" /></p> }
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
 
-<p>
-  You are registered as a site user. You may access the following services:
-</p>
-<ul>
-  <li><a asp-page="@DepAgentModeCheckQebiUser">Check QEBI User</a></li>
-</ul>

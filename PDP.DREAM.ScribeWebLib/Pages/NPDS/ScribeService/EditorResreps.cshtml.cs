@@ -1,66 +1,69 @@
-// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.ScribeWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsEditor, NpdsAdmin)]
+[RequireHttps, PdpAuthorizeRoles(NpdsEditorRS)]
 public class ScribeServiceEditorResreps : TkgsPageController
 {
   private const string rzrClass = nameof(ScribeServiceEditorResreps);
-  public ScribeServiceEditorResreps() { }
+  public ScribeServiceEditorResreps() : base() { }
+
+  // ScribeService EditorResreps
+  public const string pageName = DepScribeServiceEditorResreps;
+  public const string pagePath = pageName;
+  public const string bodyTitle = PdpSitePathKey;
+  public const string bodyMenu = "_ScribeServiceSpanPageMenu";
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      ServiceType = NPDSCD.ServiceTypeScribe, // resets SearchFilter and DatabaseType
-      ResrepFormat = NPDSCD.ResrepFormatNexus, // requires DatabaseType
+      ServiceType = NPDSCD.ServiceTypeScribe, // resets DatabaseType, SearchFilter, ServiceTag
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
-      RecordAccess = NPDSCD.RecordAccessEditor, // resets *ClientModeRequired
-      EditorModeClientRequired = true,
-      SessionClientRequired = true
+      RecordAccess = NPDSCD.RecordAccessEditor // resets *ClientRequired
     };
     // do not include optional params in pageName
-    PSRM = new PdpSiteRazorModel(DepScribeServiceEditorResreps, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_ScribeWebLibSpanPageMenu", "_ScribeServiceSpanPageMenu");
-    //ResetQebiRepository();
-    //var isUserVerified = CheckQebiUserSession();
-    //if (!isUserVerified) { RedirectToPage(DepAnonModeAccessDenied); }
-    ResetCoreRepository();
-    var isAgentVerified = CheckNpdsAgentSession();
-    if (!isAgentVerified) { RedirectToPage(DepAgentModeAddRoleAgent); }
-    ResetScribeRepository(); // required for OnGet, OnPost, TKG Ajax post callbacks
+    PSRM = new PdpSiteRazorModel(pageName, pagePath, bodyTitle, bodyMenu);
+    NPDSCW.ResetQebiRepository();
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
+    NPDSCW.ResetCoreRepository(); // CoreRepo resets NPDSCW/QUDC if/when necessary
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepnAgentModeAddRoleAgent); }
+    NPDSCW.ResetScribeRepository(); // required for OnGet, OnPost, TKG Ajax post callbacks
 #if DEBUG
-    var rzrHndlr = nameof(OnPageHandlerExecuting);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuting), rzrClass);
 #endif
   }
 
   // OnGet before OnPageHandlerExecuted
   public IActionResult OnGet(string searchFilter, string serviceTag, string entityType, string resrepFormat)
   {
-#if DEBUG
-    var rzrHndlr = nameof(OnGet);
-    CatchNullWrace(rzrHndlr, rzrClass);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-#endif
+    if (string.IsNullOrEmpty(searchFilter)) { searchFilter = NPDSCD.SearchFilterDfltSrch.EName; }
+    if (string.IsNullOrEmpty(serviceTag)) { serviceTag = NPDSCD.ServiceTagDfltSrch; }
+    if (string.IsNullOrEmpty(entityType)) { entityType = NPDSCD.EntityTypeDfltSrch.EName; }
+    if (string.IsNullOrEmpty(resrepFormat)) { resrepFormat = NPDSCD.ResrepFormatDfltSrch.EName; }
     // SelectFilter constrained to Scribe service
     var entityTag = ESS;
-    WRACE.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag, entityType, entityTag, searchFilter, resrepFormat);
-    PSRM.NpdsRazorBodyTitle(WRACE.ServiceTitle);
-    ResetCoreRepository(true);
-    ResetScribeRepository(true, true);
+    NPDSCW.ParseNpdsSelectFilter(DdeServiceType.Scribe, serviceTag, entityType, entityTag, searchFilter, resrepFormat);
+    PSRM.NpdsRazorBodyTitle(NPDSCW.ServiceTitle);
+    NPDSCW.ResetCoreRepository(true);
+    NPDSCW.ResetScribeRepository(true, true);
 #if DEBUG
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
-    PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
+    this.DebugWraceRazorPage(nameof(OnGet), rzrClass);
 #endif
     return Page();
   }
 
   // OnPageHandlerExecuted after [RazorPage].cshtml but before result
+  public override void OnPageHandlerExecuted(PageHandlerExecutedContext exeCntxt)
+  {
+#if DEBUG
+    this.DebugWraceRazorPage(nameof(OnPageHandlerExecuted), rzrClass);
+#endif
+  }
 
   // Other page handlers and properties
 

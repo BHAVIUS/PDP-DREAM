@@ -1,31 +1,27 @@
 ﻿@*
-  // PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved.
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
   // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 *@
 
 @{
-  bool userAuth = (Model.QebRcp.IsAuthenticated ?? false);
-  string userName = (User?.Identity?.Name ?? ESS);
+  bool userAuth = (Model.QebiRcp.IsAuthenticated ?? false);
+  string userName = (Model.QebiRcp.UserName ?? ESS);
   PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace npdscw = Model.NPDSCW;
 }
 
-@Html.Raw(psrm.FormatBodyTitle("Razor Header Menu"))
-<p><partial name="@psrm.RazorHeaderMenu" /></p>
-
-@Html.Raw(psrm.FormatBodyTitle("Razor Footer Menu"))
-<p><partial name="@psrm.RazorFooterMenu" /></p>
-
 @Html.Raw(psrm.FormatBodyTitle("ScribeWebLib Index Menu"))
-<p><partial name="_SwlHomeSpanPageMenu" /></p>
+<p><partial name="_SwlPdpHelpSpanPageMenu" /></p>
 
 @Html.Raw(psrm.FormatBodyTitle("ScribeWebLib Project Menus"))
 
 @if (!userAuth)
 {
   <p>
-    ScribeWebLib Project Menus only visible in authorized mode. You may
-    <a asp-page="@DepAnonModeLoginUser">login</a> or
-    <a asp-page="@DepAnonModeRegisterUser">register</a>.
+    ScribeWebLib Project Menus only visible in authorized mode. 
+    You may
+    <a asp-page="@DepqAnonModeLoginUser">login</a> or
+    <a asp-page="@DepqAnonModeRegisterUser">register</a>.
   </p>
 }
 
@@ -33,3 +29,11 @@
 {
   <partial name="_ScribeWebLibListPageMenu" />
 }
+
+<h1>H1 Section Title</h1>
+<h2>H2 Section Title</h2>
+<h3>H3 Section Title</h3>
+<h4>H4 Section Title</h4>
+<h5>H5 Section Title</h5>
+<h6>H6 Section Title</h6>
+

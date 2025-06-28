@@ -1,6 +1,6 @@
-﻿@model Int16
+﻿@model Byte
 
 @(Html.Kendo().DropDownListFor(p => p)
-  .DataValueField("Value").DataTextField("Text").OptionLabel("Select EntityType")
+  .DataValueField("CodeKey").DataTextField("TypeName").OptionLabel("Select EntityType")
   .BindTo((System.Collections.IEnumerable)NPDSCD.NpdsDdlists.EntityTypeList)
   .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate EntityType." }))

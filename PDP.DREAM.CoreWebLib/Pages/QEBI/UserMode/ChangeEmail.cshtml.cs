@@ -1,39 +1,39 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, Authorize]
-public class UserModeChangeEmail : QebiDataRazorPageControllerBase
+public class QebiUserModeChangeEmail : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(UserModeChangeEmail);
-  public UserModeChangeEmail() : base() { }
+  private const string rzrClass = nameof(QebiUserModeChangeEmail);
+  public QebiUserModeChangeEmail() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseAccess = NPDSCD.ParseDatabaseAccess(DdeDatabaseAccess.AuthReadWrite),
       RecordAccess = NPDSCD.RecordAccessUser,
       UserModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepUserModeChangeEmail, $"{PDPSS.AppOwnerNameShort}: Change Email");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_UserModeSpanPageMenu");
-    ResetQebiRepository();
-    var isVerified = CheckQebiUserSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    PSRM = new PdpSiteRazorModel(DepqUserModeChangeEmail, "Change Email", true);
+    PSRM.InitRazorPageMenus("_QebiUserModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
+    var isUser = CheckQebiUserSession();
+    if (!isUser) { LocalRedirect(DepqAnonModeAccessDenied); }
   }
 
   // OnGet before OnPageHandlerExecuted
   public IActionResult OnGet()
   {
     UXM = new ChangeEmailUxm();
-    QUDC.GetUserByPrincipal(QebRcp);
-    if (QebRcp.IsAuthenticated)
+    NPDSCW.QUDC.GetUserByPrincipal(QebiRcp);
+    if (QebiRcp.IsAuthenticated)
     {
-      UXM = new ChangeEmailUxm(QebRcp.UserGuid);
+      UXM = new ChangeEmailUxm(QebiRcp.UserGuid);
     }
     return Page();
   }
@@ -47,18 +47,18 @@ public class UserModeChangeEmail : QebiDataRazorPageControllerBase
 
   public IActionResult OnPost()
   {
-    QUDC.GetUserByPrincipal(QebRcp);
-    if ((ModelState.IsValid) && (QebRcp.IsAuthenticated))
+    NPDSCW.QUDC.GetUserByPrincipal(QebiRcp);
+    if ((ModelState.IsValid) && (QebiRcp.IsAuthenticated))
     {
-      UXM.UserGuid = QebRcp.UserGuid;
-      UXM.UserName = QebRcp.UserName;
-      UXM = IQebiUser.ChangeEmailWithOld(UXM, QUDC);
+      UXM.UserGuid = QebiRcp.UserGuid;
+      UXM.UserName = QebiRcp.UserName;
+      UXM = IQebiUser.ChangeEmailWithOld(UXM, NPDSCW.QUDC);
       if (UXM.DbfieldReset)
       {
         UXM = IQebiUser.NotifyEmailWithToken(UXM, HttpContext);
         if (UXM.NoticeSent) { UXM.FormCompleted = true; }
       }
-      WraceUxmAddErrors(UXM.FormMessage);
+      WraceAddErrors(UXM.FormNote);
     }
     return Page();
   }

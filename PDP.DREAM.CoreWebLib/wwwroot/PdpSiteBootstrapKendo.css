@@ -1,0 +1,181 @@
+﻿/* bootstrap media mods */
+
+@media (min-width: 1200px) {
+  .container {
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* elements */
+
+a {
+  color: blue;
+}
+
+body {
+  color: black;
+  font-size: medium;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+}
+
+blockquote {
+  border-left: 0.3em solid powderblue;
+  padding: 1em;
+}
+
+dl dt, h1, h2, h3, h4, h5, h6 {
+  color: navy;
+}
+
+em {
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input, select, textarea {
+  max-width: 280px;
+}
+
+table, th, td {
+  border: 1px solid navy;
+  border-collapse: collapse;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+}
+
+
+/* classes */
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+  white-space: normal;
+}
+
+/* ----------------------------------------------------------
+-- Classes have strings preceded by a period (use Snake casing)
+-- Ids have strings preceded by a hash (use Camel Casing)
+-- use pdp prefix for  PORTAL-DOORS Project
+-----------------------------------------------------------*/
+
+/* classes */
+
+.pdpBody {
+  margin: 0 1.5em;
+  padding: 0.1em 0.3em;
+}
+
+.pdpCenter {
+  text-align: center;
+  vertical-align: middle;
+  width: auto;
+}
+
+.pdpClear {
+  clear: both;
+  padding: 0.5em 0;
+}
+
+.pdpFoot {
+  font-size: small;
+  margin: 0 1.5em;
+  padding: 0.1em 0.3em;
+}
+
+.pdpGrid1x3 {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto;
+}
+
+.pdpGrid1x4 {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto auto;
+}
+
+.pdpGridCell1 {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.pdpGridCell2 {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.pdpGridCell3 {
+  grid-row: 1;
+  grid-column: 3;
+}
+
+.pdpGridCell4 {
+  grid-row: 1;
+  grid-column: 4;
+}
+
+.pdpHead {
+  margin: 0 1.5em;
+  padding: 0.1em 0.3em;
+}
+
+.pdpFontDefault {
+  font-size: medium;
+}
+
+.pdpPage {
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+}
+
+.pdpResrepStatus {
+  padding-left: 1em;
+  color: blue;
+}
+
+.pdpRecordStatus {
+  padding-left: 1em;
+  color: blue;
+}
+
+
+.pdpStatusPending {
+  color: blue;
+}
+
+.pdpStatusPartial {
+  color: darkgreen;
+}
+
+.pdpStatusUnknown {
+  color: darkorange;
+}
+
+.pdpStatusInvalid {
+  color: red;
+}
+
+.pdpStatusValid {
+  color: green;
+}
+
+/* ids */
+
+#NpdsGrid {
+  padding-bottom: 1em;
+}

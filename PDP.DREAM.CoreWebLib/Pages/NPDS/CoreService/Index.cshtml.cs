@@ -1,9 +1,9 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
+[RequireHttps, PdpAuthorizeRoles(NpdsAdminRS)]
 public class CoreServiceIndex : TkgcPageController
 {
   private const string rzrClass = nameof(CoreServiceIndex);
@@ -12,7 +12,7 @@ public class CoreServiceIndex : TkgcPageController
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       ServiceType = NPDSCD.ServiceTypeCore,
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadWrite,
@@ -21,14 +21,14 @@ public class CoreServiceIndex : TkgcPageController
       SessionClientRequired = true
     };
     // do not include optional params in pageName
-    PSRM = new PdpSiteRazorModel(DepCoreServiceIndex, PdpSitePathKey);
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_CoreServiceSpanPageMenu");
-    ResetCoreRepository();
-    var isVerified = CheckNpdsAgentSession();
-    if (!isVerified) { RedirectToPage(DepAnonModeAccessDenied); }
+    PSRM = new PdpSiteRazorModel(DepCoreServiceIndex, "NPDS CoreService Index", true);
+    PSRM.InitRazorPageMenus("_CoreServiceSpanPageMenu");
+    NPDSCW.ResetCoreRepository();
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepqAnonModeAccessDenied); }
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
   }
 
@@ -38,19 +38,19 @@ public class CoreServiceIndex : TkgcPageController
 #if DEBUG
     var rzrHndlr = nameof(OnGet);
     CatchNullWrace(rzrHndlr, rzrClass);
-    CatchNullCore(rzrHndlr, rzrClass);
 #endif
     // TODO: fix hack on RecordAccess roles
     // create parser for RecordAccess that limits to specified roles
     if (!string.IsNullOrEmpty(recordAccess))
-    { WRACE.RecordAccessReqst = recordAccess; }
+    { NPDSCW.RecordAccessReqst = recordAccess; }
     // SearchFilter properties
-    // WRACE.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
-    PSRM.NpdsRazorBodyTitle(WRACE.ServiceTitle);
-    ResetCoreRepository(true, ESS, true);
+    // NPDSCW.ParseNpdsResrepFilter(searchFilter, serviceTag, entityType);
+    PSRM.NpdsRazorBodyTitle(NPDSCW.ServiceTitle);
+    NPDSCW.ResetCoreRepository(true, true, ESS);
 #if DEBUG
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
-    WRACE.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
+    NPDSCW.DebugCoreRepo(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
+    NPDSCW.DebugNpdsSelectFilter(rzrHndlr, rzrClass);
     PSRM.DebugRazorPageStrings(rzrHndlr, rzrClass);
 #endif
     return Page();

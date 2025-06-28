@@ -1,9 +1,9 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
-[RequireHttps, PdpAuthorizeRoles(NpdsAdmin)]
+[RequireHttps, PdpAuthorizeRoles(NpdsAdminRS)]
 public class DebugModeRazorFormats : CoreDataRazorPageControllerBase
 {
   private const string rzrClass = nameof(DebugModeRazorFormats);
@@ -12,7 +12,7 @@ public class DebugModeRazorFormats : CoreDataRazorPageControllerBase
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
       DatabaseType = NPDSCD.DatabaseTypeCore,
       DatabaseAccess = NPDSCD.DatabaseAccessAuthReadOnly,
@@ -20,14 +20,14 @@ public class DebugModeRazorFormats : CoreDataRazorPageControllerBase
       AdminModeClientRequired = true,
       SessionClientRequired = true
     };
-    PSRM = new PdpSiteRazorModel(DepDebugModeRazorFormats, $"{DepPdpDream}: RazorFormats");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_DebugModeSpanPageMenu");
-    ResetCoreRepository();
-    var isVerified = CheckNpdsAgentSession();
-    if (!isVerified) { RedirectToPage(DepAgentModeCheckNpdsAgent); }
+    PSRM = new PdpSiteRazorModel(DepDebugModeRazorFormats, "PDP-DREAM RazorFormats", true);
+    PSRM.InitRazorPageMenus("_DebugModeSpanPageMenu");
+    NPDSCW.ResetCoreRepository();
+    var isAgent = CheckNpdsAgentSession();
+    if (!isAgent) { LocalRedirect(DepnAgentModeCheckNpdsAgent); }
 #if DEBUG
     var rzrHndlr = nameof(OnPageHandlerExecuting);
-    WRACE.DebugClientAccess(rzrHndlr, rzrClass);
+    NPDSCW.DebugClientAccess(rzrHndlr, rzrClass);
 #endif
   }
 

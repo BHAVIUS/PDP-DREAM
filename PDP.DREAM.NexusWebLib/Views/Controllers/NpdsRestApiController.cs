@@ -1,4 +1,4 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.NexusWebLib.Controllers;
@@ -11,22 +11,21 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   public override void OnActionExecuting(ActionExecutingContext oaeCntxt)
   {
     // do NOT call base.OnActionExecuting(oaeCntxt);
-    WRACE = new NpdsClientWrace(oaeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(oaeCntxt.HttpContext)
     {
       ServiceType = NPDSCD.ServiceTypeNexus,
-      DatabaseType = NPDSCD.DatabaseTypeNexus,
       DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessAnon,
-      UserModeClientRequired = false,
-      SessionClientRequired = false
+      // TODO: extend to settable option for other message formats
+      MessageFormat = NPDSCD.MessageFormatXML
     };
-    ResetNexusRepository();
+    NPDSCW.ResetNexusRepository();
     // TODO: split this controller into two controllers 
     // one for anonymous and one for authorized
     //if (!QebRazorAnonList.Contains(oaeCntxt.ActionName()))
     //{
-    //  var isVerified = CheckCoreUserSession();
-    //  if (!isVerified) { oaeCntxt.Result = Redirect(DepQebIdentRequired); }
+    //  var isUser = CheckCoreUserSession();
+    //  if (!isUser) { oaeCntxt.Result = Redirect(DepQebIdentRequired); }
     //}
   }
 
@@ -64,7 +63,7 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
     $"Nexus{nameof(ResrepsByEntityType)}", false)]
   public IActionResult ResrepsByEntityType(string serviceType, string serviceTag, string entityType, string infosetStatus)
   {
-    WRACE.ParseNpdsSelectFilter("",
+    NPDSCW.ParseNpdsSelectFilter("",
       serviceType, "", serviceTag,
       entityType, "", "",
       infosetStatus, "", "");
@@ -78,7 +77,7 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
     $"Nexus{nameof(ResrepsByEntityTag)}", false)]
   public IActionResult ResrepsByEntityTag(string serviceType, string serviceTag, string entityTag, string entityVersion = "")
   {
-    WRACE.ParseNpdsSelectFilter(serviceType, serviceTag, "", entityTag, entityVersion);
+    NPDSCW.ParseNpdsSelectFilter(serviceType, serviceTag, "", entityTag, entityVersion);
     var msgNexus = NexusRestApiMessage();
     return msgNexus;
   }
@@ -91,7 +90,7 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   {
     // var searchFilter = NPDSCD.SearchFilterDiristry.ToString();
     // TODO: assure that searchFilter reset by serviceType
-    WRACE.ParseNpdsSelectFilter(serviceType, serviceTag, "", "", "");
+    NPDSCW.ParseNpdsSelectFilter(serviceType, serviceTag, "", "", "");
     var msgNexus = NexusRestApiMessage();
     return msgNexus;
   }
@@ -100,40 +99,38 @@ public class NexusRestApiController : NexusDataRazorViewControllerBase
   {
     IActionResult response = null;
     // stage 1 check of current service
-    ResetNexusRepository(); // NPDSSD.NexusDbconstr
-    var rrRoots = PNDC.ListStorableResrepRoots();
+    NPDSCW.ResetNexusRepository(); // NPDSSD.NexusDbconstr
+    var rrRoots = NPDSCW.PNDC.ListStorableResrepRoots();
     // stage 2 check of vocabulary service
     if (rrRoots?.Count == 0)
     {
-      ResetNexusRepository(false, NPDSCD.VocabDbconstr);
-      rrRoots = PNDC.ListStorableResrepRoots();
+      NPDSCW.ResetNexusRepository(false, false, NPDSCD.VocabDbconstr);
+      rrRoots = NPDSCW.PNDC.ListStorableResrepRoots();
     }
     // stage 3 check of NPDS cache service 
     if (rrRoots?.Count == 0)
     {
-      ResetNexusRepository(false, NPDSCD.CacheDbconstr);
-      rrRoots = PNDC.ListStorableResrepRoots();
+      NPDSCW.ResetNexusRepository(false, false, NPDSCD.CacheDbconstr);
+      rrRoots = NPDSCW.PNDC.ListStorableResrepRoots();
     }
-    // generate XML message from item list
-    var rrListXml = PNDC.CreateCoreResrepListXml(rrRoots);
-    // PRC.ResponseAnswer = rrListXml; // alternative format response
-    WRACE.NexusRecords = rrListXml;
 
     var messageValidated = false;
 
-    switch (WRACE.MessageFormat.EName)
+    switch (NPDSCW.MessageFormat.EName)
     {
       case DdeMessageFormat.XML:
+        // generate XML message from item list
         var rrMessage = new NpdsResrepXmlRoot();
+        NPDSCW.NexusRecords = NPDSCW.PNDC.CreateResrepListXml(rrRoots);
         // xsdValidate enables local override independent of PRC.CheckFormat value
-        if (WRACE.CheckFormat || xsdValidate)
+        if (NPDSCW.CheckFormat || xsdValidate)
         {
-          var pxsWriter = new NpdsXmlStringWriter<NpdsResrepXmlRoot>(rrMessage, WRACE);
+          var pxsWriter = new NpdsXmlStringWriter<NpdsResrepXmlRoot>(rrMessage, NPDSCW);
           var xmlMessage = pxsWriter.XML;
-          var pxsValidater = new NpdsXmlValidater(WRACE);
+          var pxsValidater = new NpdsXmlValidater(NPDSCW);
           messageValidated = pxsValidater.ValidateNpdsXmlMessage(xmlMessage);
         }
-        response = new NpdsXmlResponseWriter<NpdsResrepXmlRoot>(rrMessage, WRACE);
+        response = new NpdsXmlResponseWriter<NpdsResrepXmlRoot>(rrMessage, NPDSCW);
         break;
       case DdeMessageFormat.XHTML:
       // TODO: code analogous XHTML writer

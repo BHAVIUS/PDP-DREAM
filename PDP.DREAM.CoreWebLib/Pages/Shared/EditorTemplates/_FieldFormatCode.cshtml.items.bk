@@ -1,8 +1,0 @@
-﻿@model Int16
-
-@(
-  Html.Kendo().DropDownListFor(p => p)
-  .DataValueField("Value").DataTextField("Text").OptionLabel("Select FieldFormat")
-  .BindTo((System.Collections.IEnumerable)NPDSSD.NpdsDdlists.FieldFormatListItems)
-  .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate FieldFormat." })
-)

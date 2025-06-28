@@ -1,27 +1,25 @@
-﻿// PORTAL-DOORS Project Copyright (c) 2006-2024 Brain Health Alliance. All Rights Reserved. 
+﻿// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved. 
 // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
 
 namespace PDP.DREAM.CoreWebLib.Pages;
 
 [RequireHttps, AllowAnonymous]
-public class AnonModeContactSite : QebiDataRazorPageControllerBase
+public class QebiAnonModeContactSite : QebiDataRazorPageControllerBase
 {
-  private const string rzrClass = nameof(AnonModeContactSite);
-  public AnonModeContactSite() : base() { }
+  private const string rzrClass = nameof(QebiAnonModeContactSite);
+  public QebiAnonModeContactSite() : base() { }
 
   // OnPageHandlerExecuting before OnGet
   public override void OnPageHandlerExecuting(PageHandlerExecutingContext exeCntxt)
   {
-    WRACE = new NpdsClientWrace(exeCntxt.HttpContext)
+    NPDSCW = new NpdsClientWrace(exeCntxt.HttpContext)
     {
-      DatabaseAccess = NPDSCD.ParseDatabaseAccess(DdeDatabaseAccess.AnonReadOnly),
+      DatabaseAccess = NPDSCD.DatabaseAccessAnonReadOnly,
       RecordAccess = NPDSCD.RecordAccessAnon,
-      UserModeClientRequired = false,
-      SessionClientRequired = false
     };
-    PSRM = new PdpSiteRazorModel(DepAnonModeContactSite, $"{PDPSS.AppOwnerNameShort}: Contact Site");
-    PSRM.InitRazorPageMenus("_CoreWebLibSpanPageMenu", "_AnonModeSpanPageMenu");
-    ResetQebiRepository();
+    PSRM = new PdpSiteRazorModel(DepqAnonModeContactSite, "Contact Site", true);
+    PSRM.InitRazorPageMenus("_QebiAnonModeSpanPageMenu");
+    NPDSCW.ResetQebiRepository();
   }
 
   // OnGet before OnPageHandlerExecuted
@@ -49,7 +47,7 @@ public class AnonModeContactSite : QebiDataRazorPageControllerBase
     if (ModelState.IsValid)
     {
       var name = UXM.FirstName + " " + UXM.LastName;
-      var subj = PdpAppStatus.PDPSS.AppOwnerNameLong + " Contact " + name;
+      var subj = PDPSS.AppOwnerNameLong + " Contact " + name;
       var body = new StringBuilder();
       body.AppendLine("Name: " + name);
       body.AppendLine();
@@ -61,11 +59,11 @@ public class AnonModeContactSite : QebiDataRazorPageControllerBase
       body.AppendLine("Subject: " + UXM.EmailSubject);
       body.AppendLine("Message: " + UXM.EmailBody);
       body.AppendLine();
-      var mail = UXM.EmailAddress ?? PdpAppStatus.PDPSS.AppHostEmail;
+      var mail = UXM.EmailAddress ?? PDPSS.AppHostEmail;
       UXM.FormCompleted = QebNotifyService.SendEmail(mail, subj, body.ToString());
-      if (!UXM.FormCompleted) { WraceUxmAddErrors("Your message could not be sent. Please try again later."); }
+      if (!UXM.FormCompleted) { WraceAddErrors("Your message could not be sent. Please try again later."); }
     }
-    else { WraceUxmAddErrors("Submitted form not valid. "); }
+    else { WraceAddErrors("Submitted form not valid. "); }
     return Page();
   }
 
