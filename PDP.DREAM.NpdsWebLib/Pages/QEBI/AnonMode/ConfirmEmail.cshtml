@@ -1,0 +1,46 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepNpdsWebLib, DepqAnonModeConfirmEmail)]
+@model QebiAnonModeConfirmEmail
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  var pdpFormGroup = "form-group mb-3 col-md-3";
+}
+@Html.Raw(psrm.FormatBodyTitle())
+
+@if (Model.UXM.FormCompleted)
+{
+  <p class="pdpTaskPassed">
+    Your email has been confirmed.
+  </p>
+}
+else
+{
+  <form id="frmConfirmEmail"  asp-page="@DepqAnonModeConfirmEmail"
+      method="post" role="form" class="form-horizontal">
+    <p>
+      To confirm your email, please enter your user name and security token.
+    </p>
+    <div class="@pdpFormGroup">
+      @Html.AntiForgeryToken()
+      @Html.HiddenFor(m => m.UXM.FormTitle, new { Value = Model.UXM.FormTitle })
+      @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+    <div class="@pdpFormGroup">
+      @Html.LabelFor(m => m.UXM.UserName, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.UserName, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.UserName, null, new { @class = "form-label text-danger" })
+    </div>
+    <div class="@pdpFormGroup">
+      @Html.LabelFor(m => m.UXM.SecurityToken, new { @class = "form-label" })
+      @Html.TextBoxFor(m => m.UXM.SecurityToken, new { @class = "form-control" })
+      @Html.ValidationMessageFor(m => m.UXM.SecurityToken, null, new { @class = "form-label text-danger" })
+    </div>
+    <br />
+    <button id="btnConfirmEmail" type="submit" class="btn btn-outline-primary">Confirm Email</button>
+  </form>
+}

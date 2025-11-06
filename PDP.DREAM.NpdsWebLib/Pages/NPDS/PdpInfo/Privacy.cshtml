@@ -1,0 +1,24 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepNpdsWebLib, DepPdpInfoPrivacy)]
+@model PdpInfoPrivacy
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<p>
+  This website does NOT collect any information identifying persons
+  who browse the unrestricted website content as anonymous users.
+  Additional website content may be accessed by registering a free user account.
+  Information collected for the purpose of identifying persons with registered accounts
+  will NOT be shared, redistributed, or sold to any other third party.
+</p>

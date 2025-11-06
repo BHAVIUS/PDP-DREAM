@@ -1,0 +1,39 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (Model.QebiRcp.IsAuthenticated ?? false);
+  string userName = (Model.QebiRcp.UserName ?? ESS);
+  string paramsPath = (Model.NPDSCW.ResrepSrch4ParamPP ?? ESS);
+  string anonResreps = DepNexusServiceAnonResreps + paramsPath;
+  // ATTN: use href attribute for links not registered with RazorPage names
+  <span>
+    Nexus:
+    <a asp-page="@DepNexusServiceIndex">Service</a>
+    <span> | </span>
+    <a href="@anonResreps">Anon</a>
+    @if (userAuth)
+    {
+      string readerResreps = DepNexusServiceReaderResreps + paramsPath;
+      string agentResreps = DepNexusServiceAgentResreps + paramsPath;
+      string authorResreps = DepNexusServiceAuthorResreps + paramsPath;
+      string reviewerResreps = DepNexusServiceReviewerResreps + paramsPath;
+      string editorResreps = DepNexusServiceEditorResreps + paramsPath;
+      string adminResreps = DepNexusServiceAdminResreps + paramsPath;
+      <span> | </span>
+      <a href="@readerResreps">Reader</a>
+      <span> | </span>
+      <a href="@agentResreps">Agent</a>
+      <span> | </span>
+      <a href="@authorResreps">Author</a>
+      <span> | </span>
+      <a href="@reviewerResreps">Reviewer</a>
+      <span> | </span>
+      <a href="@editorResreps">Editor</a>
+      <span> | </span>
+      <a href="@adminResreps">Admin</a>
+    }
+  </span>
+}

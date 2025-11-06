@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+	<Folder FolderName="XML Files" ExtStr="xml;cml;math;smil;svg;wml"/>
+	<Folder FolderName="XSL Files" ExtStr="xsl;xslt"/>
+	<Folder FolderName="XQuery Files" ExtStr="xq;xql;xquery;xqu"/>
+	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
+	<Folder FolderName="DTD Schemas" ExtStr="dtd;dcd;xdr;biz;"/>
+	<Folder FolderName="Entities" ExtStr="ent"/>
+	<Folder FolderName="OWL Files" ExtStr="owl">
+		<File FilePath="DREAM.owl" HomeFolder="Yes"/>
+		<File FilePath="EEEEE.owl" HomeFolder="Yes"/>
+		<File FilePath="FAIR.owl" HomeFolder="Yes"/>
+		<File FilePath="HDMM.owl" HomeFolder="Yes"/>
+		<File FilePath="NPDS.owl" HomeFolder="Yes"/>
+		<File FilePath="PDPD.owl" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="RDF Files" ExtStr="rdf">
+		<File FilePath="DREAM.rdf" HomeFolder="Yes"/>
+		<File FilePath="EEEEE.rdf" HomeFolder="Yes"/>
+		<File FilePath="FAIR.rdf" HomeFolder="Yes"/>
+		<File FilePath="HDMM.rdf" HomeFolder="Yes"/>
+		<File FilePath="NPDS.rdf" HomeFolder="Yes"/>
+		<File FilePath="PDPD.rdf" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="XSD Schemas" ExtStr="xsd">
+		<File FilePath="NPDS.xsd" HomeFolder="Yes"/>
+	</Folder>
+	<Folder FolderName="TTL Files" ExtStr="ttl">
+		<File FilePath="DREAM.ttl" HomeFolder="Yes"/>
+		<File FilePath="EEEEE.ttl" HomeFolder="Yes"/>
+		<File FilePath="FAIR.ttl" HomeFolder="Yes"/>
+		<File FilePath="HDMM.ttl" HomeFolder="Yes"/>
+		<File FilePath="NPDS.ttl" HomeFolder="Yes"/>
+		<File FilePath="PDPD.ttl" HomeFolder="Yes"/>
+	</Folder>
+</Project>

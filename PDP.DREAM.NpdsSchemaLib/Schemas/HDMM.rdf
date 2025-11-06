@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://npds.portaldoors.org/schema/pdp/hdmm#"
+     xml:base="http://npds.portaldoors.org/schema/pdp/hdmm"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:hdmm="http://npds.portaldoors.org/schema/pdp/hdmm#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm">
+        <owl:versionIRI rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm/2.3"/>
+        <rdfs:comment>Last Updated: 2023/06/11</rdfs:comment>
+        <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.3</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#Authority -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#Authority">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#Hierarchical"/>
+        <rdfs:comment>This is the notion of hierarchy which specifically relates to the common definition of varying levels of control, with each higher level having a greater level of jurisdiction than its lower one. This specific notion is used in NPDS to simplify the control and veracity of the data stored in the system.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#Democratized -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#Democratized">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#Distributed"/>
+        <rdfs:comment>NPDS is meant to be democratized over many users, or in other words designed specifically not to have exclusive organizations which hold large amounts of control over the network. These organizations constitute, in and of themselves, points of failure for the system. Thus, the control and infrastructure of content contained by the NPDS system is shared and disseminated over a pervasive network, therein avoiding centralization of resources. This allows for the system to retain a redundant network by avoiding monopolistic control of information which would introduce single points of failure.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#Distributed -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#Distributed">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#HDMM"/>
+        <rdfs:comment>The Nexus PORTAL-DOORS System is designed to be distributed, both in a physical hardware sense and a software sense. This was created with the express purpose of ensuring the survivability of the system by explicity avoiding single points of failure which can be exploited. As such, all aspects of NPDS have some form of redundancy to them and there are institutional barriers present to prevent the rising of centralized control points.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#Evolutionary -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#Evolutionary">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#Distributed"/>
+        <rdfs:comment>Pervasively distributed and shared infrastructure permits use of any micro-format, terminology or ontology to promote evolutionary adoption (i.e., survival of the fittest, not necessarily the first). To be more precise, NPDS espouses the ideal that the best sections of NPDS should be adopted rather than simply the first. This prevents the survival of obsolete legacy structures within NPDS while encouraging forward progress.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#HDMM -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#HDMM">
+        <rdfs:comment>The Hierarchically Distributed Mobile Metadata (HDMM) architectural style operates as a distributed network of metadata management servers interoperate via both hierarchical authorities and shared peer-to-peer forwarding, caching, and redistribution. This architectural style and design philosophy was adopted with the goal of sharing and redistributing data and metadata as efficiently as possible.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#Hierarchical -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#Hierarchical">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#HDMM"/>
+        <rdfs:comment>One of the key principles which HDMM espouses is the idea of a hierarchy, not necessarily with the implication of varying levels of authority in this hierarchy. As such, numerous structures in the NPDS system are structured to have multiple levels in them.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#Multilevel -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#Multilevel">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#Hierarchical"/>
+        <rdfs:comment>This usage of the notion of hierarchy refers to the manner in which the metadata can be organized conceptually in a recursion of layers and thereby structured and processed more effectively. Note that this doesn&apos;t come with the implication of varying levels of authority. Simply that each level relates to its adjacent levels in a cyclical form.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/hdmm#SeperationOfConcerns -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/hdmm#SeperationOfConcerns">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/hdmm#Distributed"/>
+        <rdfs:comment>The software infrastructure of NPDS is designed to adhere to the principle of &quot;Separation of Concerns&quot;. To expound on this idea, many of the components in NPDS are segmented based on  their functionality. This is to prevent a single component from having multiple functions convoluted together, but rather the components are modular. This modularization allows for NPDS to be more easily updatable and debuggable.</rdfs:comment>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi -->
+

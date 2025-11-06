@@ -1,0 +1,163 @@
+@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+  //
+  // Telerik Kendo Grid (TKG acronym or Tkg prefix/suffix)
+  // Telerik Kendo Grid Page (TKGP acronym or Tkgp prefix/suffix)
+*@
+
+<script type="text/javascript">
+  var TkgPath = $("#NpdsGrid").attr("data-tkgpath");
+  var TkndoToken = $("input:hidden[name='__RequestVerificationToken']").val();
+  var TkgStsPrfx = "button#";
+
+  $(document).ready(function () {
+    // container <div> with id NpdsGrid
+    var gridDiv = $("#NpdsGrid");
+    if (gridDiv != null) { gridDiv.show();}
+    // kendoGrid element with id ResrepRecordGrid
+    var gridElem = $("#ResrepRecordGrid").getKendoGrid();
+    if (gridElem != null) { gridElem.resize(); }
+  })
+
+  function OnDataBound(e) {
+    this.expandRow(this.tbody.find("tr.k-master-row").first());
+  }
+
+  function OnInitFgroup(e) {
+    // console.log("OnInitFgroup method has been triggered");
+    // Get Grid in ContentElement
+    var gridElem = $(e.contentElement).find(".k-grid")[0];
+    if (gridElem != null) {
+      // console.log("gridElement = " + JSON.stringify(gridElement))
+      // Reference the Grid
+      // var thegrid = $("#" + gridElement.id).data("kendoGrid");
+      // console.log("thegrid = " + JSON.stringify(thegrid))
+      var fgroupGrid = $(e.contentElement).find(".k-grid").data().kendoGrid;
+      var fgroupSource = fgroupGrid.dataSource;
+      if (!fgroupSource.view().length) { fgroupSource.read(); }
+    }
+  }
+
+  function OnRefreshRecord(e) {
+    // console.log("OnRefreshRecord method has been triggered");
+      var tr = $(e.currentTarget).closest("tr");
+      var trid = this.dataItem(tr).id;
+      var posturl = TkgPath + "?handler=RefreshResrepStatus" + "&recordGuid=" + trid;
+    // console.log("OnRefreshRecord posturl = " + posturl);
+      PostAjaxRequest(posturl);
+  }
+
+  function PostAjaxRequest(rqstUrl,tkgGrid) {
+     // console.log("PostAjaxRequest method with rqstUrl and tkgGrid has been triggered");
+    $.ajax({
+      type: "POST",
+      url: rqstUrl,
+      contentType: "application/json",
+      dataType: "json",
+      headers: { RequestVerificationToken: TkndoToken },
+      success: function (result) {
+        var jsondata = result.Data[0];
+        // console.log(jsondata.NdisElemId + " = " + jsondata.NdisElemMsg);
+        // update status in toolbar element
+        $(jsondata.NdisElemId).empty().html(jsondata.NdisElemMsg).removeClass("pdpHide").addClass("pdpShow");
+        // console.log(jsondata.NdisLinkId + " = " + jsondata.NdisLinkMsg);
+        // update status in grid cell link
+        $(jsondata.NdisLinkId).empty().html(jsondata.NdisLinkMsg);
+        if (tkgGrid != null) {
+          tkgGrid.dataSource.read();
+          tkgGrid.refresh();
+        }
+      },
+      failure: function (fail) { console.log(fail.responseText); },
+      error: function (err) { console.log(err.responseText); }
+    });
+  }
+
+  function HideStatus(e) {
+    // console.log("HideStatus method has been triggered");
+    $(TkgStsPrfx + "ResrepRecordStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "EntityLabelStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "SupportingTagStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "SupportingLabelStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "CrossReferenceStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "OtherTextFactStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "OtherTextExtnStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "LocationFactStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "LocationExtnStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "DescriptionFactStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "DescriptionExtnStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ProvenanceFactStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ProvenanceExtnStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "DistributionFactStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "DistributionExtnStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "FairMetricFactStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "FairMetricExtnStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "RecordSnapshotStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "SearchServiceStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ServiceRestrictionAndStatus").removeClass("pdpShow").addClass("pdpHide");
+    $(TkgStsPrfx + "ServiceRestrictionOrStatus").removeClass("pdpShow").addClass("pdpHide");
+  }
+
+  function RefreshGrid(e) {
+     // console.log("RefreshGrid method has been triggered; includes HideStatus");
+      var grid = $(this).closest(".k-grid").data("kendoGrid");
+      grid.dataSource.read();
+      grid.refresh();
+      HideStatus();
+  }
+
+  function HandleJsonErrors(e) {
+    // console.log(e.xhr.responseText);
+      var msg = $.parseJSON(e.xhr.responseText);
+      if (msg) {
+          console.log("Errors:\n" + msg.join("\n"));
+      }
+  }
+
+  function HandleAjaxErrors(e) {
+      if (e.errors) {
+          var message = "Errors:\n";
+          $.each(e.errors, function(key, value) {
+              if ('errors' in value) {
+                  $.each(value.errors, function() {
+                      message += this + "\n";
+                  });
+              }
+          });
+          console.log(message);
+      }
+  }
+
+  function OnShowInfosubset(e) {
+    // console.log("ShowInfosubset method has been triggered");
+    var ct = $(e.currentTarget);
+    var cttitle = ct.attr("title").toString();
+    var tr = $(e.currentTarget).closest("tr");
+    var trdi = this.dataItem(tr);
+    var rrid = trdi.RRRecordGuid;
+    var fgid = trdi.RRFgroupGuid;
+    var trtexthhh = "";
+    // console.log("cttitle =  " + cttitle + "; rrid = " + rrid + "; fgid = " + fgid + ";");
+    // ATTN: must use if else if construct because switch statement did not work
+    // ATTN: must use triple equal sign on equality tests
+    if ((cttitle === "OtherTextFact") || (cttitle === "OtherTextExtn")) {
+      trtexthhh = trdi.OtherTextJsam;
+    } else if ((cttitle === "LocationFact") || (cttitle === "LocationExtn")) {
+      trtexthhh = trdi.LocationJsam;
+    } else if ((cttitle === "DescriptionFact") || (cttitle === "DescriptionExtn")) {
+      trtexthhh = trdi.DescriptionJsam;
+    } else if ((cttitle === "ProvenanceFact") || (cttitle === "ProvenanceExtn")) {
+      trtexthhh = trdi.ProvenanceJsam;
+    } else if ((cttitle === "DistributionFact") || (cttitle === "DistributionExtn")) {
+      trtexthhh = trdi.DistributionJsam;
+    } else if ((cttitle === "FairMetricFact") || (cttitle === "FairMetricExtn")) {
+      trtexthhh = trdi.FairMetricJsam;
+    } else {
+      trtexthhh = "cttitle value unknown";
+    }
+    // console.log("cttitle =  " + cttitle + "; rrid = " + rrid + "; fgid = " + fgid + ";");
+    // console.log("trtexthhh = " + trtexthhh);
+    // console.log(trtexthhh);
+  }
+</script>

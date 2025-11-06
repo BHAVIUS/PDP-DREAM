@@ -1,0 +1,7 @@
+﻿@model Byte
+
+@(Html.Kendo().DropDownListFor(p => p)
+  .DataValueField("CodeKey").DataTextField("TypeName").OptionLabel("Select Format")
+  .BindTo((System.Collections.IEnumerable)NPDSCD.NpdsDdlists.FieldFormatList)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select most appropriate FieldFormat." }))
+

@@ -1,0 +1,783 @@
+@prefix : <http://npds.portaldoors.org/schema/pdp/pdpd#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pdpd: <http://npds.portaldoors.org/schema/pdp/pdpd#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://npds.portaldoors.org/schema/pdp/pdpd#> .
+
+<http://npds.portaldoors.org/schema/pdp/pdpd> rdf:type owl:Ontology ;
+                                               owl:versionIRI <http://npds.portaldoors.org/schema/pdp/pdpd/3.1> ;
+                                               owl:imports <http://npds.portaldoors.org/schema/pdp/dream> ,
+                                                           <http://npds.portaldoors.org/schema/pdp/eeeee> ,
+                                                           <http://npds.portaldoors.org/schema/pdp/fair> ,
+                                                           <http://npds.portaldoors.org/schema/pdp/hdmm> ,
+                                                           <http://npds.portaldoors.org/schema/pdp/npds> ,
+                                                           <http://purl.org/dc/elements/1.1/> ;
+                                               <http://purl.org/dc/terms/description> "To codify the principles from the PORTAL-DOORS Project and NPDS Cyberinfrastructure, an ontology named PDP-DREAM has been created for the  DREAM principles in order to consolidate the entire collection of principles (those for software architecture, experimental science, and social engineering) into a formal specification. This PDP-DREAM ontology has been developed in OWL 2.0. The current version of this ontology has four main sections corresponding to the DREAM principles, the HDMM architectural style, the NPDS cyberinfrastructure, and the FAIR metrics."@en ;
+                                               <http://purl.org/dc/terms/modified> """v2.1 - Updated the ontology with a number of supporting foundational ontologies and have begun integration for FAIR metrics experiment
+
+v1.4 - Further split NPDS-DREAM ontology into five-parts: FAIR, NPDS, HDMM, DREAM, and PDP-DREAM. Created PDP-DREAM core file.
+v1.3 - Split NPDS-DREAM ontology into three subsections: FAIR, DREAM, and NPDS.
+v1.2 - Merged the NPDS-DREAM and FAIR ontology into a single ontology, added elements beyond class hierarchy such as object properties.
+v1.1 - Original creation of two-part PDP-DREAM ontology consisting of NPDS-DREAM and FAIR ontologies."""@en ;
+                                               <http://purl.org/dc/terms/title> "PDP-DREAM" ;
+                                               rdfs:comment "Last Updated: 2023/06/11" ;
+                                               owl:versionInfo 3.1 .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#alternativePhrase
+<http://npds.portaldoors.org/schema/pdp/DREAM#alternativePhrase> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#mainPhrase
+<http://npds.portaldoors.org/schema/pdp/DREAM#mainPhrase> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#phrase
+<http://npds.portaldoors.org/schema/pdp/DREAM#phrase> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#connectedTo
+<http://npds.portaldoors.org/schema/pdp/NPDS#connectedTo> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#consistsOf
+<http://npds.portaldoors.org/schema/pdp/NPDS#consistsOf> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#contains
+<http://npds.portaldoors.org/schema/pdp/NPDS#contains> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#denoterOf
+<http://npds.portaldoors.org/schema/pdp/NPDS#denoterOf> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#governs
+<http://npds.portaldoors.org/schema/pdp/NPDS#governs> rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#hasQuality
+<http://npds.portaldoors.org/schema/pdp/NPDS#hasQuality> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/date
+<http://purl.org/dc/elements/1.1/date> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+<http://purl.org/dc/terms/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/issued
+<http://purl.org/dc/terms/issued> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/modified
+<http://purl.org/dc/terms/modified> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/publisher
+<http://purl.org/dc/terms/publisher> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+<http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#note
+<http://www.w3.org/2004/02/skos/core#note> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#cites
+<http://npds.portaldoors.org/schema/bhavi/FAIR#cites> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#constituentOf
+<http://npds.portaldoors.org/schema/bhavi/FAIR#constituentOf> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#constitutedBy
+<http://npds.portaldoors.org/schema/bhavi/FAIR#constitutedBy> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#creates
+<http://npds.portaldoors.org/schema/bhavi/FAIR#creates> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#similarTo
+<http://npds.portaldoors.org/schema/bhavi/FAIR#similarTo> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#connectedTo
+<http://npds.portaldoors.org/schema/pdp/NPDS#connectedTo> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#consistsOf
+<http://npds.portaldoors.org/schema/pdp/NPDS#consistsOf> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#contains
+<http://npds.portaldoors.org/schema/pdp/NPDS#contains> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#denoterOf
+<http://npds.portaldoors.org/schema/pdp/NPDS#denoterOf> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#governs
+<http://npds.portaldoors.org/schema/pdp/NPDS#governs> rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#hasQuality
+<http://npds.portaldoors.org/schema/pdp/NPDS#hasQuality> rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F1_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F1_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F2_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F2_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F3_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F3_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F4_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F4_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#M_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#M_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#N_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#N_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#P_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#P_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Q_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Q_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#R_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#R_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#S_Value
+<http://npds.portaldoors.org/schema/bhavi/FAIR#S_Value> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Statement
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Statement> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/pdpdNumberOfRecords
+<http://npds.portaldoors.org/schema/pdp/pdpdNumberOfRecords> rdf:type owl:DatatypeProperty ;
+                                                             rdfs:range xsd:int .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Language
+<http://npds.portaldoors.org/schema/pdp/NPDS#Language> rdf:type owl:DatatypeProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#accessURL
+<http://npds.portaldoors.org/schema/pdp/NPDS#accessURL> rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://npds.portaldoors.org/nsvo/npds#Nexus
+<http://npds.portaldoors.org/nsvo/npds#Nexus> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Algorithm
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Algorithm> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Author
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Author> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#AuthorDeclaration
+<http://npds.portaldoors.org/schema/bhavi/FAIR#AuthorDeclaration> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#C
+<http://npds.portaldoors.org/schema/bhavi/FAIR#C> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#ComponentArticleVerbatimPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#ComponentArticleVerbatimPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Components
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Components> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#CreditedUnclearDelineationPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#CreditedUnclearDelineationPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Declarations
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Declarations> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Editor
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Editor> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#EditorDeclaration
+<http://npds.portaldoors.org/schema/bhavi/FAIR#EditorDeclaration> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F1
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F1> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F2
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F2> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F3
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F3> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#F4
+<http://npds.portaldoors.org/schema/bhavi/FAIR#F4> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#FAIR
+<http://npds.portaldoors.org/schema/bhavi/FAIR#FAIR> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#FAIRMetrics
+<http://npds.portaldoors.org/schema/bhavi/FAIR#FAIRMetrics> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#FAIRProtocols
+<http://npds.portaldoors.org/schema/bhavi/FAIR#FAIRProtocols> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#FullArticleVerbatimPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#FullArticleVerbatimPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#IdeaLaunderingPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#IdeaLaunderingPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#M
+<http://npds.portaldoors.org/schema/bhavi/FAIR#M> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#N
+<http://npds.portaldoors.org/schema/bhavi/FAIR#N> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#NotPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#NotPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#P
+<http://npds.portaldoors.org/schema/bhavi/FAIR#P> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#PartialArticleVerbatimPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#PartialArticleVerbatimPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Publisher
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Publisher> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#PublisherDeclaration
+<http://npds.portaldoors.org/schema/bhavi/FAIR#PublisherDeclaration> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Q
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Q> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#R
+<http://npds.portaldoors.org/schema/bhavi/FAIR#R> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Reviewer
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Reviewer> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#ReviewerDeclaration
+<http://npds.portaldoors.org/schema/bhavi/FAIR#ReviewerDeclaration> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Roles
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Roles> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#S
+<http://npds.portaldoors.org/schema/bhavi/FAIR#S> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Statements
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Statements> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Status
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Status> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#T
+<http://npds.portaldoors.org/schema/bhavi/FAIR#T> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#UncreditedParaphrasingPlagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#UncreditedParaphrasingPlagiarized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#A
+<http://npds.portaldoors.org/schema/pdp/DREAM#A> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#D
+<http://npds.portaldoors.org/schema/pdp/DREAM#D> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#DREAM
+<http://npds.portaldoors.org/schema/pdp/DREAM#DREAM> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#E
+<http://npds.portaldoors.org/schema/pdp/DREAM#E> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#M
+<http://npds.portaldoors.org/schema/pdp/DREAM#M> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#R
+<http://npds.portaldoors.org/schema/pdp/DREAM#R> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#Different
+<http://npds.portaldoors.org/schema/pdp/EEEEE#Different> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#EEE
+<http://npds.portaldoors.org/schema/pdp/EEEEE#EEE> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#LexicallyDifferent
+<http://npds.portaldoors.org/schema/pdp/EEEEE#LexicallyDifferent> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#LexicallySame
+<http://npds.portaldoors.org/schema/pdp/EEEEE#LexicallySame> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#LexicallySimilar
+<http://npds.portaldoors.org/schema/pdp/EEEEE#LexicallySimilar> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#Related
+<http://npds.portaldoors.org/schema/pdp/EEEEE#Related> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#Same
+<http://npds.portaldoors.org/schema/pdp/EEEEE#Same> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallyDifferent
+<http://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallyDifferent> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallySame
+<http://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallySame> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallySimilar
+<http://npds.portaldoors.org/schema/pdp/EEEEE#SemanticallySimilar> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/EEEEE#Similar
+<http://npds.portaldoors.org/schema/pdp/EEEEE#Similar> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#Authority
+<http://npds.portaldoors.org/schema/pdp/HDMM#Authority> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#Democratized
+<http://npds.portaldoors.org/schema/pdp/HDMM#Democratized> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#Distributed
+<http://npds.portaldoors.org/schema/pdp/HDMM#Distributed> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#Evolutionary
+<http://npds.portaldoors.org/schema/pdp/HDMM#Evolutionary> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#HDMM
+<http://npds.portaldoors.org/schema/pdp/HDMM#HDMM> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#Hierarchical
+<http://npds.portaldoors.org/schema/pdp/HDMM#Hierarchical> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#Multilevel
+<http://npds.portaldoors.org/schema/pdp/HDMM#Multilevel> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/HDMM#SeperationOfConcerns
+<http://npds.portaldoors.org/schema/pdp/HDMM#SeperationOfConcerns> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Accessible
+<http://npds.portaldoors.org/schema/pdp/NPDS#Accessible> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Adaptable
+<http://npds.portaldoors.org/schema/pdp/NPDS#Adaptable> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Administrator
+<http://npds.portaldoors.org/schema/pdp/NPDS#Administrator> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Agent
+<http://npds.portaldoors.org/schema/pdp/NPDS#Agent> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Author
+<http://npds.portaldoors.org/schema/pdp/NPDS#Author> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Authoritative
+<http://npds.portaldoors.org/schema/pdp/NPDS#Authoritative> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Bootstrapping
+<http://npds.portaldoors.org/schema/pdp/NPDS#Bootstrapping> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#DOORS
+<http://npds.portaldoors.org/schema/pdp/NPDS#DOORS> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Data
+<http://npds.portaldoors.org/schema/pdp/NPDS#Data> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Descriptions
+<http://npds.portaldoors.org/schema/pdp/NPDS#Descriptions> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Directories
+<http://npds.portaldoors.org/schema/pdp/NPDS#Directories> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Diristry
+<http://npds.portaldoors.org/schema/pdp/NPDS#Diristry> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Editor
+<http://npds.portaldoors.org/schema/pdp/NPDS#Editor> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Entity
+<http://npds.portaldoors.org/schema/pdp/NPDS#Entity> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#EntityMetadata
+<http://npds.portaldoors.org/schema/pdp/NPDS#EntityMetadata> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Expandable
+<http://npds.portaldoors.org/schema/pdp/NPDS#Expandable> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Function
+<http://npds.portaldoors.org/schema/pdp/NPDS#Function> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Inclusive
+<http://npds.portaldoors.org/schema/pdp/NPDS#Inclusive> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#InfosetMetadata
+<http://npds.portaldoors.org/schema/pdp/NPDS#InfosetMetadata> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Labels
+<http://npds.portaldoors.org/schema/pdp/NPDS#Labels> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#LocalGoverance
+<http://npds.portaldoors.org/schema/pdp/NPDS#LocalGoverance> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Locations
+<http://npds.portaldoors.org/schema/pdp/NPDS#Locations> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#NPDReadOnly
+<http://npds.portaldoors.org/schema/pdp/NPDS#NPDReadOnly> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#NPDS
+<http://npds.portaldoors.org/schema/pdp/NPDS#NPDS> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#NPDSPrinciples
+<http://npds.portaldoors.org/schema/pdp/NPDS#NPDSPrinciples> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Names
+<http://npds.portaldoors.org/schema/pdp/NPDS#Names> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Nexus
+<http://npds.portaldoors.org/schema/pdp/NPDS#Nexus> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#NonAuthoritative
+<http://npds.portaldoors.org/schema/pdp/NPDS#NonAuthoritative> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#NonSpecific
+<http://npds.portaldoors.org/schema/pdp/NPDS#NonSpecific> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Owner
+<http://npds.portaldoors.org/schema/pdp/NPDS#Owner> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#PORTAL
+<http://npds.portaldoors.org/schema/pdp/NPDS#PORTAL> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Progressive
+<http://npds.portaldoors.org/schema/pdp/NPDS#Progressive> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#RecordMetadata
+<http://npds.portaldoors.org/schema/pdp/NPDS#RecordMetadata> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Registry
+<http://npds.portaldoors.org/schema/pdp/NPDS#Registry> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Reusable
+<http://npds.portaldoors.org/schema/pdp/NPDS#Reusable> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Roles
+<http://npds.portaldoors.org/schema/pdp/NPDS#Roles> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#ScribeReadWrite
+<http://npds.portaldoors.org/schema/pdp/NPDS#ScribeReadWrite> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Server
+<http://npds.portaldoors.org/schema/pdp/NPDS#Server> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Tags
+<http://npds.portaldoors.org/schema/pdp/NPDS#Tags> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#Usable
+<http://npds.portaldoors.org/schema/pdp/NPDS#Usable> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#User
+<http://npds.portaldoors.org/schema/pdp/NPDS#User> rdf:type owl:Class .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#WebServiceAPI
+<http://npds.portaldoors.org/schema/pdp/NPDS#WebServiceAPI> rdf:type owl:Class .
+
+
+###  http://web.resource.org/cc/License
+<http://web.resource.org/cc/License> rdf:type owl:Class ;
+                                     rdfs:subClassOf <http://www.w3.org/ns/prov#Location> .
+
+
+###  http://www.w3.org/ns/prov#Location
+<http://www.w3.org/ns/prov#Location> rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#FAIRMetricsProtocol
+<http://npds.portaldoors.org/schema/bhavi/FAIR#FAIRMetricsProtocol> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Misquoted
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Misquoted> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Novel
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Novel> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Plagiarized
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Plagiarized> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#Quoted
+<http://npds.portaldoors.org/schema/bhavi/FAIR#Quoted> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/bhavi/FAIR#RDFAnalysisProtocol
+<http://npds.portaldoors.org/schema/bhavi/FAIR#RDFAnalysisProtocol> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/pdpdBrainWatch_Diristry
+<http://npds.portaldoors.org/schema/pdp/pdpdBrainWatch_Diristry> rdf:type owl:NamedIndividual ,
+                                                                          <http://npds.portaldoors.org/nsvo/npds#Nexus> .
+
+
+###  http://npds.portaldoors.org/schema/pdp/pdpdEywaDiristry
+<http://npds.portaldoors.org/schema/pdp/pdpdEywaDiristry> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Accessible
+<http://npds.portaldoors.org/schema/pdp/DREAM#Accessible> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Accurate
+<http://npds.portaldoors.org/schema/pdp/DREAM#Accurate> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Available
+<http://npds.portaldoors.org/schema/pdp/DREAM#Available> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Decentralized
+<http://npds.portaldoors.org/schema/pdp/DREAM#Decentralized> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Democratized
+<http://npds.portaldoors.org/schema/pdp/DREAM#Democratized> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Distributed
+<http://npds.portaldoors.org/schema/pdp/DREAM#Distributed> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Enhanced
+<http://npds.portaldoors.org/schema/pdp/DREAM#Enhanced> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Equivalent
+<http://npds.portaldoors.org/schema/pdp/DREAM#Equivalent> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Extensible
+<http://npds.portaldoors.org/schema/pdp/DREAM#Extensible> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Manageable
+<http://npds.portaldoors.org/schema/pdp/DREAM#Manageable> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Measurable
+<http://npds.portaldoors.org/schema/pdp/DREAM#Measurable> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Metadata
+<http://npds.portaldoors.org/schema/pdp/DREAM#Metadata> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Records
+<http://npds.portaldoors.org/schema/pdp/DREAM#Records> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Repositories
+<http://npds.portaldoors.org/schema/pdp/DREAM#Repositories> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/DREAM#Resources
+<http://npds.portaldoors.org/schema/pdp/DREAM#Resources> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/FAIR#RDFAnalysisProtocol
+<http://npds.portaldoors.org/schema/pdp/FAIR#RDFAnalysisProtocol> rdf:type owl:NamedIndividual ;
+                                                                  rdfs:comment """1. Choose a base url to be used to describe the claims in the RDF document, input this into the xml:base field
+2. Record the url for paper (into rdf:about field), title, first author (into creator field), co-authors (into contributor field), abstract, shortened description (into description field), date published, and doi/uri into respective fields for citation metadata section
+3. Input the M, N, P, Q, F1, F2, F3, F4 calues into the FAIR values section, each for their respective field.
+4. Each grouping of information for the statements will be inputted into description fields with the rdf:about field being \"StatementX.Y\", X representing the Xth statement and Y being the Yth section
+5. For each statement, input a title (only if said claim has a clear title), location (only if said claim has a clear url location), and description (plain lexical representation of statement) into field for StatementX.1. Put the statement isDefinedBy \"StatementX.2\".
+6. For description \"StatementX.2\", refer by rdf:first to the first triple in set of triples describing that particular statement as \"StatementX.2.1\"
+7. Each triple for \"StatementX.2.1\" to \"StatementX.2.Z\" with each section from 1-Z representing a triple that composes \"StatementX\" will have a field for subject, predicate, and object. Each of these fields will contain a reference for the subject, verb, and object respectively extracted for said triple earlier.
+8. The type for these triples should be http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement and each except the end should refer via rdf:rest to \"StatementX.2.Z+1\"
+9. For \"StatementX.3\", have the type be a statement, the subject referring to \"StatementX.1\", and the resource being an instance of either http://npds.portaldoors.org/schema/pdp/FAIR#Plagiarized, http://npds.portaldoors.org/schema/pdp/FAIR#Novel, http://npds.portaldoors.org/schema/pdp/FAIR#Quoted, or http://npds.portaldoors.org/schema/pdp/FAIR#Misquoted depending on the classification of the statement.
+10. If the statement is either Plagiarized, Quoted, or Misquoted, have a section for \"StatementX.4\". For this statement, have the subject be \"StatementX.1\" and then have a fair:similarTo statement containing an rdf:Bag section. If the claim is plagiarized, input the reference to the paper the statement was plagiarized from. If the claim is quoted, input the reference to the paper the statement was cited from. If the claim was misquoted, either input the correct origin of the statement or if the cited claim was misinterpreted the given citation.
+11. Continue steps 4-10 for each of the statement (Novel, Plagiarized, Quoted, Misquoted) in the paper.
+12. At the end in the Final Result section, have a description statement with the url referring to the paper. In the hasRole field, input http://npds.portaldoors.org/schema/pdp/FAIR#NotPlagiarized if the paper meets the threshold for not being plagiarized. 13) Else, input one of the six defined plagiarism levels depending on the level of infraction of the paper (\"ComponentArticleVerbatimPlagiarized\",\"CreditedUnclearDelineation-Plagiarized\",\"FullArticleVerbatimPlagiarized\",\"IdeaLaunderingPlagiarized\",\"PartialArticleVerbatimPlagiarized\",\"UncreditedParaphrasingPlagiarized\")
+13. 5 of these levels are defined by Section 8.2.4.D \"Plagiarism Levels and Corrective Actions\" of the PSPB Operations Manual from IEEE (reference: https://www.ieee.org/content/dam/ieee-org/ieee/web/org/pubs/Level_description.pdf). Use this document to determine which of the 5 levels the plagiarism falls into.
+14. It should be noted that in order to qualify for \"IdeaLaunderingPlagiarized\" the author, editor, or publisher have to fall into a set of specified actions that are beyond the scope of this instruction set.
+15. If there are any papers which the paper notably plagiarizes from, use an fair:similarTo and rdf:bag statement to list the papers""" .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#BrainWatch
+<http://npds.portaldoors.org/schema/pdp/NPDS#BrainWatch> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#DaVinci
+<http://npds.portaldoors.org/schema/pdp/NPDS#DaVinci> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#GeneScene
+<http://npds.portaldoors.org/schema/pdp/NPDS#GeneScene> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#PDP-Aoraki
+<http://npds.portaldoors.org/schema/pdp/NPDS#PDP-Aoraki> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#PDP-Meru
+<http://npds.portaldoors.org/schema/pdp/NPDS#PDP-Meru> rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/NPDS#PDP-Zunil
+<http://npds.portaldoors.org/schema/pdp/NPDS#PDP-Zunil> rdf:type owl:NamedIndividual .
+
+
+###  Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi

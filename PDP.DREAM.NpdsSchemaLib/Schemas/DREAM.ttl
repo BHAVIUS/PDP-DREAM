@@ -1,0 +1,146 @@
+@prefix : <http://npds.portaldoors.org/schema/pdp/dream#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dream: <http://npds.portaldoors.org/schema/pdp/dream#> .
+@base <http://npds.portaldoors.org/schema/pdp/dream#> .
+
+<http://npds.portaldoors.org/schema/pdp/dream> rdf:type owl:Ontology ;
+                                                owl:versionIRI <http://npds.portaldoors.org/schema/pdp/dream/3.1> ;
+                                                rdfs:comment "Last Updated: 2023/06/11" ;
+                                                owl:versionInfo 3.1 .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/dream#alternativePhrase
+dream:alternativePhrase rdf:type owl:AnnotationProperty ;
+                        rdfs:subPropertyOf dream:phrase .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#mainPhrase
+dream:mainPhrase rdf:type owl:AnnotationProperty ;
+                 rdfs:subPropertyOf dream:phrase .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#phrase
+dream:phrase rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/dream#A
+dream:A rdf:type owl:Class ;
+        rdfs:subClassOf dream:DREAM ;
+        dream:alternativePhrase "Accessible, Available, Accurate, Attribute" ;
+        dream:mainPhrase "Accessible Attributes" ;
+        rdfs:comment "Accessible Attributes refers to assuring that all aspects of the data and/or metadata are easily available, accessible and accurate." .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#D
+dream:D rdf:type owl:Class ;
+        rdfs:subClassOf dream:DREAM ;
+        dream:alternativePhrase "Decentralized, Democratized, Distributed, Diristries" ;
+        dream:mainPhrase "Discoverable Data" ;
+        rdfs:comment "Discoverable Data refers to data and/or metadata which is democratized, decentralized, distributed and discoverable, meaning that it can be searched and found easily by users." .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#DREAM
+dream:DREAM rdf:type owl:Class ;
+            rdfs:comment "The PDP principles were recently renamed the DREAM principles as an acronym for the phrase Discoverable Data with Reproducible Results for Equivalent Entities with Accessible Attributes and Manageable Metadata." .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#E
+dream:E rdf:type owl:Class ;
+        rdfs:subClassOf dream:DREAM ;
+        dream:alternativePhrase "Enhanced, Equivalent, Extensible, Entity" ;
+        dream:mainPhrase "Equivalent Entities" ;
+        rdfs:comment "Equivalent Entities refers to the critical question of asking whether two entities are equivalent, ie, of identifying and characterizing the two entities as either the same as or different from each other, whether in experimental science with observed facts and artifacts, or in scholarly research literature with concept similarity detection of ideas and statements, while allowing for the distinction between an original entity in contrast to enhanced or extended versions of the entity." .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#M
+dream:M rdf:type owl:Class ;
+        rdfs:subClassOf dream:DREAM ;
+        dream:alternativePhrase "Metadata" ;
+        dream:mainPhrase "Manageable Metadata" ;
+        rdfs:comment "Manageable Metadata refers to the multi-level metadata with metadata about metadata and data that uniquely characterizes NPDS as a data management system for metadata and data" .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#R
+dream:R rdf:type owl:Class ;
+        rdfs:subClassOf dream:DREAM ;
+        dream:alternativePhrase "Repositories, Records, Resources, Reusable" ;
+        dream:mainPhrase "Reproducible Results" ;
+        rdfs:comment "Reproducible Results refers to reproducibility in experimental science, to reproducibility in transmission and storage of information, data and metadata in engineering technology, and to the reusability of resources and records from repositories." .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Accessible
+dream:Accessible rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Accurate
+dream:Accurate rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Available
+dream:Available rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Decentralized
+dream:Decentralized rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Democratized
+dream:Democratized rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Distributed
+dream:Distributed rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Enhanced
+dream:Enhanced rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Equivalent
+dream:Equivalent rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Extensible
+dream:Extensible rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Manageable
+dream:Manageable rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Measurable
+dream:Measurable rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Metadata
+dream:Metadata rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Records
+dream:Records rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Repositories
+dream:Repositories rdf:type owl:NamedIndividual .
+
+
+###  http://npds.portaldoors.org/schema/pdp/dream#Resources
+dream:Resources rdf:type owl:NamedIndividual .
+
+
+###  Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi

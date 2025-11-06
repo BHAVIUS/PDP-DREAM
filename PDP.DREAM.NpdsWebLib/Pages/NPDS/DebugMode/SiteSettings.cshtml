@@ -1,0 +1,26 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepNpdsWebLib, DepDebugModeSiteSettings)]
+@model DebugModeSiteSettings
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  var propList = PDPSS.GetType().GetProperties().OrderBy(p => p.Name);
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+   <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+@Html.Raw(psrm.FormatSectionTitle(""))
+
+<table class="pdpTable">
+  <tr><td>Name</td><td>Value</td><td>Type</td></tr>
+  @foreach (PropertyInfo item in propList)
+  {
+    <tr><td>@item?.Name</td><td>@item?.GetValue(PDPSS)?.ToString()</td><td>@item?.PropertyType</td></tr>
+  }
+</table>

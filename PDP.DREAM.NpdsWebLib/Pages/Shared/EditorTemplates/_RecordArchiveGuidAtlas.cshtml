@@ -1,0 +1,6 @@
+﻿@model Guid?
+
+@(Html.Kendo().DropDownListFor(m => m)
+  .DataValueField("Value").DataTextField("Text").OptionLabel("Select Archive")
+  .BindTo((System.Collections.IEnumerable)NPDSCD.NpdsDdlists.AtlasDiristryList)
+  .HtmlAttributes(new { style = "width: 11em;", title = "Select Atlas Archive" }))

@@ -1,0 +1,40 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (Model.QebiRcp.IsAuthenticated ?? false);
+  string userName = (Model.QebiRcp.UserName ?? ESS);
+  string paramsPath = (Model.NPDSCW.ResrepSrch4ParamPP ?? ESS);
+  string anonResreps = DepNexusServiceAnonResreps + paramsPath;
+  // ATTN: use href attribute for links not registered with RazorPage names
+  <span>
+    Scribe:
+    <a asp-page="@DepScribeServiceIndex">Service</a>
+    @if (userAuth)
+    {
+      string agentResreps = DepScribeServiceAgentResreps + paramsPath;
+      string authorResreps = DepScribeServiceAuthorResreps + paramsPath;
+      string reviewerResreps = DepScribeServiceReviewerResreps + paramsPath;
+      string editorResreps = DepScribeServiceEditorResreps + paramsPath;
+      string adminResreps = DepScribeServiceAdminResreps + paramsPath;
+      <span> | </span>
+      <a href="@agentResreps">Agent</a>
+      <span> | </span>
+      <a href="@authorResreps">Author</a>
+      <span> | </span>
+      <a href="@reviewerResreps">Reviewer</a>
+      <span> | </span>
+      <a href="@editorResreps">Editor</a>
+      <span> | </span>
+      <a href="@adminResreps">Admin</a>
+      <span> | </span>
+      <a asp-page="@DepScribeServiceMoveToDifferentDiristry">MoveToDifferentDiristry</a>
+      <span> | </span>
+      <a asp-page="@DepScribeServiceSplitToDifferentResreps">SplitToDifferentResreps</a>
+      <span> | </span>
+      <a asp-page="@DepScribeServiceMergeToSameResrep">MergeToSameResrep</a>
+    }
+  </span>
+}

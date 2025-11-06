@@ -1,0 +1,42 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page
+@attribute [PdpRazorPageRoute(DepNpdsWebLib, DepPdpInfoIndex)]
+@model PdpInfoIndex
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace npdscw = Model.NPDSCW;
+  bool userAuth = npdscw.ClientIsAuthenticated;
+}
+@Html.Raw(psrm.FormatBodyTitle())
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<ul>
+  <li>
+    PDP Info <a asp-page="@DepPdpInfoIndex">Index</a>
+  </li>
+  <li>
+    <a asp-page="@DepPdpInfoNpds">NPDS</a> Cyberinfrastructure
+  </li>
+  <li>
+    NPDS <a asp-page="@DepPdpInfoDesign">Design</a>
+  </li>
+  <li>
+    NPDS <a asp-page="@DepPdpInfoDiristries">Diristries</a>
+  </li>
+  <li>
+    NPDS <a asp-page="@DepPdpInfoEntities">Entities</a>
+  </li>
+  <li>
+    NPDS <a asp-page="@DepPdpInfoReports">Reports</a>
+  </li>
+  <li>
+    NPDS <a asp-page="@DepPdpInfoPrivacy">Privacy</a>
+  </li>
+</ul>

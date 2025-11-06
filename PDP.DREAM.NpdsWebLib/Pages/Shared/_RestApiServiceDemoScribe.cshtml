@@ -1,0 +1,219 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace npdscw = Model.NPDSCW;
+}
+
+<h4>REST API Service Demo</h4>
+
+<h5>BioPORT Scribe Diristry (GTG)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/BioPORT/Ellitron" target="_blank">/Scribe/BioPORT/Ellitron</a></li>
+  <li><a href="/Scribe/BioPORT/Ellitron?ef=0&vf=1" target="_blank">/Scribe/BioPORT/Ellitron?ef=0&vf=1</a></li>
+  <li><a href="/Scribe/BioPORT/Ellitron?ef=1&vf=0" target="_blank">/Scribe/BioPORT/Ellitron?ef=1&vf=0</a></li>
+  <li><a href="/Scribe/BioPORT/Ellitron?ef=1&vf=1" target="_blank">/Scribe/BioPORT/Ellitron?ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BioPORT/Ellitron?ef=1&vf=1&cf=1" target="_blank">/Scribe/BioPORT/Ellitron?ef=1&vf=1&cf=1</a></li>
+  <li><a href="/Scribe/BioPORT/ELIDA?ef=1&vf=1&cf=1" target="_blank">/Scribe/BioPORT/ELIDA?ef=1&vf=1&cf=1</a></li>
+  <li><a href="/Scribe/BioPORT/Organization/Any?lc=5&ef=1&vf=1" target="_blank">/Scribe/BioPORT/Organization/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BioPORT/ComputingTool/Any?lc=5&ef=1&vf=1" target="_blank">/Scribe/BioPORT/ComputingTool/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BioPORT/?lc=10&ef=1&vf=1" target="_blank">/Scribe/BioPORT/?lc=10&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BioPORT/?tagany=ELIDA&qf=1&ef=1&vf=1" target="_blank">/Scribe/BioPORT/?tagany=ELIDA&qf=1&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BioPORT/?tagsup=assay&qf=0&ef=1&vf=1" target="_blank">/Scribe/BioPORT/?tagsup=assay&qf=0&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/Ellitron" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/Ellitron</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/Ellitron?ef=0&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/Ellitron?ef=0&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/Ellitron?ef=1&vf=0" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/Ellitron?ef=1&vf=0</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/Ellitron?ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/Ellitron?ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/Organization/Any?lc=5&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/Organization/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/ComputingTool/Any?lc=5&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/ComputingTool/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/?lc=10&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/?lc=10&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/?tagany=ELIDA&qf=1&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/?tagany=ELIDA&qf=1&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/?tagsup=assay&qf=0&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/?tagsup=assay&qf=0&ef=1&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/Ellitron?ef=0&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/Ellitron?ef=0&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/Ellitron?ef=1&vf=0" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/Ellitron?ef=1&vf=0</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/Ellitron?ef=1&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/Ellitron?ef=1&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/Organization/Any?lc=5&ef=1&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/Organization/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/ComputingTool/Any?lc=5&ef=1&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/ComputingTool/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/?lc=10&ef=1&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/?lc=10&ef=1&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/?tagany=ELIDA&qf=1&ef=1&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/?tagany=ELIDA&qf=1&ef=1&vf=1</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BioPORT/?tagsup=assay&qf=0&ef=1&vf=1" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BioPORT/?tagsup=assay&qf=0&ef=1&vf=1</a></li>
+</ul>
+  Should NOT return any records:
+<ul>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/BrainWatch/ABA" target="_blank">https://npds.biomedicalcomputing.net/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/GeneScene/ACMG" target="_blank">https://npds.biomedicalcomputing.net/Scribe/GeneScene/ACMG</a></li>
+  <li><a href="https://npds.biomedicalcomputing.net/Scribe/ManRay/ABNM" target="_blank">https://npds.biomedicalcomputing.net/Scribe/ManRay/ABNM</a></li>
+</ul>
+<h5>BrainWatch Scribe Diristry (BHA)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/BrainWatch/ABA" target="_blank">/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="/Scribe/BrainWatch/?lc=50&ef=1&vf=1" target="_blank">/Scribe/BrainWatch/?lc=50&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BrainWatch/Organization/Any?lc=5&ef=1&vf=1" target="_blank">/Scribe/BrainWatch/Organization/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BrainWatch/?tagany=PDF&qf=1&ef=1&vf=1" target="_blank">/Scribe/BrainWatch/?tagany=PDF&qf=1&ef=1&vf=1</a></li>
+  <li><a href="/Scribe/BrainWatch/?tagsup=psych&qf=0&ef=1&vf=1" target="_blank">/Scribe/BrainWatch/?tagsup=psych&qf=0&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BrainWatch/ABA" target="_blank">https://npds.portaldoors.org/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BrainWatch/?lc=50&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BrainWatch/?lc=50&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BrainWatch/Organization/Any?lc=5&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BrainWatch/Organization/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BrainWatch/?tagany=PDF&qf=1&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BrainWatch/?tagany=PDF&qf=1&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BrainWatch/?tagsup=psych&qf=0&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/BrainWatch/?tagsup=psych&qf=0&ef=1&vf=1</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/BrainWatch/ABA" target="_blank">https://npds.brainwatch.net/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/BrainWatch/?lc=50&ef=1&vf=1" target="_blank">https://npds.brainwatch.net/Scribe/BrainWatch/?lc=50&ef=1&vf=1</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/BrainWatch/Organization/Any?lc=5&ef=1&vf=1" target="_blank">https://npds.brainwatch.net/Scribe/BrainWatch/Organization/Any?lc=5&ef=1&vf=1</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/BrainWatch/?tagany=PDF&qf=1&ef=1&vf=1" target="_blank">https://npds.brainwatch.net/Scribe/BrainWatch/?tagany=PDF&qf=1&ef=1&vf=1</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/BrainWatch/?tagsup=psych&qf=0&ef=1&vf=1" target="_blank">https://npds.brainwatch.net/Scribe/BrainWatch/?tagsup=psych&qf=0&ef=1&vf=1</a></li>
+</ul>
+  Should NOT return any records:
+<ul>
+  <li><a href="https://npds.brainwatch.net/Scribe/BioPORT/Ellitron" target="_blank">https://npds.brainwatch.net/Scribe/BioPORT/Ellitron</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/GeneScene/ACMG" target="_blank">https://npds.brainwatch.net/Scribe/GeneScene/ACMG</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/ManRay/ABNM" target="_blank">https://npds.brainwatch.net/Scribe/ManRay/ABNM</a></li>
+</ul>
+<h5>Brainiacs Scribe Diristry (BHA)</h5>
+Should return records:
+<ul>
+  <li><a href="/Scribe/Brainiacs/Taswell2021Truth" target="_blank">/Scribe/Brainiacs/Taswell2021Truth</a></li>
+  <li><a href="/Scribe/Brainiacs/?lc=50&ef=1&vf=1" target="_blank">/Scribe/Brainiacs/?lc=50&ef=1&vf=1</a></li>
+</ul>
+<h5>CTGaming Scribe Diristry (GTG)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/CTGaming/wattgaming" target="_blank">/Scribe/CTGaming/wattgaming</a></li>
+  <li><a href="/Scribe/CTGaming/?lc=20&ef=1&vf=1" target="_blank">/Scribe/CTGaming/?lc=20&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/CTGaming/wattgaming" target="_blank">https://npds.portaldoors.org/Scribe/CTGaming/wattgaming</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/CTGaming/?lc=20&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/CTGaming/?lc=20&ef=1&vf=1</a></li>
+  <li><a href="https://npds.clinicaltelegaming.net/Scribe/CTGaming/wattgaming" target="_blank">https://npds.clinicaltelegaming.net/Scribe/CTGaming/wattgaming</a></li>
+  <li><a href="https://npds.clinicaltelegaming.net/Scribe/CTGaming/?lc=20&ef=1&vf=1" target="_blank">https://npds.clinicaltelegaming.net/Scribe/CTGaming/?lc=20&ef=1&vf=1</a></li>
+</ul>
+  Should NOT return any records:
+<ul>
+  <li><a href="https://npds.clinicaltelegaming.net/Scribe/BioPORT/Ellitron" target="_blank">https://npds.clinicaltelegaming.net/Scribe/BioPORT/Ellitron</a></li>
+  <li><a href="https://npds.clinicaltelegaming.net/Scribe/BrainWatch/ABA" target="_blank">https://npds.clinicaltelegaming.net/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="https://npds.clinicaltelegaming.net/Scribe/GeneScene/ACMG" target="_blank">https://npds.clinicaltelegaming.net/Scribe/GeneScene/ACMG</a></li>
+  <li><a href="https://npds.clinicaltelegaming.net/Scribe/ManRay/ABNM" target="_blank">https://npds.clinicaltelegaming.net/Scribe/ManRay/ABNM</a></li>
+</ul>
+
+<h5>Eywa Scribe Diristry (BHA)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/Eywa/ibc-et" target="_blank">/Scribe/Eywa/ibc-et</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/Eywa/ibc-et" target="_blank">https://npds.portaldoors.org/Scribe/Eywa/ibc-et</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/Eywa/ibc-et" target="_blank">https://npds.brainwatch.net/Scribe/Eywa/ibc-et</a></li>
+</ul>
+  Should NOT return any records:
+<ul></ul>
+
+<h5>Gaia Scribe Diristry (BHA)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/Gaia/tnc" target="_blank">/Scribe/Gaia/tnc</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/Gaia/tnc" target="_blank">https://npds.portaldoors.org/Scribe/Gaia/tnc</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/Gaia/tnc" target="_blank">https://npds.brainwatch.net/Scribe/Gaia/tnc</a></li>
+</ul>
+  Should NOT return any records:
+<ul></ul>
+
+<h5>GeneScene Scribe Diristry (GTG)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/GeneScene/ACMG?ef=1&vf=1" target="_blank">/Scribe/GeneScene/ACMG?ef=1&vf=1</a></li>
+  <li><a href="/Scribe/GeneScene/?lc=30&ef=1&vf=1" target="_blank">/Scribe/GeneScene/?lc=30&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/GeneScene/ACMG?ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/GeneScene/ACMG?ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/GeneScene/?lc=30&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/GeneScene/?lc=30&ef=1&vf=1</a></li>
+  <li><a href="https://npds.genescene.net/Scribe/GeneScene/ACMG?ef=1&vf=1" target="_blank">https://npds.genescene.net/Scribe/GeneScene/ACMG?ef=1&vf=1</a></li>
+  <li><a href="https://npds.genescene.net/Scribe/GeneScene/?lc=30&ef=1&vf=1" target="_blank">https://npds.genescene.net/Scribe/GeneScene/?lc=30&ef=1&vf=1</a></li>
+</ul>
+  Should NOT return any records:
+<ul>
+  <li><a href="https://npds.genescene.net/Scribe/BioPORT/Ellitron" target="_blank">https://npds.genescene.net/Scribe/BioPORT/Ellitron</a></li>
+  <li><a href="https://npds.genescene.net/Scribe/BrainWatch/ABA" target="_blank">https://npds.genescene.net/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="https://npds.genescene.net/Scribe/ManRay/ABNM" target="_blank">https://npds.genescene.net/Scribe/ManRay/ABNM</a></li>
+</ul>
+<h5>HELPME Scribe Diristry (BHA)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/HELPME/AHRQ" target="_blank">/Scribe/HELPME/AHRQ</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/HELPME/AHRQ" target="_blank">https://npds.portaldoors.org/Scribe/HELPME/AHRQ</a></li>
+  <li><a href="https://npds.brainwatch.net/Scribe/HELPME/AHRQ" target="_blank">https://npds.brainwatch.net/Scribe/HELPME/AHRQ</a></li>
+</ul>
+  Should NOT return any records:
+<ul></ul>
+
+<h5>ManRay Scribe Diristry (GTG)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/ManRay/ABNM?ef=1&vf=1" target="_blank">/Scribe/ManRay/ABNM?ef=1&vf=1</a></li>
+  <li><a href="/Scribe/ManRay/?lc=30&ef=1&vf=1" target="_blank">/Scribe/ManRay/?lc=30&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/ManRay/ABNM?ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/ManRay/ABNM?ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/ManRay/?lc=30&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/ManRay/?lc=30&ef=1&vf=1</a></li>
+  <li><a href="https://npds.nucmedlib.net/Scribe/ManRay/ABNM?ef=1&vf=1" target="_blank">https://npds.nucmedlib.net/Scribe/ManRay/ABNM?ef=1&vf=1</a></li>
+  <li><a href="https://npds.nucmedlib.net/Scribe/ManRay/?lc=30&ef=1&vf=1" target="_blank">https://npds.nucmedlib.net/Scribe/ManRay/?lc=30&ef=1&vf=1</a></li>
+</ul>
+  Should NOT return any records:
+<ul>
+  <li><a href="https://npds.nucmedlib.net/Scribe/BioPORT/Ellitron" target="_blank">https://npds.nucmedlib.net/Scribe/BioPORT/Ellitron</a></li>
+  <li><a href="https://npds.nucmedlib.net/Scribe/BrainWatch/ABA" target="_blank">https://npds.nucmedlib.net/Scribe/BrainWatch/ABA</a></li>
+  <li><a href="https://npds.nucmedlib.net/Scribe/GeneScene/ACMG" target="_blank">https://npds.nucmedlib.net/Scribe/GeneScene/ACMG</a></li>
+</ul>
+<h5>
+  NLM MeSH Scribe Diristry
+</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/NLMMeSH/D051188" target="_blank">/Scribe/NLMMeSH/D051188</a></li>
+  <li><a href="/Scribe/NLMMeSH/D010665" target="_blank">/Scribe/NLMMeSH/D010665</a></li>
+  <li><a href="/Scribe/NLMMeSH/d000001" target="_blank">/Scribe/NLMMeSH/d000001</a></li>
+  <li><a href="/Scribe/NLMMeSH/?tagany=d000001&qf=0&vf=1" target="_blank">/Scribe/NLMMeSH/?tagany=d000001&qf=0&vf=1</a></li>
+  <li><a href="/Scribe/NLMMeSH/?enam=informatics&qf=1&vf=1" target="_blank">/Scribe/NLMMeSH/?enam=informatics&qf=1&vf=1</a></li>
+  <li><a href="/Scribe/NLMMeSH/?lc=11&vf=1&ef=1" target="_blank">/Scribe/NLMMeSH/?lc=11&vf=1&ef=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NLMMeSH/d000001" target="_blank">https://npds.portaldoors.org/Scribe/NLMMeSH/d000001</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NLMMeSH/?tagany=d000001&qf=0&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/NLMMeSH/?tagany=d000001&qf=0&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NLMMeSH/?enam=informatics&qf=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/NLMMeSH/?enam=informatics&qf=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NLMMeSH/?lc=11&vf=1&ef=1" target="_blank">https://npds.portaldoors.org/Scribe/NLMMeSH/?lc=11&vf=1&ef=1</a></li>
+</ul>
+  Should NOT return any records:
+<ul>
+  <li><a href="https://npds.portaldoors.org/Scribe/BioPORT/d000001" target="_blank">https://npds.portaldoors.org/Scribe/BioPORT/d000001</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/BrainWatch/d000001" target="_blank">https://npds.portaldoors.org/Scribe/BrainWatch/d000001</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/GeneScene/d000001" target="_blank">https://npds.portaldoors.org/Scribe/GeneScene/d000001</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/ManRay/d000001" target="_blank">https://npds.portaldoors.org/Scribe/ManRay/d000001</a></li>
+</ul>
+<h5>Osler Scribe Diristry (GTG)</h5>
+  Should return records:
+<ul>
+  <li><a href="/Scribe/Osler/AHIC?ef=1&vf=1" target="_blank">/Scribe/Osler/AHIC?ef=1&vf=1</a></li>
+  <li><a href="/Scribe/Osler/?lc=30&ef=1&vf=1" target="_blank">/Scribe/Osler/?lc=30&ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/Osler/AHIC?ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/Osler/AHIC?ef=1&vf=1</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/Osler/?lc=30&ef=1&vf=1" target="_blank">https://npds.portaldoors.org/Scribe/Osler/?lc=30&ef=1&vf=1</a></li>
+  <li><a href="https://npds.genescene.net/Scribe/Osler/AHIC?ef=1&vf=1" target="_blank">https://npds.genescene.net/Scribe/Osler/AHIC?ef=1&vf=1</a></li>
+  <li><a href="https://npds.genescene.net/Scribe/Osler/?lc=30&ef=1&vf=1" target="_blank">https://npds.genescene.net/Scribe/Osler/?lc=30&ef=1&vf=1</a></li>
+
+</ul>
+  Should NOT return any records:
+<ul></ul>
+
+<h5>SOLOMON Scribe Diristry (BHA)</h5>
+<ul>
+  <li><a href="/Scribe/SOLOMON?ef=1&vf=1&lc=11" target="_blank">/Scribe/SOLOMON?ef=1&vf=1&lc=11</a></li>
+  <li><a href="/Scribe/SOLOMON/NIF?ef=1&vf=1" target="_blank">/Scribe/SOLOMON/NIF?ef=1&vf=1</a></li>
+</ul>
+<hr />
+<h5>
+  Scribe Diristries for BHA, GTG, PDP Scribe Registrars
+</h5>
+<ul>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/BioPORT" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/BioPORT</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/BrainWatch" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/BrainWatch</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/CTGaming" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/CTGaming</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/Eywa" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/Eywa</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/Gaia" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/Gaia</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/GeneScene" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/GeneScene</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/HELPME" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/HELPME</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/ManRay" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/ManRay</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/Osler" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/Osler</a></li>
+  <li><a href="https://npds.portaldoors.org/Scribe/NPDS-Root/Solomon" target="_blank">https://npds.portaldoors.org/Scribe/NPDS-Root/Solomon</a></li>
+</ul>

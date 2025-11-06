@@ -1,0 +1,39 @@
+﻿@*
+  // PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+  // Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@{
+  bool userAuth = (Model.QebiRcp.IsAuthenticated ?? false);
+  string userName = (Model.QebiRcp.UserName ?? ESS);
+}
+
+<span>
+  Nexus:
+  <a asp-page="@DepNexusServiceIndex">Service</a>
+  <span> | </span>
+  <a asp-page="@DepPdpInfoIndex">PdpInfo</a>
+  <span> | </span>
+  @if (userAuth)
+  {
+    <a asp-page="@DepPdpHelpIndex">Help</a>
+    @if (PDPSS.AppUseDevtestFeature)
+    {
+      <span> | </span>
+      <a asp-page="@DepPdpHelpTestNexus">Test</a>
+    }
+    <span> | </span>
+    <a asp-page="@DepqUserModeDisplayProfile">@userName</a>
+    <span> | </span>
+    <a asp-page="@DepqUserModeIndex">UserMode</a>
+    <span> | </span>
+    <a asp-page="@DepnAgentModeIndex">AgentMode</a>
+  }
+  else
+  {
+    <a asp-page="@DepqAnonModeIndex">AnonMode</a>
+    <span> | </span>
+    <a asp-page="@DepqAnonModeLoginUser">Login</a>
+  }
+</span>
+

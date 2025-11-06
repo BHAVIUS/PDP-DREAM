@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/CodeLibs11P/">
+    <Project Path="PDP.DREAM.NpdsDataLib/PDP.DREAM.NpdsDataLib.csproj" />
+    <Project Path="PDP.DREAM.NpdsSchemaLib/PDP.DREAM.NpdsSchemaLib.csproj" />
+    <Project Path="PDP.DREAM.NpdsWebLib/PDP.DREAM.NpdsWebLib.csproj" />
+  </Folder>
+  <Folder Name="/ExtLibs0P/">
+    <File Path="extrnlibs/Telerik/ReadMe.Telerik.md" />
+  </Folder>
+</Solution>

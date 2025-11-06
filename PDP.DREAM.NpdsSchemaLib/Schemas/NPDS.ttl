@@ -1,0 +1,609 @@
+@prefix : <http://npds.portaldoors.org/schema/pdp/npds#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix npds: <http://npds.portaldoors.org/schema/pdp/npds#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://npds.portaldoors.org/schema/pdp/npds#> .
+
+<http://npds.portaldoors.org/schema/pdp/npds> rdf:type owl:Ontology ;
+                                               owl:versionIRI <http://npds.portaldoors.org/schema/pdp/npds/2.3> ;
+                                               rdfs:comment "Last Updated: 2023/06/11" ;
+                                               owl:versionInfo 2.3 .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/npds#connectedTo
+npds:connectedTo rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#consistsOf
+npds:consistsOf rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#contains
+npds:contains rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#denoterOf
+npds:denoterOf rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#governs
+npds:governs rdf:type owl:AnnotationProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#hasQuality
+npds:hasQuality rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/npds#connectedTo
+npds:connectedTo rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#consistsOf
+npds:consistsOf rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#contains
+npds:contains rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#denoterOf
+npds:denoterOf rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#governs
+npds:governs rdf:type owl:ObjectProperty .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#hasQuality
+npds:hasQuality rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Language
+npds:Language rdf:type owl:DatatypeProperty ;
+              rdfs:domain npds:NPDS ;
+              rdfs:range xsd:string .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#accessURL
+npds:accessURL rdf:type owl:DatatypeProperty ;
+               rdfs:domain npds:DOORS ,
+                           npds:Nexus ,
+                           npds:PORTAL .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Accessible
+npds:Accessible rdf:type owl:Class ;
+                rdfs:subClassOf npds:Usable ;
+                rdfs:comment "\"the PORTAL-DOORS paradigm seeks to build a decentralized and distributed infrastructure that supports mass collaboration tapping the power of wikinomics [104] and enabling “all webizens to create, share, distribute, and enjoy ideas and information”\"(Biomed, pg. 201, XIII)" ,
+                             "NPDS must be readily accessible to users and the public. Firstly, the system must not have an overly complex structure that might discourage users or an esoteric set-up which might bar users from utilizing the system. As a whole, this manifests in the idea that NPDS has multiple publicly available sites which can be accessed and used."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Adaptable
+npds:Adaptable rdf:type owl:Class ;
+               rdfs:subClassOf npds:NPDSPrinciples ;
+               rdfs:comment "\"If implemented, supported, and maintained as a separate independent infrastructure, the PORTAL-DOORS framework can be tuned and optimized for metadata while the distributed grid and web services will perhaps continue to be optimized.\" (BioMedicine pg 197, Section IX-E)" ,
+                            "In order to both future-proof the system and ensure that it can be applicable to a wide range of purposes, NPDS is designed to be adaptable. This principle was included with the consideration that not all uses for NPDS can be anticipated by the creators of the system. Thus, NPDS must be naturally adaptable such that it can evolve over time into the roles which might come to it."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Administrator
+npds:Administrator rdf:type owl:Class ;
+                   owl:equivalentClass [ owl:intersectionOf ( npds:Agent
+                                                              [ rdf:type owl:Restriction ;
+                                                                owl:onProperty npds:governs ;
+                                                                owl:someValuesFrom npds:Server
+                                                              ]
+                                                            ) ;
+                                         rdf:type owl:Class
+                                       ] ;
+                   rdfs:subClassOf npds:Agent ;
+                   rdfs:comment "In administrator mode, the agent may edit any registry or directory records accessible via the same registrar."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Agent
+npds:Agent rdf:type owl:Class ;
+           rdfs:subClassOf npds:Roles ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:governs ;
+                             owl:someValuesFrom npds:Authoritative
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:governs ;
+                             owl:someValuesFrom npds:Data
+                           ] ;
+           rdfs:comment "Agent refers to the person who registers, manages and edits the information about the resource and who is presumed to be acting on behalf of the resource owner. Agents have read/write privileges at those registries and directories where they have been explicitly granted write privileges for creating and editing records. In addition, they may also be given three different modes, each with successfully higher privileges: author, editor, and administrator"@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Author
+npds:Author rdf:type owl:Class ;
+            rdfs:subClassOf npds:Agent ;
+            rdfs:comment "In author mode, the agent may edit only records initially entered by the agent."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Authoritative
+npds:Authoritative rdf:type owl:Class ;
+                   rdfs:subClassOf npds:Function ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty npds:governs ;
+                                     owl:someValuesFrom npds:NonAuthoritative
+                                   ] ;
+                   rdfs:comment "Authoritative servers act as control points from which owners and agents can control and edit the resources they have permissions over. These authoritative servers then routinely update the information on the non-authoritative servers."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Bootstrapping
+npds:Bootstrapping rdf:type owl:Class ;
+                   rdfs:subClassOf npds:Adaptable ;
+                   rdfs:comment "\"If so, then the PORTAL-DOORS infrastructure proposed here could serve as a bootstrap to help further jumpstart the semantic web and the development of more sophisticated systems (e.g., agent-driven composition of services [98]) that require search as just one piece of the puzzle.\" (Biomed pg. 200, XII-E)" ,
+                                "NPDS must have an aspect of bootstrapping, whether that be in the internal working of the software or the system as a whole being adapted to certain use cases. NPDS, by modularity, can be bootstrapped for a wide variety of use cases."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#DOORS
+npds:DOORS rdf:type owl:Class ;
+           owl:equivalentClass [ owl:intersectionOf ( npds:Server
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty npds:contains ;
+                                                        owl:someValuesFrom [ owl:intersectionOf ( npds:Descriptions
+                                                                                                  npds:Locations
+                                                                                                ) ;
+                                                                             rdf:type owl:Class
+                                                                           ]
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+           rdfs:subClassOf npds:Server ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:contains ;
+                             owl:someValuesFrom npds:EntityMetadata
+                           ] ;
+           rdfs:comment "The focus of the Domain Ontology Oriented Resource System (DOORS) is to publish the location of resources and the mapping of labels to those locations on the semantic web. In this manner, DOORS server are meant to act as a directory of locations. Due to this role, DOORS directories primarily manipulate semantic markup and store information utilizing the XML/RDF/SPARQL semantic stack. One important characteristic of the DOORS directories is that, in contrast to PORTAL servers, the hierarchy of directories isn't strictly master and slave. Rather, DOORS directories can act as primary directories for some records while at the same time acting as secondary directories for other records."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Data
+npds:Data rdf:type owl:Class ;
+          owl:equivalentClass [ rdf:type owl:Restriction ;
+                                owl:onProperty npds:consistsOf ;
+                                owl:someValuesFrom [ owl:intersectionOf ( npds:Entity
+                                                                          npds:EntityMetadata
+                                                                          npds:InfosetMetadata
+                                                                          npds:RecordMetadata
+                                                                        ) ;
+                                                     rdf:type owl:Class
+                                                   ]
+                              ] ;
+          rdfs:subClassOf npds:NPDS ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty npds:hasQuality ;
+                            owl:someValuesFrom npds:Accessible
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty npds:hasQuality ;
+                            owl:someValuesFrom npds:Inclusive
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty npds:hasQuality ;
+                            owl:someValuesFrom npds:Reusable
+                          ] ;
+          rdfs:comment "This refers to all data that is being stored by the Nexus PORTAL-DOORS System. The data is designed to be hierarchical. As such, there are multiple levels of metadata, from level 1 to level 3. In addition, it can be considered that the entity itself can be considered part of the hierarchy."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Descriptions
+npds:Descriptions rdf:type owl:Class ;
+                  rdfs:subClassOf npds:EntityMetadata ;
+                  rdfs:comment "Refers to a semantic description of the entity itself. These descriptions are formatted in semantic RDF so that they can be compatible with the RDF/OWL/SPARQL stack which is utilized in the DOORS servers."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Directories
+npds:Directories rdf:type owl:Class ;
+                 rdfs:subClassOf npds:Names ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty npds:denoterOf ;
+                                   owl:someValuesFrom npds:DOORS
+                                 ] ;
+                 rdfs:comment "Used as a denoter of DOORS servers (i.e. DOORS directory)"@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Diristry
+npds:Diristry rdf:type owl:Class ;
+              rdfs:subClassOf npds:Names ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty npds:denoterOf ;
+                                owl:someValuesFrom npds:Nexus
+                              ] ;
+              rdfs:comment "Denoting name for a Nexus server (i.e. Nexus diristry). Combination of the words \"directory\" and \"registery\""@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Editor
+npds:Editor rdf:type owl:Class ;
+            owl:equivalentClass [ owl:intersectionOf ( npds:Agent
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty npds:governs ;
+                                                         owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                              owl:unionOf ( npds:DOORS
+                                                                                            npds:PORTAL
+                                                                                          )
+                                                                            ]
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ;
+            rdfs:subClassOf npds:Agent ;
+            rdfs:comment "In editor mode, the agent may edit any records in the same registry."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Entity
+npds:Entity rdf:type owl:Class ;
+            rdfs:subClassOf npds:Data ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty npds:connectedTo ;
+                              owl:someValuesFrom npds:EntityMetadata
+                            ] ;
+            rdfs:comment "This refers to the resource that an agent is actually publishing in the Nexus PORTAL-DOORS System. This can be an .html website, .txt document, or any other form of data. The Nexus PORTAL-DOORS System is designed to be extensible and modifiable, thus  a multitude forms of data can be published and accessed by the system."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#EntityMetadata
+npds:EntityMetadata rdf:type owl:Class ;
+                    owl:equivalentClass [ rdf:type owl:Restriction ;
+                                          owl:onProperty npds:consistsOf ;
+                                          owl:someValuesFrom [ owl:intersectionOf ( npds:Descriptions
+                                                                                    npds:Labels
+                                                                                    npds:Locations
+                                                                                    npds:Tags
+                                                                                  ) ;
+                                                               rdf:type owl:Class
+                                                             ]
+                                        ] ;
+                    rdfs:subClassOf npds:Data ;
+                    rdfs:comment "All metadata pertaining to the entity itself including tags, labels, locations and description of the entity as well as references to the owner and contact for the entity; corresponds to PDS schema element EntityMetadata and considered primary or Level 1 metadata about the entity itself."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Expandable
+npds:Expandable rdf:type owl:Class ;
+                rdfs:subClassOf npds:Inclusive ;
+                rdfs:comment "NPDS is specifically designed to be expandable. NPDS can have multiple add-ons and can be expanded on over time. This allows NPDS to be truly inclusive as any technologies or needs which are not already supported can be added in via subsequent extensions."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Function
+npds:Function rdf:type owl:Class ;
+              owl:equivalentClass [ rdf:type owl:Class ;
+                                    owl:unionOf ( npds:Authoritative
+                                                  npds:NonAuthoritative
+                                                )
+                                  ] ;
+              rdfs:subClassOf npds:Server ;
+              rdfs:comment "Servers can either be authoritative or non-authoritative. These serve as part of the principles of the HDMM architectural style. Non-authoritative servers act as caching points whereas authoritative servers act as control points."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Inclusive
+npds:Inclusive rdf:type owl:Class ;
+               rdfs:subClassOf npds:NPDSPrinciples ;
+               rdfs:comment "\"universal applicability with an approach of inclusivity rather than exclusivity\" (Future internet, pg 170, 5.3)" ,
+                            "NPDS is designed to be all-inclusive and readily applicable to wide range of fields and users. To be more specific, NPDS is structured such that its infrastructure can readily be used for any number of uses that may crop up."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#InfosetMetadata
+npds:InfosetMetadata rdf:type owl:Class ;
+                     rdfs:subClassOf npds:Data ,
+                                     npds:EntityMetadata ;
+                     rdfs:comment "All metadata pertaining to the stored records about the entity and the process of registering and managing the records including timestamps for creating and updating the records, references to the governing registries and directories, as well as references to the registrant and agents for the records. Note that the registrant and agent for the records may be different from the owner and contact for the entity. It corresponds to PDS schema element RecordMetadata and considered secondary or Level 2 metadata about the Level 1 metadata."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Labels
+npds:Labels rdf:type owl:Class ;
+            rdfs:subClassOf npds:EntityMetadata ;
+            rdfs:comment "A label is a URI or IRI which acts to identify any resource registered in the system. NPDS allows for multiple labels for any given resource and distinguishes between a single required canonical label and multiple permitted alias labels for the resource. All labels, whether canonical or alias,  must always be globally unique throughout the system."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#LocalGoverance
+npds:LocalGoverance rdf:type owl:Class ;
+                    rdfs:subClassOf npds:Adaptable ;
+                    rdfs:comment "\"A hierarchical system enabling local independence of communities while simultaneously main- taining global interoperability and compatibility for communication between and search amongst different specialty communities.\" (Future Internet, pg 167, 5.1, point 2)" ,
+                                 "NPDS through its hierarchy allows for local goverance, whether that be of data or of formats. As such, the parameters of NPDS can be readily controlled in order to set up unique environments which are tailored to fit the needs of the organization that is using the system."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Locations
+npds:Locations rdf:type owl:Class ;
+               rdfs:subClassOf npds:EntityMetadata ;
+               rdfs:comment "Locations refer to the locations of the particular entity in the semantic wb. These are stored in the DOORS servers."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#NPDReadOnly
+npds:NPDReadOnly rdf:type owl:Class ;
+                 rdfs:subClassOf npds:WebServiceAPI ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty npds:connectedTo ;
+                                   owl:someValuesFrom [ rdf:type owl:Class ;
+                                                        owl:unionOf ( npds:DOORS
+                                                                      npds:Nexus
+                                                                      npds:PORTAL
+                                                                    )
+                                                      ]
+                                 ] ;
+                 rdfs:comment "To make the lexical and semantic metadata on the NPDS system easily accessible to automated agents, the Read-Only web service API responds to GET requests with the record of interest. For the REST API response, the body primarily consists of the document object, serialized XML for the current NPDS implementation. The server response includes the status code and an answer node which links to a node of each NPDS server type invoked, which further links to resource nodes. This approach allows resource records to be kept separate from the processes from which they are derived, which will be useful for future implementations of NPDS."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#NPDS
+npds:NPDS rdf:type owl:Class ;
+          rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty npds:consistsOf ;
+                            owl:someValuesFrom npds:Data
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty npds:consistsOf ;
+                            owl:someValuesFrom npds:Server
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty npds:consistsOf ;
+                            owl:someValuesFrom npds:WebServiceAPI
+                          ] ;
+          rdfs:comment "the Nexus PORTAL-DOORS-Scribe cyberinfrastructure has been formulated as an architecture for metadata and resource publishing and storage which can serve as a bridge between the lexical and the semantic web. By providing services such as resource labelling systems, semantic search applications, and semantically-based computational applications, users can be incentivized to register resources and metadata on the semantic web through the NPDS infrastructure. Based on the HDMM architectural style, in a manner analogous to the widely used IRIS-DNS, PORTAL registries register labels and tags, while DOORS directories publish resource locations and descriptions for the semantic web."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#NPDSPrinciples
+npds:NPDSPrinciples rdf:type owl:Class ;
+                    rdfs:subClassOf npds:NPDS ;
+                    rdfs:comment "These refer to the goals of the Nexus PORTAL-DOORS System is designed for. Within these set of goals, there are four main subsection: inclusive, usable, progressive, and adaptable. These goals are what NPDS is designed for and its aim for end-users"@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Names
+npds:Names rdf:type owl:Class ;
+           rdfs:subClassOf npds:Server ;
+           rdfs:comment "These are a set of alternative names which can be used to denote DOORS, PORTAL, or Nexus servers. These include diristy, records, registry, and repositories." .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Nexus
+npds:Nexus rdf:type owl:Class ;
+           owl:equivalentClass [ owl:intersectionOf ( npds:Server
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty npds:consistsOf ;
+                                                        owl:someValuesFrom [ owl:intersectionOf ( npds:DOORS
+                                                                                                  npds:PORTAL
+                                                                                                ) ;
+                                                                             rdf:type owl:Class
+                                                                           ]
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+           rdfs:subClassOf npds:Server ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:hasQuality ;
+                             owl:someValuesFrom npds:Bootstrapping
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:hasQuality ;
+                             owl:someValuesFrom npds:LocalGoverance
+                           ] ;
+           rdfs:comment "Nexus diristries are designed to act as a system in which PORTAL and DOORS servers can be housed and function on the same node.  Operationally, Nexus registrars provide services consistent with the separate functions of PORTAL and DOORS servers, however Nexus registrars allows these servers to be stored on the same physical server/location.  In this manner, nodes on the NPDS network can either be a dedicated PORTAL node, a dedicated DOORS node, or a combined PORTAL-DOORS node which is called a Nexus server."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#NonAuthoritative
+npds:NonAuthoritative rdf:type owl:Class ;
+                      rdfs:subClassOf npds:Function ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty npds:contains ;
+                                        owl:someValuesFrom npds:Data
+                                      ] ;
+                      rdfs:comment "Non-authoritative servers cache information and then distribute them to users when requested. They typically serve a local area so as to decrease the time to respond to requests from  users."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#NonSpecific
+npds:NonSpecific rdf:type owl:Class ;
+                 rdfs:subClassOf npds:Inclusive ;
+                 rdfs:comment "This refers specifically to the idea that NPDS is a non-specific system. Note that this doesn't refer to the principles or structure of NPDS, but rather to the way by which these ideas are implemented. Any technologies, stacks, and formats may be used to create the NPDS system. In fact, multiple implementations of NPDS have been created with the express purpose of showcasing the fact that NPDS is not meant to be stack, language, or application specific. This allows NPDS to be inclusive of any technologies in the present or in the future."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Owner
+npds:Owner rdf:type owl:Class ;
+           rdfs:subClassOf npds:Roles ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:governs ;
+                             owl:someValuesFrom npds:Authoritative
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:governs ;
+                             owl:someValuesFrom npds:Data
+                           ] ;
+           npds:connectedTo <http://www.semanticweb.org/dutta/ontologies/2019/6/untitled-ontology-33#Servers> ;
+           rdfs:comment "Owner refers to the collection of person(s) and/or organization(s) presumed to own the resource. They can add and revoke access for agents for the resource(s) they own."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#PORTAL
+npds:PORTAL rdf:type owl:Class ;
+            owl:equivalentClass [ owl:intersectionOf ( npds:Server
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty npds:contains ;
+                                                         owl:someValuesFrom [ owl:intersectionOf ( npds:Labels
+                                                                                                   npds:Tags
+                                                                                                 ) ;
+                                                                              rdf:type owl:Class
+                                                                            ]
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ;
+            rdfs:subClassOf npds:Server ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty npds:contains ;
+                              owl:someValuesFrom npds:EntityMetadata
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty npds:hasQuality ;
+                              owl:someValuesFrom npds:LocalGoverance
+                            ] ;
+            rdfs:comment "The focus of the Problem Oriented Registry of Tags and Labels (PORTAL) is to publish resources labels and tags. PORTAL servers also act to enforce master schemas and facilitate administrator control of resource records through owner accounts and maintaining a list of master servers. As a function of controlling resources, PORTAL servers are organized into problem-oriented areas (i.e. BioPORT, ManRay, NeuroPORT, SOLOMON, etc.).  This enables unique servers to be set up for a wide variety of fields, allowing NPDS to a wide-variety of disparate problem-areas."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Progressive
+npds:Progressive rdf:type owl:Class ;
+                 rdfs:subClassOf npds:NPDSPrinciples ;
+                 rdfs:comment "\"forward revisions by extension rather than restriction in order to maintain backward compatibility and adherence to the original design goals and principles\" (Future Internet, pg. 171, 5.3)" ,
+                              "NPDS is meant to be progressive. This means that any evolutions of NPDS are meant to consist of forward extensions rather than revisions. This principle is present because by consisting of primarily additions, any faulty extensions can easily be rolled back to a subsequent version. It also curtails the possibility of the core principles being contradicted later down the line."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#RecordMetadata
+npds:RecordMetadata rdf:type owl:Class ;
+                    rdfs:subClassOf npds:Data ;
+                    rdfs:comment "All metadata pertaining to the dynamic infoset about the entity assembled from the distributed stored records including status, validation timestamps if validated, and any entailments if inferred by a reasoning engine; corresponds to PDS schema element InfosetMetadata and considered tertiary or Level 3 metadata about the Level 1 and Level 2 metadata."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Registry
+npds:Registry rdf:type owl:Class ;
+              rdfs:subClassOf npds:Names ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty npds:denoterOf ;
+                                owl:someValuesFrom npds:PORTAL
+                              ] ;
+              rdfs:comment "Used as a denoter of PORTAL servers (i.e. PORTAL registry)"@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Reusable
+npds:Reusable rdf:type owl:Class ;
+              rdfs:subClassOf npds:Usable ;
+              rdfs:comment "NPDS must have an element of reusability. This means that various parts and sections of NPDS, whether they be software or data, must be able to be reused for purposes outside of what is originally intended."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Roles
+npds:Roles rdf:type owl:Class ;
+           rdfs:subClassOf npds:NPDS ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:governs ;
+                             owl:someValuesFrom npds:NPDS
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:hasQuality ;
+                             owl:someValuesFrom npds:LocalGoverance
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty npds:hasQuality ;
+                             owl:someValuesFrom npds:Usable
+                           ] ;
+           npds:governs <http://www.semanticweb.org/dutta/ontologies/2019/6/untitled-ontology-33#Nexus_PORTAL-DOORS_System> ;
+           npds:hasQuality <http://www.semanticweb.org/dutta/ontologies/2019/6/untitled-ontology-33#Local_Goverance> ,
+                           <http://www.semanticweb.org/dutta/ontologies/2019/6/untitled-ontology-33#Usable> ;
+           rdfs:comment "The users of the NPDS system can be assigned roles which are used to indicate what relationship they have with resources in the system. It should be noted that a single person can be both a user and an agent as the role relates to a person's relationship to a specific one or set of resources."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#ScribeReadWrite
+npds:ScribeReadWrite rdf:type owl:Class ;
+                     rdfs:subClassOf npds:WebServiceAPI ;
+                     rdfs:comment "The Scribe Read-Write registrar allows users or automated agents to make additions, replacement, or deletions to the NPDS records. The Scribe Read-Write API retains compatibility with a wide range of authentication methods and implementation, thereby maintaining the NPDS principle of not being implementation specific. Following REST conventions: a GET request retrieves records, a POST request creates a new record, a PUT request replaces a record, and a DELETE request deletes a record. Also includes a web application as a human-friendly user interface to edit NPDS records."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Server
+npds:Server rdf:type owl:Class ;
+            owl:equivalentClass [ rdf:type owl:Class ;
+                                  owl:unionOf ( npds:DOORS
+                                                npds:Nexus
+                                                npds:PORTAL
+                                              )
+                                ] ;
+            rdfs:subClassOf npds:NPDS ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty npds:contains ;
+                              owl:someValuesFrom npds:Data
+                            ] ;
+            rdfs:comment "Servers refers to the PORTAL, DOORS, and Nexus servers which make up the Nexus PORTAL-DOORS System network. These servers are either authoritative or non-authoritative. Non-authoritative servers act as caching points which deliver data to users and authoritative servers governs the data on the non-authoritative servers. These are all interconnected together by messaging systems, currently implemented in API." .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Tags
+npds:Tags rdf:type owl:Class ;
+          rdfs:subClassOf npds:EntityMetadata ;
+          rdfs:comment "Tags refer to alphanumeric tags which lexically indicate the entity and the category in which the entity would be in. This would allow for lexical based search of desired resources"@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#Usable
+npds:Usable rdf:type owl:Class ;
+            rdfs:subClassOf npds:NPDSPrinciples ;
+            rdfs:comment "\"PORTAL-DOORS was also designed to solve several major problems of web engineering: cybersilos in scientific discourse, search engine consolidation, registry/repository centralization, the spread of misinformation, and barriers to progress in the transition from original web to semantic web\" (Future Internet, pg 161, 3)" ,
+                         "One of the most important points of NPDS is that the system must be usable by real users in the real world. Firstly, the system must be functional and able to be used for real tasks by users. Secondly, NPDS must not have too steap of a learning curve or requit too much knowledge to use."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#User
+npds:User rdf:type owl:Class ;
+          rdfs:subClassOf npds:Roles ;
+          npds:connectedTo <http://www.semanticweb.org/dutta/ontologies/2019/6/untitled-ontology-33#Servers> ;
+          rdfs:comment "User refers to the person who anonymously consumes information from PDS. Users have read privileges throughout PDS"@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#WebServiceAPI
+npds:WebServiceAPI rdf:type owl:Class ;
+                   rdfs:subClassOf npds:NPDS ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty npds:consistsOf ;
+                                     owl:someValuesFrom npds:NPDReadOnly
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty npds:consistsOf ;
+                                     owl:someValuesFrom npds:ScribeReadWrite
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty npds:hasQuality ;
+                                     owl:someValuesFrom npds:Bootstrapping
+                                   ] ;
+                   rdfs:comment "NPDS utilizes a standarized messaging format in the form of REST API for its current implementations. So as to permit diverse implementations in order to meet various security, privacy, and access specifications, NPDS doesn't specifically require an API implementation for registration, publishing, or curation. However, an implementation of Scribe Read-Write services which expose a RESTful API service have been developed in addition to inbuilt NPDS Read-Only services in order to allow software to take advantage of this technology to access NPDS records." .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://npds.portaldoors.org/schema/pdp/npds#BrainWatch
+npds:BrainWatch rdf:type owl:NamedIndividual ;
+                npds:accessURL "https://www.brainhealthalliance.net/AnonResreps/NpdsView/Nexus/BrainWatch"@en ;
+                rdfs:comment "BrainWatch is a Nexus diristry dedicated to the storage of resources relevant to the BrainWatch project. As such, it contains resources such as co-registration algorithms and image databases."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#DaVinci
+npds:DaVinci rdf:type owl:NamedIndividual ,
+                      npds:Nexus ;
+             npds:accessURL "https://www.portaldoors.net/AnonResreps/NpdsView/Nexus/DaVinci"^^xsd:anyURI ;
+             rdfs:comment "DaVinci is a Nexus diristry dedicated to the accumulation of resources relevant to the Nexus PORTAL-DOORS System and relevant projects. As such, it primarily consists of knowledge engineering, semantic web, and symbolic systems resources."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#GeneScene
+npds:GeneScene rdf:type owl:NamedIndividual ,
+                        npds:Nexus ;
+               npds:accessURL "https://www.telegenetics.net/AnonResreps/NpdsView/Nexus/GeneScene"^^xsd:anyURI ;
+               rdfs:comment "GeneScene is a Nexus diristry about organizations which relate to genetic diseases and testing. As such, it primarily contains information about things such as Gene Testing clinics and organizations which relate to genetic diseases."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#PDP-Aoraki
+npds:PDP-Aoraki rdf:type owl:NamedIndividual ,
+                         npds:NPDS ;
+                npds:Language "C# / .NET Core" ;
+                rdfs:comment "PDP-Aoraki is the oldest implementation of NPDS and is based off of the Microsoft C#/.NET stack."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#PDP-Meru
+npds:PDP-Meru rdf:type owl:NamedIndividual ,
+                       npds:NPDS ;
+              npds:Language "MEAN Stack (MongoDB, Express, Angular.js, Node.js)" ;
+              rdfs:comment "PDP-Meru is the second implementation of the Nexus PORTAL-DOORS System. It is implemented in the MEAN (MongoDB, Express, Angular, Node.js) stack implementation."@en .
+
+
+###  http://npds.portaldoors.org/schema/pdp/npds#PDP-Zunil
+npds:PDP-Zunil rdf:type owl:NamedIndividual ,
+                        npds:NPDS ;
+               npds:Language "Python" ;
+               rdfs:comment "PDP-Zunil is the newest NPDS implementation. It is implemented in the Python DAC stack."@en .
+
+
+###  Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi

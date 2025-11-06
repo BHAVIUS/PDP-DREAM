@@ -1,0 +1,68 @@
+﻿@*
+// PORTAL-DOORS Project Copyright (c) 2006-2025 Brain Health Alliance. All Rights Reserved.
+// Software license: the OSI approved Apache 2.0 License (https://opensource.org/licenses/Apache-2.0).
+*@
+
+@page "{recordAccess?}"
+@attribute [PdpRazorPageRoute(DepNpdsWebLib, DepScribeServiceMergeToSameResrep)]
+@model ScribeServiceMergeToSameResrep
+
+@{
+  PdpSiteRazorModel psrm = Model.PSRM;
+  NpdsClientWrace npdscw = Model.NPDSCW;
+  bool userAuth = npdscw.ClientIsAuthenticated;
+  var canAdminWrite = npdscw.ClientCanAdminWrite;
+  var statusMessage = Model.UXM.NdisElemMsg;
+  IEnumerable<SelectListItem>? DiristryList;
+  if (canAdminWrite) { DiristryList = NPDSCD.NpdsDdlists.AtlasDiristryList; }
+  else { DiristryList = NPDSCD.NpdsDdlists.RegcDiristryList; }
+  var DiristryLabel = "Select diristry";
+  // column formatting
+  var pdpFormGroup = "form-group mb-3 col-md-3";
+  var pdpFormLabel = "form-label";
+  var pdpFormControl = "form-control";
+  var pdpFormWarning = pdpFormLabel + " text-danger";
+}
+@Html.Raw(psrm.FormatBodyTitle(npdscw.RecordAccess.EName + " MergeToSame Resrep"))
+@if (!string.IsNullOrEmpty(psrm.RazorBodyMenu))
+{
+  <p><partial name="@psrm.RazorBodyMenu" /></p>
+}
+
+<p>
+  This form must be used with selection of a Nexus diristry for both the retain and delete records which must be in the same diristry.
+  The merge request will not be processed if the handles do not reference records in the same diristry.
+</p>
+
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+  <p>PDP Status: @statusMessage</p>
+}
+
+<form id="frmAcmsService"
+  method="post" role="form" class="form-horizontal"
+  asp-page="@psrm.RazorPageName">
+  <div class="@pdpFormGroup">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UXM.RRRecordAccess)
+    @Html.HiddenFor(m => m.UXM.NdisElemMsg)
+    @Html.ValidationSummary("", new { @class = pdpFormWarning })
+  </div>
+  <div class="@pdpFormGroup">
+    @Html.LabelFor(m => m.UXM.DiristryGuidStr, new { @class = pdpFormLabel })
+    @Html.DropDownListFor(m => m.UXM.DiristryGuidStr, DiristryList, DiristryLabel, new { @class = pdpFormControl })
+  </div>
+  <div class="@pdpFormGroup">
+    @Html.LabelFor(m => m.UXM.HandleRecordToRetain, new { @class = pdpFormLabel })
+    @Html.TextBoxFor(m => m.UXM.HandleRecordToRetain, new { @class = pdpFormControl })
+    @Html.ValidationMessageFor(m => m.UXM.HandleRecordToRetain, null, new { @class = pdpFormWarning })
+  </div>
+  <div class="@pdpFormGroup">
+    @Html.LabelFor(m => m.UXM.HandleRecordToDelete, new { @class = pdpFormLabel })
+    @Html.TextBoxFor(m => m.UXM.HandleRecordToDelete, new { @class = pdpFormControl })
+    @Html.ValidationMessageFor(m => m.UXM.HandleRecordToDelete, null, new { @class = pdpFormWarning })
+  </div>
+  <br />
+  <button id="btnAcmsService" type="submit" class="btn btn-outline-primary">Merge to Same</button>
+</form>
+

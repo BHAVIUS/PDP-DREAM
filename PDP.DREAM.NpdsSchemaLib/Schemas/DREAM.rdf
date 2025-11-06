@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://npds.portaldoors.org/schema/pdp/dream#"
+     xml:base="http://npds.portaldoors.org/schema/pdp/dream"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:dream="http://npds.portaldoors.org/schema/pdp/dream#">
+    <owl:Ontology rdf:about="http://npds.portaldoors.org/schema/pdp/dream">
+        <owl:versionIRI rdf:resource="http://npds.portaldoors.org/schema/pdp/dream/3.1"/>
+        <rdfs:comment>Last Updated: 2023/06/11</rdfs:comment>
+        <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.1</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#alternativePhrase -->
+
+    <owl:AnnotationProperty rdf:about="http://npds.portaldoors.org/schema/pdp/dream#alternativePhrase">
+        <rdfs:subPropertyOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#phrase"/>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#mainPhrase -->
+
+    <owl:AnnotationProperty rdf:about="http://npds.portaldoors.org/schema/pdp/dream#mainPhrase">
+        <rdfs:subPropertyOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#phrase"/>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#phrase -->
+
+    <owl:AnnotationProperty rdf:about="http://npds.portaldoors.org/schema/pdp/dream#phrase"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#A -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/dream#A">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#DREAM"/>
+        <alternativePhrase>Accessible, Available, Accurate, Attribute</alternativePhrase>
+        <mainPhrase>Accessible Attributes</mainPhrase>
+        <rdfs:comment>Accessible Attributes refers to assuring that all aspects of the data and/or metadata are easily available, accessible and accurate.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#D -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/dream#D">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#DREAM"/>
+        <alternativePhrase>Decentralized, Democratized, Distributed, Diristries</alternativePhrase>
+        <mainPhrase>Discoverable Data</mainPhrase>
+        <rdfs:comment>Discoverable Data refers to data and/or metadata which is democratized, decentralized, distributed and discoverable, meaning that it can be searched and found easily by users.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#DREAM -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/dream#DREAM">
+        <rdfs:comment>The PDP principles were recently renamed the DREAM principles as an acronym for the phrase Discoverable Data with Reproducible Results for Equivalent Entities with Accessible Attributes and Manageable Metadata.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#E -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/dream#E">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#DREAM"/>
+        <alternativePhrase>Enhanced, Equivalent, Extensible, Entity</alternativePhrase>
+        <mainPhrase>Equivalent Entities</mainPhrase>
+        <rdfs:comment>Equivalent Entities refers to the critical question of asking whether two entities are equivalent, ie, of identifying and characterizing the two entities as either the same as or different from each other, whether in experimental science with observed facts and artifacts, or in scholarly research literature with concept similarity detection of ideas and statements, while allowing for the distinction between an original entity in contrast to enhanced or extended versions of the entity.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#M -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/dream#M">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#DREAM"/>
+        <alternativePhrase>Metadata</alternativePhrase>
+        <mainPhrase>Manageable Metadata</mainPhrase>
+        <rdfs:comment>Manageable Metadata refers to the multi-level metadata with metadata about metadata and data that uniquely characterizes NPDS as a data management system for metadata and data</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#R -->
+
+    <owl:Class rdf:about="http://npds.portaldoors.org/schema/pdp/dream#R">
+        <rdfs:subClassOf rdf:resource="http://npds.portaldoors.org/schema/pdp/dream#DREAM"/>
+        <alternativePhrase>Repositories, Records, Resources, Reusable</alternativePhrase>
+        <mainPhrase>Reproducible Results</mainPhrase>
+        <rdfs:comment>Reproducible Results refers to reproducibility in experimental science, to reproducibility in transmission and storage of information, data and metadata in engineering technology, and to the reusability of resources and records from repositories.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Accessible -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Accessible"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Accurate -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Accurate"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Available -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Available"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Decentralized -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Decentralized"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Democratized -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Democratized"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Distributed -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Distributed"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Enhanced -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Enhanced"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Equivalent -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Equivalent"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Extensible -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Extensible"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Manageable -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Manageable"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Measurable -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Measurable"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Metadata -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Metadata"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Records -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Records"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Repositories -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Repositories"/>
+    
+
+
+    <!-- http://npds.portaldoors.org/schema/pdp/dream#Resources -->
+
+    <owl:NamedIndividual rdf:about="http://npds.portaldoors.org/schema/pdp/dream#Resources"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi -->
+

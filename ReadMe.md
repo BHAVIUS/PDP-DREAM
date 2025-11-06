@@ -5,37 +5,32 @@
 PDP-DREAM Public Repository: most recent public versions of Aoraki, Cervin, and Gangkhar branches  
 
 
-This Branch Version: public Net9Aoraki v11.6.25  
-DevTested Package: Telerik.UI.for.AspNet.Core.2025.2.520.nupkg  
-DevTested Database: Microsoft SQL Server 2022 v16.0.4195.2  
-DevTested Environment: Microsoft Visual Studio 2022 v17.14.7  
-DevTested SDK: Microsoft .NET SDK 9.0.301  
-Current Target: ASP.NET Core Runtime 9.0.6  
+This Branch Version: public Net9Aoraki v11.7.27  
+DevTested Package: Telerik.UI.for.AspNet.Core.2025.3.1002.nupkg  
+DevTested Package: Telerik.UI.for.Blazor.11.2.0.nupkg  
+DevTested Database: Microsoft SQL Server 2022 v16.0.4215.2  
+DevTested Environment: Microsoft Visual Studio 2022 v17.14.19  
+DevTested SDK: Microsoft .NET SDK 9.0.306  
+Current Target: ASP.NET Core Runtime 9.0.10  
 Planned Target: maintain in most recent release of ASP.NET 9  
 Public Branch Net6Aoraki: web apps with Telerik UI for ASP.Net Core MVC Views  
 Public Branch Net7Cervin: web apps with Telerik UI for ASP.Net Core MVC Views and Razor Pages  
 Public Branch Net8Gangkhar: web apps with Telerik UI for ASP.Net Core MVC Views and Razor Pages  
-Public Branch Net9Aoraki: web apps with Telerik UI for ASP.Net Core OpenAPIs and Razor Pages  
+Public Branch Net9Aoraki: web apps with Telerik UI for ASP.Net Core Razor Pages and Blazor Components  
 Public Branch Net10Cervin: web apps with Telerik UI for ASP.Net Core OpenAPIs and Blazor Components  
-Public Branch Net11Gangkhar: multiplatform apps with Telerik UI for Blazor, MAUI, or AvaloniaUI  
+Public Branch Net11Gangkhar: multiplatform apps with Telerik UI for HTMX, Blazor, MAUI, or AvaloniaUI  
 
 Visual Studio Solution of DotNet Projects  
 (stack dependencies configured as chain from top to bottom)  
 
-* PDP.DREAM.AcmsWebLib for T
-* PDP.DREAM.AcmsDataLib for T
-* PDP.DREAM.BabbleBirdLib for T
-* PDP.DREAM.BabbleNewtLib for T
-* PDP.DREAM.ScribeWebLib for ACGT
-* PDP.DREAM.NexusWebLib for ACGT
-* PDP.DREAM.CoreWebLib for ACGT
+* PDP.DREAM.NpdsWebLib for ACGT
 * PDP.DREAM.NpdsDataLib for ACGT
+* PDP.DREAM.NpdsSchemaLib for ACGT
 
 where A is Aoraki, C is Cervin, G is Gangkhar, T is Tahtali.  
 
 NexusRestApi and NexusWebApp projects built on NexusWebLib dependency;    
 ScribeRestApi and ScribeWebApp projects built on ScribeWebLib dependency;  
-AcmsWebApp projects built on AcmsWebLib dependency;  
 
 <h4>NPDS Cyberinfrastructure</h4>
 
